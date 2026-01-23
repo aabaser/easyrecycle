@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "DB: up",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "problemMatcher": []
+    },
+    {
+      "label": "DB: migrate",
+      "type": "shell",
+      "command": "alembic upgrade head",
+      "options": {
+        "env": {
+          "DATABASE_URL": "postgresql+psycopg://postgres:postgres@localhost:5432/easy_recycle"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "DB: seed example",
+      "type": "shell",
+      "command": "psql \"postgresql://postgres:postgres@localhost:5432/easy_recycle\" -f sql/seed_example.sql",
+      "problemMatcher": []
+    },
+    {
+      "label": "API: run",
+      "type": "shell",
+      "command": "uvicorn app.main:app --reload --port 8000",
+      "problemMatcher": []
+    }
+  ]
+}

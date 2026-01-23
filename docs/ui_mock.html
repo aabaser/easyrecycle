@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Easy Recycle - Test UI</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --accent: #06b6d4;
+      --muted: #9ca3af;
+      --text: #e5e7eb;
+      --warn: #f59e0b;
+      --error: #f43f5e;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      margin: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(6,182,212,0.15), transparent 30%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px;
+    }
+    h1 { margin: 0 0 12px; letter-spacing: 0.5px; }
+    p { margin: 4px 0 16px; color: var(--muted); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid #1f2937;
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      max-width: 960px;
+      margin-bottom: 16px;
+    }
+    label { display: block; margin: 12px 0 6px; color: var(--muted); font-size: 14px; }
+    select, input[type="text"], button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #0b1220;
+      color: var(--text);
+    }
+    button {
+      background: linear-gradient(120deg, #0ea5e9, #06b6d4);
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .dropzone {
+      border: 1px dashed #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      background: #0b1220;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(6,182,212,0.08);
+    }
+    .preview {
+      width: 100%;
+      max-height: 240px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-top: 8px;
+      background: #0b1220;
+    }
+    .card {
+      background: #0b1220;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; background: rgba(6,182,212,0.15); color: var(--accent); margin: 2px 4px 2px 0; font-size: 13px; }
+    .warning { color: var(--warn); font-weight: 600; }
+    .error { color: var(--error); }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h1>Easy Recycle - Test UI</h1>
+    <p>City-specific demo. /resolve for ID/name, /analyze for image.</p>
+    <div class="grid">
+      <div>
+        <label for="city">City</label>
+        <select id="city">
+          <option value="hannover">Hannover</option>
+          <option value="berlin">Berlin</option>
+        </select>
+        <label for="itemId">Item ID (UUID from DB)</label>
+        <input type="text" id="itemId" placeholder="e.g., 123e4567-e89b-12d3-a456-426614174000">
+        <label for="itemName">Item name (free text)</label>
+        <input type="text" id="itemName" placeholder="Use when ID is unknown">
+        <label for="lang">Language</label>
+        <select id="lang">
+          <option value="de">de</option>
+          <option value="en">en</option>
+          <option value="tr">tr</option>
+        </select>
+        <button id="resolveBtn">Tanimla (/resolve)</button>
+        <button id="analyzeBtn">Analiz (/analyze, image required)</button>
+        <div id="status" class="error" style="margin-top:8px;"></div>
+      </div>
+      <div>
+        <label>Image upload / drag & drop (preview only)</label>
+        <div id="dropzone" class="dropzone">
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          <p>Drop an image here or click to select</p>
+          <img id="preview" class="preview" src="" alt="" style="display:none;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Result</h2>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const API_BASE = "http://localhost:8000";
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("fileInput");
+    const preview = document.getElementById("preview");
+    const statusEl = document.getElementById("status");
+    const resultEl = document.getElementById("result");
+    let imageBase64 = "";
+
+    dropzone.addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault(); dropzone.classList.remove("dragover");
+      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+      imageBase64 = "";
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result || "";
+        const parts = String(dataUrl).split(",");
+        imageBase64 = parts.length > 1 ? parts[1] : "";
+        preview.src = String(dataUrl);
+        preview.style.display = "block";
+        statusEl.textContent = imageBase64 ? `Resim yuklendi (base64: ${imageBase64.length} char)` : "Resim okunamadi.";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById("resolveBtn").addEventListener("click", async () => {
+      statusEl.textContent = "";
+      resultEl.innerHTML = "";
+      const city = document.getElementById("city").value;
+      const itemId = document.getElementById("itemId").value.trim();
+      const itemName = document.getElementById("itemName").value.trim();
+      const lang = document.getElementById("lang").value;
+      if (!itemId && !itemName) {
+        statusEl.textContent = "Item ID veya Item name gerekli.";
+        return;
+      }
+      try {
+        let url = `${API_BASE}/resolve?city=${encodeURIComponent(city)}&lang=${encodeURIComponent(lang)}`;
+        if (itemId) url += `&item_id=${encodeURIComponent(itemId)}`;
+        if (itemName) url += `&item_name=${encodeURIComponent(itemName)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          statusEl.textContent = data.error || "Request failed";
+          if (data.suggestions && data.suggestions.length) {
+            renderSuggestions(data.suggestions);
+          }
+          return;
+        }
+        renderResult(data);
+      } catch (e) {
+        statusEl.textContent = e.message;
+      }
+    });
+
+    document.getElementById("analyzeBtn").addEventListener("click", async () => {
+      statusEl.textContent = "";
+      resultEl.innerHTML = "";
+      const city = document.getElementById("city").value;
+      const itemName = document.getElementById("itemName").value.trim();
+      const lang = document.getElementById("lang").value;
+      if (!imageBase64) {
+        statusEl.textContent = "Analiz icin resim gerekli.";
+        return;
+      }
+      try {
+        const payload = {
+          city,
+          lang,
+          image_base64: imageBase64.trim(),
+          search_text: itemName || undefined,
+        };
+        const res = await fetch(`${API_BASE}/analyze`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          statusEl.textContent = data.error || data.detail || "Request failed";
+          renderAnalyzeResult(data);
+          if (data.suggestions) renderSuggestions(data.suggestions);
+          return;
+        }
+        renderAnalyzeResult(data);
+      } catch (e) {
+        statusEl.textContent = e.message;
+      }
+    });
+
+    function renderResult(data) {
+      const { item, categories, disposals, suggestions, prospect } = data;
+      const warnings = data.warnings || [];
+      const imgTag = preview.src ? `<img class="preview" src="${preview.src}" alt="">` : "";
+      const cats = pills(categories);
+      const disps = pills(disposals);
+      const warns = warnings.length ? warnings.map(w => `<div class="warning">! ${w.label || w.code || w}</div>`).join("") : "";
+      resultEl.innerHTML = `
+        <div class="card">
+          ${imgTag}
+          <h3 style="margin:8px 0 4px;">${item.title || item.canonical_key}</h3>
+          <div style="color:var(--muted); margin-bottom:6px;">${item.description || ""}</div>
+          <div><strong>Categories:</strong> ${cats}</div>
+          <div><strong>Disposals:</strong> ${disps}</div>
+          ${warns}
+          ${prospect && prospect.created ? `<div class="warning" style="margin-top:8px;">Prospect created for admin review.</div>` : ""}
+          ${renderSuggestionCards(suggestions)}
+        </div>
+      `;
+    }
+
+    function pills(list) {
+      return (list || []).map(x => `<span class="pill">${x.label || x.code}</span>`).join("") || "<span class='muted'>No data</span>";
+    }
+
+    function renderSuggestionCards(list) {
+      if (!list || !list.length) return "";
+      return `
+        <div style="margin-top:12px;">
+          <strong>Benzerler:</strong>
+          <div class="grid" style="margin-top:8px;">
+            ${list.map(s => `
+              <div class="card">
+                <div class="row" style="justify-content:space-between;">
+                  <div>${s.alias || s.label || s.item_id} (${s.similarity?.toFixed ? s.similarity.toFixed(2) : s.similarity || ""})</div>
+                  <button style="padding:6px 10px;" onclick="loadSuggestion('${s.item_id}')">Yukle</button>
+                </div>
+                <div><strong>Kategoriler:</strong> ${pills(s.categories)}</div>
+                <div><strong>Disposals:</strong> ${pills(s.disposals)}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSuggestions(list) {
+      resultEl.innerHTML = `
+        <div class="card">
+          <h3>Benzerler</h3>
+          ${renderSuggestionCards(list)}
+        </div>
+      `;
+    }
+
+    function renderAnalyzeResult(data) {
+      const item = data.item || {};
+      const recycle = data.recycle || {};
+      const disposals = recycle.disposals || [];
+      const warnings = data.warnings || [];
+      const imgTag = preview.src ? `<img class="preview" src="${preview.src}" alt="">` : "";
+      const jsonBlock = `<pre style="background:#0b1220;border:1px solid #1f2937;border-radius:8px;padding:8px;white-space:pre-wrap;">${JSON.stringify(data, null, 2)}</pre>`;
+      const visionBlock = `<pre style="background:#0b1220;border:1px solid #1f2937;border-radius:8px;padding:8px;white-space:pre-wrap;">${JSON.stringify((data.debug && data.debug.vision) || {}, null, 2)}</pre>`;
+      resultEl.innerHTML = `
+        <div class="card">
+          ${imgTag}
+          <h3 style="margin:8px 0 4px;">${item.title || item.canonical_key || ""}</h3>
+          <div style="color:var(--muted); margin-bottom:6px;">${item.description || ""}</div>
+          <div><strong>Disposals:</strong> ${pills(disposals)}</div>
+          ${warnings.length ? warnings.map(w => `<div class="warning">! ${w.label || w.code || w}</div>`).join("") : ""}
+          <div style="margin-top:8px; color:var(--muted);">OpenAI vision JSON:</div>
+          ${visionBlock}
+          <div style="margin-top:8px; color:var(--muted);">Raw response:</div>
+          ${jsonBlock}
+        </div>
+      `;
+    }
+
+    async function loadSuggestion(itemId) {
+      document.getElementById("itemId").value = itemId;
+      document.getElementById("itemName").value = "";
+      document.getElementById("resolveBtn").click();
+    }
+  </script>
+</body>
+</html>
