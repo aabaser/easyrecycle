@@ -231,4 +231,61 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get debug_json_title => 'Analiz (Debug)';
+
+  @override
+  String get admin_title => 'Admin';
+
+  @override
+  String get admin_search_hint => 'Başlık veya anahtar ile ara';
+
+  @override
+  String get admin_item_details => 'Ürün düzenle';
+
+  @override
+  String get admin_title_label => 'Başlık';
+
+  @override
+  String get admin_description_label => 'Açıklama';
+
+  @override
+  String get admin_category_label => 'Kategoriler';
+
+  @override
+  String get admin_category_hint => 'Kodları virgülle ayır';
+
+  @override
+  String get admin_disposal_label => 'Bertaraf';
+
+  @override
+  String get admin_disposal_hint => 'Kodları virgülle ayır';
+
+  @override
+  String get admin_warning_label => 'Uyarılar';
+
+  @override
+  String get admin_warning_hint => 'Kodları virgülle ayır';
+
+  @override
+  String get admin_active_label => 'Aktif';
+
+  @override
+  String get admin_images_title => 'Resimler';
+
+  @override
+  String get admin_upload_image => 'Resim yükle';
+
+  @override
+  String get admin_remove_image => 'Resmi kaldır';
+
+  @override
+  String get admin_save => 'Kaydet';
+
+  @override
+  String get admin_saving => 'Kaydediliyor...';
+
+  @override
+  String get admin_item_not_found => 'Kayıt bulunamadı.';
+
+  @override
+  String get admin_city_required => 'Lütfen önce şehir seçin.';
 }

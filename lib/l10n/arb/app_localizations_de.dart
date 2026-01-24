@@ -234,4 +234,61 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get debug_json_title => 'Analyse (Debug)';
+
+  @override
+  String get admin_title => 'Admin';
+
+  @override
+  String get admin_search_hint => 'Suche nach Titel oder Schlüssel';
+
+  @override
+  String get admin_item_details => 'Item bearbeiten';
+
+  @override
+  String get admin_title_label => 'Titel';
+
+  @override
+  String get admin_description_label => 'Beschreibung';
+
+  @override
+  String get admin_category_label => 'Kategorien';
+
+  @override
+  String get admin_category_hint => 'Codes, getrennt mit Komma';
+
+  @override
+  String get admin_disposal_label => 'Entsorgungen';
+
+  @override
+  String get admin_disposal_hint => 'Codes, getrennt mit Komma';
+
+  @override
+  String get admin_warning_label => 'Warnungen';
+
+  @override
+  String get admin_warning_hint => 'Codes, getrennt mit Komma';
+
+  @override
+  String get admin_active_label => 'Aktiv';
+
+  @override
+  String get admin_images_title => 'Bilder';
+
+  @override
+  String get admin_upload_image => 'Bild hochladen';
+
+  @override
+  String get admin_remove_image => 'Bild entfernen';
+
+  @override
+  String get admin_save => 'Speichern';
+
+  @override
+  String get admin_saving => 'Speichert...';
+
+  @override
+  String get admin_item_not_found => 'Eintrag nicht gefunden.';
+
+  @override
+  String get admin_city_required => 'Bitte zuerst eine Stadt auswählen.';
 }

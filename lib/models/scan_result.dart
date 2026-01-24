@@ -26,6 +26,7 @@ class ScanResult {
     required this.warnings,
     required this.similarItems,
     required this.imageBytes,
+    this.imageUrl,
     required this.searchMode,
     required this.queryText,
   });
@@ -44,6 +45,7 @@ class ScanResult {
   final List<Warning> warnings;
   final List<SimilarItem> similarItems;
   final Uint8List? imageBytes;
+  final String? imageUrl;
   final SearchMode searchMode;
   final String? queryText;
 }

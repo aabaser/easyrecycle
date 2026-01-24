@@ -267,6 +267,7 @@ def _upsert_image_asset(
   sha256_hash: str,
   width: int,
   height: int,
+  source: str = "scan",
 ) -> Optional[str]:
   engine = _get_engine()
   if not engine:
@@ -298,7 +299,7 @@ def _upsert_image_asset(
           "byte_size": len(normalized_bytes),
           "width": width,
           "height": height,
-          "source": "scan",
+          "source": source,
         },
       ).fetchone()
       return row[0] if row else None
@@ -314,7 +315,7 @@ def recognize_item_from_base64(image_base64: str, lang: str) -> Dict[str, Any]:
   model = DEFAULT_MODEL
   cache_key = _cache_key(normalized_bytes, model)
   sha256_hash = cache_key.split(":", 1)[0]
-  image_id = _upsert_image_asset(normalized_bytes, sha256_hash, width, height)
+  image_id = _upsert_image_asset(normalized_bytes, sha256_hash, width, height, source="scan")
   logger.info("vision: cache_lookup key=%s", cache_key)
   print(f"vision: cache_lookup key={cache_key}")
 
@@ -358,3 +359,18 @@ def recognize_item_from_base64(image_base64: str, lang: str) -> Dict[str, Any]:
   }
   _cache_set(cache_key, out)
   return out
+
+
+def store_image_from_base64(image_base64: str, source: str = "admin") -> Dict[str, Any]:
+  raw_bytes = _validate_base64(image_base64)
+  normalized_bytes, _, width, height = _normalize_image(raw_bytes)
+  sha256_hash = hashlib.sha256(normalized_bytes).hexdigest()
+  image_id = _upsert_image_asset(normalized_bytes, sha256_hash, width, height, source=source)
+  if not image_id:
+    raise HTTPException(status_code=500, detail="image_store_failed")
+  return {
+    "image_id": image_id,
+    "sha256": sha256_hash,
+    "width": width,
+    "height": height,
+  }

@@ -46,6 +46,15 @@ class _ResultPageState extends State<ResultPage> {
   static const String _apiBaseUrl = "http://localhost:8000";
   Uint8List? get _effectiveImageBytes =>
       _result.state == ScanState.notFound ? null : _result.imageBytes;
+  String? get _effectiveImageUrl {
+    if (_result.state == ScanState.notFound) {
+      return null;
+    }
+    if (_result.imageBytes != null) {
+      return null;
+    }
+    return _result.imageUrl;
+  }
 
   @override
   void initState() {
@@ -181,6 +190,7 @@ class _ResultPageState extends State<ResultPage> {
         warnings: warnings,
         similarItems: const [],
         imageBytes: _effectiveImageBytes,
+        imageUrl: itemJson["image_url"]?.toString(),
         searchMode: _result.searchMode,
         queryText: _result.queryText,
       );
@@ -221,6 +231,7 @@ class _ResultPageState extends State<ResultPage> {
       warnings: resolution.warnings,
       similarItems: [],
       imageBytes: _effectiveImageBytes,
+      imageUrl: _result.imageUrl,
       searchMode: _result.searchMode,
       queryText: _result.queryText,
     );
@@ -526,6 +537,7 @@ class _ResultPageState extends State<ResultPage> {
         warnings: warnings,
         similarItems: const [],
         imageBytes: null,
+        imageUrl: itemJson["image_url"]?.toString(),
         searchMode: SearchMode.text,
         queryText: query,
       );
@@ -641,11 +653,18 @@ class _ResultPageState extends State<ResultPage> {
         borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
         child: _result.imageBytes != null
             ? Image.memory(_result.imageBytes!, fit: BoxFit.cover)
-            : Icon(
-                Icons.inventory_2_outlined,
-                size: 64,
-                color: colorScheme.primary,
-              ),
+            : (_effectiveImageUrl != null
+                ? Image.network(
+                    _effectiveImageUrl!.startsWith("http")
+                        ? _effectiveImageUrl!
+                        : "$_apiBaseUrl${_effectiveImageUrl!}",
+                    fit: BoxFit.cover,
+                  )
+                : Icon(
+                    Icons.inventory_2_outlined,
+                    size: 64,
+                    color: colorScheme.primary,
+                  )),
       ),
     );
   }

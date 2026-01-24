@@ -59,18 +59,6 @@ CREATE TABLE IF NOT EXISTS core.warning (
   updated_at   timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS core.item (
-  item_id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  external_document_id  text UNIQUE,
-  source                text NULL,
-  canonical_key         text NOT NULL UNIQUE,
-  title_key             text NOT NULL,
-  desc_key              text NULL,
-  is_active             boolean NOT NULL DEFAULT true,
-  created_at            timestamptz NOT NULL DEFAULT now(),
-  updated_at            timestamptz NOT NULL DEFAULT now()
-);
-
 CREATE TABLE IF NOT EXISTS core.image_asset (
   image_id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   storage_key       text NOT NULL,
@@ -84,6 +72,20 @@ CREATE TABLE IF NOT EXISTS core.image_asset (
   UNIQUE (normalized_sha256)
 );
 CREATE INDEX IF NOT EXISTS ix_image_asset_created ON core.image_asset(created_at);
+
+CREATE TABLE IF NOT EXISTS core.item (
+  item_id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  external_document_id  text UNIQUE,
+  source                text NULL,
+  canonical_key         text NOT NULL UNIQUE,
+  title_key             text NOT NULL,
+  desc_key              text NULL,
+  primary_image_id      uuid NULL REFERENCES core.image_asset(image_id) ON DELETE SET NULL,
+  is_active             boolean NOT NULL DEFAULT true,
+  created_at            timestamptz NOT NULL DEFAULT now(),
+  updated_at            timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS ix_item_primary_image ON core.item(primary_image_id);
 
 CREATE TABLE IF NOT EXISTS core.item_city_text_override (
   city_id       uuid NOT NULL REFERENCES core.city(city_id) ON DELETE CASCADE,

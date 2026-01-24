@@ -241,7 +241,7 @@ def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str,
 
   # get base item keys
   item = db.execute(text("""
-    SELECT item_id::text, canonical_key, title_key, desc_key
+    SELECT item_id::text, canonical_key, title_key, desc_key, primary_image_id::text
     FROM core.item
     WHERE item_id::uuid = :item_id
   """), {"item_id": item_id}).fetchone()
@@ -252,6 +252,7 @@ def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str,
 
   title_key = item[2]
   desc_key = item[3]
+  image_id = item[4]
 
   # text override: city only
   r = db.execute(text("""
@@ -313,9 +314,17 @@ def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str,
     # item exists with rules in requested city; check other cities and create prospects there if missing
     missing_other_cities = _create_missing_city_prospects(db, item_id=item[0], lang=lang, exclude_city_id=city_id, exclude_city_code=city_code)
 
+  image_url = f"/images/{image_id}" if image_id else None
   return {
     "city": city_code,
-    "item": {"id": item[0], "canonical_key": item[1], "title": title, "description": desc},
+    "item": {
+      "id": item[0],
+      "canonical_key": item[1],
+      "title": title,
+      "description": desc,
+      "image_id": image_id,
+      "image_url": image_url,
+    },
     "categories": categories,
     "disposals": disposals,
     "suggestions": suggestions,

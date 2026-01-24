@@ -537,6 +537,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Analyze (Debug)'**
   String get debug_json_title;
+
+  /// No description provided for @admin_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get admin_title;
+
+  /// No description provided for @admin_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by title or key'**
+  String get admin_search_hint;
+
+  /// No description provided for @admin_item_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit item'**
+  String get admin_item_details;
+
+  /// No description provided for @admin_title_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get admin_title_label;
+
+  /// No description provided for @admin_description_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get admin_description_label;
+
+  /// No description provided for @admin_category_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get admin_category_label;
+
+  /// No description provided for @admin_category_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Codes, comma separated'**
+  String get admin_category_hint;
+
+  /// No description provided for @admin_disposal_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Disposals'**
+  String get admin_disposal_label;
+
+  /// No description provided for @admin_disposal_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Codes, comma separated'**
+  String get admin_disposal_hint;
+
+  /// No description provided for @admin_warning_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get admin_warning_label;
+
+  /// No description provided for @admin_warning_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Codes, comma separated'**
+  String get admin_warning_hint;
+
+  /// No description provided for @admin_active_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get admin_active_label;
+
+  /// No description provided for @admin_images_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get admin_images_title;
+
+  /// No description provided for @admin_upload_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload image'**
+  String get admin_upload_image;
+
+  /// No description provided for @admin_remove_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove image'**
+  String get admin_remove_image;
+
+  /// No description provided for @admin_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get admin_save;
+
+  /// No description provided for @admin_saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get admin_saving;
+
+  /// No description provided for @admin_item_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Item not found.'**
+  String get admin_item_not_found;
+
+  /// No description provided for @admin_city_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a city first.'**
+  String get admin_city_required;
 }
 
 class _AppLocalizationsDelegate
