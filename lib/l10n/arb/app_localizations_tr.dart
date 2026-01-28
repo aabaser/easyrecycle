@@ -42,6 +42,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scan_title => 'Tarama';
 
   @override
+  String get text_search_title => 'Metin arama';
+
+  @override
   String get scan_take_photo => 'Fotoğraf çek';
 
   @override
@@ -52,6 +55,42 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get scan_text_placeholder => 'örn. pil, kablo, cam şişe';
+
+  @override
+  String get nav_text => 'Metin';
+
+  @override
+  String get nav_camera => 'Kamera';
+
+  @override
+  String get nav_settings => 'Ayarlar';
+
+  @override
+  String get settings_title => 'Ayarlar';
+
+  @override
+  String get settings_language => 'Dil';
+
+  @override
+  String get settings_city => 'Şehir';
+
+  @override
+  String get settings_theme_preview => 'Renk paleti';
+
+  @override
+  String get settings_admin_toggle => 'Admin modu';
+
+  @override
+  String get settings_admin_link => 'Admin ekranı';
+
+  @override
+  String get entry_headline => 'Azalt. Ayır. Devam et.';
+
+  @override
+  String get entry_subtitle => 'Küçük adımlar, büyük etki.';
+
+  @override
+  String get entry_cta => 'Başla';
 
   @override
   String get result_recognized => 'Tespit';
@@ -131,6 +170,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get rescan => 'Tekrar tara';
+
+  @override
+  String get search_again => 'Tekrar arama';
 
   @override
   String get no_match_title => 'Eşleşme yok';
@@ -288,4 +330,49 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get admin_city_required => 'Lütfen önce şehir seçin.';
+
+  @override
+  String get admin_city_settings => 'Şehir ayarları';
+
+  @override
+  String get admin_no_cities => 'Şehir bulunamadı.';
+
+  @override
+  String get admin_city_label => 'Şehir';
+
+  @override
+  String get admin_actions => 'İşlemler';
+
+  @override
+  String get admin_edit => 'Düzenle';
+
+  @override
+  String get settings_auth_test => 'Auth test';
+
+  @override
+  String get auth_test_title => 'Auth test';
+
+  @override
+  String get auth_test_device_id => 'Cihaz ID';
+
+  @override
+  String get auth_test_get_guest => 'Misafir token al';
+
+  @override
+  String get auth_test_token => 'Token';
+
+  @override
+  String get auth_test_clear_token => 'Token temizle';
+
+  @override
+  String get auth_test_call_me => '/auth/me çağır';
+
+  @override
+  String get auth_test_call_verify => '/auth/verify çağır';
+
+  @override
+  String get auth_test_response => 'Cevap';
+
+  @override
+  String get auth_test_error => 'Hata';
 }

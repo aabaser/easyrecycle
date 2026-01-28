@@ -8,6 +8,7 @@ import "package:image_picker/image_picker.dart";
 import "package:http/http.dart" as http;
 import "package:provider/provider.dart";
 
+import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
@@ -39,7 +40,6 @@ class _ScanPageState extends State<ScanPage> {
   final _visionService = MockVisionService();
   final _rulesService = MockRulesService();
   final _similarityService = MockSimilarityService();
-  static const String _apiBaseUrl = "http://localhost:8000";
 
   Uint8List? _imageBytes;
   String _queryText = "";
@@ -348,7 +348,7 @@ class _ScanPageState extends State<ScanPage> {
     });
 
     try {
-      final uri = Uri.parse("$_apiBaseUrl/analyze");
+      final uri = Uri.parse("${ApiConfig.baseUrl}/analyze");
       final response = await http.post(
         uri,
         headers: const {"Content-Type": "application/json"},
@@ -464,7 +464,7 @@ class _ScanPageState extends State<ScanPage> {
     final loc = AppLocalizations.of(context);
     try {
       final uri = Uri.parse(
-        "$_apiBaseUrl/resolve?city=$cityId&lang=$lang&item_name=${Uri.encodeComponent(query)}",
+        "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang&item_name=${Uri.encodeComponent(query)}",
       );
       final response = await http.get(uri);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
@@ -664,6 +664,7 @@ class _ScanPageState extends State<ScanPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: null,
         title: Text(loc.t("scan_title"), style: DesignTokens.titleM),
         actions: [
           IconButton(

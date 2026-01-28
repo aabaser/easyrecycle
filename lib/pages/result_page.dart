@@ -7,6 +7,7 @@ import "package:http/http.dart" as http;
 import "package:provider/provider.dart";
 import "package:url_launcher/url_launcher.dart";
 
+import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
@@ -22,10 +23,8 @@ import "../widgets/max_width_center.dart";
 import "../widgets/primary_button.dart";
 import "../widgets/section_title.dart";
 import "../widgets/similar_item_card.dart";
-import "../widgets/city_pill.dart";
-import "city_picker_page.dart";
-import "language_picker_page.dart";
-import "scan_page.dart";
+import "../widgets/app_bottom_nav.dart";
+import "home_shell.dart";
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key, required this.result});
@@ -41,9 +40,9 @@ class _ResultPageState extends State<ResultPage> {
   final _rulesService = MockRulesService();
   bool _showFullDescription = false;
   int _feedbackValue = 0;
-  static const double _bottomBarHeight = 112;
+  static const double _bottomBarHeight = 72;
   static const double _notFoundBarHeight = 104;
-  static const String _apiBaseUrl = "http://localhost:8000";
+  static const double _navBarHeight = 80;
   Uint8List? get _effectiveImageBytes =>
       _result.state == ScanState.notFound ? null : _result.imageBytes;
   String? get _effectiveImageUrl {
@@ -145,7 +144,7 @@ class _ResultPageState extends State<ResultPage> {
     }
     try {
       final uri = Uri.parse(
-        "$_apiBaseUrl/resolve?city=$cityId&lang=$lang&item_id=${Uri.encodeComponent(item.itemId!)}",
+        "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang&item_id=${Uri.encodeComponent(item.itemId!)}",
       );
       final response = await http.get(uri);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
@@ -256,14 +255,7 @@ class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final appState = context.watch<AppState>();
     final colorScheme = Theme.of(context).colorScheme;
-    final city = appState.selectedCity;
-    final cityLabel = city == null
-        ? ""
-        : (city.id == "berlin"
-            ? loc.t("city_berlin")
-            : loc.t("city_hannover"));
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -273,10 +265,7 @@ class _ResultPageState extends State<ResultPage> {
               Navigator.of(context).maybePop();
               return;
             }
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const ScanPage()),
-              (route) => false,
-            );
+            _returnToHome(_result.searchMode, requestCamera: false);
           },
         ),
         title: Text(
@@ -285,37 +274,7 @@ class _ResultPageState extends State<ResultPage> {
               : loc.t("app_title"),
           style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: DesignTokens.baseSpacing),
-            child: CityPill(
-              label: appState.locale.languageCode.toUpperCase(),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const LanguagePickerPage()),
-                );
-              },
-            ),
-          ),
-          if (city != null)
-            Padding(
-              padding: const EdgeInsets.only(right: DesignTokens.baseSpacing),
-              child: Row(
-                children: [
-                  const Icon(Icons.location_on_outlined, size: 18),
-                  const SizedBox(width: 6),
-                  CityPill(
-                    label: cityLabel,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => CityPickerPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-        ],
+        actions: const [],
       ),
       body: MaxWidthCenter(
         child: Padding(
@@ -325,63 +284,22 @@ class _ResultPageState extends State<ResultPage> {
               : _buildNotFound(context, loc),
         ),
       ),
-      bottomNavigationBar: _result.state == ScanState.found
-          ? _buildFoundBottomBar(loc)
-          : _buildNotFoundBottomBar(loc),
-    );
-  }
-
-  Widget _buildFoundBottomBar(AppLocalizations loc) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DesignTokens.sectionSpacing,
-          vertical: DesignTokens.baseSpacing,
-        ),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          border: Border(top: BorderSide(color: colorScheme.outline)),
-        ),
+      bottomNavigationBar: SafeArea(
+        top: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                  ),
-                ),
-                onPressed: () => _showInfoDialog(loc),
-                child: Text(loc.t("find_recycling_center")),
-              ),
+            _result.state == ScanState.found
+                ? _buildFoundBottomBar(loc)
+                : _buildNotFoundBottomBar(loc),
+            Container(
+              height: 1,
+              color: colorScheme.outline,
             ),
-            const SizedBox(height: DesignTokens.baseSpacing),
-            SizedBox(
-              width: double.infinity,
-              height: 44,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: colorScheme.primary,
-                  side: BorderSide(color: colorScheme.outline),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => const ScanPage()),
-                    (route) => false,
-                  );
-                },
-                child: Text(loc.t("rescan")),
-              ),
+            AppBottomNav(
+              selectedIndex: _result.searchMode == SearchMode.text
+                  ? HomeShell.tabText
+                  : HomeShell.tabCamera,
             ),
           ],
         ),
@@ -389,9 +307,46 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
+  Widget _buildFoundBottomBar(AppLocalizations loc) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DesignTokens.sectionSpacing,
+        vertical: DesignTokens.baseSpacing,
+      ),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(top: BorderSide(color: colorScheme.outline)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+                ),
+              ),
+              onPressed: () => _showInfoDialog(loc),
+              child: Text(loc.t("find_recycling_center")),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildNotFoundBottomBar(AppLocalizations loc) {
     final colorScheme = Theme.of(context).colorScheme;
     final mode = _result.searchMode;
+    if (!_shouldShowNotFoundBar(mode)) {
+      return const SizedBox.shrink();
+    }
     final primaryLabel = switch (mode) {
       SearchMode.text => loc.t("cta_search_adjust"),
       SearchMode.image => loc.t("rescan"),
@@ -403,70 +358,65 @@ class _ResultPageState extends State<ResultPage> {
       SearchMode.unknown => loc.t("cta_change_search"),
     };
 
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DesignTokens.sectionSpacing,
-          vertical: DesignTokens.baseSpacing,
-        ),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          border: Border(top: BorderSide(color: colorScheme.outline)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                  ),
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DesignTokens.sectionSpacing,
+        vertical: DesignTokens.baseSpacing,
+      ),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(top: BorderSide(color: colorScheme.outline)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
                 ),
-                onPressed: () => _handleNotFoundPrimary(mode, loc),
-                child: Text(primaryLabel),
               ),
+              onPressed: () => _handleNotFoundPrimary(mode, loc),
+              child: Text(primaryLabel),
             ),
-            const SizedBox(height: DesignTokens.baseSpacing),
-            SizedBox(
-              width: double.infinity,
-              height: 44,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: colorScheme.primary,
-                  side: BorderSide(color: colorScheme.outline),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                  ),
+          ),
+          const SizedBox(height: DesignTokens.baseSpacing),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: colorScheme.primary,
+                side: BorderSide(color: colorScheme.outline),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
                 ),
-                onPressed: () => _handleNotFoundSecondary(mode, loc),
-                child: Text(secondaryLabel),
               ),
+              onPressed: () => _handleNotFoundSecondary(mode, loc),
+              child: Text(secondaryLabel),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
+  bool _shouldShowNotFoundBar(SearchMode mode) {
+    return mode != SearchMode.image;
+  }
+
   void _handleNotFoundPrimary(SearchMode mode, AppLocalizations loc) {
     if (mode == SearchMode.text) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const ScanPage()),
-        (route) => false,
-      );
+      _returnToHome(SearchMode.text, requestCamera: false);
       return;
     }
     if (mode == SearchMode.image) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const ScanPage()),
-        (route) => false,
-      );
+      _returnToHome(SearchMode.image, requestCamera: true);
       return;
     }
     _showInfoDialog(loc);
@@ -481,8 +431,25 @@ class _ResultPageState extends State<ResultPage> {
       _showInfoDialog(loc);
       return;
     }
+    _returnToHome(SearchMode.image, requestCamera: true);
+  }
+
+  void _returnToHome(SearchMode mode, {required bool requestCamera}) {
+    final appState = context.read<AppState>();
+    final targetTab =
+        mode == SearchMode.text ? HomeShell.tabText : HomeShell.tabCamera;
+    appState.requestTab(targetTab);
+    if (requestCamera) {
+      appState.requestCameraScan();
+    }
+
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      return;
+    }
+
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const ScanPage()),
+      MaterialPageRoute(builder: (_) => const HomeShell()),
       (route) => false,
     );
   }
@@ -493,7 +460,7 @@ class _ResultPageState extends State<ResultPage> {
     final lang = appState.locale.languageCode;
     try {
       final uri = Uri.parse(
-        "$_apiBaseUrl/resolve?city=$cityId&lang=$lang&item_name=${Uri.encodeComponent(query)}",
+        "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang&item_name=${Uri.encodeComponent(query)}",
       );
       final response = await http.get(uri);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
@@ -571,7 +538,9 @@ class _ResultPageState extends State<ResultPage> {
   Widget _buildFound(BuildContext context, AppLocalizations loc) {
     final colorScheme = Theme.of(context).colorScheme;
     return ListView(
-      padding: const EdgeInsets.only(bottom: _bottomBarHeight + 16),
+      padding: const EdgeInsets.only(
+        bottom: _bottomBarHeight + _navBarHeight + 16,
+      ),
       children: [
         _buildImagePreview(),
         const SizedBox(height: DesignTokens.sectionSpacing),
@@ -657,7 +626,7 @@ class _ResultPageState extends State<ResultPage> {
                 ? Image.network(
                     _effectiveImageUrl!.startsWith("http")
                         ? _effectiveImageUrl!
-                        : "$_apiBaseUrl${_effectiveImageUrl!}",
+                        : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
                     fit: BoxFit.cover,
                   )
                 : Icon(
@@ -847,7 +816,7 @@ class _ResultPageState extends State<ResultPage> {
       final lang = appState.locale.languageCode;
       final sessionId = appState.sessionId;
       try {
-        final uri = Uri.parse("$_apiBaseUrl/feedback");
+        final uri = Uri.parse("${ApiConfig.baseUrl}/feedback");
         await http.post(
           uri,
           headers: const {"Content-Type": "application/json"},
@@ -868,8 +837,13 @@ class _ResultPageState extends State<ResultPage> {
   Widget _buildNotFound(BuildContext context, AppLocalizations loc) {
     final colorScheme = Theme.of(context).colorScheme;
     final hintLines = _hintLinesForMode(loc, _result.searchMode);
+    final barHeight = _shouldShowNotFoundBar(_result.searchMode)
+        ? _notFoundBarHeight
+        : 0;
     return ListView(
-      padding: const EdgeInsets.only(bottom: _notFoundBarHeight + 16),
+      padding: EdgeInsets.only(
+        bottom: barHeight + _navBarHeight + 16,
+      ),
       children: [
         _buildEmptyStateBadge(),
         const SizedBox(height: DesignTokens.baseSpacing),

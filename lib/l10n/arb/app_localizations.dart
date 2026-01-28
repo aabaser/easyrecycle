@@ -166,6 +166,12 @@ abstract class AppLocalizations {
   /// **'Scan'**
   String get scan_title;
 
+  /// No description provided for @text_search_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Text search'**
+  String get text_search_title;
+
   /// No description provided for @scan_take_photo.
   ///
   /// In en, this message translates to:
@@ -189,6 +195,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g. battery, cable, glass bottle'**
   String get scan_text_placeholder;
+
+  /// No description provided for @nav_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get nav_text;
+
+  /// No description provided for @nav_camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get nav_camera;
+
+  /// No description provided for @nav_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get nav_settings;
+
+  /// No description provided for @settings_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings_title;
+
+  /// No description provided for @settings_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settings_language;
+
+  /// No description provided for @settings_city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get settings_city;
+
+  /// No description provided for @settings_theme_preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme preview'**
+  String get settings_theme_preview;
+
+  /// No description provided for @settings_admin_toggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin mode'**
+  String get settings_admin_toggle;
+
+  /// No description provided for @settings_admin_link.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin panel'**
+  String get settings_admin_link;
+
+  /// No description provided for @entry_headline.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce. Sort. Keep going.'**
+  String get entry_headline;
+
+  /// No description provided for @entry_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Small steps, big impact.'**
+  String get entry_subtitle;
+
+  /// No description provided for @entry_cta.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get entry_cta;
 
   /// No description provided for @result_recognized.
   ///
@@ -345,6 +423,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scan again'**
   String get rescan;
+
+  /// No description provided for @search_again.
+  ///
+  /// In en, this message translates to:
+  /// **'Search again'**
+  String get search_again;
 
   /// No description provided for @no_match_title.
   ///
@@ -651,6 +735,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select a city first.'**
   String get admin_city_required;
+
+  /// No description provided for @admin_city_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'City settings'**
+  String get admin_city_settings;
+
+  /// No description provided for @admin_no_cities.
+  ///
+  /// In en, this message translates to:
+  /// **'No cities found.'**
+  String get admin_no_cities;
+
+  /// No description provided for @admin_city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get admin_city_label;
+
+  /// No description provided for @admin_actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get admin_actions;
+
+  /// No description provided for @admin_edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get admin_edit;
+
+  /// No description provided for @settings_auth_test.
+  ///
+  /// In en, this message translates to:
+  /// **'Auth test'**
+  String get settings_auth_test;
+
+  /// No description provided for @auth_test_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Auth test'**
+  String get auth_test_title;
+
+  /// No description provided for @auth_test_device_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Device ID'**
+  String get auth_test_device_id;
+
+  /// No description provided for @auth_test_get_guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Get guest token'**
+  String get auth_test_get_guest;
+
+  /// No description provided for @auth_test_token.
+  ///
+  /// In en, this message translates to:
+  /// **'Token'**
+  String get auth_test_token;
+
+  /// No description provided for @auth_test_clear_token.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear token'**
+  String get auth_test_clear_token;
+
+  /// No description provided for @auth_test_call_me.
+  ///
+  /// In en, this message translates to:
+  /// **'Call /auth/me'**
+  String get auth_test_call_me;
+
+  /// No description provided for @auth_test_call_verify.
+  ///
+  /// In en, this message translates to:
+  /// **'Call /auth/verify'**
+  String get auth_test_call_verify;
+
+  /// No description provided for @auth_test_response.
+  ///
+  /// In en, this message translates to:
+  /// **'Response'**
+  String get auth_test_response;
+
+  /// No description provided for @auth_test_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get auth_test_error;
 }
 
 class _AppLocalizationsDelegate

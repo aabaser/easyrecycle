@@ -7,7 +7,7 @@ import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/max_width_center.dart";
 import "../widgets/primary_button.dart";
-import "scan_page.dart";
+import "home_shell.dart";
 
 class CityPickerPage extends StatefulWidget {
   const CityPickerPage({super.key});
@@ -51,67 +51,70 @@ class _CityPickerPageState extends State<CityPickerPage> {
           style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
         ),
       ),
-      body: MaxWidthCenter(
-        child: Padding(
-          padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                decoration: InputDecoration(
-                  hintText: loc.t("city_search_placeholder"),
-                  prefixIcon: const Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _query = value;
-                  });
-                },
-              ),
-              const SizedBox(height: DesignTokens.baseSpacing),
-              Text(
-                loc.t("city_helper"),
-                style: DesignTokens.caption.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: DesignTokens.sectionSpacing),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: filtered.length,
-                  itemBuilder: (context, index) {
-                    final city = filtered[index];
-                    return ListTile(
-                      title: Text(city.name),
-                      trailing: _selectedCity?.id == city.id
-                          ? Icon(Icons.check_circle, color: colorScheme.primary)
-                          : null,
-                      onTap: () {
-                        setState(() {
-                          _selectedCity = city;
-                        });
-                      },
-                    );
+      body: SafeArea(
+        top: false,
+        child: MaxWidthCenter(
+          child: Padding(
+            padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: loc.t("city_search_placeholder"),
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _query = value;
+                    });
                   },
                 ),
-              ),
-              PrimaryButton(
-                label: loc.t("city_save"),
-                onPressed: _selectedCity == null
-                    ? null
-                    : () async {
-                        await appState.setSelectedCity(_selectedCity!);
-                        if (!mounted) {
-                          return;
-                        }
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (_) => const ScanPage(),
-                          ),
-                        );
-                      },
-              ),
-            ],
+                const SizedBox(height: DesignTokens.baseSpacing),
+                Text(
+                  loc.t("city_helper"),
+                  style: DesignTokens.caption.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: DesignTokens.sectionSpacing),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final city = filtered[index];
+                      return ListTile(
+                        title: Text(city.name),
+                        trailing: _selectedCity?.id == city.id
+                            ? Icon(Icons.check_circle, color: colorScheme.primary)
+                            : null,
+                        onTap: () {
+                          setState(() {
+                            _selectedCity = city;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+                PrimaryButton(
+                  label: loc.t("city_save"),
+                  onPressed: _selectedCity == null
+                      ? null
+                      : () async {
+                          await appState.setSelectedCity(_selectedCity!);
+                          if (!mounted) {
+                            return;
+                          }
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => const HomeShell(),
+                            ),
+                          );
+                        },
+                ),
+              ],
+            ),
           ),
         ),
       ),

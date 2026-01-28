@@ -38,3 +38,15 @@ class AdminItemDetail {
   final List<AdminCodeLabel> disposals;
   final List<AdminCodeLabel> warnings;
 }
+
+class AdminOptions {
+  const AdminOptions({
+    required this.categories,
+    required this.disposals,
+    required this.warnings,
+  });
+
+  final List<AdminCodeLabel> categories;
+  final List<AdminCodeLabel> disposals;
+  final List<AdminCodeLabel> warnings;
+}

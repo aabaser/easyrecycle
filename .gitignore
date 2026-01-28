@@ -1,1 +1,26 @@
 .env
+.env.example
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+build/
+coverage/
+
+# IDE/editor
+.idea/
+.vscode/
+*.iml
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Android/Flutter local files
+android/local.properties
+android/key.properties
+android/app/google-services.json
+
+# macOS
+.DS_Store

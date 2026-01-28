@@ -27,7 +27,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get language_continue => 'Weiter';
 
   @override
-  String get city_title => 'Welche Stadt?';
+  String get city_title => 'Stadt wählen';
 
   @override
   String get city_search_placeholder => 'Stadt suchen (z.B. Berlin, Hannover)';
@@ -42,6 +42,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scan_title => 'Scannen';
 
   @override
+  String get text_search_title => 'Textsuche';
+
+  @override
   String get scan_take_photo => 'Foto aufnehmen';
 
   @override
@@ -52,6 +55,42 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get scan_text_placeholder => 'z.B. Batterie, Kabel, Glasflasche';
+
+  @override
+  String get nav_text => 'Text';
+
+  @override
+  String get nav_camera => 'Kamera';
+
+  @override
+  String get nav_settings => 'Einstellungen';
+
+  @override
+  String get settings_title => 'Einstellungen';
+
+  @override
+  String get settings_language => 'Sprache';
+
+  @override
+  String get settings_city => 'Stadt';
+
+  @override
+  String get settings_theme_preview => 'Farben';
+
+  @override
+  String get settings_admin_toggle => 'Admin-Modus';
+
+  @override
+  String get settings_admin_link => 'Admin-Bereich';
+
+  @override
+  String get entry_headline => 'Reduzieren. Trennen. Weitergeben.';
+
+  @override
+  String get entry_subtitle => 'Kleine Schritte. Große Wirkung.';
+
+  @override
+  String get entry_cta => 'Starten';
 
   @override
   String get result_recognized => 'Erkannt';
@@ -130,6 +169,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rescan => 'Erneut scannen';
+
+  @override
+  String get search_again => 'Erneut suchen';
 
   @override
   String get no_match_title => 'Kein Treffer';
@@ -290,5 +332,50 @@ class AppLocalizationsDe extends AppLocalizations {
   String get admin_item_not_found => 'Eintrag nicht gefunden.';
 
   @override
-  String get admin_city_required => 'Bitte zuerst eine Stadt auswählen.';
+  String get admin_city_required => 'Wähle eine Stadt, um zu starten.';
+
+  @override
+  String get admin_city_settings => 'Städteinstellungen';
+
+  @override
+  String get admin_no_cities => 'Keine Städte gefunden.';
+
+  @override
+  String get admin_city_label => 'Stadt';
+
+  @override
+  String get admin_actions => 'Aktionen';
+
+  @override
+  String get admin_edit => 'Bearbeiten';
+
+  @override
+  String get settings_auth_test => 'Auth-Test';
+
+  @override
+  String get auth_test_title => 'Auth-Test';
+
+  @override
+  String get auth_test_device_id => 'Geräte-ID';
+
+  @override
+  String get auth_test_get_guest => 'Gast-Token holen';
+
+  @override
+  String get auth_test_token => 'Token';
+
+  @override
+  String get auth_test_clear_token => 'Token löschen';
+
+  @override
+  String get auth_test_call_me => '/auth/me aufrufen';
+
+  @override
+  String get auth_test_call_verify => '/auth/verify aufrufen';
+
+  @override
+  String get auth_test_response => 'Antwort';
+
+  @override
+  String get auth_test_error => 'Fehler';
 }

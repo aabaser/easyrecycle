@@ -42,6 +42,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scan_title => 'Scan';
 
   @override
+  String get text_search_title => 'Text search';
+
+  @override
   String get scan_take_photo => 'Take photo';
 
   @override
@@ -52,6 +55,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scan_text_placeholder => 'e.g. battery, cable, glass bottle';
+
+  @override
+  String get nav_text => 'Text';
+
+  @override
+  String get nav_camera => 'Camera';
+
+  @override
+  String get nav_settings => 'Settings';
+
+  @override
+  String get settings_title => 'Settings';
+
+  @override
+  String get settings_language => 'Language';
+
+  @override
+  String get settings_city => 'City';
+
+  @override
+  String get settings_theme_preview => 'Theme preview';
+
+  @override
+  String get settings_admin_toggle => 'Admin mode';
+
+  @override
+  String get settings_admin_link => 'Admin panel';
+
+  @override
+  String get entry_headline => 'Reduce. Sort. Keep going.';
+
+  @override
+  String get entry_subtitle => 'Small steps, big impact.';
+
+  @override
+  String get entry_cta => 'Start';
 
   @override
   String get result_recognized => 'Recognized';
@@ -130,6 +169,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rescan => 'Scan again';
+
+  @override
+  String get search_again => 'Search again';
 
   @override
   String get no_match_title => 'No match';
@@ -289,4 +331,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get admin_city_required => 'Please select a city first.';
+
+  @override
+  String get admin_city_settings => 'City settings';
+
+  @override
+  String get admin_no_cities => 'No cities found.';
+
+  @override
+  String get admin_city_label => 'City';
+
+  @override
+  String get admin_actions => 'Actions';
+
+  @override
+  String get admin_edit => 'Edit';
+
+  @override
+  String get settings_auth_test => 'Auth test';
+
+  @override
+  String get auth_test_title => 'Auth test';
+
+  @override
+  String get auth_test_device_id => 'Device ID';
+
+  @override
+  String get auth_test_get_guest => 'Get guest token';
+
+  @override
+  String get auth_test_token => 'Token';
+
+  @override
+  String get auth_test_clear_token => 'Clear token';
+
+  @override
+  String get auth_test_call_me => 'Call /auth/me';
+
+  @override
+  String get auth_test_call_verify => 'Call /auth/verify';
+
+  @override
+  String get auth_test_response => 'Response';
+
+  @override
+  String get auth_test_error => 'Error';
 }

@@ -10,13 +10,19 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.services.resolve import resolve_item
 from app.integrations.openai_vision import recognize_item_from_base64, store_image_from_base64
+from app.settings import get_settings
+from app.auth.cognito import verify_cognito_jwt
+from app.auth.guest import issue_guest_token, verify_guest_token
+from app.middleware.rate_limit import FixedWindowRateLimiter
 from pydantic import BaseModel
 from sqlalchemy import text
 
 load_dotenv()
-logging.basicConfig(level=logging.INFO)
+settings = get_settings()
+logging.basicConfig(level=settings.LOG_LEVEL.upper())
 logger = logging.getLogger("easy_recycle")
 app = FastAPI(title="Easy Recycle API")
+rate_limiter = FixedWindowRateLimiter()
 
 # CORS for local file/test UIs (e.g., docs/ui_mock.html opened via file://)
 app.add_middleware(
@@ -26,6 +32,46 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
+
+
+def _client_ip(request: Request) -> str:
+  forwarded = request.headers.get("x-forwarded-for")
+  if forwarded:
+    return forwarded.split(",")[0].strip()
+  return request.client.host if request.client else "unknown"
+
+
+def _rate_limit_or_429(key: str, limit: int, window_seconds: int = 60) -> None:
+  if not settings.RATE_LIMIT_ENABLED:
+    return
+  if not rate_limiter.hit(key, limit=limit, window_seconds=window_seconds):
+    raise HTTPException(status_code=429, detail="Rate limit exceeded")
+
+
+def _resolve_principal(request: Request) -> dict:
+  auth_header = request.headers.get("Authorization") or ""
+  if not auth_header.startswith("Bearer "):
+    return {"type": "anonymous", "sub": None, "scopes": []}
+  token = auth_header.split(" ", 1)[1].strip()
+  if settings.COGNITO_ENABLED:
+    try:
+      data = verify_cognito_jwt(token, settings)
+      return {
+        "type": "user",
+        "sub": data.get("sub"),
+        "scopes": data.get("scopes") or [],
+        "groups": data.get("groups") or [],
+        "token_use": data.get("token_use"),
+      }
+    except Exception:
+      pass
+  try:
+    claims = verify_guest_token(token, settings)
+    scope = claims.get("scope") or ""
+    scopes = scope.split() if isinstance(scope, str) else list(scope or [])
+    return {"type": "guest", "sub": claims.get("sub"), "scopes": scopes}
+  except Exception:
+    raise HTTPException(status_code=401, detail="Invalid token")
 
 
 @app.middleware("http")
@@ -45,6 +91,61 @@ async def log_requests(request: Request, call_next):
 @app.get("/health")
 def health():
   return {"ok": True}
+
+@app.get("/healthz")
+def healthz():
+  return {"ok": True}
+
+
+class GuestRequest(BaseModel):
+  device_id: str
+  attestation: str | None = None
+
+
+class GuestResponse(BaseModel):
+  token: str
+  expires_in: int
+  role: str
+
+
+class AuthVerifyResponse(BaseModel):
+  valid: bool
+  principal: Optional[dict] = None
+  error: Optional[str] = None
+
+
+@app.post("/auth/guest", response_model=GuestResponse)
+def auth_guest(payload: GuestRequest, request: Request):
+  _rate_limit_or_429(_client_ip(request), limit=10, window_seconds=60)
+  # TODO: verify attestation when available.
+  try:
+    issued = issue_guest_token(payload.device_id, settings)
+  except ValueError:
+    raise HTTPException(status_code=400, detail="device_id too short")
+  return {
+    "token": issued["token"],
+    "expires_in": settings.GUEST_TOKEN_TTL_SECONDS,
+    "role": "guest",
+  }
+
+
+@app.get("/auth/me")
+def auth_me(request: Request):
+  principal = _resolve_principal(request)
+  key = principal.get("sub") or _client_ip(request)
+  _rate_limit_or_429(key, limit=120, window_seconds=60)
+  return {"principal": principal, "scopes": principal.get("scopes", [])}
+
+
+@app.post("/auth/verify", response_model=AuthVerifyResponse)
+def auth_verify(request: Request):
+  auth_header = request.headers.get("Authorization") or ""
+  if not auth_header.startswith("Bearer "):
+    return {"valid": False, "error": "Missing token"}
+  principal = _resolve_principal(request)
+  key = principal.get("sub") or _client_ip(request)
+  _rate_limit_or_429(key, limit=120, window_seconds=60)
+  return {"valid": True, "principal": principal}
 
 @app.get("/resolve")
 def resolve(
@@ -71,6 +172,58 @@ def resolve(
     bool(resolved.get("prospect")),
   )
   return resolved
+
+
+@app.get("/items/search")
+def search_items(
+  city: str = Query(..., description="city code, e.g. hannover, berlin"),
+  lang: str = Query("de", description="de/en/tr"),
+  q: Optional[str] = Query(None),
+  limit: int = Query(10, ge=1, le=50),
+  db: Session = Depends(get_db),
+):
+  query = f"%{q}%" if q else ""
+  rows = db.execute(
+    text(
+      """
+      SELECT
+        i.item_id::text,
+        i.canonical_key,
+        t1.text,
+        COALESCE(
+          array_remove(array_agg(DISTINCT dt.text), NULL),
+          ARRAY[]::text[]
+        ) AS disposal_labels
+      FROM core.item i
+      JOIN core.city c ON c.code = :city AND c.is_active = true
+      JOIN core.item_city_category icc ON icc.item_id = i.item_id AND icc.city_id = c.city_id
+      LEFT JOIN core.item_city_disposal icd ON icd.item_id = i.item_id AND icd.city_id = c.city_id
+      LEFT JOIN core.disposal_method d ON d.disposal_id = icd.disposal_id
+      LEFT JOIN core.i18n_translation dt ON dt.key = d.name_key AND dt.lang = :lang
+      LEFT JOIN core.i18n_translation t1 ON t1.key = i.title_key AND t1.lang = :lang
+      WHERE (
+        :q = ''
+        OR t1.text ILIKE :q
+        OR i.canonical_key ILIKE :q
+      )
+      GROUP BY i.item_id, i.canonical_key, t1.text
+      ORDER BY t1.text NULLS LAST, i.canonical_key ASC
+      LIMIT :limit
+      """
+    ),
+    {"lang": lang, "q": query, "limit": limit, "city": city},
+  ).fetchall()
+  return {
+    "items": [
+      {
+        "id": r[0],
+        "canonical_key": r[1],
+        "title": r[2],
+        "disposals": list(r[3] or []),
+      }
+      for r in rows
+    ]
+  }
 
 
 class AnalyzeRequest(BaseModel):
@@ -338,9 +491,29 @@ def _admin_item_detail(db: Session, item_id: str, city_id: str, lang: str) -> di
   ).fetchone()
   if not row:
     raise HTTPException(status_code=404, detail="item_not_found")
+  city_code_row = db.execute(
+    text("SELECT code FROM core.city WHERE city_id::text = :city_id"),
+    {"city_id": city_id},
+  ).fetchone()
+  city_code = city_code_row[0] if city_code_row else None
   title = _t(db, row[2], lang)
-  desc = _t(db, row[3], lang)
+  desc = None
   image_id = row[5]
+
+  override = db.execute(
+    text(
+      """
+      SELECT o.desc_key
+      FROM core.item_city_text_override o
+      WHERE o.city_id = :city_id AND o.item_id::uuid = :item_id
+      """
+    ),
+    {"city_id": city_id, "item_id": item_id},
+  ).fetchone()
+  if override and override[0]:
+    desc = _t(db, override[0], lang)
+  elif city_code and row[3] and row[3].endswith(f".desc.{city_code}"):
+    desc = _t(db, row[3], lang)
 
   categories = db.execute(
     text(
@@ -627,6 +800,111 @@ def admin_list_images(
   }
 
 
+@app.get("/admin/cities")
+def admin_list_cities(
+  lang: str = Query("de"),
+  db: Session = Depends(get_db),
+):
+  rows = db.execute(
+    text(
+      """
+      SELECT code, name_key, is_active
+      FROM core.city
+      ORDER BY code ASC
+      """
+    )
+  ).fetchall()
+  return {
+    "cities": [
+      {"code": r[0], "label": _t(db, r[1], lang), "is_active": bool(r[2])}
+      for r in rows
+    ]
+  }
+
+
+@app.get("/admin/options")
+def admin_options(
+  lang: str = Query("de"),
+  city: Optional[str] = Query(None),
+  db: Session = Depends(get_db),
+):
+  city_id = None
+  if city:
+    city_id = _city_id_from_code(db, city)
+    if not city_id:
+      raise HTTPException(status_code=400, detail="invalid_city")
+  if city_id:
+    categories = db.execute(
+      text(
+        """
+        SELECT DISTINCT c.code, c.name_key
+        FROM core.item_city_category icc
+        JOIN core.category c ON c.category_id = icc.category_id
+        WHERE icc.city_id = :city_id
+        ORDER BY c.code ASC
+        """
+      ),
+      {"city_id": city_id},
+    ).fetchall()
+    disposals = db.execute(
+      text(
+        """
+        SELECT DISTINCT d.code, d.name_key
+        FROM core.item_city_disposal icd
+        JOIN core.disposal_method d ON d.disposal_id = icd.disposal_id
+        WHERE icd.city_id = :city_id
+        ORDER BY d.code ASC
+        """
+      ),
+      {"city_id": city_id},
+    ).fetchall()
+    warnings = db.execute(
+      text(
+        """
+        SELECT DISTINCT w.code, w.title_key
+        FROM core.item_city_warning icw
+        JOIN core.warning w ON w.warning_id = icw.warning_id
+        WHERE icw.city_id = :city_id
+        ORDER BY w.code ASC
+        """
+      ),
+      {"city_id": city_id},
+    ).fetchall()
+  else:
+    categories = db.execute(
+      text(
+        """
+        SELECT code, name_key
+        FROM core.category
+        ORDER BY code ASC
+        """
+      )
+    ).fetchall()
+    disposals = db.execute(
+      text(
+        """
+        SELECT code, name_key
+        FROM core.disposal_method
+        ORDER BY code ASC
+        """
+      )
+    ).fetchall()
+    warnings = db.execute(
+      text(
+        """
+        SELECT code, title_key
+        FROM core.warning
+        ORDER BY code ASC
+        """
+      )
+    ).fetchall()
+  return {
+    "categories": [{"code": r[0], "label": _t(db, r[1], lang)} for r in categories],
+    "disposals": [{"code": r[0], "label": _t(db, r[1], lang)} for r in disposals],
+    "warnings": [{"code": r[0], "label": _t(db, r[1], lang)} for r in warnings],
+  }
+
+
 @app.post("/admin/images")
 def admin_upload_image(payload: AdminImageUploadRequest = Body(...)):
   stored = store_image_from_base64(payload.image_base64, source=payload.source or "admin")
@@ -642,24 +920,27 @@ def admin_list_items(
   offset: int = Query(0, ge=0),
   db: Session = Depends(get_db),
 ):
-  query = f"%{q}%" if q else ""
-  rows = db.execute(
-    text(
-      """
-      SELECT i.item_id::text, i.canonical_key, t1.text, t2.text, i.primary_image_id::text, i.is_active
+  query = f"%{q.strip()}%" if q and q.strip() else None
+  base_sql = """
+      SELECT i.item_id::text, i.canonical_key, t1.text, i.primary_image_id::text, i.is_active
       FROM core.item i
       LEFT JOIN core.i18n_translation t1 ON t1.key = i.title_key AND t1.lang = :lang
-      LEFT JOIN core.i18n_translation t2 ON t2.key = i.desc_key AND t2.lang = :lang
-      WHERE (
-        :q = ''
-        OR t1.text ILIKE :q
-        OR i.canonical_key ILIKE :q
-      )
+  """
+  where_sql = ""
+  params: dict[str, object] = {"lang": lang, "limit": limit, "offset": offset}
+  if query:
+    where_sql = "WHERE (t1.text ILIKE :q OR i.canonical_key ILIKE :q)"
+    params["q"] = query
+  rows = db.execute(
+    text(
+      f"""
+      {base_sql}
+      {where_sql}
       ORDER BY t1.text NULLS LAST, i.canonical_key ASC
       LIMIT :limit OFFSET :offset
       """
     ),
-    {"lang": lang, "q": query, "limit": limit, "offset": offset},
+    params,
   ).fetchall()
   return {
     "items": [
@@ -667,10 +948,10 @@ def admin_list_items(
         "id": r[0],
         "canonical_key": r[1],
         "title": r[2],
-        "description": r[3],
-        "primary_image_id": r[4],
-        "image_url": _image_url(r[4]),
-        "is_active": bool(r[5]),
+        "description": None,
+        "primary_image_id": r[3],
+        "image_url": _image_url(r[3]),
+        "is_active": bool(r[4]),
       }
       for r in rows
     ]
@@ -822,7 +1103,7 @@ def admin_update_item(
   row = db.execute(
     text(
       """
-      SELECT canonical_key, title_key, desc_key
+      SELECT canonical_key, title_key
       FROM core.item
       WHERE item_id::uuid = :item_id
       """
@@ -831,18 +1112,34 @@ def admin_update_item(
   ).fetchone()
   if not row:
     raise HTTPException(status_code=404, detail="item_not_found")
-  canonical_key, title_key, desc_key = row
+  canonical_key, title_key = row
   if payload.title is not None and title_key:
     _upsert_translation(db, title_key, payload.lang, payload.title)
   if payload.description is not None:
-    if not desc_key:
-      base = canonical_key if canonical_key.startswith("item.") else f"item.{canonical_key}"
-      desc_key = f"{base}.desc"
-      db.execute(
-        text("UPDATE core.item SET desc_key = :desc_key, updated_at = now() WHERE item_id::uuid = :item_id"),
-        {"desc_key": desc_key, "item_id": item_id},
-      )
+    override_row = db.execute(
+      text(
+        """
+        SELECT desc_key
+        FROM core.item_city_text_override
+        WHERE city_id = :city_id AND item_id::uuid = :item_id
+        """
+      ),
+      {"city_id": city_id, "item_id": item_id},
+    ).fetchone()
+    base = canonical_key if canonical_key.startswith("item.") else f"item.{canonical_key}"
+    desc_key = override_row[0] if override_row and override_row[0] else f"{base}.desc.{payload.city}"
     _upsert_translation(db, desc_key, payload.lang, payload.description)
+    db.execute(
+      text(
+        """
+        INSERT INTO core.item_city_text_override (city_id, item_id, desc_key)
+        VALUES (:city_id, :item_id, :desc_key)
+        ON CONFLICT (city_id, item_id) DO UPDATE
+        SET desc_key = EXCLUDED.desc_key
+        """
+      ),
+      {"city_id": city_id, "item_id": item_id, "desc_key": desc_key},
+    )
 
   if payload.is_active is not None:
     db.execute(

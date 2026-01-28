@@ -1,4 +1,3 @@
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
@@ -8,7 +7,6 @@ import "../theme/design_tokens.dart";
 import "../widgets/primary_button.dart";
 import "../widgets/max_width_center.dart";
 import "city_picker_page.dart";
-import "../screens/debug/theme_preview_screen.dart";
 
 class LanguagePickerPage extends StatelessWidget {
   const LanguagePickerPage({super.key});
@@ -26,59 +24,56 @@ class LanguagePickerPage extends StatelessWidget {
       "en": loc.t("language_en"),
     };
 
+    final canPop = Navigator.of(context).canPop();
+
     return Scaffold(
       appBar: AppBar(
+        leading: canPop
+            ? const BackButton()
+            : null,
         title: Text(
           loc.t("language_title"),
           style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
         ),
-        actions: [
-          if (kDebugMode)
-            IconButton(
-              icon: const Icon(Icons.color_lens_outlined),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ThemePreviewScreen()),
-                );
-              },
-            ),
-        ],
       ),
-      body: MaxWidthCenter(
-        child: Padding(
-          padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ...options.entries.map(
-                (entry) => RadioListTile<String>(
-                  value: entry.key,
-                  groupValue: selected,
-                  activeColor: colorScheme.primary,
-                  title: Text(
-                    entry.value,
-                    style: DesignTokens.body.copyWith(color: colorScheme.onSurface),
+      body: SafeArea(
+        top: false,
+        child: MaxWidthCenter(
+          child: Padding(
+            padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...options.entries.map(
+                  (entry) => RadioListTile<String>(
+                    value: entry.key,
+                    groupValue: selected,
+                    activeColor: colorScheme.primary,
+                    title: Text(
+                      entry.value,
+                      style: DesignTokens.body.copyWith(color: colorScheme.onSurface),
+                    ),
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
+                      }
+                      appState.setLocale(Locale(value));
+                    },
                   ),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    appState.setLocale(Locale(value));
+                ),
+                const Spacer(),
+                PrimaryButton(
+                  label: loc.t("language_continue"),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => const CityPickerPage(),
+                      ),
+                    );
                   },
                 ),
-              ),
-              const Spacer(),
-              PrimaryButton(
-                label: loc.t("language_continue"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const CityPickerPage(),
-                    ),
-                  );
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

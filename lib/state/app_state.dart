@@ -12,6 +12,10 @@ class AppState extends ChangeNotifier {
   ScanResult? lastResult;
   String sessionId = "";
   ThemeMode themeMode = ThemeMode.system;
+  bool adminEnabled = false;
+  int currentTabIndex = 1;
+  int? _requestedTabIndex;
+  bool _cameraScanRequested = false;
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -39,6 +43,9 @@ class AppState extends ChangeNotifier {
     } else if (storedTheme == "dark") {
       themeMode = ThemeMode.dark;
     }
+
+    adminEnabled = prefs.getBool("adminEnabled") ?? false;
+    currentTabIndex = prefs.getInt("currentTabIndex") ?? 1;
   }
 
   Future<void> setLocale(Locale newLocale) async {
@@ -71,6 +78,44 @@ class AppState extends ChangeNotifier {
       await prefs.remove("themeMode");
     }
     notifyListeners();
+  }
+
+  Future<void> setAdminEnabled(bool value) async {
+    adminEnabled = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("adminEnabled", value);
+    notifyListeners();
+  }
+
+  Future<void> setCurrentTabIndex(int index) async {
+    currentTabIndex = index;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt("currentTabIndex", index);
+    notifyListeners();
+  }
+
+  void requestTab(int index) {
+    _requestedTabIndex = index;
+    notifyListeners();
+  }
+
+  int? consumeRequestedTab() {
+    final value = _requestedTabIndex;
+    _requestedTabIndex = null;
+    return value;
+  }
+
+  void requestCameraScan() {
+    _cameraScanRequested = true;
+    notifyListeners();
+  }
+
+  bool consumeCameraScanRequest() {
+    if (_cameraScanRequested) {
+      _cameraScanRequested = false;
+      return true;
+    }
+    return false;
   }
 
   String _generateSessionId() {

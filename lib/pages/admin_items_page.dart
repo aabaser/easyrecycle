@@ -3,16 +3,16 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
+import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
 import "../models/admin_item.dart";
 import "../services/admin_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
-import "../widgets/city_pill.dart";
 import "../widgets/max_width_center.dart";
+import "../widgets/app_bottom_nav.dart";
 import "admin_item_detail_page.dart";
-import "city_picker_page.dart";
-import "language_picker_page.dart";
+import "home_shell.dart";
 
 class AdminItemsPage extends StatefulWidget {
   const AdminItemsPage({super.key});
@@ -75,7 +75,7 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
         ? null
         : (imageUrl.startsWith("http")
             ? imageUrl
-            : "${AdminService.baseUrl}$imageUrl");
+            : "${ApiConfig.baseUrl}$imageUrl");
     return ListTile(
       leading: resolvedUrl == null
           ? Container(
@@ -113,44 +113,10 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final appState = context.watch<AppState>();
-    final city = appState.selectedCity;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.t("admin_title"), style: DesignTokens.titleM),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: DesignTokens.baseSpacing),
-            child: CityPill(
-              label: appState.locale.languageCode.toUpperCase(),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const LanguagePickerPage()),
-                );
-              },
-            ),
-          ),
-          if (city != null)
-            Padding(
-              padding: const EdgeInsets.only(right: DesignTokens.baseSpacing),
-              child: Row(
-                children: [
-                  const Icon(Icons.location_on_outlined, size: 18),
-                  const SizedBox(width: 4),
-                  CityPill(
-                    label: city.id == "berlin"
-                        ? loc.t("city_berlin")
-                        : loc.t("city_hannover"),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const CityPickerPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-        ],
       ),
       body: MaxWidthCenter(
         child: Padding(
@@ -192,6 +158,9 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: const AppBottomNav(
+        selectedIndex: HomeShell.tabSettings,
       ),
     );
   }
