@@ -7,8 +7,17 @@ import "../config/api_config.dart";
 import "../models/admin_item.dart";
 import "../models/city.dart";
 import "../models/admin_image.dart";
+import "../state/app_state.dart";
 
 class AdminService {
+  AdminService({required AppState appState}) : _appState = appState;
+
+  final AppState _appState;
+
+  Future<Map<String, String>> _headers({Map<String, String>? extra}) {
+    return _appState.authHeaders(extra: extra);
+  }
+
   Future<List<AdminItemSummary>> listItems({
     required String lang,
     String? query,
@@ -16,7 +25,7 @@ class AdminService {
     final uri = Uri.parse(
       "${ApiConfig.baseUrl}/admin/items?lang=$lang${query != null && query.isNotEmpty ? "&q=${Uri.encodeComponent(query)}" : ""}",
     );
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_items_failed");
     }
@@ -44,7 +53,7 @@ class AdminService {
     final uri = Uri.parse(
       "${ApiConfig.baseUrl}/admin/items/$itemId?city=$cityId&lang=$lang",
     );
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_item_failed");
     }
@@ -57,7 +66,7 @@ class AdminService {
         ? "&city=${Uri.encodeComponent(cityId)}"
         : "";
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/options?lang=$lang$cityParam");
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_options_failed");
     }
@@ -84,7 +93,9 @@ class AdminService {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId");
     final response = await http.put(
       uri,
-      headers: const {"Content-Type": "application/json"},
+      headers: await _headers(
+        extra: const {"Content-Type": "application/json"},
+      ),
       body: json.encode({
         "city": cityId,
         "lang": lang,
@@ -106,7 +117,7 @@ class AdminService {
 
   Future<List<AdminImageAsset>> listImages({int limit = 50}) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/images?limit=$limit");
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_images_failed");
     }
@@ -128,7 +139,7 @@ class AdminService {
 
   Future<List<City>> listCities({required String lang}) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/cities?lang=$lang");
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_cities_failed");
     }
@@ -145,7 +156,7 @@ class AdminService {
 
   Future<List<AdminImageAsset>> listItemImages(String itemId) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images");
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_item_images_failed");
     }
@@ -173,7 +184,9 @@ class AdminService {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images");
     final response = await http.post(
       uri,
-      headers: const {"Content-Type": "application/json"},
+      headers: await _headers(
+        extra: const {"Content-Type": "application/json"},
+      ),
       body: json.encode({
         "city": cityId,
         "image_base64": base64Encode(bytes),
@@ -200,7 +213,7 @@ class AdminService {
     required String imageId,
   }) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images/$imageId");
-    final response = await http.delete(uri);
+    final response = await http.delete(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_item_image_delete_failed");
     }
@@ -210,7 +223,9 @@ class AdminService {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/images");
     final response = await http.post(
       uri,
-      headers: const {"Content-Type": "application/json"},
+      headers: await _headers(
+        extra: const {"Content-Type": "application/json"},
+      ),
       body: json.encode({
         "image_base64": base64Encode(bytes),
         "source": "admin",

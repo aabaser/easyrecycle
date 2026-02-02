@@ -6,7 +6,7 @@ import "l10n/l10n.dart";
 import "l10n/app_localizations.dart";
 import "state/app_state.dart";
 import "theme/app_theme.dart";
-import "features/entry/entry_screen.dart";
+import "screens/landing/landing_screen.dart";
 
 class EasyRecycleApp extends StatelessWidget {
   const EasyRecycleApp({super.key});
@@ -29,7 +29,7 @@ class EasyRecycleApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const EntryScreen(),
+      home: const LandingScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

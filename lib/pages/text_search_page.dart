@@ -114,7 +114,8 @@ class _TextSearchPageState extends State<TextSearchPage> {
         "&lang=${appState.locale.languageCode}"
         "&item_name=${Uri.encodeComponent(trimmed)}",
       );
-      final response = await http.get(uri);
+      final headers = await appState.authHeaders();
+      final response = await http.get(uri, headers: headers);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
       if (!mounted || trimmed != _query.trim()) {
@@ -212,7 +213,8 @@ class _TextSearchPageState extends State<TextSearchPage> {
         "${ApiConfig.baseUrl}/items/search?city=$cityId&lang=$lang&limit=10"
         "&q=${Uri.encodeComponent(trimmed)}",
       );
-      final response = await http.get(uri);
+      final headers = await appState.authHeaders();
+      final response = await http.get(uri, headers: headers);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
       if (!mounted || trimmed != _query.trim()) {
@@ -412,7 +414,8 @@ class _TextSearchPageState extends State<TextSearchPage> {
         "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang"
         "&item_id=${Uri.encodeComponent(item.itemId!)}",
       );
-      final response = await http.get(uri);
+      final headers = await appState.authHeaders();
+      final response = await http.get(uri, headers: headers);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
       final itemJson = body["item"];

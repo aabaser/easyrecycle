@@ -17,11 +17,9 @@ logger = logging.getLogger("openai_vision")
 _logged_no_db = False
 
 VISION_PROMPT = (
-  'Return JSON ONLY with schema: '
-  '{"canonical_key":..., "confidence":..., "labels":[...], "notes":...}. '
-  'canonical_key must be "item.<slug>" lowercase with underscores. '
-  'If unsure: canonical_key=null and confidence<=0.3. '
-  'labels: max 5, each <= 20 chars. No extra text.'
+  'Return JSON only: {"canonical_key":..., "confidence":..., "labels":[...], "notes":...}. '
+  'canonical_key=lowercase slug (no "item.", use _). If unsure: canonical_key=null, confidence<=0.3. '
+  'labels: max 5, <=20 chars; include singular+plural of main object. No extra text.'
 )
 
 DEFAULT_MODEL = os.getenv("OPENAI_VISION_MODEL", "gpt-4o-mini")
@@ -344,7 +342,7 @@ def recognize_item_from_base64(image_base64: str, lang: str) -> Dict[str, Any]:
     canonical_key = None
   if isinstance(canonical_key, str):
     canonical_key = canonical_key.strip().lower()
-  if canonical_key and not re.match(r"^item\.[a-z0-9_]+$", canonical_key):
+  if canonical_key and not re.match(r"^[a-z0-9_]+$", canonical_key):
     logger.warning("vision: canonical_key rejected value=%s", canonical_key)
     canonical_key = None
   if canonical_key is None:

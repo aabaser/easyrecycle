@@ -27,6 +27,23 @@ class EntryScreen extends StatelessWidget {
     );
     final selectedCityId = appState.selectedCity?.id;
 
+    const copy = {
+      "de": {
+        "slogan": "Reduzieren. Trennen. Weitergeben.",
+        "subtitle": "Kleine Schritte, große Wirkung.",
+      },
+      "en": {
+        "slogan": "Reduce. Sort. Share.",
+        "subtitle": "Small steps, big impact.",
+      },
+      "tr": {
+        "slogan": "Azalt. Ayır. Paylaş.",
+        "subtitle": "Küçük adımlar, büyük etki yaratır.",
+      },
+    };
+    final slogan = copy[selectedLocale]?["slogan"] ?? copy["tr"]!["slogan"]!;
+    final subtitle = copy[selectedLocale]?["subtitle"] ?? copy["tr"]!["subtitle"]!;
+
     Widget heroHeader() {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -56,7 +73,7 @@ class EntryScreen extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            loc.t("entry_headline"),
+            slogan,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
@@ -65,7 +82,7 @@ class EntryScreen extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            loc.t("entry_subtitle"),
+            subtitle,
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme

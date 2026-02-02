@@ -69,6 +69,9 @@ def verify_cognito_jwt(token: str, settings: Settings) -> dict[str, Any]:
     else:
         raise ValueError("invalid_token_use")
 
+    if not claims.get("sub"):
+        raise ValueError("missing_sub")
+
     scope = claims.get("scope") or ""
     scopes = scope.split() if isinstance(scope, str) else list(scope or [])
     groups = claims.get("cognito:groups") or claims.get("groups") or []

@@ -146,7 +146,8 @@ class _ResultPageState extends State<ResultPage> {
       final uri = Uri.parse(
         "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang&item_id=${Uri.encodeComponent(item.itemId!)}",
       );
-      final response = await http.get(uri);
+      final headers = await appState.authHeaders();
+      final response = await http.get(uri, headers: headers);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
       final itemJson = body["item"];
@@ -462,7 +463,8 @@ class _ResultPageState extends State<ResultPage> {
       final uri = Uri.parse(
         "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang&item_name=${Uri.encodeComponent(query)}",
       );
-      final response = await http.get(uri);
+      final headers = await appState.authHeaders();
+      final response = await http.get(uri, headers: headers);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
       final itemJson = body["item"];
@@ -811,27 +813,30 @@ class _ResultPageState extends State<ResultPage> {
     if (itemId == null || itemId.isEmpty) {
       return;
     }
-      final appState = context.read<AppState>();
-      final cityId = appState.selectedCity?.id ?? "hannover";
-      final lang = appState.locale.languageCode;
-      final sessionId = appState.sessionId;
-      try {
-        final uri = Uri.parse("${ApiConfig.baseUrl}/feedback");
-        await http.post(
-          uri,
-          headers: const {"Content-Type": "application/json"},
-          body: json.encode({
-            "city": cityId,
-            "item_id": itemId,
-            "feedback": value,
-            "lang": lang,
-            "source": "flutter",
-            "session_id": sessionId,
-          }),
-        );
-      } catch (_) {
-        return;
-      }
+    final appState = context.read<AppState>();
+    final cityId = appState.selectedCity?.id ?? "hannover";
+    final lang = appState.locale.languageCode;
+    final sessionId = appState.sessionId;
+    try {
+      final uri = Uri.parse("${ApiConfig.baseUrl}/feedback");
+      final headers = await appState.authHeaders(
+        extra: const {"Content-Type": "application/json"},
+      );
+      await http.post(
+        uri,
+        headers: headers,
+        body: json.encode({
+          "city": cityId,
+          "item_id": itemId,
+          "feedback": value,
+          "lang": lang,
+          "source": "flutter",
+          "session_id": sessionId,
+        }),
+      );
+    } catch (_) {
+      return;
+    }
   }
 
   Widget _buildNotFound(BuildContext context, AppLocalizations loc) {

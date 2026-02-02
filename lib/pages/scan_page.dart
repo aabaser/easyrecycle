@@ -349,9 +349,12 @@ class _ScanPageState extends State<ScanPage> {
 
     try {
       final uri = Uri.parse("${ApiConfig.baseUrl}/analyze");
+      final headers = await appState.authHeaders(
+        extra: const {"Content-Type": "application/json"},
+      );
       final response = await http.post(
         uri,
-        headers: const {"Content-Type": "application/json"},
+        headers: headers,
         body: json.encode({
           "city": city.id,
           "lang": appState.locale.languageCode,
@@ -466,7 +469,8 @@ class _ScanPageState extends State<ScanPage> {
       final uri = Uri.parse(
         "${ApiConfig.baseUrl}/resolve?city=$cityId&lang=$lang&item_name=${Uri.encodeComponent(query)}",
       );
-      final response = await http.get(uri);
+      final headers = await appState.authHeaders();
+      final response = await http.get(uri, headers: headers);
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
       final item = body["item"];

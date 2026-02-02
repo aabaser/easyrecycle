@@ -64,7 +64,7 @@ class _AuthTestPageState extends State<AuthTestPage> {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         final data = jsonDecode(body) as Map<String, dynamic>;
         setState(() {
-          _token = data["token"]?.toString();
+          _token = data["access_token"]?.toString();
           _response = body;
         });
       } else {

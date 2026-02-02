@@ -1,5 +1,5 @@
 """
-Excel -> Postgres import for Easy Recycle.
+CSV -> Postgres import for Easy Recycle.
 
 Implements the rules from docs/40_import-pipeline.md:
 - Unpivot *_de/_en/_tr into core.i18n_translation
@@ -7,7 +7,7 @@ Implements the rules from docs/40_import-pipeline.md:
 - Berlin rows only persist overrides; fallback is handled by the city chain in resolve
 
 Usage:
-  python scripts/import_csv.py data/recycle_aha_11.12.2004.xlsx --sheet Sheet5
+  python scripts/import_csv.py data/aha_abc_new_05_01_2026_12.csv
   python scripts/import_csv.py ... --dry-run   # preview only
 """
 from __future__ import annotations
@@ -29,6 +29,13 @@ ACTIVE_LANGS: Tuple[str, ...] = DEFAULT_LANGS
 def slug(value: str) -> str:
   """Create a stable code identifier."""
   value = (value or "").strip().lower()
+  # German transliteration before stripping non-ascii chars
+  value = (
+    value.replace("ä", "ae")
+    .replace("ö", "oe")
+    .replace("ü", "ue")
+    .replace("ß", "ss")
+  )
   value = re.sub(r"[^a-z0-9]+", "_", value).strip("_")
   return value or "item"
 
@@ -39,6 +46,20 @@ def split_multi(value: object) -> List[str]:
     return []
   parts = re.split(r"[;,\n]+", str(value))
   return [p.strip() for p in parts if p.strip()]
+
+
+def make_unique_slugs(values: Iterable[str]) -> List[str]:
+  """Ensure slugs are unique by appending -2, -3, ... on collisions."""
+  counts: Dict[str, int] = {}
+  result: List[str] = []
+  for val in values:
+    base = val or "item"
+    counts[base] = counts.get(base, 0) + 1
+    if counts[base] == 1:
+      result.append(base)
+    else:
+      result.append(f"{base}-{counts[base]}")
+  return result
 
 
 def upsert_translation(conn: Connection, key: str, lang: str, text_value: str) -> None:
@@ -317,52 +338,77 @@ def reset_i18n_table(conn: Connection) -> None:
   )
 
 
+def reset_core_tables(conn: Connection) -> None:
+  """Wipe all core data tables except language."""
+  conn.execute(
+    text(
+      """
+      TRUNCATE TABLE
+        core.item_feedback,
+        core.scan_event,
+        core.vision_cache,
+        core.prospect,
+        core.city_category_label,
+        core.city_disposal_label,
+        core.item_city_warning,
+        core.item_city_disposal,
+        core.item_city_action,
+        core.item_city_category,
+        core.item_city_text_override,
+        core.item_alias,
+        core.item,
+        core.image_asset,
+        core.warning,
+        core.disposal_method,
+        core.category,
+        core.i18n_translation,
+        core.city
+      CASCADE
+      """
+    )
+  )
+
+
 def main() -> None:
   global ACTIVE_LANGS
   parser = argparse.ArgumentParser()
-  parser.add_argument("xlsx", help="Path to Excel/CSV file")
-  parser.add_argument("--sheet", default="Sheet5", help="Sheet containing consolidated data")
+  parser.add_argument("csv", help="Path to CSV file")
   parser.add_argument("--database-url", default=os.getenv("DATABASE_URL"))
   parser.add_argument("--dry-run", action="store_true", help="Preview without writing to the database")
+  parser.add_argument("--full-reset", action="store_true", help="Delete all core data before import")
   args = parser.parse_args()
 
   if not args.database_url and not args.dry_run:
     raise SystemExit("DATABASE_URL not set. Example: postgresql+psycopg://postgres:postgres@localhost:5432/easy_recycle")
 
-  # Load Excel or CSV; CSV path is used for Hannover defaults only (no Berlin overrides yet).
-  if args.xlsx.lower().endswith(".csv"):
-    raw = pd.read_csv(args.xlsx)
-    df = raw.copy()
-    df["source"] = "hannover_csv"
-    df["name"] = df["title"]
-    # Build stable unique document IDs to avoid slug collisions
-    base_slugs = df["title"].apply(slug)
-    counts = base_slugs.groupby(base_slugs).cumcount()
-    df["documentID"] = base_slugs + counts.apply(lambda c: f"-{c}" if c else "")
-    df["de_title"] = df["title"]
-    # Map Hannover/default columns to match importer expectations
-    df["default_de_desc"] = df["description"]
-    df["hannover_de_desc"] = df["description"]
-    df["default_de_categories"] = df.get("categories")
-    df["hannover_de_categories"] = df.get("categories")
-    df["default_de_disposals"] = df.get("disposals")
-    df["hannover_de_disposals"] = df.get("disposals")
-    df["default_de_warnings"] = df.get("warnings")
-    df["hannover_de_warnings"] = df.get("warnings")
-    # Berlin columns left empty for now
-  else:
-    df = pd.read_excel(args.xlsx, sheet_name=args.sheet)
+  # CSV path is used for Hannover defaults only (no Berlin overrides yet).
+  raw = pd.read_csv(args.csv)
+  df = raw.copy()
+  df["source"] = "hannover_csv"
+  df["name"] = df["title"]
+  # Build stable unique document IDs to avoid slug collisions
+  base_slugs = df["title"].apply(slug)
+  df["documentID"] = make_unique_slugs(base_slugs.tolist())
+  df["de_title"] = df["title"]
+  # Map Hannover/default columns to match importer expectations
+  df["default_de_desc"] = df["description"]
+  df["hannover_de_desc"] = df["description"]
+  df["default_de_categories"] = df.get("categories")
+  df["hannover_de_categories"] = df.get("categories")
+  df["default_de_disposals"] = df.get("disposals")
+  df["hannover_de_disposals"] = df.get("disposals")
+  df["default_de_warnings"] = df.get("warnings")
+  df["hannover_de_warnings"] = df.get("warnings")
+  # Berlin columns left empty for now
 
   ACTIVE_LANGS = detect_langs(df)
-  df["_canonical_key"] = df.apply(
-    lambda r: slug(str(r.get("documentID") or r.get("name") or "item")),
-    axis=1,
-  )
+  base_keys = df.apply(lambda r: slug(str(r.get("documentID") or r.get("name") or "item")), axis=1).tolist()
+  df["_canonical_key"] = make_unique_slugs(base_keys)
 
   stats = {"items": 0, "categories": 0, "disposals": 0, "warnings": 0, "overrides_berlin": 0}
 
   if args.dry_run:
-    print(f"[dry-run] Loaded {len(df)} rows from {args.sheet}")
+    print(f"[dry-run] Loaded {len(df)} rows from CSV")
     print(df.head(5))
     print(f"[dry-run] rows={len(df)}")
     print(f"[dry-run] languages detected: {ACTIVE_LANGS}")
@@ -370,7 +416,10 @@ def main() -> None:
 
   engine = create_engine(args.database_url)
   with engine.begin() as conn:
-    truncate_i18n(conn)
+    if args.full_reset:
+      reset_core_tables(conn)
+    else:
+      truncate_i18n(conn)
     hannover_id = ensure_city(conn, "hannover")
     berlin_id = ensure_city(conn, "berlin", base_city_id=hannover_id)
 

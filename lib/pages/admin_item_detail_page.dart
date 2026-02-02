@@ -27,7 +27,7 @@ class AdminItemDetailPage extends StatefulWidget {
 }
 
 class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
-  final _service = AdminService();
+  late AdminService _service;
   final _titleController = TextEditingController();
   final Map<String, TextEditingController> _descControllers = {};
   final ScrollController _tableScrollController = ScrollController();
@@ -51,6 +51,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
   @override
   void initState() {
     super.initState();
+    _service = AdminService(appState: context.read<AppState>());
     _loadDetail();
   }
 

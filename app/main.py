@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 import time
 from fastapi import FastAPI, Depends, Query, Body, HTTPException, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.db import get_db
@@ -33,6 +33,35 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
+_AUTH_EXEMPT_PATHS = {
+  "/health",
+  "/healthz",
+  "/auth/guest",
+  "/auth/me",
+  "/auth/verify",
+  "/images",
+  "/docs",
+  "/openapi.json",
+  "/redoc",
+}
+
+
+@app.middleware("http")
+async def auth_guard(request: Request, call_next):
+  if request.method == "OPTIONS":
+    return await call_next(request)
+  path = request.url.path
+  if path in _AUTH_EXEMPT_PATHS or path.startswith("/images/"):
+    return await call_next(request)
+  try:
+    principal = _resolve_principal(request)
+    if principal.get("type") == "anonymous":
+      return JSONResponse(status_code=401, content={"detail": "Unauthorized"})
+    request.state.principal = principal
+  except HTTPException as exc:
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+  return await call_next(request)
+
 
 def _client_ip(request: Request) -> str:
   forwarded = request.headers.get("x-forwarded-for")
@@ -60,8 +89,6 @@ def _resolve_principal(request: Request) -> dict:
         "type": "user",
         "sub": data.get("sub"),
         "scopes": data.get("scopes") or [],
-        "groups": data.get("groups") or [],
-        "token_use": data.get("token_use"),
       }
     except Exception:
       pass
@@ -71,7 +98,7 @@ def _resolve_principal(request: Request) -> dict:
     scopes = scope.split() if isinstance(scope, str) else list(scope or [])
     return {"type": "guest", "sub": claims.get("sub"), "scopes": scopes}
   except Exception:
-    raise HTTPException(status_code=401, detail="Invalid token")
+    raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 
 @app.middleware("http")
@@ -103,15 +130,15 @@ class GuestRequest(BaseModel):
 
 
 class GuestResponse(BaseModel):
-  token: str
+  access_token: str
+  token_type: str
   expires_in: int
-  role: str
 
 
-class AuthVerifyResponse(BaseModel):
-  valid: bool
-  principal: Optional[dict] = None
-  error: Optional[str] = None
+class PrincipalResponse(BaseModel):
+  type: str
+  sub: Optional[str] = None
+  scopes: list[str]
 
 
 @app.post("/auth/guest", response_model=GuestResponse)
@@ -123,9 +150,9 @@ def auth_guest(payload: GuestRequest, request: Request):
   except ValueError:
     raise HTTPException(status_code=400, detail="device_id too short")
   return {
-    "token": issued["token"],
+    "access_token": issued["token"],
+    "token_type": "bearer",
     "expires_in": settings.GUEST_TOKEN_TTL_SECONDS,
-    "role": "guest",
   }
 
 
@@ -134,18 +161,33 @@ def auth_me(request: Request):
   principal = _resolve_principal(request)
   key = principal.get("sub") or _client_ip(request)
   _rate_limit_or_429(key, limit=120, window_seconds=60)
-  return {"principal": principal, "scopes": principal.get("scopes", [])}
+  return {
+    "type": principal.get("type"),
+    "sub": principal.get("sub"),
+    "scopes": sorted(principal.get("scopes") or []),
+  }
 
 
-@app.post("/auth/verify", response_model=AuthVerifyResponse)
+@app.post("/auth/verify", response_model=PrincipalResponse)
 def auth_verify(request: Request):
   auth_header = request.headers.get("Authorization") or ""
   if not auth_header.startswith("Bearer "):
-    return {"valid": False, "error": "Missing token"}
-  principal = _resolve_principal(request)
+    _rate_limit_or_429(_client_ip(request), limit=120, window_seconds=60)
+    raise HTTPException(status_code=401, detail="Invalid or expired token")
+  try:
+    principal = _resolve_principal(request)
+  except HTTPException:
+    _rate_limit_or_429(_client_ip(request), limit=120, window_seconds=60)
+    raise HTTPException(status_code=401, detail="Invalid or expired token")
   key = principal.get("sub") or _client_ip(request)
   _rate_limit_or_429(key, limit=120, window_seconds=60)
-  return {"valid": True, "principal": principal}
+  if principal.get("type") == "anonymous":
+    raise HTTPException(status_code=401, detail="Invalid or expired token")
+  return {
+    "type": principal.get("type"),
+    "sub": principal.get("sub"),
+    "scopes": sorted(principal.get("scopes") or []),
+  }
 
 @app.get("/resolve")
 def resolve(

@@ -1,0 +1,23 @@
+lang,alias_norm,loser_canonical_key,winner_canonical_key,winner_confidence,winner_alias_type
+de,kochtopf,kochtopf_2,kochtopf,1.0,primary
+de,blumenkasten eternit asbestzement,blumenkaesten_eternit_asbestzement,blumenkasten_eternit_asbestzement,1.0,primary
+de,blumenkasteneternitasbestzement,blumenkaesten_eternit_asbestzement,blumenkasten_eternit_asbestzement,0.85,auto
+de,olofen,oeloefen,oelofen,1.0,primary
+de,blumenkasten kunststoff,blumenkasten_kunststoff,blumenkaesten_kunststoff,1.0,primary
+de,blumenkastenkunststoff,blumenkasten_kunststoff,blumenkaesten_kunststoff,0.85,auto
+de,diaprojektoren,dia_projektoren,diaprojektoren,1.0,primary
+de,spulkasten,spuelkasten,spuelkaesten,1.0,primary
+de,toilettenspulkasten,toilettenspuelkaesten,toilettenspuelkasten,1.0,primary
+de,glas,glas-2,glas,1.0,primary
+de,metallofen,metalloefen,metallofen,1.0,primary
+de,asbesthandschuhe,asbesthandschuhe-2,asbesthandschuhe,1.0,primary
+de,asbest,asbest-2,asbest,1.0,primary
+de,nagellackentferner,nagellack_entferner,nagellackentferner,1.0,primary
+de,elektrogerate,elektrogeraete-2,elektrogeraete,1.0,primary
+de,elektrogeraete,elektrogeraete-2,elektrogeraete,0.9,auto
+de,elektrogeraete,elektrogeraete-2,elektrogeraete,0.9,auto
+de,kachelofen,kacheloefen,kachelofen,1.0,primary
+de,ofen metall,oefen_metall,ofen_metall,1.0,primary
+de,ofenmetall,oefen_metall,ofen_metall,0.85,auto
+de,kosmetiktuch,kosmetiktuch-2,kosmetiktuch,1.0,primary
+de,nachtspeicherofen,nachtspeicherofen,nachtspeicheroefen,1.0,primary

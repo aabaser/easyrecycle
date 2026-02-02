@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import Optional, Dict, Any, List
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+import re
+import unicodedata
 
 def _city_id(db: Session, city_code: str) -> Optional[str]:
   r = db.execute(
@@ -97,6 +99,46 @@ def _t(db: Session, key: str, lang: str) -> Optional[str]:
   if r:
     return r[0]
   return None
+
+
+def _normalize_basic(s: str) -> str:
+  """
+  Normalize search input to match item_alias.alias_norm:
+  - lower
+  - strip accents
+  - non-alnum -> space
+  - collapse spaces
+  """
+  if not s:
+    return ""
+  s = s.strip().lower()
+  nfkd = unicodedata.normalize("NFKD", s)
+  s = "".join(ch for ch in nfkd if not unicodedata.combining(ch))
+  s = re.sub(r"[^a-z0-9]+", " ", s)
+  s = re.sub(r"\s+", " ", s).strip()
+  return s
+
+
+def _find_item_by_alias(db: Session, name: str, lang: str, city_id: str) -> Optional[str]:
+  norm = _normalize_basic(name)
+  if not norm:
+    return None
+  sql = text("""
+    SELECT i.item_id::text
+    FROM core.item_alias a
+    JOIN core.item i ON i.canonical_key = a.canonical_key
+    WHERE a.lang = :lang AND a.alias_norm = :norm
+      AND EXISTS (
+        SELECT 1 FROM core.item_city_category icc
+        WHERE icc.item_id = i.item_id AND icc.city_id = :city_id
+        UNION ALL
+        SELECT 1 FROM core.item_city_disposal icd
+        WHERE icd.item_id = i.item_id AND icd.city_id = :city_id
+      )
+    LIMIT 1
+  """)
+  r = db.execute(sql, {"lang": lang, "norm": norm, "city_id": city_id}).fetchone()
+  return r[0] if r else None
 
 def _find_item_by_name(db: Session, name: str, lang: str, city_id: str) -> Optional[str]:
   """
@@ -226,7 +268,9 @@ def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str,
 
   # If only name is provided, try to find the closest item_id in this city (or global)
   if not item_id and item_name:
-    found_id = _find_item_by_name(db, item_name, lang, city_id)
+    found_id = _find_item_by_alias(db, item_name, lang, city_id)
+    if not found_id:
+      found_id = _find_item_by_name(db, item_name, lang, city_id)
     if not found_id:
       suggestions = _enrich_suggestions(
         db,

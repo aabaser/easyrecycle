@@ -22,7 +22,7 @@ class AdminItemsPage extends StatefulWidget {
 }
 
 class _AdminItemsPageState extends State<AdminItemsPage> {
-  final _service = AdminService();
+  late AdminService _service;
   final _searchController = TextEditingController();
   Timer? _debounce;
   bool _loading = true;
@@ -31,6 +31,7 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
   @override
   void initState() {
     super.initState();
+    _service = AdminService(appState: context.read<AppState>());
     _loadItems();
   }
 

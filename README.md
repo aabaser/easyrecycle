@@ -36,6 +36,7 @@ http://<PC_IP>:8000/health
 flutter pub get
 flutter gen-l10n
 flutter run -d chrome --dart-define=API_BASE_URL=http://<PC_IP>:8000
+flutter run -d chrome --dart-define=API_BASE_URL=http://192.168.2.177:8000
 ```
 
 ### Flutter (Android APK)
@@ -52,6 +53,49 @@ Install APK:
 ```bash
 flutter install
 ```
+
+## Data Import (CSV only)
+
+The importer supports **CSV only**. Use the Hannover CSV export as the base dataset; Berlin overrides
+are not part of this CSV import.
+
+Import:
+```bash
+python scripts/import_csv.py data/aha_abc_new_05_01_2026_12.csv
+```
+
+Full reset + re-import (Hannover + Berlin wiped):
+```bash
+python scripts/import_csv.py data/aha_abc_new_05_01_2026_12.csv --full-reset
+```
+
+Dry-run:
+```bash
+python scripts/import_csv.py data/aha_abc_new_05_01_2026_12.csv --dry-run
+```
+
+Berlin JSON import:
+```bash
+python scripts/import_berlin_json.py data/berlin_abfall.json
+```
+
+## Item Alias Seed (DB → CSV → Import)
+
+Build alias seed CSV directly from DB:
+```bash
+python scripts/build_item_alias_seed.py --database-url "$DATABASE_URL" \
+  --out item_alias_seed.csv \
+  --collisions item_alias_collisions.csv
+```
+
+Import alias seed CSV into `core.item_alias`:
+```bash
+python scripts/import_item_alias_seed.py --database-url "$DATABASE_URL" --csv item_alias_seed.csv
+```
+Note: `import_item_alias_seed.py` uses psycopg directly and expects a DSN like
+`postgresql://...` (not `postgresql+psycopg://...`). If your `DATABASE_URL`
+uses the SQLAlchemy format, replace `postgresql+psycopg://` with `postgresql://`
+for this script.
 
 ## Auth (Local)
 

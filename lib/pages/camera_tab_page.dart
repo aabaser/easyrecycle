@@ -170,9 +170,12 @@ class CameraTabPageState extends State<CameraTabPage> {
 
     try {
       final uri = Uri.parse("${ApiConfig.baseUrl}/analyze");
+      final headers = await appState.authHeaders(
+        extra: const {"Content-Type": "application/json"},
+      );
       final response = await http.post(
         uri,
-        headers: const {"Content-Type": "application/json"},
+        headers: headers,
         body: json.encode({
           "city": city.id,
           "lang": appState.locale.languageCode,

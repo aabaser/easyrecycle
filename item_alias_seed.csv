@@ -1,0 +1,2414 @@
+canonical_key,lang,alias_text,alias_norm,alias_type,source,confidence
+abbeizer_fuer_lacke,de,Abbeizer für Lacke,abbeizer fuer lacke,auto,seed,0.90
+abbeizer_fuer_lacke,de,Abbeizer für Lacke,abbeizer fur lacke,primary,seed,1.00
+abbeizer_fuer_lacke,de,Abbeizer für Lacke,abbeizerfuerlacke,auto,seed,0.80
+abbeizer_fuer_lacke,de,Abbeizer für Lacke,abbeizerfurlacke,auto,seed,0.85
+abbeizmittel,de,Abbeizmittel,abbeizmittel,primary,seed,1.00
+abbruchhoelzer,de,Abbruchhölzer,abbruchhoelzer,auto,seed,0.90
+abbruchholz,de,Abbruchholz,abbruchholz,primary,seed,1.00
+abbruchhoelzer,de,Abbruchhölzer,abbruchholzer,primary,seed,1.00
+abdeckfolien,de,Abdeckfolien,abdeckfolien,primary,seed,1.00
+abflussreiniger,de,Abflussreiniger,abflussreiniger,primary,seed,1.00
+abflussreiniger_rohrreiniger,de,Abflussreiniger/Rohrreiniger,abflussreiniger rohrreiniger,primary,seed,1.00
+abflussreiniger_rohrreiniger,de,Abflussreiniger/Rohrreiniger,abflussreinigerrohrreiniger,auto,seed,0.85
+abscheideranlage,de,Abscheideranlage,abscheideranlage,primary,seed,1.00
+abtoenfarbe,de,Abtönfarbe,abtoenfarbe,auto,seed,0.90
+abtoenfarbe,de,Abtönfarbe,abtonfarbe,primary,seed,1.00
+aceton,de,Aceton,aceton,primary,seed,1.00
+acryl_silikon,de,Acryl/ Silikon,acryl silikon,primary,seed,1.00
+acrylharzlacke,de,Acrylharzlacke,acrylharzlacke,primary,seed,1.00
+acryl_silikon,de,Acryl/ Silikon,acrylsilikon,auto,seed,0.85
+adventskranz,de,Adventskranz,adventskranz,primary,seed,1.00
+aeste,de,Äste,aeste,auto,seed,0.90
+aeste_dicke,de,"Äste, dicke",aeste dicke,auto,seed,0.90
+aeste_dicke,de,"Äste, dicke",aestedicke,auto,seed,0.80
+aetznatron,de,Ätznatron,aetznatron,auto,seed,0.90
+akkumulatoren,de,Akkumulatoren,akkumulatoren,primary,seed,1.00
+akkus,de,Akkus,akkus,primary,seed,1.00
+akten,de,Akten,akten,primary,seed,1.00
+akten_vertraulich,de,Akten (vertraulich),akten vertraulich,primary,seed,1.00
+aktenordner,de,Aktenordner,aktenordner,primary,seed,1.00
+akten_vertraulich,de,Akten (vertraulich),aktenvertraulich,auto,seed,0.85
+akustikpaneele,de,Akustikpaneele,akustikpaneele,primary,seed,1.00
+akustikplatten,de,Akustikplatten,akustikplatten,primary,seed,1.00
+alkhydharzlacke,de,Alkhydharzlacke,alkhydharzlacke,primary,seed,1.00
+allesbrenner,de,Allesbrenner,allesbrenner,primary,seed,1.00
+alleskleber,de,Alleskleber,alleskleber,primary,seed,1.00
+allzweckreiniger,de,Allzweckreiniger,allzweckreiniger,primary,seed,1.00
+altakten,de,Altakten,altakten,primary,seed,1.00
+altauto,de,Altauto,altauto,primary,seed,1.00
+altfarben_altlacke,de,"Altfarben, Altlacke",altfarben altlacke,primary,seed,1.00
+altfarben_altlacke,de,"Altfarben, Altlacke",altfarbenaltlacke,auto,seed,0.85
+altfette_speisefette_fette,de,Altfette/Speisefette/Fette,altfette speisefette fette,primary,seed,1.00
+altfette_speisefette_fette,de,Altfette/Speisefette/Fette,altfettespeisefettefette,auto,seed,0.85
+altholz,de,Altholz,altholz,primary,seed,1.00
+altholz_aussenbereich,de,Altholz (Außenbereich),altholz au enbereich,primary,seed,1.00
+altholz_aussenbereich,de,Altholz (Außenbereich),altholz aussenbereich,auto,seed,0.90
+altholz_gefaehrlicher_abfall,de,"Altholz, gefährlicher Abfall",altholz gefaehrlicher abfall,auto,seed,0.90
+altholz_gefaehrlicher_abfall,de,"Altholz, gefährlicher Abfall",altholz gefahrlicher abfall,primary,seed,1.00
+altholz_innenbereich,de,Altholz (Innenbereich),altholz innenbereich,primary,seed,1.00
+altholz_ungefaehrlicher_abfall,de,"Altholz, ungefährlicher Abfall",altholz ungefaehrlicher abfall,auto,seed,0.90
+altholz_ungefaehrlicher_abfall,de,"Altholz, ungefährlicher Abfall",altholz ungefahrlicher abfall,primary,seed,1.00
+altholz_aussenbereich,de,Altholz (Außenbereich),altholzauenbereich,auto,seed,0.85
+altholz_aussenbereich,de,Altholz (Außenbereich),altholzaussenbereich,auto,seed,0.80
+altholz_gefaehrlicher_abfall,de,"Altholz, gefährlicher Abfall",altholzgefaehrlicherabfall,auto,seed,0.80
+altholz_gefaehrlicher_abfall,de,"Altholz, gefährlicher Abfall",altholzgefahrlicherabfall,auto,seed,0.85
+altholz_innenbereich,de,Altholz (Innenbereich),altholzinnenbereich,auto,seed,0.85
+altholz_ungefaehrlicher_abfall,de,"Altholz, ungefährlicher Abfall",altholzungefaehrlicherabfall,auto,seed,0.80
+altholz_ungefaehrlicher_abfall,de,"Altholz, ungefährlicher Abfall",altholzungefahrlicherabfall,auto,seed,0.85
+altkleider,de,Altkleider,altkleider,primary,seed,1.00
+altmedikamente,de,Altmedikamente,altmedikamente,primary,seed,1.00
+altoel,de,Altöl,altoel,auto,seed,0.90
+altoel_mineralisch,de,"Altöl, mineralisch",altoel mineralisch,auto,seed,0.90
+altoel_mineralisch,de,"Altöl, mineralisch",altoelmineralisch,auto,seed,0.80
+altoel,de,Altöl,altol,primary,seed,1.00
+altoel_mineralisch,de,"Altöl, mineralisch",altol mineralisch,primary,seed,1.00
+altoel_mineralisch,de,"Altöl, mineralisch",altolmineralisch,auto,seed,0.85
+altpapier,de,Altpapier,altpapier,primary,seed,1.00
+altreifen,de,Altreifen,altreifen,primary,seed,1.00
+alttextilien,de,Alttextilien,alttextilien,primary,seed,1.00
+alttextilien_schuhe,de,"Alttextilien, Schuhe",alttextilien schuhe,primary,seed,1.00
+alttextilien_schuhe,de,"Alttextilien, Schuhe",alttextilienschuhe,auto,seed,0.85
+alufolie,de,Alufolie,alufolie,primary,seed,1.00
+aluminium,de,Aluminium,aluminium,primary,seed,1.00
+aluminiumdeckel,de,Aluminiumdeckel,aluminiumdeckel,primary,seed,1.00
+aluminiumfolie,de,Aluminiumfolie,aluminiumfolie,primary,seed,1.00
+ambrosia,de,Ambrosia,ambrosia,primary,seed,1.00
+ambrosiapflanzen,de,Ambrosiapflanzen,ambrosiapflanzen,primary,seed,1.00
+ameisengift,de,Ameisengift,ameisengift,primary,seed,1.00
+ammoniak,de,Ammoniak,ammoniak,primary,seed,1.00
+angel,de,Angel,angel,primary,seed,1.00
+anrufbeantworter,de,Anrufbeantworter,anrufbeantworter,primary,seed,1.00
+anstreichfarbe,de,Anstreichfarbe,anstreichfarbe,primary,seed,1.00
+aquarien,de,Aquarien,aquarien,primary,seed,1.00
+aquarium,de,Aquarium,aquarium,primary,seed,1.00
+aquarium_leer,de,Aquarium (leer),aquarium leer,primary,seed,1.00
+aquariumkies,de,Aquariumkies,aquariumkies,primary,seed,1.00
+aquarium_leer,de,Aquarium (leer),aquariumleer,auto,seed,0.85
+arbeitsplatten_aus_holz,de,Arbeitsplatten aus Holz,arbeitsplatten aus holz,primary,seed,1.00
+arbeitsplatten_resopal,de,Arbeitsplatten (Resopal),arbeitsplatten resopal,primary,seed,1.00
+arbeitsplatten_aus_holz,de,Arbeitsplatten aus Holz,arbeitsplattenausholz,auto,seed,0.85
+arbeitsplatten_resopal,de,Arbeitsplatten (Resopal),arbeitsplattenresopal,auto,seed,0.85
+armaturen,de,Armaturen,armaturen,primary,seed,1.00
+arzneien,de,Arzneien,arzneien,primary,seed,1.00
+arzneimittel,de,Arzneimittel,arzneimittel,primary,seed,1.00
+asbest,de,Asbest,asbest,primary,seed,1.00
+asbesthandschuhe,de,Asbesthandschuhe,asbesthandschuhe,primary,seed,1.00
+asbestpappen,de,Asbestpappen,asbestpappen,primary,seed,1.00
+asbestschnuere,de,Asbestschnüre,asbestschnuere,auto,seed,0.90
+asbestschnuere,de,Asbestschnüre,asbestschnure,primary,seed,1.00
+asbeststaeube,de,Asbeststäube,asbeststaeube,auto,seed,0.90
+asbeststaeube,de,Asbeststäube,asbeststaube,primary,seed,1.00
+asbestzement,de,Asbestzement,asbestzement,primary,seed,1.00
+asche,de,Asche,asche,primary,seed,1.00
+asphalt,de,Asphalt,asphalt,primary,seed,1.00
+asphaltreste,de,Asphaltreste,asphaltreste,primary,seed,1.00
+ast,de,Ast,ast,primary,seed,1.00
+aeste,de,Äste,aste,primary,seed,1.00
+aeste_dicke,de,"Äste, dicke",aste dicke,primary,seed,1.00
+aeste_dicke,de,"Äste, dicke",astedicke,auto,seed,0.85
+aetznatron,de,Ätznatron,atznatron,primary,seed,1.00
+audiokassetten,de,Audiokassetten,audiokassetten,primary,seed,1.00
+aufschnitt,de,Aufschnitt,aufschnitt,primary,seed,1.00
+auftausalz,de,Auftausalz,auftausalz,primary,seed,1.00
+auslegware,de,Auslegware,auslegware,primary,seed,1.00
+autobatterie,de,Autobatterie,autobatterie,primary,seed,1.00
+autobatterien,de,Autobatterien,autobatterien,primary,seed,1.00
+autofelgen,de,Autofelgen,autofelgen,primary,seed,1.00
+autoradios,de,Autoradios,autoradios,primary,seed,1.00
+autoreifen,de,Autoreifen,autoreifen,primary,seed,1.00
+autos,de,Autos,autos,primary,seed,1.00
+autoteile,de,Autoteile,autoteile,primary,seed,1.00
+babybadewanne,de,Babybadewanne,babybadewanne,primary,seed,1.00
+babynahrungsglaeser,de,Babynahrungsgläser,babynahrungsglaeser,auto,seed,0.90
+babynahrungsglaeser,de,Babynahrungsgläser,babynahrungsglaser,primary,seed,1.00
+backofen_elektrisch,de,Backofen (elektrisch),backofen elektrisch,primary,seed,1.00
+backofen_elektrisch,de,Backofen (elektrisch),backofenelektrisch,auto,seed,0.85
+backofenreiniger,de,Backofenreiniger,backofenreiniger,primary,seed,1.00
+backpapier,de,Backpapier,backpapier,primary,seed,1.00
+backwaren,de,Backwaren,backwaren,primary,seed,1.00
+badewanne,de,Badewanne,badewanne,primary,seed,1.00
+badewannen_aus_kunststoff,de,Badewannen aus Kunststoff,badewannen aus kunststoff,primary,seed,1.00
+badewannen_aus_metall,de,Badewannen aus Metall,badewannen aus metall,primary,seed,1.00
+badewannen_aus_kunststoff,de,Badewannen aus Kunststoff,badewannenauskunststoff,auto,seed,0.85
+badewannen_aus_metall,de,Badewannen aus Metall,badewannenausmetall,auto,seed,0.85
+badreiniger,de,Badreiniger,badreiniger,primary,seed,1.00
+baelle_kunststoff,de,Bälle (Kunststoff),baelle kunststoff,auto,seed,0.90
+baelle_leder,de,Bälle (Leder),baelle leder,auto,seed,0.90
+baelle_kunststoff,de,Bälle (Kunststoff),baellekunststoff,auto,seed,0.80
+baelle_leder,de,Bälle (Leder),baelleleder,auto,seed,0.80
+baerenklau,de,Bärenklau,baerenklau,auto,seed,0.90
+bahnschwellen,de,Bahnschwellen,bahnschwellen,primary,seed,1.00
+ball_kunststoff,de,Ball (Kunststoff),ball kunststoff,primary,seed,1.00
+ball_leder,de,Ball (Leder),ball leder,primary,seed,1.00
+baelle_kunststoff,de,Bälle (Kunststoff),balle kunststoff,primary,seed,1.00
+baelle_leder,de,Bälle (Leder),balle leder,primary,seed,1.00
+baelle_kunststoff,de,Bälle (Kunststoff),ballekunststoff,auto,seed,0.85
+baelle_leder,de,Bälle (Leder),balleleder,auto,seed,0.85
+ball_kunststoff,de,Ball (Kunststoff),ballkunststoff,auto,seed,0.85
+ball_leder,de,Ball (Leder),ballleder,auto,seed,0.85
+bambus,de,Bambus,bambus,primary,seed,1.00
+baerenklau,de,Bärenklau,barenklau,primary,seed,1.00
+barometer,de,Barometer,barometer,primary,seed,1.00
+batterieladegeraete,de,Batterieladegeräte,batterieladegeraete,auto,seed,0.90
+batterieladegeraete,de,Batterieladegeräte,batterieladegerate,primary,seed,1.00
+batterien,de,Batterien,batterien,primary,seed,1.00
+bau_und_abbruchholz,de,Bau- und Abbruchholz,bau und abbruchholz,primary,seed,1.00
+bauabfaelle,de,Bauabfälle,bauabfaelle,auto,seed,0.90
+bauabfaelle,de,Bauabfälle,bauabfalle,primary,seed,1.00
+bauhoelzer,de,Bauhölzer,bauhoelzer,auto,seed,0.90
+bauholz,de,Bauholz,bauholz,primary,seed,1.00
+bauhoelzer,de,Bauhölzer,bauholzer,primary,seed,1.00
+baum_strauch_und_heckenschnitt,de,"Baum-, Strauch- und Heckenschnitt",baum strauch und heckenschnitt,primary,seed,1.00
+baum_und_strauchschnitt,de,Baum- und Strauchschnitt,baum und strauchschnitt,primary,seed,1.00
+baumischabfaelle,de,Baumischabfälle,baumischabfaelle,auto,seed,0.90
+baumischabfall,de,Baumischabfall,baumischabfall,primary,seed,1.00
+baumischabfaelle,de,Baumischabfälle,baumischabfalle,primary,seed,1.00
+baumnadeln,de,Baumnadeln,baumnadeln,primary,seed,1.00
+baumschnitt,de,Baumschnitt,baumschnitt,primary,seed,1.00
+baum_strauch_und_heckenschnitt,de,"Baum-, Strauch- und Heckenschnitt",baumstrauchundheckenschnitt,auto,seed,0.85
+baumstuempfe_stubben,de,"Baumstümpfe, -stubben",baumstuempfe stubben,auto,seed,0.90
+baumstuempfe_stubben,de,"Baumstümpfe, -stubben",baumstuempfestubben,auto,seed,0.80
+baumstuempfe_stubben,de,"Baumstümpfe, -stubben",baumstumpfe stubben,primary,seed,1.00
+baumstuempfe_stubben,de,"Baumstümpfe, -stubben",baumstumpfestubben,auto,seed,0.85
+baum_und_strauchschnitt,de,Baum- und Strauchschnitt,baumundstrauchschnitt,auto,seed,0.85
+bauschaum,de,Bauschaum,bauschaum,primary,seed,1.00
+bauschaum_dosen,de,Bauschaum (Dosen),bauschaum dosen,primary,seed,1.00
+bauschaum_dosen,de,Bauschaum (Dosen),bauschaumdosen,auto,seed,0.85
+bauschutt,de,Bauschutt,bauschutt,primary,seed,1.00
+baustellenabfaelle,de,Baustellenabfälle,baustellenabfaelle,auto,seed,0.90
+baustellenabfaelle,de,Baustellenabfälle,baustellenabfalle,primary,seed,1.00
+bau_und_abbruchholz,de,Bau- und Abbruchholz,bauundabbruchholz,auto,seed,0.85
+beetumrandungen_eternit_asbestzement,de,Beetumrandungen (Eternit / Asbestzement),beetumrandungen eternit asbestzement,primary,seed,1.00
+beetumrandungen_eternit_asbestzement,de,Beetumrandungen (Eternit / Asbestzement),beetumrandungeneternitasbestzement,auto,seed,0.85
+behaelterglas,de,Behälterglas,behaelterglas,auto,seed,0.90
+behaelterglas,de,Behälterglas,behalterglas,primary,seed,1.00
+behandeltes_holz,de,Behandeltes Holz,behandeltes holz,primary,seed,1.00
+behandeltes_holz,de,Behandeltes Holz,behandeltesholz,auto,seed,0.85
+beistellherde,de,Beistellherde,beistellherde,primary,seed,1.00
+beizen,de,Beizen,beizen,primary,seed,1.00
+bekleidung,de,Bekleidung,bekleidung,primary,seed,1.00
+benzin,de,Benzin,benzin,primary,seed,1.00
+benzinfeuerzeug,de,Benzinfeuerzeug,benzinfeuerzeug,primary,seed,1.00
+benzinkanister,de,Benzinkanister,benzinkanister,primary,seed,1.00
+besenschraenke,de,Besenschränke,besenschraenke,auto,seed,0.90
+besenschrank,de,Besenschrank,besenschrank,primary,seed,1.00
+besenschraenke,de,Besenschränke,besenschranke,primary,seed,1.00
+besteck,de,Besteck,besteck,primary,seed,1.00
+besteck_kunststoff,de,Besteck (Kunststoff),besteck kunststoff,primary,seed,1.00
+besteck_kunststoff,de,Besteck (Kunststoff),besteckkunststoff,auto,seed,0.85
+beton,de,Beton,beton,primary,seed,1.00
+betongrill_grillkamin,de,Betongrill/Grillkamin,betongrill grillkamin,primary,seed,1.00
+betongrill_grillkamin,de,Betongrill/Grillkamin,betongrillgrillkamin,auto,seed,0.85
+betonpulver_im_sack_unausgehaertet,de,Betonpulver im Sack (unausgehärtet),betonpulver im sack unausgehaertet,auto,seed,0.90
+betonpulver_im_sack_unausgehaertet,de,Betonpulver im Sack (unausgehärtet),betonpulver im sack unausgehartet,primary,seed,1.00
+betonpulver_im_sack_unausgehaertet,de,Betonpulver im Sack (unausgehärtet),betonpulverimsackunausgehaertet,auto,seed,0.80
+betonpulver_im_sack_unausgehaertet,de,Betonpulver im Sack (unausgehärtet),betonpulverimsackunausgehartet,auto,seed,0.85
+betonschleifstaub,de,Betonschleifstaub,betonschleifstaub,primary,seed,1.00
+betonsteine_verschmutzt_oel,de,Betonsteine verschmutzt (Öl),betonsteine verschmutzt oel,auto,seed,0.90
+betonsteine_verschmutzt_oel,de,Betonsteine verschmutzt (Öl),betonsteine verschmutzt ol,primary,seed,1.00
+betonsteine_verschmutzt_oel,de,Betonsteine verschmutzt (Öl),betonsteineverschmutztoel,auto,seed,0.80
+betonsteine_verschmutzt_oel,de,Betonsteine verschmutzt (Öl),betonsteineverschmutztol,auto,seed,0.85
+betten,de,Betten,betten,primary,seed,1.00
+bettgestelle_metall,de,Bettgestelle (Metall),bettgestelle metall,primary,seed,1.00
+bettgestelle_metall,de,Bettgestelle (Metall),bettgestellemetall,auto,seed,0.85
+bettrahmen,de,Bettrahmen,bettrahmen,primary,seed,1.00
+bettwaesche,de,Bettwäsche,bettwaesche,auto,seed,0.90
+bettwanzengift,de,Bettwanzengift,bettwanzengift,primary,seed,1.00
+bettwaesche,de,Bettwäsche,bettwasche,primary,seed,1.00
+bidets,de,Bidets,bidets,primary,seed,1.00
+bilderrahmen,de,Bilderrahmen,bilderrahmen,primary,seed,1.00
+bilderrahmen_gross,de,Bilderrahmen (groß),bilderrahmen gro,primary,seed,1.00
+bilderrahmen_gross,de,Bilderrahmen (groß),bilderrahmen gross,auto,seed,0.90
+bilderrahmen_klein_holz,de,"Bilderrahmen, klein (Holz)",bilderrahmen klein holz,primary,seed,1.00
+bilderrahmen_klein_kunststoff,de,"Bilderrahmen, klein (Kunststoff)",bilderrahmen klein kunststoff,primary,seed,1.00
+bilderrahmen_klein_metall,de,"Bilderrahmen, klein (Metall)",bilderrahmen klein metall,primary,seed,1.00
+bilderrahmen_gross,de,Bilderrahmen (groß),bilderrahmengro,auto,seed,0.85
+bilderrahmen_gross,de,Bilderrahmen (groß),bilderrahmengross,auto,seed,0.80
+bilderrahmen_klein_holz,de,"Bilderrahmen, klein (Holz)",bilderrahmenkleinholz,auto,seed,0.85
+bilderrahmen_klein_kunststoff,de,"Bilderrahmen, klein (Kunststoff)",bilderrahmenkleinkunststoff,auto,seed,0.85
+bilderrahmen_klein_metall,de,"Bilderrahmen, klein (Metall)",bilderrahmenkleinmetall,auto,seed,0.85
+bildschirm,de,Bildschirm,bildschirm,primary,seed,1.00
+bildschirme,de,Bildschirme,bildschirme,primary,seed,1.00
+billiard_tisch,de,Billiard-Tisch,billiard tisch,primary,seed,1.00
+billiard_tisch,de,Billiard-Tisch,billiardtisch,auto,seed,0.85
+bimssteine,de,Bimssteine,bimssteine,primary,seed,1.00
+binden,de,Binden,binden,primary,seed,1.00
+binderfarben,de,Binderfarben,binderfarben,primary,seed,1.00
+bioabfall,de,Bioabfall,bioabfall,primary,seed,1.00
+bioabfall_sammelbeutel_aus_papier,de,Bioabfall-Sammelbeutel aus Papier,bioabfall sammelbeutel aus papier,primary,seed,1.00
+bioabfall_sammelbeutel_aus_papier,de,Bioabfall-Sammelbeutel aus Papier,bioabfallsammelbeutelauspapier,auto,seed,0.85
+biokunststoff,de,Biokunststoff,biokunststoff,primary,seed,1.00
+bioplastik,de,Bioplastik,bioplastik,primary,seed,1.00
+bioplastik_abfallbeutel,de,Bioplastik-Abfallbeutel,bioplastik abfallbeutel,primary,seed,1.00
+bioplastik_abfallbeutel,de,Bioplastik-Abfallbeutel,bioplastikabfallbeutel,auto,seed,0.85
+bitumen,de,Bitumen,bitumen,primary,seed,1.00
+bitumenpappe,de,Bitumenpappe,bitumenpappe,primary,seed,1.00
+blaehton,de,Blähton,blaehton,auto,seed,0.90
+blaeueschutzmittel,de,Bläueschutzmittel,blaeueschutzmittel,auto,seed,0.90
+blaehton,de,Blähton,blahton,primary,seed,1.00
+blaeueschutzmittel,de,Bläueschutzmittel,blaueschutzmittel,primary,seed,1.00
+blechteile,de,Blechteile,blechteile,primary,seed,1.00
+blei_gel_akkus,de,Blei-Gel-Akkus,blei gel akkus,primary,seed,1.00
+blei_metall,de,Blei (Metall),blei metall,primary,seed,1.00
+bleiabfaelle,de,Bleiabfälle,bleiabfaelle,auto,seed,0.90
+bleiabfaelle,de,Bleiabfälle,bleiabfalle,primary,seed,1.00
+bleiakkumilatoren,de,Bleiakkumilatoren,bleiakkumilatoren,primary,seed,1.00
+bleibatterien,de,Bleibatterien,bleibatterien,primary,seed,1.00
+bleichmittel,de,Bleichmittel,bleichmittel,primary,seed,1.00
+blei_gel_akkus,de,Blei-Gel-Akkus,bleigelakkus,auto,seed,0.85
+bleiglas,de,Bleiglas,bleiglas,primary,seed,1.00
+bleimennige,de,Bleimennige,bleimennige,primary,seed,1.00
+blei_metall,de,Blei (Metall),bleimetall,auto,seed,0.85
+bleischuerzen,de,Bleischürzen,bleischuerzen,auto,seed,0.90
+bleischuerzen,de,Bleischürzen,bleischurzen,primary,seed,1.00
+bleistifte,de,Bleistifte,bleistifte,primary,seed,1.00
+blu_ray,de,Blu-Ray,blu ray,primary,seed,1.00
+blu_ray_player,de,Blu-Ray-Player,blu ray player,primary,seed,1.00
+blumen,de,Blumen,blumen,primary,seed,1.00
+blumen_und_pflanzenreste,de,Blumen- und Pflanzenreste,blumen und pflanzenreste,primary,seed,1.00
+blumenerde,de,Blumenerde,blumenerde,primary,seed,1.00
+blumenkaesten_eternit_asbestzement,de,Blumenkästen (Eternit / Asbestzement),blumenkaesten eternit asbestzement,auto,seed,0.90
+blumenkaesten_kunststoff,de,Blumenkästen (Kunststoff),blumenkaesten kunststoff,auto,seed,0.90
+blumenkaesten_eternit_asbestzement,de,Blumenkästen (Eternit / Asbestzement),blumenkaesteneternitasbestzement,auto,seed,0.80
+blumenkaesten_kunststoff,de,Blumenkästen (Kunststoff),blumenkaestenkunststoff,auto,seed,0.80
+blumenkasten_eternit_asbestzement,de,Blumenkasten (Eternit / Asbestzement),blumenkasten eternit asbestzement,primary,seed,1.00
+blumenkaesten_kunststoff,de,Blumenkästen (Kunststoff),blumenkasten kunststoff,primary,seed,1.00
+blumenkasten_eternit_asbestzement,de,Blumenkasten (Eternit / Asbestzement),blumenkasteneternitasbestzement,auto,seed,0.85
+blumenkaesten_kunststoff,de,Blumenkästen (Kunststoff),blumenkastenkunststoff,auto,seed,0.85
+blumentoepfe,de,Blumentöpfe,blumentoepfe,auto,seed,0.90
+blumentoepfe_kunststoff,de,Blumentöpfe (Kunststoff),blumentoepfe kunststoff,auto,seed,0.90
+blumentoepfe_ton,de,Blumentöpfe (Ton),blumentoepfe ton,auto,seed,0.90
+blumentoepfe_kunststoff,de,Blumentöpfe (Kunststoff),blumentoepfekunststoff,auto,seed,0.80
+blumentoepfe_ton,de,Blumentöpfe (Ton),blumentoepfeton,auto,seed,0.80
+blumentopf_kunststoff,de,Blumentopf (Kunststoff),blumentopf kunststoff,primary,seed,1.00
+blumentopf_ton,de,Blumentopf (Ton),blumentopf ton,primary,seed,1.00
+blumentoepfe,de,Blumentöpfe,blumentopfe,primary,seed,1.00
+blumentoepfe_kunststoff,de,Blumentöpfe (Kunststoff),blumentopfe kunststoff,primary,seed,1.00
+blumentoepfe_ton,de,Blumentöpfe (Ton),blumentopfe ton,primary,seed,1.00
+blumentoepfe_kunststoff,de,Blumentöpfe (Kunststoff),blumentopfekunststoff,auto,seed,0.85
+blumentoepfe_ton,de,Blumentöpfe (Ton),blumentopfeton,auto,seed,0.85
+blumentopf_kunststoff,de,Blumentopf (Kunststoff),blumentopfkunststoff,auto,seed,0.85
+blumentopf_ton,de,Blumentopf (Ton),blumentopfton,auto,seed,0.85
+blumen_und_pflanzenreste,de,Blumen- und Pflanzenreste,blumenundpflanzenreste,auto,seed,0.85
+blumenvasen,de,Blumenvasen,blumenvasen,primary,seed,1.00
+blu_ray,de,Blu-Ray,bluray,auto,seed,0.85
+blu_ray_player,de,Blu-Ray-Player,blurayplayer,auto,seed,0.85
+bodenaushub_erde,de,Bodenaushub/ Erde,bodenaushub erde,primary,seed,1.00
+bodenaushub_kontaminiert,de,Bodenaushub kontaminiert,bodenaushub kontaminiert,primary,seed,1.00
+bodenaushub_nicht_kontaminiert,de,Bodenaushub (nicht kontaminiert),bodenaushub nicht kontaminiert,primary,seed,1.00
+bodenaushub_erde,de,Bodenaushub/ Erde,bodenaushuberde,auto,seed,0.85
+bodenaushub_kontaminiert,de,Bodenaushub kontaminiert,bodenaushubkontaminiert,auto,seed,0.85
+bodenaushub_nicht_kontaminiert,de,Bodenaushub (nicht kontaminiert),bodenaushubnichtkontaminiert,auto,seed,0.85
+bodenbelaege,de,Bodenbeläge,bodenbelaege,auto,seed,0.90
+bodenbelag,de,Bodenbelag,bodenbelag,primary,seed,1.00
+bodenbelaege,de,Bodenbeläge,bodenbelage,primary,seed,1.00
+bodenmaterial_belastet,de,"Bodenmaterial, belastet",bodenmaterial belastet,primary,seed,1.00
+bodenmaterial_belastet,de,"Bodenmaterial, belastet",bodenmaterialbelastet,auto,seed,0.85
+boeller,de,Böller,boeller,auto,seed,0.90
+bohrmaschine,de,Bohrmaschine,bohrmaschine,primary,seed,1.00
+bohrmaschinen,de,Bohrmaschinen,bohrmaschinen,primary,seed,1.00
+boiler,de,Boiler,boiler,primary,seed,1.00
+boeller,de,Böller,boller,primary,seed,1.00
+bondex,de,Bondex,bondex,primary,seed,1.00
+boote,de,Boote,boote,primary,seed,1.00
+brandholz,de,Brandholz,brandholz,primary,seed,1.00
+brandschutztueren,de,Brandschutztüren,brandschutztueren,auto,seed,0.90
+brandschutztueren,de,Brandschutztüren,brandschutzturen,primary,seed,1.00
+bratpfanne,de,Bratpfanne,bratpfanne,primary,seed,1.00
+braunkohle,de,Braunkohle,braunkohle,primary,seed,1.00
+bremsfluessigkeit,de,Bremsflüssigkeit,bremsfluessigkeit,auto,seed,0.90
+bremsfluessigkeit,de,Bremsflüssigkeit,bremsflussigkeit,primary,seed,1.00
+brennspiritus,de,Brennspiritus,brennspiritus,primary,seed,1.00
+bretter,de,Bretter,bretter,primary,seed,1.00
+briefpapier,de,Briefpapier,briefpapier,primary,seed,1.00
+briefumschlaege,de,Briefumschläge,briefumschlaege,auto,seed,0.90
+briefumschlag,de,Briefumschlag,briefumschlag,primary,seed,1.00
+briefumschlaege,de,Briefumschläge,briefumschlage,primary,seed,1.00
+brillen,de,Brillen,brillen,primary,seed,1.00
+broetchen,de,Brötchen,broetchen,auto,seed,0.90
+brot,de,Brot,brot,primary,seed,1.00
+broetchen,de,Brötchen,brotchen,primary,seed,1.00
+buch,de,Buch,buch,primary,seed,1.00
+buecher,de,Bücher,bucher,primary,seed,1.00
+buchsbaum,de,Buchsbaum,buchsbaum,primary,seed,1.00
+buecher,de,Bücher,buecher,auto,seed,0.90
+buegelbrett,de,Bügelbrett,buegelbrett,auto,seed,0.90
+buegelbretter,de,Bügelbretter,buegelbretter,auto,seed,0.90
+buegeleisen,de,Bügeleisen,buegeleisen,auto,seed,0.90
+buegelmaschinen,de,Bügelmaschinen,buegelmaschinen,auto,seed,0.90
+bueropapiere,de,Büropapiere,bueropapiere,auto,seed,0.90
+buersten_kunststoff,de,Bürsten (Kunststoff),buersten kunststoff,auto,seed,0.90
+buersten_kunststoff,de,Bürsten (Kunststoff),buerstenkunststoff,auto,seed,0.80
+buffets,de,Buffets,buffets,primary,seed,1.00
+buegelbrett,de,Bügelbrett,bugelbrett,primary,seed,1.00
+buegelbretter,de,Bügelbretter,bugelbretter,primary,seed,1.00
+buegeleisen,de,Bügeleisen,bugeleisen,primary,seed,1.00
+buegelmaschinen,de,Bügelmaschinen,bugelmaschinen,primary,seed,1.00
+buntstifte,de,Buntstifte,buntstifte,primary,seed,1.00
+bueropapiere,de,Büropapiere,buropapiere,primary,seed,1.00
+buersten_kunststoff,de,Bürsten (Kunststoff),bursten kunststoff,primary,seed,1.00
+buersten_kunststoff,de,Bürsten (Kunststoff),burstenkunststoff,auto,seed,0.85
+butangasflaschen,de,Butangasflaschen,butangasflaschen,primary,seed,1.00
+butterbrotpapier,de,Butterbrotpapier,butterbrotpapier,primary,seed,1.00
+cam_corder,de,Cam-Corder,cam corder,primary,seed,1.00
+cam_corder,de,Cam-Corder,camcorder,auto,seed,0.85
+campinggaskartusche,de,Campinggaskartusche,campinggaskartusche,primary,seed,1.00
+campingtoilette,de,Campingtoilette,campingtoilette,primary,seed,1.00
+cd_cd_rom_dvd_u_blu_ray,de,CD/CD-Rom/DVD u. Blu Ray,cd cd rom dvd u blu ray,primary,seed,1.00
+cd_player,de,CD-Player,cd player,primary,seed,1.00
+cd_cd_rom_dvd_u_blu_ray,de,CD/CD-Rom/DVD u. Blu Ray,cdcdromdvdubluray,auto,seed,0.85
+cd_player,de,CD-Player,cdplayer,auto,seed,0.85
+cds,de,CDs,cds,primary,seed,1.00
+ceran_glas,de,Ceran-Glas,ceran glas,primary,seed,1.00
+ceran_glas,de,Ceran-Glas,ceranglas,auto,seed,0.85
+cerankochfelder,de,Cerankochfelder,cerankochfelder,primary,seed,1.00
+chemiebaukasten,de,Chemiebaukasten,chemiebaukasten,primary,seed,1.00
+chemietoilette,de,Chemietoilette,chemietoilette,primary,seed,1.00
+chemikalien,de,Chemikalien,chemikalien,primary,seed,1.00
+chips_tuete,de,Chips-Tüte,chips tuete,auto,seed,0.90
+chips_tuete,de,Chips-Tüte,chips tute,primary,seed,1.00
+chips_tuete,de,Chips-Tüte,chipstuete,auto,seed,0.80
+chips_tuete,de,Chips-Tüte,chipstute,auto,seed,0.85
+chlor,de,Chlor,chlor,primary,seed,1.00
+chlorbleichlauge,de,Chlorbleichlauge,chlorbleichlauge,primary,seed,1.00
+chlormittel_fuer_schwimmbecken,de,Chlormittel für Schwimmbecken,chlormittel fuer schwimmbecken,auto,seed,0.90
+chlormittel_fuer_schwimmbecken,de,Chlormittel für Schwimmbecken,chlormittel fur schwimmbecken,primary,seed,1.00
+chlormittel_fuer_schwimmbecken,de,Chlormittel für Schwimmbecken,chlormittelfuerschwimmbecken,auto,seed,0.80
+chlormittel_fuer_schwimmbecken,de,Chlormittel für Schwimmbecken,chlormittelfurschwimmbecken,auto,seed,0.85
+chlorreiniger,de,Chlorreiniger,chlorreiniger,primary,seed,1.00
+co2_loescher,de,CO2-Löscher,co2 loescher,auto,seed,0.90
+co2_loescher,de,CO2-Löscher,co2 loscher,primary,seed,1.00
+co2_zylinder,de,CO2-Zylinder,co2 zylinder,primary,seed,1.00
+co2_loescher,de,CO2-Löscher,co2loescher,auto,seed,0.80
+co2_loescher,de,CO2-Löscher,co2loscher,auto,seed,0.85
+co2_zylinder,de,CO2-Zylinder,co2zylinder,auto,seed,0.85
+coffee_to_go_einwegbecher,de,Coffee-to-go-Einwegbecher,coffee to go einwegbecher,primary,seed,1.00
+coffee_to_go_einwegbecher,de,Coffee-to-go-Einwegbecher,coffeetogoeinwegbecher,auto,seed,0.85
+computer,de,Computer,computer,primary,seed,1.00
+computerpapier,de,Computerpapier,computerpapier,primary,seed,1.00
+corona_schnelltest_privathaushalt,de,Corona Schnelltest (Privathaushalt),corona schnelltest privathaushalt,primary,seed,1.00
+corona_schnelltests,de,Corona-Schnelltests,corona schnelltests,primary,seed,1.00
+corona_schnelltest_privathaushalt,de,Corona Schnelltest (Privathaushalt),coronaschnelltestprivathaushalt,auto,seed,0.85
+corona_schnelltests,de,Corona-Schnelltests,coronaschnelltests,auto,seed,0.85
+couchen,de,Couchen,couchen,primary,seed,1.00
+dachbalken,de,Dachbalken,dachbalken,primary,seed,1.00
+dachgepaecktraeger,de,Dachgepäckträger,dachgepacktrager,primary,seed,1.00
+dachgepaecktraeger,de,Dachgepäckträger,dachgepaecktraeger,auto,seed,0.90
+dachlatten,de,Dachlatten,dachlatten,primary,seed,1.00
+dachpappe,de,Dachpappe,dachpappe,primary,seed,1.00
+dachpappenrollen,de,Dachpappenrollen,dachpappenrollen,primary,seed,1.00
+dachpfannen,de,Dachpfannen,dachpfannen,primary,seed,1.00
+dachrinnen_aus_kunststoff,de,Dachrinnen aus Kunststoff,dachrinnen aus kunststoff,primary,seed,1.00
+dachrinnen_aus_metall,de,Dachrinnen aus Metall,dachrinnen aus metall,primary,seed,1.00
+dachrinnen_aus_kunststoff,de,Dachrinnen aus Kunststoff,dachrinnenauskunststoff,auto,seed,0.85
+dachrinnen_aus_metall,de,Dachrinnen aus Metall,dachrinnenausmetall,auto,seed,0.85
+dachschindel,de,Dachschindel,dachschindel,primary,seed,1.00
+dachziegel,de,Dachziegel,dachziegel,primary,seed,1.00
+daemmholzwolle,de,Dämmholzwolle,daemmholzwolle,auto,seed,0.90
+daemmmaterial,de,Dämmmaterial,daemmmaterial,auto,seed,0.90
+daemmmaterialien,de,Dämmmaterialien,daemmmaterialien,auto,seed,0.90
+daemmplatten_aus_styropor,de,Dämmplatten aus Styropor,daemmplatten aus styropor,auto,seed,0.90
+daemmplatten_aus_styropor,de,Dämmplatten aus Styropor,daemmplattenausstyropor,auto,seed,0.80
+daemmschaum,de,Dämmschaum,daemmschaum,auto,seed,0.90
+daemmstoffe,de,Dämmstoffe,daemmstoffe,auto,seed,0.90
+daemmstoffe_hbcd_belastet,de,"Dämmstoffe, HBCD-belastet",daemmstoffe hbcd belastet,auto,seed,0.90
+daemmstoffe_hbcd_belastet,de,"Dämmstoffe, HBCD-belastet",daemmstoffehbcdbelastet,auto,seed,0.80
+damenbinden,de,Damenbinden,damenbinden,primary,seed,1.00
+daemmholzwolle,de,Dämmholzwolle,dammholzwolle,primary,seed,1.00
+daemmmaterial,de,Dämmmaterial,dammmaterial,primary,seed,1.00
+daemmmaterialien,de,Dämmmaterialien,dammmaterialien,primary,seed,1.00
+daemmplatten_aus_styropor,de,Dämmplatten aus Styropor,dammplatten aus styropor,primary,seed,1.00
+daemmplatten_aus_styropor,de,Dämmplatten aus Styropor,dammplattenausstyropor,auto,seed,0.85
+daemmschaum,de,Dämmschaum,dammschaum,primary,seed,1.00
+daemmstoffe,de,Dämmstoffe,dammstoffe,primary,seed,1.00
+daemmstoffe_hbcd_belastet,de,"Dämmstoffe, HBCD-belastet",dammstoffe hbcd belastet,primary,seed,1.00
+daemmstoffe_hbcd_belastet,de,"Dämmstoffe, HBCD-belastet",dammstoffehbcdbelastet,auto,seed,0.85
+daunendecken,de,Daunendecken,daunendecken,primary,seed,1.00
+deckel_aus_alu_kunststoff,de,Deckel aus Alu/Kunststoff,deckel aus alu kunststoff,primary,seed,1.00
+deckel_aus_alu_kunststoff,de,Deckel aus Alu/Kunststoff,deckelausalukunststoff,auto,seed,0.85
+deckenputz_lehmputz,de,Deckenputz/Lehmputz,deckenputz lehmputz,primary,seed,1.00
+deckenputz_lehmputz,de,Deckenputz/Lehmputz,deckenputzlehmputz,auto,seed,0.85
+dekorationsschwerter,de,Dekorationsschwerter,dekorationsschwerter,primary,seed,1.00
+dekorplatten_aus_styropor,de,Dekorplatten aus Styropor,dekorplatten aus styropor,primary,seed,1.00
+dekorplatten_aus_styropor,de,Dekorplatten aus Styropor,dekorplattenausstyropor,auto,seed,0.85
+desinfektionsmittel,de,Desinfektionsmittel,desinfektionsmittel,primary,seed,1.00
+desinfektionsmittel_gel,de,"Desinfektionsmittel, -gel",desinfektionsmittel gel,primary,seed,1.00
+desinfektionsmittel_gel,de,"Desinfektionsmittel, -gel",desinfektionsmittelgel,auto,seed,0.85
+dia_projektoren,de,Dia-Projektoren,dia projektoren,primary,seed,1.00
+diabetis_sensor,de,Diabetis-Sensor,diabetis sensor,primary,seed,1.00
+diabetis_sensor,de,Diabetis-Sensor,diabetissensor,auto,seed,0.85
+diaprojektoren,de,Diaprojektoren,diaprojektoren,primary,seed,1.00
+dias,de,Dias,dias,primary,seed,1.00
+dicke_aeste,de,Dicke Äste,dicke aeste,auto,seed,0.90
+dicke_aeste,de,Dicke Äste,dicke aste,primary,seed,1.00
+dicke_aeste,de,Dicke Äste,dickeaeste,auto,seed,0.80
+dicke_aeste,de,Dicke Äste,dickeaste,auto,seed,0.85
+dielen,de,Dielen,dielen,primary,seed,1.00
+diesel,de,Diesel,diesel,primary,seed,1.00
+dieseloel,de,Dieselöl,dieseloel,auto,seed,0.90
+dieseloel,de,Dieselöl,dieselol,primary,seed,1.00
+diktiergeraete,de,Diktiergeräte,diktiergeraete,auto,seed,0.90
+diktiergeraete,de,Diktiergeräte,diktiergerate,primary,seed,1.00
+discmen,de,Discmen,discmen,primary,seed,1.00
+diskette,de,Diskette,diskette,primary,seed,1.00
+disketten,de,Disketten,disketten,primary,seed,1.00
+dispersionsfarben,de,Dispersionsfarben,dispersionsfarben,primary,seed,1.00
+dokumente_vertraulich,de,"Dokumente, vertraulich",dokumente vertraulich,primary,seed,1.00
+dokumente_vertraulich,de,"Dokumente, vertraulich",dokumentevertraulich,auto,seed,0.85
+domestos,de,Domestos,domestos,primary,seed,1.00
+doppelspuele_metall,de,Doppelspüle (Metall),doppelspuele metall,auto,seed,0.90
+doppelspuele_metall,de,Doppelspüle (Metall),doppelspuelemetall,auto,seed,0.80
+doppelspuele_metall,de,Doppelspüle (Metall),doppelspule metall,primary,seed,1.00
+doppelspuele_metall,de,Doppelspüle (Metall),doppelspulemetall,auto,seed,0.85
+dosen,de,Dosen,dosen,primary,seed,1.00
+draht,de,Draht,draht,primary,seed,1.00
+drahtglasscheiben,de,Drahtglasscheiben,drahtglasscheiben,primary,seed,1.00
+drei_d_drucker,de,Drei-D-Drucker,drei d drucker,primary,seed,1.00
+drei_d_drucker,de,Drei-D-Drucker,dreiddrucker,auto,seed,0.85
+drucker,de,Drucker,drucker,primary,seed,1.00
+druckerkartuschen,de,Druckerkartuschen,druckerkartuschen,primary,seed,1.00
+druckerpatronen,de,Druckerpatronen,druckerpatronen,primary,seed,1.00
+druckgasflaschen,de,Druckgasflaschen,druckgasflaschen,primary,seed,1.00
+duengemittelreste,de,Düngemittelreste,duengemittelreste,auto,seed,0.90
+duenger,de,Dünger,duenger,auto,seed,0.90
+duengemittelreste,de,Düngemittelreste,dungemittelreste,primary,seed,1.00
+duenger,de,Dünger,dunger,primary,seed,1.00
+dunstabzugshaube,de,Dunstabzugshaube,dunstabzugshaube,primary,seed,1.00
+dunstabzugshauben,de,Dunstabzugshauben,dunstabzugshauben,primary,seed,1.00
+dunstabzugshauben_filter,de,Dunstabzugshauben Filter,dunstabzugshauben filter,primary,seed,1.00
+dunstabzugshauben_filter,de,Dunstabzugshauben Filter,dunstabzugshaubenfilter,auto,seed,0.85
+durchlauferhitzer,de,Durchlauferhitzer,durchlauferhitzer,primary,seed,1.00
+durchschlagpapier_kohlepapier,de,Durchschlagpapier (Kohlepapier),durchschlagpapier kohlepapier,primary,seed,1.00
+durchschlagpapier_kohlepapier,de,Durchschlagpapier (Kohlepapier),durchschlagpapierkohlepapier,auto,seed,0.85
+durchschreibpapier,de,Durchschreibpapier,durchschreibpapier,primary,seed,1.00
+duschabtrennungen_duschkabine,de,"Duschabtrennungen, Duschkabine",duschabtrennungen duschkabine,primary,seed,1.00
+duschabtrennungen_duschkabine,de,"Duschabtrennungen, Duschkabine",duschabtrennungenduschkabine,auto,seed,0.85
+duschreiniger,de,Duschreiniger,duschreiniger,primary,seed,1.00
+duschvorhaenge_kunststoff,de,Duschvorhänge (Kunststoff),duschvorhaenge kunststoff,auto,seed,0.90
+duschvorhaenge_kunststoff,de,Duschvorhänge (Kunststoff),duschvorhaengekunststoff,auto,seed,0.80
+duschvorhang_kunststoff,de,Duschvorhang (Kunststoff),duschvorhang kunststoff,primary,seed,1.00
+duschvorhaenge_kunststoff,de,Duschvorhänge (Kunststoff),duschvorhange kunststoff,primary,seed,1.00
+duschvorhaenge_kunststoff,de,Duschvorhänge (Kunststoff),duschvorhangekunststoff,auto,seed,0.85
+duschvorhang_kunststoff,de,Duschvorhang (Kunststoff),duschvorhangkunststoff,auto,seed,0.85
+duschwanne,de,Duschwanne,duschwanne,primary,seed,1.00
+dvd_player,de,DVD-Player,dvd player,primary,seed,1.00
+dvd_player,de,DVD-Player,dvdplayer,auto,seed,0.85
+dvds,de,DVDs,dvds,primary,seed,1.00
+e_bike_akkus,de,E-Bike-Akkus,e bike akkus,primary,seed,1.00
+e_bikes,de,E-Bikes,e bikes,primary,seed,1.00
+e_mobil,de,E-Mobil,e mobil,primary,seed,1.00
+e_scooter,de,E-Scooter,e scooter,primary,seed,1.00
+e_zigarette,de,E-Zigarette,e zigarette,primary,seed,1.00
+e_bike_akkus,de,E-Bike-Akkus,ebikeakkus,auto,seed,0.85
+e_bikes,de,E-Bikes,ebikes,auto,seed,0.85
+ec_karten,de,EC-Karten,ec karten,primary,seed,1.00
+ec_karten,de,EC-Karten,eckarten,auto,seed,0.85
+eicheln,de,Eicheln,eicheln,primary,seed,1.00
+eierkartons,de,Eierkartons,eierkartons,primary,seed,1.00
+eierkocher,de,Eierkocher,eierkocher,primary,seed,1.00
+eierkohlen,de,Eierkohlen,eierkohlen,primary,seed,1.00
+eierschalen,de,Eierschalen,eierschalen,primary,seed,1.00
+eimer,de,Eimer,eimer,primary,seed,1.00
+einmachglaeser_mit_und_ohne_inhalt,de,Einmachgläser (mit und ohne Inhalt),einmachglaeser mit und ohne inhalt,auto,seed,0.90
+einmachglaeser_mit_und_ohne_inhalt,de,Einmachgläser (mit und ohne Inhalt),einmachglaesermitundohneinhalt,auto,seed,0.80
+einmachglaeser_mit_und_ohne_inhalt,de,Einmachgläser (mit und ohne Inhalt),einmachglaser mit und ohne inhalt,primary,seed,1.00
+einmachglaeser_mit_und_ohne_inhalt,de,Einmachgläser (mit und ohne Inhalt),einmachglasermitundohneinhalt,auto,seed,0.85
+einmalhandschuhe,de,Einmalhandschuhe,einmalhandschuhe,primary,seed,1.00
+einwegbecher,de,Einwegbecher,einwegbecher,primary,seed,1.00
+einwegbesteck,de,Einwegbesteck,einwegbesteck,primary,seed,1.00
+einweggeschirr,de,Einweggeschirr,einweggeschirr,primary,seed,1.00
+einweghandschuhe,de,Einweghandschuhe,einweghandschuhe,primary,seed,1.00
+einwegkaffeebecher,de,Einwegkaffeebecher,einwegkaffeebecher,primary,seed,1.00
+einwegrasierer,de,Einwegrasierer,einwegrasierer,primary,seed,1.00
+einwickelpapier_fuer_bioabfall,de,Einwickelpapier (für Bioabfall),einwickelpapier fuer bioabfall,auto,seed,0.90
+einwickelpapier_fuer_bioabfall,de,Einwickelpapier (für Bioabfall),einwickelpapier fur bioabfall,primary,seed,1.00
+einwickelpapier_fuer_bioabfall,de,Einwickelpapier (für Bioabfall),einwickelpapierfuerbioabfall,auto,seed,0.80
+einwickelpapier_fuer_bioabfall,de,Einwickelpapier (für Bioabfall),einwickelpapierfurbioabfall,auto,seed,0.85
+eisenbahnplatte,de,Eisenbahnplatte,eisenbahnplatte,primary,seed,1.00
+eisenbahnschwellen,de,Eisenbahnschwellen,eisenbahnschwellen,primary,seed,1.00
+elektroaltgeraete,de,Elektroaltgeräte,elektroaltgeraete,auto,seed,0.90
+elektroaltgeraete,de,Elektroaltgeräte,elektroaltgerate,primary,seed,1.00
+elektrogeraete,de,Elektrogeräte,elektrogeraete,auto,seed,0.90
+elektrogeraete,de,Elektrogeräte,elektrogerate,primary,seed,1.00
+elektroheizgeraete,de,Elektroheizgeräte,elektroheizgeraete,auto,seed,0.90
+elektroheizgeraete,de,Elektroheizgeräte,elektroheizgerate,primary,seed,1.00
+elektroheizkoerper,de,Elektroheizkörper,elektroheizkoerper,auto,seed,0.90
+elektroheizkoerper,de,Elektroheizkörper,elektroheizkorper,primary,seed,1.00
+elektroheizpilze,de,Elektroheizpilze,elektroheizpilze,primary,seed,1.00
+elektroherd,de,Elektroherd,elektroherd,primary,seed,1.00
+elektroherde,de,Elektroherde,elektroherde,primary,seed,1.00
+elektrokabel,de,Elektrokabel,elektrokabel,primary,seed,1.00
+elektrokleingeraete,de,Elektrokleingeräte,elektrokleingeraete,auto,seed,0.90
+elektrokleingeraete,de,Elektrokleingeräte,elektrokleingerate,primary,seed,1.00
+elektromotoren_kleintechnik,de,Elektromotoren (Kleintechnik),elektromotoren kleintechnik,primary,seed,1.00
+elektromotoren_kleintechnik,de,Elektromotoren (Kleintechnik),elektromotorenkleintechnik,auto,seed,0.85
+elektronikschrott,de,Elektronikschrott,elektronikschrott,primary,seed,1.00
+elektronische_diabetes_pflaster,de,Elektronische Diabetes Pflaster,elektronische diabetes pflaster,primary,seed,1.00
+elektronische_diabetes_pflaster,de,Elektronische Diabetes Pflaster,elektronischediabetespflaster,auto,seed,0.85
+elektroschrott,de,Elektroschrott,elektroschrott,primary,seed,1.00
+elektrowerkzeuge,de,Elektrowerkzeuge,elektrowerkzeuge,primary,seed,1.00
+e_mobil,de,E-Mobil,emobil,auto,seed,0.85
+energiesparlampen,de,Energiesparlampen,energiesparlampen,primary,seed,1.00
+engelshaar,de,Engelshaar,engelshaar,primary,seed,1.00
+entkalker,de,Entkalker,entkalker,primary,seed,1.00
+entsafter,de,Entsafter,entsafter,primary,seed,1.00
+entwickler,de,Entwickler,entwickler,primary,seed,1.00
+entwicklerfluessigkeit,de,Entwicklerflüssigkeit,entwicklerfluessigkeit,auto,seed,0.90
+entwicklerfluessigkeit,de,Entwicklerflüssigkeit,entwicklerflussigkeit,primary,seed,1.00
+entwicklungsbad,de,Entwicklungsbad,entwicklungsbad,primary,seed,1.00
+entwicklungsbaeder,de,Entwicklungsbäder,entwicklungsbader,primary,seed,1.00
+entwicklungsbaeder,de,Entwicklungsbäder,entwicklungsbaeder,auto,seed,0.90
+epoxidharz,de,Epoxidharz,epoxidharz,primary,seed,1.00
+erde,de,Erde,erde,primary,seed,1.00
+erde_bodenaushub,de,Erde (Bodenaushub),erde bodenaushub,primary,seed,1.00
+erde_mit_groesserem_stein_findling_und_wurzelanteil,de,"Erde mit größerem Stein-, Findling- und Wurzelanteil",erde mit gro erem stein findling und wurzelanteil,primary,seed,1.00
+erde_mit_groesserem_stein_findling_und_wurzelanteil,de,"Erde mit größerem Stein-, Findling- und Wurzelanteil",erde mit groesserem stein findling und wurzelanteil,auto,seed,0.90
+erde_bodenaushub,de,Erde (Bodenaushub),erdebodenaushub,auto,seed,0.85
+erde_mit_groesserem_stein_findling_und_wurzelanteil,de,"Erde mit größerem Stein-, Findling- und Wurzelanteil",erdemitgroeremsteinfindlingundwurzelanteil,auto,seed,0.85
+erde_mit_groesserem_stein_findling_und_wurzelanteil,de,"Erde mit größerem Stein-, Findling- und Wurzelanteil",erdemitgroesseremsteinfindlingundwurzelanteil,auto,seed,0.80
+e_scooter,de,E-Scooter,escooter,auto,seed,0.85
+espressomaschinen,de,Espressomaschinen,espressomaschinen,primary,seed,1.00
+essen,de,Essen,essen,primary,seed,1.00
+essensreste,de,Essensreste,essensreste,primary,seed,1.00
+essensreste_gekocht,de,Essensreste (gekocht),essensreste gekocht,primary,seed,1.00
+essensreste_gekocht,de,Essensreste (gekocht),essensrestegekocht,auto,seed,0.85
+estrich,de,Estrich,estrich,primary,seed,1.00
+estrich_estrichbeton,de,Estrich/Estrichbeton,estrich estrichbeton,primary,seed,1.00
+estrich_estrichbeton,de,Estrich/Estrichbeton,estrichestrichbeton,auto,seed,0.85
+estrichstaub,de,Estrichstaub,estrichstaub,primary,seed,1.00
+eternit,de,Eternit,eternit,primary,seed,1.00
+eternitblumenkaesten,de,Eternitblumenkästen,eternitblumenkaesten,auto,seed,0.90
+eternitblumenkaesten,de,Eternitblumenkästen,eternitblumenkasten,primary,seed,1.00
+eternitplatten,de,Eternitplatten,eternitplatten,primary,seed,1.00
+eternitrohre,de,Eternitrohre,eternitrohre,primary,seed,1.00
+e_zigarette,de,E-Zigarette,ezigarette,auto,seed,0.85
+faesser_kunststoff,de,Fässer (Kunststoff),faesser kunststoff,auto,seed,0.90
+faesser_metall,de,Fässer (Metall),faesser metall,auto,seed,0.90
+faesser_kunststoff,de,Fässer (Kunststoff),faesserkunststoff,auto,seed,0.80
+faesser_metall,de,Fässer (Metall),faessermetall,auto,seed,0.80
+fahrkarten_bustickets,de,Fahrkarten/Bustickets,fahrkarten bustickets,primary,seed,1.00
+fahrkarten_bustickets,de,Fahrkarten/Bustickets,fahrkartenbustickets,auto,seed,0.85
+fahrrad,de,Fahrrad,fahrrad,primary,seed,1.00
+fahrradanhaenger,de,Fahrradanhänger,fahrradanhaenger,auto,seed,0.90
+fahrradanhaenger,de,Fahrradanhänger,fahrradanhanger,primary,seed,1.00
+fahrradbatterien,de,Fahrradbatterien,fahrradbatterien,primary,seed,1.00
+fahrraeder,de,Fahrräder,fahrrader,primary,seed,1.00
+fahrradfahrer_airbag_hoevding,de,Fahrradfahrer-Airbag (Hövding),fahrradfahrer airbag hoevding,auto,seed,0.90
+fahrradfahrer_airbag_hoevding,de,Fahrradfahrer-Airbag (Hövding),fahrradfahrer airbag hovding,primary,seed,1.00
+fahrradfahrer_airbag_hoevding,de,Fahrradfahrer-Airbag (Hövding),fahrradfahrerairbaghoevding,auto,seed,0.80
+fahrradfahrer_airbag_hoevding,de,Fahrradfahrer-Airbag (Hövding),fahrradfahrerairbaghovding,auto,seed,0.85
+fahrradhelm,de,Fahrradhelm,fahrradhelm,primary,seed,1.00
+fahrradreifen,de,Fahrradreifen,fahrradreifen,primary,seed,1.00
+fahrraeder,de,Fahrräder,fahrraeder,auto,seed,0.90
+fahrzeugbatterien,de,Fahrzeugbatterien,fahrzeugbatterien,primary,seed,1.00
+fahrzeugteile,de,Fahrzeugteile,fahrzeugteile,primary,seed,1.00
+fallobst,de,Fallobst,fallobst,primary,seed,1.00
+faltzelt,de,Faltzelt,faltzelt,primary,seed,1.00
+farb_und_lackreste,de,Farb- und Lackreste,farb und lackreste,primary,seed,1.00
+farben,de,Farben,farben,primary,seed,1.00
+farbrollen,de,Farbrollen,farbrollen,primary,seed,1.00
+farb_und_lackreste,de,Farb- und Lackreste,farbundlackreste,auto,seed,0.85
+farbverduenner,de,Farbverdünner,farbverduenner,auto,seed,0.90
+farbverduenner,de,Farbverdünner,farbverdunner,primary,seed,1.00
+faserzementplatten,de,Faserzementplatten,faserzementplatten,primary,seed,1.00
+fass_kunststoff,de,Fass (Kunststoff),fass kunststoff,primary,seed,1.00
+fass_metall,de,Fass (Metall),fass metall,primary,seed,1.00
+faesser_kunststoff,de,Fässer (Kunststoff),fasser kunststoff,primary,seed,1.00
+faesser_metall,de,Fässer (Metall),fasser metall,primary,seed,1.00
+faesser_kunststoff,de,Fässer (Kunststoff),fasserkunststoff,auto,seed,0.85
+faesser_metall,de,Fässer (Metall),fassermetall,auto,seed,0.85
+fass_kunststoff,de,Fass (Kunststoff),fasskunststoff,auto,seed,0.85
+fass_metall,de,Fass (Metall),fassmetall,auto,seed,0.85
+faxgeraete,de,Faxgeräte,faxgeraete,auto,seed,0.90
+faxgeraete,de,Faxgeräte,faxgerate,primary,seed,1.00
+faxpapier,de,Faxpapier,faxpapier,primary,seed,1.00
+federbetten,de,Federbetten,federbetten,primary,seed,1.00
+federn,de,Federn,federn,primary,seed,1.00
+felgenreiniger,de,Felgenreiniger,felgenreiniger,primary,seed,1.00
+fenster_komplett,de,Fenster (komplett),fenster komplett,primary,seed,1.00
+fenster_rahmen,de,Fenster/-rahmen,fenster rahmen,primary,seed,1.00
+fensterglas,de,Fensterglas,fensterglas,primary,seed,1.00
+fensterglasscheiben,de,Fensterglasscheiben,fensterglasscheiben,primary,seed,1.00
+fensterglasscherben,de,Fensterglasscherben,fensterglasscherben,primary,seed,1.00
+fenster_komplett,de,Fenster (komplett),fensterkomplett,auto,seed,0.85
+fenster_rahmen,de,Fenster/-rahmen,fensterrahmen,auto,seed,0.85
+fensterrahmen_aus_holz,de,Fensterrahmen (aus Holz),fensterrahmen aus holz,primary,seed,1.00
+fensterrahmen_aus_kunststoff,de,Fensterrahmen (aus Kunststoff),fensterrahmen aus kunststoff,primary,seed,1.00
+fensterrahmen_aus_metall,de,Fensterrahmen (aus Metall),fensterrahmen aus metall,primary,seed,1.00
+fensterrahmen_aus_holz,de,Fensterrahmen (aus Holz),fensterrahmenausholz,auto,seed,0.85
+fensterrahmen_aus_kunststoff,de,Fensterrahmen (aus Kunststoff),fensterrahmenauskunststoff,auto,seed,0.85
+fensterrahmen_aus_metall,de,Fensterrahmen (aus Metall),fensterrahmenausmetall,auto,seed,0.85
+fermacellplatten,de,Fermacellplatten,fermacellplatten,primary,seed,1.00
+fernbedienungen,de,Fernbedienungen,fernbedienungen,primary,seed,1.00
+fernseher,de,Fernseher,fernseher,primary,seed,1.00
+fernseher_tv_geraet,de,Fernseher / TV-Gerät,fernseher tv geraet,auto,seed,0.90
+fernseher_tv_geraet,de,Fernseher / TV-Gerät,fernseher tv gerat,primary,seed,1.00
+fernseher_tv_geraet,de,Fernseher / TV-Gerät,fernsehertvgeraet,auto,seed,0.80
+fernseher_tv_geraet,de,Fernseher / TV-Gerät,fernsehertvgerat,auto,seed,0.85
+fernsehgeraete,de,Fernsehgeräte,fernsehgeraete,auto,seed,0.90
+fernsehgeraete,de,Fernsehgeräte,fernsehgerate,primary,seed,1.00
+fernsehsessel,de,Fernsehsessel,fernsehsessel,primary,seed,1.00
+fertigputz_fluessig,de,Fertigputz (flüssig),fertigputz fluessig,auto,seed,0.90
+fertigputz_fluessig,de,Fertigputz (flüssig),fertigputz flussig,primary,seed,1.00
+fertigputz_fluessig,de,Fertigputz (flüssig),fertigputzfluessig,auto,seed,0.80
+fertigputz_fluessig,de,Fertigputz (flüssig),fertigputzflussig,auto,seed,0.85
+festplatte_ssd,de,Festplatte (SSD),festplatte ssd,primary,seed,1.00
+festplatten,de,Festplatten,festplatten,primary,seed,1.00
+festplatte_ssd,de,Festplatte (SSD),festplattessd,auto,seed,0.85
+feuerfeste_glaeser,de,Feuerfeste Gläser,feuerfeste glaeser,auto,seed,0.90
+feuerfeste_glaeser,de,Feuerfeste Gläser,feuerfeste glaser,primary,seed,1.00
+feuerfeste_glaeser,de,Feuerfeste Gläser,feuerfesteglaeser,auto,seed,0.80
+feuerfeste_glaeser,de,Feuerfeste Gläser,feuerfesteglaser,auto,seed,0.85
+feuerfestes_glas,de,Feuerfestes Glas,feuerfestes glas,primary,seed,1.00
+feuerfestes_glas,de,Feuerfestes Glas,feuerfestesglas,auto,seed,0.85
+feuerloescher,de,Feuerlöscher,feuerloescher,auto,seed,0.90
+feuerloescher,de,Feuerlöscher,feuerloscher,primary,seed,1.00
+feuerschutzmaterialien,de,Feuerschutzmaterialien,feuerschutzmaterialien,primary,seed,1.00
+feuerschutztueren,de,Feuerschutztüren,feuerschutztueren,auto,seed,0.90
+feuerschutztueren,de,Feuerschutztüren,feuerschutzturen,primary,seed,1.00
+feuerwerkskoerper,de,Feuerwerkskörper,feuerwerkskoerper,auto,seed,0.90
+feuerwerkskoerper,de,Feuerwerkskörper,feuerwerkskorper,primary,seed,1.00
+feuerzeug,de,Feuerzeug,feuerzeug,primary,seed,1.00
+feuerzeuge_einweg,de,Feuerzeuge (Einweg),feuerzeuge einweg,primary,seed,1.00
+feuerzeuge_einweg,de,Feuerzeuge (Einweg),feuerzeugeeinweg,auto,seed,0.85
+ffp2_maske,de,FFP2-Maske,ffp2 maske,primary,seed,1.00
+ffp2_maske,de,FFP2-Maske,ffp2maske,auto,seed,0.85
+fieberthermometer,de,Fieberthermometer,fieberthermometer,primary,seed,1.00
+filme,de,Filme,filme,primary,seed,1.00
+filtermaterialien_fuer_pool_teichfilter,de,Filtermaterialien für Pool-/Teichfilter,filtermaterialien fuer pool teichfilter,auto,seed,0.90
+filtermaterialien_fuer_pool_teichfilter,de,Filtermaterialien für Pool-/Teichfilter,filtermaterialien fur pool teichfilter,primary,seed,1.00
+filtermaterialien_fuer_pool_teichfilter,de,Filtermaterialien für Pool-/Teichfilter,filtermaterialienfuerpoolteichfilter,auto,seed,0.80
+filtermaterialien_fuer_pool_teichfilter,de,Filtermaterialien für Pool-/Teichfilter,filtermaterialienfurpoolteichfilter,auto,seed,0.85
+filterpatronen_fuer_wasserfilter,de,Filterpatronen für Wasserfilter,filterpatronen fuer wasserfilter,auto,seed,0.90
+filterpatronen_fuer_wasserfilter,de,Filterpatronen für Wasserfilter,filterpatronen fur wasserfilter,primary,seed,1.00
+filterpatronen_fuer_wasserfilter,de,Filterpatronen für Wasserfilter,filterpatronenfuerwasserfilter,auto,seed,0.80
+filterpatronen_fuer_wasserfilter,de,Filterpatronen für Wasserfilter,filterpatronenfurwasserfilter,auto,seed,0.85
+filzstifte,de,Filzstifte,filzstifte,primary,seed,1.00
+fischreste,de,Fischreste,fischreste,primary,seed,1.00
+fixierbad,de,Fixierbad,fixierbad,primary,seed,1.00
+fixierbaeder,de,Fixierbäder,fixierbader,primary,seed,1.00
+fixierbaeder,de,Fixierbäder,fixierbaeder,auto,seed,0.90
+flachglas,de,Flachglas,flachglas,primary,seed,1.00
+flaschen,de,Flaschen,flaschen,primary,seed,1.00
+fleckenentferner,de,Fleckenentferner,fleckenentferner,primary,seed,1.00
+fleckentferner,de,Fleckentferner,fleckentferner,primary,seed,1.00
+fleisch_und_speisen_verdorben,de,"Fleisch und Speisen, verdorben",fleisch und speisen verdorben,primary,seed,1.00
+fleischreste,de,Fleischreste,fleischreste,primary,seed,1.00
+fleisch_und_speisen_verdorben,de,"Fleisch und Speisen, verdorben",fleischundspeisenverdorben,auto,seed,0.85
+fliesen,de,Fliesen,fliesen,primary,seed,1.00
+fliesenkleber_ausgehaertet_pulverfoermig,de,Fliesenkleber ausgehärtet / pulverförmig,fliesenkleber ausgehaertet pulverfoermig,auto,seed,0.90
+fliesenkleber_ausgehaertet_pulverfoermig,de,Fliesenkleber ausgehärtet / pulverförmig,fliesenkleber ausgehartet pulverformig,primary,seed,1.00
+fliesenkleber_fluessig_angemischt,de,Fliesenkleber flüssig / angemischt,fliesenkleber fluessig angemischt,auto,seed,0.90
+fliesenkleber_fluessig_angemischt,de,Fliesenkleber flüssig / angemischt,fliesenkleber flussig angemischt,primary,seed,1.00
+fliesenkleber_ausgehaertet_pulverfoermig,de,Fliesenkleber ausgehärtet / pulverförmig,fliesenkleberausgehaertetpulverfoermig,auto,seed,0.80
+fliesenkleber_ausgehaertet_pulverfoermig,de,Fliesenkleber ausgehärtet / pulverförmig,fliesenkleberausgehartetpulverformig,auto,seed,0.85
+fliesenkleber_fluessig_angemischt,de,Fliesenkleber flüssig / angemischt,fliesenkleberfluessigangemischt,auto,seed,0.80
+fliesenkleber_fluessig_angemischt,de,Fliesenkleber flüssig / angemischt,fliesenkleberflussigangemischt,auto,seed,0.85
+floor_flex_platten,de,Floor Flex-Platten,floor flex platten,primary,seed,1.00
+floor_flex_platten,de,Floor Flex-Platten,floorflexplatten,auto,seed,0.85
+fluessigkleber,de,Flüssigkleber,fluessigkleber,auto,seed,0.90
+fluessigkleber,de,Flüssigkleber,flussigkleber,primary,seed,1.00
+foehne,de,Föhne,foehne,auto,seed,0.90
+foen,de,Fön,foen,auto,seed,0.90
+foehne,de,Föhne,fohne,primary,seed,1.00
+folien,de,Folien,folien,primary,seed,1.00
+folien_pe_folien,de,"Folien, PE-Folien",folien pe folien,primary,seed,1.00
+folien_pe_folien,de,"Folien, PE-Folien",folienpefolien,auto,seed,0.85
+foen,de,Fön,fon,primary,seed,1.00
+fotoapparate,de,Fotoapparate,fotoapparate,primary,seed,1.00
+fotochemikalien,de,Fotochemikalien,fotochemikalien,primary,seed,1.00
+fotochemikalien_fluessig,de,Fotochemikalien (flüssig),fotochemikalien fluessig,auto,seed,0.90
+fotochemikalien_fluessig,de,Fotochemikalien (flüssig),fotochemikalien flussig,primary,seed,1.00
+fotochemikalien_fluessig,de,Fotochemikalien (flüssig),fotochemikalienfluessig,auto,seed,0.80
+fotochemikalien_fluessig,de,Fotochemikalien (flüssig),fotochemikalienflussig,auto,seed,0.85
+fotokopiergeraete,de,Fotokopiergeräte,fotokopiergeraete,auto,seed,0.90
+fotokopiergeraete,de,Fotokopiergeräte,fotokopiergerate,primary,seed,1.00
+fotonegative_negative,de,Fotonegative/ Negative,fotonegative negative,primary,seed,1.00
+fotonegative_negative,de,Fotonegative/ Negative,fotonegativenegative,auto,seed,0.85
+fotos,de,Fotos,fotos,primary,seed,1.00
+fotos_fotopapier,de,Fotos/Fotopapier,fotos fotopapier,primary,seed,1.00
+fotos_fotopapier,de,Fotos/Fotopapier,fotosfotopapier,auto,seed,0.85
+frischhaltefolien,de,Frischhaltefolien,frischhaltefolien,primary,seed,1.00
+frisierstab,de,Frisierstab,frisierstab,primary,seed,1.00
+fritteusen,de,Fritteusen,fritteusen,primary,seed,1.00
+frittierfett_fest,de,Frittierfett (fest),frittierfett fest,primary,seed,1.00
+frittierfette_speiseoele,de,Frittierfette/Speiseöle,frittierfette speiseoele,auto,seed,0.90
+frittierfette_speiseoele,de,Frittierfette/Speiseöle,frittierfette speiseole,primary,seed,1.00
+frittierfette_speiseoele,de,Frittierfette/Speiseöle,frittierfettespeiseoele,auto,seed,0.80
+frittierfette_speiseoele,de,Frittierfette/Speiseöle,frittierfettespeiseole,auto,seed,0.85
+frittierfett_fest,de,Frittierfett (fest),frittierfettfest,auto,seed,0.85
+frittieroele,de,Frittieröle,frittieroele,auto,seed,0.90
+frittieroele,de,Frittieröle,frittierole,primary,seed,1.00
+frostschutzmittel,de,Frostschutzmittel,frostschutzmittel,primary,seed,1.00
+fussboden_flexplatten_mit_asbest,de,Fußboden-Flexplatten mit Asbest,fu boden flexplatten mit asbest,primary,seed,1.00
+fussbodenbelaege,de,Fußbodenbeläge,fu bodenbelage,primary,seed,1.00
+fussbodenbelaege,de,Fußbodenbeläge,fubodenbelage,auto,seed,0.85
+fussboden_flexplatten_mit_asbest,de,Fußboden-Flexplatten mit Asbest,fubodenflexplattenmitasbest,auto,seed,0.85
+fuellschaum,de,Füllschaum,fuellschaum,auto,seed,0.90
+fugenkleber,de,Fugenkleber,fugenkleber,primary,seed,1.00
+fugenmassen,de,Fugenmassen,fugenmassen,primary,seed,1.00
+fuellschaum,de,Füllschaum,fullschaum,primary,seed,1.00
+fungizide,de,Fungizide,fungizide,primary,seed,1.00
+funkgeraete,de,Funkgeräte,funkgeraete,auto,seed,0.90
+funkgeraete,de,Funkgeräte,funkgerate,primary,seed,1.00
+fussboden_flexplatten_mit_asbest,de,Fußboden-Flexplatten mit Asbest,fussboden flexplatten mit asbest,auto,seed,0.90
+fussbodenbelaege,de,Fußbodenbeläge,fussbodenbelaege,auto,seed,0.90
+fussboden_flexplatten_mit_asbest,de,Fußboden-Flexplatten mit Asbest,fussbodenflexplattenmitasbest,auto,seed,0.80
+futons,de,Futons,futons,primary,seed,1.00
+gardinen,de,Gardinen,gardinen,primary,seed,1.00
+gardinenstange,de,Gardinenstange,gardinenstange,primary,seed,1.00
+gartenabfaelle,de,Gartenabfälle,gartenabfaelle,auto,seed,0.90
+gartenabfaelle,de,Gartenabfälle,gartenabfalle,primary,seed,1.00
+gartenkalk,de,Gartenkalk,gartenkalk,primary,seed,1.00
+gartenmoebel,de,Gartenmöbel,gartenmobel,primary,seed,1.00
+gartenmoebel_mit_holzschutzmittel_behandelt_impraegniert,de,Gartenmöbel mit Holzschutzmittel behandelt / imprägniert,gartenmobel mit holzschutzmittel behandelt impragniert,primary,seed,1.00
+gartenmoebel_mit_holzschutzmittel_behandelt_impraegniert,de,Gartenmöbel mit Holzschutzmittel behandelt / imprägniert,gartenmobelmitholzschutzmittelbehandeltimpragniert,auto,seed,0.85
+gartenmoebel,de,Gartenmöbel,gartenmoebel,auto,seed,0.90
+gartenmoebel_mit_holzschutzmittel_behandelt_impraegniert,de,Gartenmöbel mit Holzschutzmittel behandelt / imprägniert,gartenmoebel mit holzschutzmittel behandelt impraegniert,auto,seed,0.90
+gartenmoebel_mit_holzschutzmittel_behandelt_impraegniert,de,Gartenmöbel mit Holzschutzmittel behandelt / imprägniert,gartenmoebelmitholzschutzmittelbehandeltimpraegniert,auto,seed,0.80
+gartenschlaeuche,de,Gartenschläuche,gartenschlaeuche,auto,seed,0.90
+gartenschlauch,de,Gartenschlauch,gartenschlauch,primary,seed,1.00
+gartenschlaeuche,de,Gartenschläuche,gartenschlauche,primary,seed,1.00
+gartenzaeune_aus_holz,de,Gartenzäune aus Holz,gartenzaeune aus holz,auto,seed,0.90
+gartenzaeune_aus_holz,de,Gartenzäune aus Holz,gartenzaeuneausholz,auto,seed,0.80
+gartenzaun_aus_holz,de,Gartenzaun aus Holz,gartenzaun aus holz,primary,seed,1.00
+gartenzaun_aus_holz,de,Gartenzaun aus Holz,gartenzaunausholz,auto,seed,0.85
+gartenzaeune_aus_holz,de,Gartenzäune aus Holz,gartenzaune aus holz,primary,seed,1.00
+gartenzaeune_aus_holz,de,Gartenzäune aus Holz,gartenzauneausholz,auto,seed,0.85
+gartenzwerge_kunststoff,de,Gartenzwerge (Kunststoff),gartenzwerge kunststoff,primary,seed,1.00
+gartenzwerge_kunststoff,de,Gartenzwerge (Kunststoff),gartenzwergekunststoff,auto,seed,0.85
+gasbeton,de,Gasbeton,gasbeton,primary,seed,1.00
+gasbetonsteine,de,Gasbetonsteine,gasbetonsteine,primary,seed,1.00
+gasdrucklampen,de,Gasdrucklampen,gasdrucklampen,primary,seed,1.00
+gasfeuerzeug,de,Gasfeuerzeug,gasfeuerzeug,primary,seed,1.00
+gasflasche,de,Gasflasche,gasflasche,primary,seed,1.00
+gasflaschen,de,Gasflaschen,gasflaschen,primary,seed,1.00
+gasherd,de,Gasherd,gasherd,primary,seed,1.00
+gasherde,de,Gasherde,gasherde,primary,seed,1.00
+gaskartuschen_gaspatronen,de,Gaskartuschen/ Gaspatronen,gaskartuschen gaspatronen,primary,seed,1.00
+gaskartuschen_gaspatronen,de,Gaskartuschen/ Gaspatronen,gaskartuschengaspatronen,auto,seed,0.85
+gaskuehlschrank_absorberkuehlschrank,de,Gaskühlschrank/Absorberkühlschrank,gaskuehlschrank absorberkuehlschrank,auto,seed,0.90
+gaskuehlschrank_absorberkuehlschrank,de,Gaskühlschrank/Absorberkühlschrank,gaskuehlschrankabsorberkuehlschrank,auto,seed,0.80
+gaskuehlschrank_absorberkuehlschrank,de,Gaskühlschrank/Absorberkühlschrank,gaskuhlschrank absorberkuhlschrank,primary,seed,1.00
+gaskuehlschrank_absorberkuehlschrank,de,Gaskühlschrank/Absorberkühlschrank,gaskuhlschrankabsorberkuhlschrank,auto,seed,0.85
+gasofen_gastherme,de,"Gasofen, Gastherme",gasofen gastherme,primary,seed,1.00
+gasofen_gastherme,de,"Gasofen, Gastherme",gasofengastherme,auto,seed,0.85
+gebrauchsgegenstaende_gross,de,Gebrauchsgegenstände (groß),gebrauchsgegenstaende gross,auto,seed,0.90
+gebrauchsgegenstaende_kunststoff,de,Gebrauchsgegenstände (Kunststoff),gebrauchsgegenstaende kunststoff,auto,seed,0.90
+gebrauchsgegenstaende_gross,de,Gebrauchsgegenstände (groß),gebrauchsgegenstaendegross,auto,seed,0.80
+gebrauchsgegenstaende_kunststoff,de,Gebrauchsgegenstände (Kunststoff),gebrauchsgegenstaendekunststoff,auto,seed,0.80
+gebrauchsgegenstand_kunststoff,de,Gebrauchsgegenstand (Kunststoff),gebrauchsgegenstand kunststoff,primary,seed,1.00
+gebrauchsgegenstaende_gross,de,Gebrauchsgegenstände (groß),gebrauchsgegenstande gro,primary,seed,1.00
+gebrauchsgegenstaende_kunststoff,de,Gebrauchsgegenstände (Kunststoff),gebrauchsgegenstande kunststoff,primary,seed,1.00
+gebrauchsgegenstaende_gross,de,Gebrauchsgegenstände (groß),gebrauchsgegenstandegro,auto,seed,0.85
+gebrauchsgegenstaende_kunststoff,de,Gebrauchsgegenstände (Kunststoff),gebrauchsgegenstandekunststoff,auto,seed,0.85
+gebrauchsgegenstand_kunststoff,de,Gebrauchsgegenstand (Kunststoff),gebrauchsgegenstandkunststoff,auto,seed,0.85
+gefriergeraet,de,Gefriergerät,gefriergeraet,auto,seed,0.90
+gefriergeraete,de,Gefriergeräte,gefriergeraete,auto,seed,0.90
+gefriergeraet,de,Gefriergerät,gefriergerat,primary,seed,1.00
+gefriergeraete,de,Gefriergeräte,gefriergerate,primary,seed,1.00
+gefrierschraenke,de,Gefrierschränke,gefrierschraenke,auto,seed,0.90
+gefrierschraenke,de,Gefrierschränke,gefrierschranke,primary,seed,1.00
+gehaeckseltes_pflanzenmaterial,de,Gehäckseltes Pflanzenmaterial,gehackseltes pflanzenmaterial,primary,seed,1.00
+gehaeckseltes_pflanzenmaterial,de,Gehäckseltes Pflanzenmaterial,gehackseltespflanzenmaterial,auto,seed,0.85
+gehaeckseltes_pflanzenmaterial,de,Gehäckseltes Pflanzenmaterial,gehaeckseltes pflanzenmaterial,auto,seed,0.90
+gehaeckseltes_pflanzenmaterial,de,Gehäckseltes Pflanzenmaterial,gehaeckseltespflanzenmaterial,auto,seed,0.80
+gehwegplatten,de,Gehwegplatten,gehwegplatten,primary,seed,1.00
+gekochtes,de,Gekochtes,gekochtes,primary,seed,1.00
+geldspielautomat,de,Geldspielautomat,geldspielautomat,primary,seed,1.00
+gemuese,de,Gemüse,gemuese,auto,seed,0.90
+gemuesereste,de,Gemüsereste,gemuesereste,auto,seed,0.90
+gemuesereste_roh,de,Gemüsereste (roh),gemuesereste roh,auto,seed,0.90
+gemuesereste_roh,de,Gemüsereste (roh),gemueseresteroh,auto,seed,0.80
+gemuese,de,Gemüse,gemuse,primary,seed,1.00
+gemuesereste,de,Gemüsereste,gemusereste,primary,seed,1.00
+gemuesereste_roh,de,Gemüsereste (roh),gemusereste roh,primary,seed,1.00
+gemuesereste_roh,de,Gemüsereste (roh),gemuseresteroh,auto,seed,0.85
+geschenkband,de,Geschenkband,geschenkband,primary,seed,1.00
+geschenkpapier,de,Geschenkpapier,geschenkpapier,primary,seed,1.00
+geschirr,de,Geschirr,geschirr,primary,seed,1.00
+geschirrspuelmaschinen,de,Geschirrspülmaschinen,geschirrspuelmaschinen,auto,seed,0.90
+geschirrspuelmittel,de,Geschirrspülmittel,geschirrspuelmittel,auto,seed,0.90
+geschirrspuelmaschinen,de,Geschirrspülmaschinen,geschirrspulmaschinen,primary,seed,1.00
+geschirrspuelmittel,de,Geschirrspülmittel,geschirrspulmittel,primary,seed,1.00
+gesichtssolarien,de,Gesichtssolarien,gesichtssolarien,primary,seed,1.00
+getraenkedose,de,Getränkedose,getraenkedose,auto,seed,0.90
+getraenkedosen,de,Getränkedosen,getraenkedosen,auto,seed,0.90
+getraenkeverpackungen,de,Getränkeverpackungen,getraenkeverpackungen,auto,seed,0.90
+getraenkedose,de,Getränkedose,getrankedose,primary,seed,1.00
+getraenkedosen,de,Getränkedosen,getrankedosen,primary,seed,1.00
+getraenkeverpackungen,de,Getränkeverpackungen,getrankeverpackungen,primary,seed,1.00
+getriebeoel,de,Getriebeöl,getriebeoel,auto,seed,0.90
+getriebeoel,de,Getriebeöl,getriebeol,primary,seed,1.00
+gfk_welldachplatten,de,GFK-Welldachplatten,gfk welldachplatten,primary,seed,1.00
+gfk_welldachplatten,de,GFK-Welldachplatten,gfkwelldachplatten,auto,seed,0.85
+giesskannen,de,Gießkannen,gie kannen,primary,seed,1.00
+giesskannen,de,Gießkannen,giekannen,auto,seed,0.85
+giesskannen,de,Gießkannen,giesskannen,auto,seed,0.90
+giftige_pflanzen,de,Giftige Pflanzen,giftige pflanzen,primary,seed,1.00
+giftige_pflanzen,de,Giftige Pflanzen,giftigepflanzen,auto,seed,0.85
+gipsfaserplatte,de,Gipsfaserplatte,gipsfaserplatte,primary,seed,1.00
+gipskarton,de,Gipskarton,gipskarton,primary,seed,1.00
+gipskartonplatten,de,Gipskartonplatten,gipskartonplatten,primary,seed,1.00
+glas,de,Glas,glas,primary,seed,1.00
+glasbausteine,de,Glasbausteine,glasbausteine,primary,seed,1.00
+glasfaserkabel,de,Glasfaserkabel,glasfaserkabel,primary,seed,1.00
+glasfasertapete,de,Glasfasertapete,glasfasertapete,primary,seed,1.00
+glasfaserverstaerkte_kunststoffe_gfk,de,Glasfaserverstärkte Kunststoffe (GFK),glasfaserverstaerkte kunststoffe gfk,auto,seed,0.90
+glasfaserverstaerkte_kunststoffe_gfk,de,Glasfaserverstärkte Kunststoffe (GFK),glasfaserverstaerktekunststoffegfk,auto,seed,0.80
+glasfaserverstaerkte_kunststoffe_gfk,de,Glasfaserverstärkte Kunststoffe (GFK),glasfaserverstarkte kunststoffe gfk,primary,seed,1.00
+glasfaserverstaerkte_kunststoffe_gfk,de,Glasfaserverstärkte Kunststoffe (GFK),glasfaserverstarktekunststoffegfk,auto,seed,0.85
+glasflaschen,de,Glasflaschen,glasflaschen,primary,seed,1.00
+glasscheiben,de,Glasscheiben,glasscheiben,primary,seed,1.00
+glasscherben,de,Glasscherben,glasscherben,primary,seed,1.00
+glastuer,de,Glastür,glastuer,auto,seed,0.90
+glastueren_innenbereich,de,Glastüren (Innenbereich),glastueren innenbereich,auto,seed,0.90
+glastueren_innenbereich,de,Glastüren (Innenbereich),glastuereninnenbereich,auto,seed,0.80
+glastuer,de,Glastür,glastur,primary,seed,1.00
+glastueren_innenbereich,de,Glastüren (Innenbereich),glasturen innenbereich,primary,seed,1.00
+glastueren_innenbereich,de,Glastüren (Innenbereich),glastureninnenbereich,auto,seed,0.85
+glaswolle,de,Glaswolle,glaswolle,primary,seed,1.00
+glaswolle_faser,de,Glaswolle/-faser,glaswolle faser,primary,seed,1.00
+glaswolle_faser,de,Glaswolle/-faser,glaswollefaser,auto,seed,0.85
+gluehlampen,de,Glühlampen,gluehlampen,auto,seed,0.90
+gluehlampen_ausgenommen_sind_energiesparlampen_und_leds,de,Glühlampen (ausgenommen sind Energiesparlampen und LEDs),gluehlampen ausgenommen sind energiesparlampen und leds,auto,seed,0.90
+gluehlampen_ausgenommen_sind_energiesparlampen_und_leds,de,Glühlampen (ausgenommen sind Energiesparlampen und LEDs),gluehlampenausgenommensindenergiesparlampenundleds,auto,seed,0.80
+gluehlampen,de,Glühlampen,gluhlampen,primary,seed,1.00
+gluehlampen_ausgenommen_sind_energiesparlampen_und_leds,de,Glühlampen (ausgenommen sind Energiesparlampen und LEDs),gluhlampen ausgenommen sind energiesparlampen und leds,primary,seed,1.00
+gluehlampen_ausgenommen_sind_energiesparlampen_und_leds,de,Glühlampen (ausgenommen sind Energiesparlampen und LEDs),gluhlampenausgenommensindenergiesparlampenundleds,auto,seed,0.85
+glykol,de,Glykol,glykol,primary,seed,1.00
+glyphosat,de,Glyphosat,glyphosat,primary,seed,1.00
+golfschlaeger,de,Golfschläger,golfschlaeger,auto,seed,0.90
+golfschlaeger,de,Golfschläger,golfschlager,primary,seed,1.00
+goretex_sympatex_kleidung,de,"Goretex®-, Sympatex®-Kleidung",goretex sympatex kleidung,primary,seed,1.00
+goretex_sympatex_kleidung,de,"Goretex®-, Sympatex®-Kleidung",goretexsympatexkleidung,auto,seed,0.85
+grabkraenze_grabgestecke,de,Grabkränze/ Grabgestecke,grabkraenze grabgestecke,auto,seed,0.90
+grabkraenze_grabgestecke,de,Grabkränze/ Grabgestecke,grabkraenzegrabgestecke,auto,seed,0.80
+grabkraenze_grabgestecke,de,Grabkränze/ Grabgestecke,grabkranze grabgestecke,primary,seed,1.00
+grabkraenze_grabgestecke,de,Grabkränze/ Grabgestecke,grabkranzegrabgestecke,auto,seed,0.85
+grabsteine,de,Grabsteine,grabsteine,primary,seed,1.00
+grasschnitt,de,Grasschnitt,grasschnitt,primary,seed,1.00
+grassoden,de,Grassoden,grassoden,primary,seed,1.00
+grill,de,Grill,grill,primary,seed,1.00
+grillanzuender,de,Grillanzünder,grillanzuender,auto,seed,0.90
+grillanzuender_fluessig,de,Grillanzünder (flüssig),grillanzuender fluessig,auto,seed,0.90
+grillanzuender_fluessig,de,Grillanzünder (flüssig),grillanzuenderfluessig,auto,seed,0.80
+grillanzuender,de,Grillanzünder,grillanzunder,primary,seed,1.00
+grillanzuender_fluessig,de,Grillanzünder (flüssig),grillanzunder flussig,primary,seed,1.00
+grillanzuender_fluessig,de,Grillanzünder (flüssig),grillanzunderflussig,auto,seed,0.85
+grillasche,de,Grillasche,grillasche,primary,seed,1.00
+grillkohle,de,Grillkohle,grillkohle,primary,seed,1.00
+grillkohlenasche,de,Grillkohlenasche,grillkohlenasche,primary,seed,1.00
+grossmoebel_zerlegt,de,Großmöbel (zerlegt),gro mobel zerlegt,primary,seed,1.00
+grossmoebel_zerlegt,de,Großmöbel (zerlegt),gromobelzerlegt,auto,seed,0.85
+grossmoebel_zerlegt,de,Großmöbel (zerlegt),grossmoebel zerlegt,auto,seed,0.90
+grossmoebel_zerlegt,de,Großmöbel (zerlegt),grossmoebelzerlegt,auto,seed,0.80
+gruenabfall,de,Grünabfall,gruenabfall,auto,seed,0.90
+gruengut,de,Grüngut,gruengut,auto,seed,0.90
+gruenschnitt,de,Grünschnitt,gruenschnitt,auto,seed,0.90
+gruenabfall,de,Grünabfall,grunabfall,primary,seed,1.00
+grundwasserwaermepumpe,de,Grundwasserwärmepumpe,grundwasserwaermepumpe,auto,seed,0.90
+grundwasserwaermepumpe,de,Grundwasserwärmepumpe,grundwasserwarmepumpe,primary,seed,1.00
+gruengut,de,Grüngut,grungut,primary,seed,1.00
+gruenschnitt,de,Grünschnitt,grunschnitt,primary,seed,1.00
+gummi,de,Gummi,gummi,primary,seed,1.00
+gummihandschuhe,de,Gummihandschuhe,gummihandschuhe,primary,seed,1.00
+gummimaterial,de,Gummimaterial,gummimaterial,primary,seed,1.00
+gummistiefel,de,Gummistiefel,gummistiefel,primary,seed,1.00
+haare,de,Haare,haare,primary,seed,1.00
+haarfaerbemittel,de,Haarfärbemittel,haarfaerbemittel,auto,seed,0.90
+haarfaerbemittelreste,de,Haarfärbemittelreste,haarfaerbemittelreste,auto,seed,0.90
+haarfaerbemittel,de,Haarfärbemittel,haarfarbemittel,primary,seed,1.00
+haarfaerbemittelreste,de,Haarfärbemittelreste,haarfarbemittelreste,primary,seed,1.00
+haeckselgut,de,Häckselgut,hackselgut,primary,seed,1.00
+haeckselgut,de,Häckselgut,haeckselgut,auto,seed,0.90
+halogen_metalldampflampen,de,Halogen-Metalldampflampen,halogen metalldampflampen,primary,seed,1.00
+halogenlampen,de,Halogenlampen,halogenlampen,primary,seed,1.00
+halogen_metalldampflampen,de,Halogen-Metalldampflampen,halogenmetalldampflampen,auto,seed,0.85
+halonloescher,de,Halonlöscher,halonloescher,auto,seed,0.90
+halonloescher,de,Halonlöscher,halonloscher,primary,seed,1.00
+hammondorgel,de,Hammondorgel,hammondorgel,primary,seed,1.00
+handmixer,de,Handmixer,handmixer,primary,seed,1.00
+handschuhe,de,Handschuhe,handschuhe,primary,seed,1.00
+handtaschen,de,Handtaschen,handtaschen,primary,seed,1.00
+handy,de,Handy,handy,primary,seed,1.00
+hannoccino,de,Hannoccino,hannoccino,primary,seed,1.00
+hartkunststoff_pe_pp,de,Hartkunststoff PE/PP,hartkunststoff pe pp,primary,seed,1.00
+hartkunststoff_pe_pp,de,Hartkunststoff PE/PP,hartkunststoffpepp,auto,seed,0.85
+harzrueckstaende_fluessig,de,Harzrückstände (flüssig),harzruckstande flussig,primary,seed,1.00
+harzrueckstaende_fluessig,de,Harzrückstände (flüssig),harzruckstandeflussig,auto,seed,0.85
+harzrueckstaende_fluessig,de,Harzrückstände (flüssig),harzrueckstaende fluessig,auto,seed,0.90
+harzrueckstaende_fluessig,de,Harzrückstände (flüssig),harzrueckstaendefluessig,auto,seed,0.80
+hausbars,de,Hausbars,hausbars,primary,seed,1.00
+haushaltsbatterien,de,Haushaltsbatterien,haushaltsbatterien,primary,seed,1.00
+haushaltsgegenstaende,de,Haushaltsgegenstände,haushaltsgegenstaende,auto,seed,0.90
+haushaltsgegenstand,de,Haushaltsgegenstand,haushaltsgegenstand,primary,seed,1.00
+haushaltsgegenstaende,de,Haushaltsgegenstände,haushaltsgegenstande,primary,seed,1.00
+haushaltsreiniger,de,Haushaltsreiniger,haushaltsreiniger,primary,seed,1.00
+haushaltswaesche,de,Haushaltswäsche,haushaltswaesche,auto,seed,0.90
+haushaltswaesche,de,Haushaltswäsche,haushaltswasche,primary,seed,1.00
+hausmuell,de,Hausmüll,hausmuell,auto,seed,0.90
+hausmuell,de,Hausmüll,hausmull,primary,seed,1.00
+heckenschere,de,Heckenschere,heckenschere,primary,seed,1.00
+heckenschnitt,de,Heckenschnitt,heckenschnitt,primary,seed,1.00
+hefte,de,Hefte,hefte,primary,seed,1.00
+heftklammern,de,Heftklammern,heftklammern,primary,seed,1.00
+heftpflaster,de,Heftpflaster,heftpflaster,primary,seed,1.00
+heissluft_fritteusen,de,Heißluft-Fritteusen,hei luft fritteusen,primary,seed,1.00
+heissluft_fritteusen,de,Heißluft-Fritteusen,heiluftfritteusen,auto,seed,0.85
+heimsolarien,de,Heimsolarien,heimsolarien,primary,seed,1.00
+heimtrainer,de,Heimtrainer,heimtrainer,primary,seed,1.00
+heissluft_fritteusen,de,Heißluft-Fritteusen,heissluft fritteusen,auto,seed,0.90
+heissluft_fritteusen,de,Heißluft-Fritteusen,heissluftfritteusen,auto,seed,0.80
+heizkessel,de,Heizkessel,heizkessel,primary,seed,1.00
+heizkoerper,de,Heizkörper,heizkoerper,auto,seed,0.90
+heizkoerper,de,Heizkörper,heizkorper,primary,seed,1.00
+heizluefter,de,Heizlüfter,heizluefter,auto,seed,0.90
+heizluefter,de,Heizlüfter,heizlufter,primary,seed,1.00
+heizoel,de,Heizöl,heizoel,auto,seed,0.90
+heizoeltank,de,Heizöltank,heizoeltank,auto,seed,0.90
+heizoel,de,Heizöl,heizol,primary,seed,1.00
+heizoeltank,de,Heizöltank,heizoltank,primary,seed,1.00
+heizpilze_mit_gasbetrieben,de,Heizpilze (mit Gasbetrieben),heizpilze mit gasbetrieben,primary,seed,1.00
+heizpilze_mit_gasbetrieben,de,Heizpilze (mit Gasbetrieben),heizpilzemitgasbetrieben,auto,seed,0.85
+heizungen,de,Heizungen,heizungen,primary,seed,1.00
+heizungskoerper_elektrisch,de,Heizungskörper (elektrisch),heizungskoerper elektrisch,auto,seed,0.90
+heizungskoerper_elektrisch,de,Heizungskörper (elektrisch),heizungskoerperelektrisch,auto,seed,0.80
+heizungskoerper_elektrisch,de,Heizungskörper (elektrisch),heizungskorper elektrisch,primary,seed,1.00
+heizungskoerper_elektrisch,de,Heizungskörper (elektrisch),heizungskorperelektrisch,auto,seed,0.85
+heliumflaschen,de,Heliumflaschen,heliumflaschen,primary,seed,1.00
+helme,de,Helme,helme,primary,seed,1.00
+heraklithplatten,de,Heraklithplatten,heraklithplatten,primary,seed,1.00
+herbizide,de,Herbizide,herbizide,primary,seed,1.00
+herd,de,Herd,herd,primary,seed,1.00
+herkulesstaude,de,Herkulesstaude,herkulesstaude,primary,seed,1.00
+heu_stroh,de,Heu/Stroh,heu stroh,primary,seed,1.00
+heu_stroh,de,Heu/Stroh,heustroh,auto,seed,0.85
+hi_fi_geraete,de,Hi-Fi-Geräte,hi fi geraete,auto,seed,0.90
+hi_fi_geraete,de,Hi-Fi-Geräte,hi fi gerate,primary,seed,1.00
+hifi_anlage,de,Hifi-Anlage,hifi anlage,primary,seed,1.00
+hifi_anlage,de,Hifi-Anlage,hifianlage,auto,seed,0.85
+hi_fi_geraete,de,Hi-Fi-Geräte,hifigeraete,auto,seed,0.80
+hi_fi_geraete,de,Hi-Fi-Geräte,hifigerate,auto,seed,0.85
+high_solid_lacke,de,High-Solid Lacke,high solid lacke,primary,seed,1.00
+high_solid_lacke,de,High-Solid Lacke,highsolidlacke,auto,seed,0.85
+hoelzer_frei_von_holzschutzmitteln,de,"Hölzer, frei von Holzschutzmitteln",hoelzer frei von holzschutzmitteln,auto,seed,0.90
+hoelzer_frei_von_holzschutzmitteln,de,"Hölzer, frei von Holzschutzmitteln",hoelzerfreivonholzschutzmitteln,auto,seed,0.80
+hollywoodschaukeln,de,Hollywoodschaukeln,hollywoodschaukeln,primary,seed,1.00
+holz_behandelt,de,"Holz, behandelt",holz behandelt,primary,seed,1.00
+holz_frei_von_holzschutzmitteln,de,"Holz, frei von Holzschutzmitteln",holz frei von holzschutzmitteln,primary,seed,1.00
+holzabfall,de,Holzabfall,holzabfall,primary,seed,1.00
+holz_behandelt,de,"Holz, behandelt",holzbehandelt,auto,seed,0.85
+holzbretter,de,Holzbretter,holzbretter,primary,seed,1.00
+hoelzer_frei_von_holzschutzmitteln,de,"Hölzer, frei von Holzschutzmitteln",holzer frei von holzschutzmitteln,primary,seed,1.00
+hoelzer_frei_von_holzschutzmitteln,de,"Hölzer, frei von Holzschutzmitteln",holzerfreivonholzschutzmitteln,auto,seed,0.85
+holzfenster,de,Holzfenster,holzfenster,primary,seed,1.00
+holzfensterrahmen,de,Holzfensterrahmen,holzfensterrahmen,primary,seed,1.00
+holz_frei_von_holzschutzmitteln,de,"Holz, frei von Holzschutzmitteln",holzfreivonholzschutzmitteln,auto,seed,0.85
+holzkisten,de,Holzkisten,holzkisten,primary,seed,1.00
+holzkohle,de,Holzkohle,holzkohle,primary,seed,1.00
+holzlasur,de,Holzlasur,holzlasur,primary,seed,1.00
+holzmoebel,de,Holzmöbel,holzmobel,primary,seed,1.00
+holzmoebel,de,Holzmöbel,holzmoebel,auto,seed,0.90
+holzpaletten,de,Holzpaletten,holzpaletten,primary,seed,1.00
+holzschutzgrundierung,de,Holzschutzgrundierung,holzschutzgrundierung,primary,seed,1.00
+holzschutzimpraegnierung,de,Holzschutzimprägnierung,holzschutzimpraegnierung,auto,seed,0.90
+holzschutzimpraegnierung,de,Holzschutzimprägnierung,holzschutzimpragnierung,primary,seed,1.00
+holzschutzmittel,de,Holzschutzmittel,holzschutzmittel,primary,seed,1.00
+holzschwammmittel,de,Holzschwammmittel,holzschwammmittel,primary,seed,1.00
+holzspaene,de,Holzspäne,holzspaene,auto,seed,0.90
+holzspaene,de,Holzspäne,holzspane,primary,seed,1.00
+holzspielzeug,de,Holzspielzeug,holzspielzeug,primary,seed,1.00
+holzstaemme,de,Holzstämme,holzstaemme,auto,seed,0.90
+holzstaemme,de,Holzstämme,holzstamme,primary,seed,1.00
+holzverpackungen,de,Holzverpackungen,holzverpackungen,primary,seed,1.00
+holzwolle,de,Holzwolle,holzwolle,primary,seed,1.00
+holzwolle_leichtbauplatte_sauerkrautplatten,de,Holzwolle-Leichtbauplatte/ Sauerkrautplatten,holzwolle leichtbauplatte sauerkrautplatten,primary,seed,1.00
+holzwolle_leichtbauplatte_sauerkrautplatten,de,Holzwolle-Leichtbauplatte/ Sauerkrautplatten,holzwolleleichtbauplattesauerkrautplatten,auto,seed,0.85
+holzwurmmittel,de,Holzwurmmittel,holzwurmmittel,primary,seed,1.00
+holzwurmtod,de,Holzwurmtod,holzwurmtod,primary,seed,1.00
+huehnerstall,de,Hühnerstall,huehnerstall,auto,seed,0.90
+huete,de,Hüte,huete,auto,seed,0.90
+huehnerstall,de,Hühnerstall,huhnerstall,primary,seed,1.00
+hundekot,de,Hundekot,hundekot,primary,seed,1.00
+hut,de,Hut,hut,primary,seed,1.00
+huete,de,Hüte,hute,primary,seed,1.00
+hydraulikoel,de,Hydrauliköl,hydraulikoel,auto,seed,0.90
+hydraulikoel,de,Hydrauliköl,hydraulikol,primary,seed,1.00
+hygieneartikel,de,Hygieneartikel,hygieneartikel,primary,seed,1.00
+hygienepapier,de,Hygienepapier,hygienepapier,primary,seed,1.00
+illustrierte,de,Illustrierte,illustrierte,primary,seed,1.00
+impraegniermittel,de,Imprägniermittel,impraegniermittel,auto,seed,0.90
+impraegniermittel,de,Imprägniermittel,impragniermittel,primary,seed,1.00
+industrie_altbatterie,de,Industrie-Altbatterie,industrie altbatterie,primary,seed,1.00
+industrie_altbatterie,de,Industrie-Altbatterie,industriealtbatterie,auto,seed,0.85
+industriebatterie,de,Industriebatterie,industriebatterie,primary,seed,1.00
+infektioese_abfaelle,de,Infektiöse Abfälle,infektioese abfaelle,auto,seed,0.90
+infektioese_abfaelle,de,Infektiöse Abfälle,infektioeseabfaelle,auto,seed,0.80
+infektioese_abfaelle,de,Infektiöse Abfälle,infektiose abfalle,primary,seed,1.00
+infektioese_abfaelle,de,Infektiöse Abfälle,infektioseabfalle,auto,seed,0.85
+inliner,de,Inliner,inliner,primary,seed,1.00
+innentueren_aus_holz,de,Innentüren aus Holz,innentueren aus holz,auto,seed,0.90
+innentueren_aus_holz,de,Innentüren aus Holz,innentuerenausholz,auto,seed,0.80
+innentueren_aus_holz,de,Innentüren aus Holz,innenturen aus holz,primary,seed,1.00
+innentueren_aus_holz,de,Innentüren aus Holz,innenturenausholz,auto,seed,0.85
+insektenvernichtungsmittel,de,Insektenvernichtungsmittel,insektenvernichtungsmittel,primary,seed,1.00
+insektizide,de,Insektizide,insektizide,primary,seed,1.00
+insektizide_insektenspray_insektenvernichter,de,"Insektizide, Insektenspray, Insektenvernichter",insektizide insektenspray insektenvernichter,primary,seed,1.00
+insektizide_insektenspray_insektenvernichter,de,"Insektizide, Insektenspray, Insektenvernichter",insektizideinsektensprayinsektenvernichter,auto,seed,0.85
+isoliermaterial,de,Isoliermaterial,isoliermaterial,primary,seed,1.00
+isolierschaum,de,Isolierschaum,isolierschaum,primary,seed,1.00
+jaegerzaeune,de,Jägerzäune,jaegerzaeune,auto,seed,0.90
+jaegerzaun,de,Jägerzaun,jaegerzaun,auto,seed,0.90
+jaegerzaun,de,Jägerzaun,jagerzaun,primary,seed,1.00
+jaegerzaeune,de,Jägerzäune,jagerzaune,primary,seed,1.00
+jakobskreuzkraut,de,Jakobskreuzkraut,jakobskreuzkraut,primary,seed,1.00
+jakobsstaude,de,Jakobsstaude,jakobsstaude,primary,seed,1.00
+jalousien_aus_holz_aussenbereich,de,Jalousien aus Holz (Außenbereich),jalousien aus holz au enbereich,primary,seed,1.00
+jalousien_aus_holz_aussenbereich,de,Jalousien aus Holz (Außenbereich),jalousien aus holz aussenbereich,auto,seed,0.90
+jalousien_aus_holz_aussenbereich,de,Jalousien aus Holz (Außenbereich),jalousienausholzauenbereich,auto,seed,0.85
+jalousien_aus_holz_aussenbereich,de,Jalousien aus Holz (Außenbereich),jalousienausholzaussenbereich,auto,seed,0.80
+japanischer_staudenknoeterich,de,Japanischer Staudenknöterich,japanischer staudenknoeterich,auto,seed,0.90
+japanischer_staudenknoeterich,de,Japanischer Staudenknöterich,japanischer staudenknoterich,primary,seed,1.00
+japanischer_staudenknoeterich,de,Japanischer Staudenknöterich,japanischerstaudenknoeterich,auto,seed,0.80
+japanischer_staudenknoeterich,de,Japanischer Staudenknöterich,japanischerstaudenknoterich,auto,seed,0.85
+joghurtbecher,de,Joghurtbecher,joghurtbecher,primary,seed,1.00
+kabel,de,Kabel,kabel,primary,seed,1.00
+kabelbinder,de,Kabelbinder,kabelbinder,primary,seed,1.00
+kabelreste,de,Kabelreste,kabelreste,primary,seed,1.00
+kacheloefen,de,Kachelöfen,kacheloefen,auto,seed,0.90
+kachelofen,de,Kachelofen,kachelofen,primary,seed,1.00
+kadaver,de,Kadaver,kadaver,primary,seed,1.00
+kaefig_von_kleintieren,de,Käfig von Kleintieren,kaefig von kleintieren,auto,seed,0.90
+kaefig_von_kleintieren,de,Käfig von Kleintieren,kaefigvonkleintieren,auto,seed,0.80
+kaeltemittel_fckw,de,Kältemittel (FCKW),kaeltemittel fckw,auto,seed,0.90
+kaeltemittel_fckw,de,Kältemittel (FCKW),kaeltemittelfckw,auto,seed,0.80
+kaeserinde_unbehandelt,de,Käserinde (unbehandelt),kaeserinde unbehandelt,auto,seed,0.90
+kaeserinde_unbehandelt,de,Käserinde (unbehandelt),kaeserindeunbehandelt,auto,seed,0.80
+kaffeebecher,de,Kaffeebecher,kaffeebecher,primary,seed,1.00
+kaffeebecher_to_go,de,Kaffeebecher (to go),kaffeebecher to go,primary,seed,1.00
+kaffeebecher_to_go,de,Kaffeebecher (to go),kaffeebechertogo,auto,seed,0.85
+kaffeefilter,de,Kaffeefilter,kaffeefilter,primary,seed,1.00
+kaffeefiltertueten,de,Kaffeefiltertüten,kaffeefiltertueten,auto,seed,0.90
+kaffeefiltertueten,de,Kaffeefiltertüten,kaffeefiltertuten,primary,seed,1.00
+kaffeekapsel,de,Kaffeekapsel,kaffeekapsel,primary,seed,1.00
+kaffeekapsel_bioplastik,de,Kaffeekapsel (Bioplastik),kaffeekapsel bioplastik,primary,seed,1.00
+kaffeekapsel_bioplastik,de,Kaffeekapsel (Bioplastik),kaffeekapselbioplastik,auto,seed,0.85
+kaffeekapseln,de,Kaffeekapseln,kaffeekapseln,primary,seed,1.00
+kaffeemaschine,de,Kaffeemaschine,kaffeemaschine,primary,seed,1.00
+kaffeepads,de,Kaffeepads,kaffeepads,primary,seed,1.00
+kaffeesatz,de,Kaffeesatz,kaffeesatz,primary,seed,1.00
+kaefig_von_kleintieren,de,Käfig von Kleintieren,kafig von kleintieren,primary,seed,1.00
+kaefig_von_kleintieren,de,Käfig von Kleintieren,kafigvonkleintieren,auto,seed,0.85
+kajak,de,Kajak,kajak,primary,seed,1.00
+kalilauge,de,Kalilauge,kalilauge,primary,seed,1.00
+kalkputz_gipssputz,de,Kalkputz/Gipssputz,kalkputz gipssputz,primary,seed,1.00
+kalkputz_gipssputz,de,Kalkputz/Gipssputz,kalkputzgipssputz,auto,seed,0.85
+kaltanstriche_bitumenloesung,de,Kaltanstriche (Bitumenlösung),kaltanstriche bitumenloesung,auto,seed,0.90
+kaltanstriche_bitumenloesung,de,Kaltanstriche (Bitumenlösung),kaltanstriche bitumenlosung,primary,seed,1.00
+kaltanstriche_bitumenloesung,de,Kaltanstriche (Bitumenlösung),kaltanstrichebitumenloesung,auto,seed,0.80
+kaltanstriche_bitumenloesung,de,Kaltanstriche (Bitumenlösung),kaltanstrichebitumenlosung,auto,seed,0.85
+kaeltemittel_fckw,de,Kältemittel (FCKW),kaltemittel fckw,primary,seed,1.00
+kaeltemittel_fckw,de,Kältemittel (FCKW),kaltemittelfckw,auto,seed,0.85
+kaltreiniger,de,Kaltreiniger,kaltreiniger,primary,seed,1.00
+kalziumsilikatplatten,de,Kalziumsilikatplatten,kalziumsilikatplatten,primary,seed,1.00
+kaminofen,de,Kaminofen,kaminofen,primary,seed,1.00
+kampfmittel,de,Kampfmittel,kampfmittel,primary,seed,1.00
+kanadische_goldrute,de,Kanadische Goldrute,kanadische goldrute,primary,seed,1.00
+kanadische_goldrute,de,Kanadische Goldrute,kanadischegoldrute,auto,seed,0.85
+kanister_kunststoff,de,Kanister (Kunststoff),kanister kunststoff,primary,seed,1.00
+kanister_metall,de,Kanister (Metall),kanister metall,primary,seed,1.00
+kanister_kunststoff,de,Kanister (Kunststoff),kanisterkunststoff,auto,seed,0.85
+kanister_metall,de,Kanister (Metall),kanistermetall,auto,seed,0.85
+kanu,de,Kanu,kanu,primary,seed,1.00
+karosserieteile,de,Karosserieteile,karosserieteile,primary,seed,1.00
+kartoffelschalen_roh,de,Kartoffelschalen (roh),kartoffelschalen roh,primary,seed,1.00
+kartoffelschalen_roh,de,Kartoffelschalen (roh),kartoffelschalenroh,auto,seed,0.85
+kartonagen,de,Kartonagen,kartonagen,primary,seed,1.00
+kartons,de,Kartons,kartons,primary,seed,1.00
+kartuschen_fuer_wasserfilter,de,Kartuschen für Wasserfilter,kartuschen fuer wasserfilter,auto,seed,0.90
+kartuschen_fuer_wasserfilter,de,Kartuschen für Wasserfilter,kartuschen fur wasserfilter,primary,seed,1.00
+kartuschen_fuer_wasserfilter,de,Kartuschen für Wasserfilter,kartuschenfuerwasserfilter,auto,seed,0.80
+kartuschen_fuer_wasserfilter,de,Kartuschen für Wasserfilter,kartuschenfurwasserfilter,auto,seed,0.85
+kaeserinde_unbehandelt,de,Käserinde (unbehandelt),kaserinde unbehandelt,primary,seed,1.00
+kaeserinde_unbehandelt,de,Käserinde (unbehandelt),kaserindeunbehandelt,auto,seed,0.85
+kassenbon,de,Kassenbon,kassenbon,primary,seed,1.00
+kassenbons_kassenzettel,de,Kassenbons/ Kassenzettel,kassenbons kassenzettel,primary,seed,1.00
+kassenbons_kassenzettel,de,Kassenbons/ Kassenzettel,kassenbonskassenzettel,auto,seed,0.85
+kassetten,de,Kassetten,kassetten,primary,seed,1.00
+kassettenabspieler,de,Kassettenabspieler,kassettenabspieler,primary,seed,1.00
+kastanien,de,Kastanien,kastanien,primary,seed,1.00
+kastanienlaub,de,Kastanienlaub,kastanienlaub,primary,seed,1.00
+kastanienlaub_von_der_miniermotte_befallen,de,"Kastanienlaub, von der Miniermotte befallen",kastanienlaub von der miniermotte befallen,primary,seed,1.00
+kastanienlaub_von_der_miniermotte_befallen,de,"Kastanienlaub, von der Miniermotte befallen",kastanienlaubvonderminiermottebefallen,auto,seed,0.85
+kataloge,de,Kataloge,kataloge,primary,seed,1.00
+katzenstreu,de,Katzenstreu,katzenstreu,primary,seed,1.00
+kaugummis,de,Kaugummis,kaugummis,primary,seed,1.00
+kehricht_haushalt,de,Kehricht (Haushalt),kehricht haushalt,primary,seed,1.00
+kehricht_haushalt,de,Kehricht (Haushalt),kehrichthaushalt,auto,seed,0.85
+keramik,de,Keramik,keramik,primary,seed,1.00
+keramikgeschirr,de,Keramikgeschirr,keramikgeschirr,primary,seed,1.00
+kerzen,de,Kerzen,kerzen,primary,seed,1.00
+kerzen_kerzenreste,de,"Kerzen, Kerzenreste",kerzen kerzenreste,primary,seed,1.00
+kerzen_kerzenreste,de,"Kerzen, Kerzenreste",kerzenkerzenreste,auto,seed,0.85
+kesseldruckimpraegniertes_holz,de,Kesseldruckimprägniertes Holz,kesseldruckimpraegniertes holz,auto,seed,0.90
+kesseldruckimpraegniertes_holz,de,Kesseldruckimprägniertes Holz,kesseldruckimpraegniertesholz,auto,seed,0.80
+kesseldruckimpraegniertes_holz,de,Kesseldruckimprägniertes Holz,kesseldruckimpragniertes holz,primary,seed,1.00
+kesseldruckimpraegniertes_holz,de,Kesseldruckimprägniertes Holz,kesseldruckimpragniertesholz,auto,seed,0.85
+kettensaege_mit_elektromotor,de,Kettensäge mit Elektromotor,kettensaege mit elektromotor,auto,seed,0.90
+kettensaege_mit_elektromotor,de,Kettensäge mit Elektromotor,kettensaegemitelektromotor,auto,seed,0.80
+kettensaege_mit_elektromotor,de,Kettensäge mit Elektromotor,kettensage mit elektromotor,primary,seed,1.00
+kettensaege_mit_elektromotor,de,Kettensäge mit Elektromotor,kettensagemitelektromotor,auto,seed,0.85
+kfz_batterien,de,Kfz-Batterien,kfz batterien,primary,seed,1.00
+kfz_reifen,de,Kfz-Reifen,kfz reifen,primary,seed,1.00
+kfz_batterien,de,Kfz-Batterien,kfzbatterien,auto,seed,0.85
+kfz_reifen,de,Kfz-Reifen,kfzreifen,auto,seed,0.85
+kies,de,Kies,kies,primary,seed,1.00
+kinderbetten,de,Kinderbetten,kinderbetten,primary,seed,1.00
+kinderelektroauto,de,Kinderelektroauto,kinderelektroauto,primary,seed,1.00
+kindersitz_fuer_fahrrad_fuer_auto,de,"Kindersitz für Fahrrad, für Auto",kindersitz fuer fahrrad fuer auto,auto,seed,0.90
+kindersitz_fuer_fahrrad_fuer_auto,de,"Kindersitz für Fahrrad, für Auto",kindersitz fur fahrrad fur auto,primary,seed,1.00
+kindersitz_fuer_fahrrad_fuer_auto,de,"Kindersitz für Fahrrad, für Auto",kindersitzfuerfahrradfuerauto,auto,seed,0.80
+kindersitz_fuer_fahrrad_fuer_auto,de,"Kindersitz für Fahrrad, für Auto",kindersitzfurfahrradfurauto,auto,seed,0.85
+kinderwagen,de,Kinderwagen,kinderwagen,primary,seed,1.00
+kisten,de,Kisten,kisten,primary,seed,1.00
+klarsichthuellen,de,Klarsichthüllen,klarsichthuellen,auto,seed,0.90
+klarsichthuellen,de,Klarsichthüllen,klarsichthullen,primary,seed,1.00
+klavier,de,Klavier,klavier,primary,seed,1.00
+klebebaender,de,Klebebänder,klebebaender,auto,seed,0.90
+klebeband,de,Klebeband,klebeband,primary,seed,1.00
+klebebaender,de,Klebebänder,klebebander,primary,seed,1.00
+klebstoff,de,Klebstoff,klebstoff,primary,seed,1.00
+klebstoffe,de,Klebstoffe,klebstoffe,primary,seed,1.00
+kleider,de,Kleider,kleider,primary,seed,1.00
+kleiderbuegel,de,Kleiderbügel,kleiderbuegel,auto,seed,0.90
+kleiderbuegel_spannbuegel,de,Kleiderbügel/Spannbügel,kleiderbuegel spannbuegel,auto,seed,0.90
+kleiderbuegel_spannbuegel,de,Kleiderbügel/Spannbügel,kleiderbuegelspannbuegel,auto,seed,0.80
+kleiderbuegel,de,Kleiderbügel,kleiderbugel,primary,seed,1.00
+kleiderbuegel_spannbuegel,de,Kleiderbügel/Spannbügel,kleiderbugel spannbugel,primary,seed,1.00
+kleiderbuegel_spannbuegel,de,Kleiderbügel/Spannbügel,kleiderbugelspannbugel,auto,seed,0.85
+kleidung,de,Kleidung,kleidung,primary,seed,1.00
+kleinmoebel,de,Kleinmöbel,kleinmobel,primary,seed,1.00
+kleinmoebel,de,Kleinmöbel,kleinmoebel,auto,seed,0.90
+kleinteiliger_schrott,de,Kleinteiliger Schrott,kleinteiliger schrott,primary,seed,1.00
+kleinteiliger_schrott,de,Kleinteiliger Schrott,kleinteiligerschrott,auto,seed,0.85
+kleintierstreu,de,Kleintierstreu,kleintierstreu,primary,seed,1.00
+klimaanlagen,de,Klimaanlagen,klimaanlagen,primary,seed,1.00
+klinker,de,Klinker,klinker,primary,seed,1.00
+knaller,de,Knaller,knaller,primary,seed,1.00
+knochen,de,Knochen,knochen,primary,seed,1.00
+knopfzellen,de,Knopfzellen,knopfzellen,primary,seed,1.00
+kochfelder,de,Kochfelder,kochfelder,primary,seed,1.00
+kochmulden,de,Kochmulden,kochmulden,primary,seed,1.00
+kochplatten_felder,de,"Kochplatten, -felder",kochplatten felder,primary,seed,1.00
+kochplatten_felder,de,"Kochplatten, -felder",kochplattenfelder,auto,seed,0.85
+kochtoepfe,de,Kochtöpfe,kochtoepfe,auto,seed,0.90
+kochtopf,de,Kochtopf,kochtopf,primary,seed,1.00
+kochtoepfe,de,Kochtöpfe,kochtopfe,primary,seed,1.00
+koffer_gross,de,Koffer (groß),koffer gro,primary,seed,1.00
+koffer_gross,de,Koffer (groß),koffer gross,auto,seed,0.90
+koffer_klein,de,"Koffer, klein",koffer klein,primary,seed,1.00
+koffer_gross,de,Koffer (groß),koffergro,auto,seed,0.85
+koffer_gross,de,Koffer (groß),koffergross,auto,seed,0.80
+koffer_klein,de,"Koffer, klein",kofferklein,auto,seed,0.85
+kohle,de,Kohle,kohle,primary,seed,1.00
+kohlebriketts,de,Kohlebriketts,kohlebriketts,primary,seed,1.00
+kondensatoren,de,Kondensatoren,kondensatoren,primary,seed,1.00
+kondome,de,Kondome,kondome,primary,seed,1.00
+konservendosen,de,Konservendosen,konservendosen,primary,seed,1.00
+konservenglaeser,de,Konservengläser,konservenglaeser,auto,seed,0.90
+konservenglas,de,Konservenglas,konservenglas,primary,seed,1.00
+konservenglaeser,de,Konservengläser,konservenglaser,primary,seed,1.00
+kontaminierter_boden,de,Kontaminierter Boden,kontaminierter boden,primary,seed,1.00
+kontaminierter_boden,de,Kontaminierter Boden,kontaminierterboden,auto,seed,0.85
+kontaminiertes_altholz,de,Kontaminiertes Altholz,kontaminiertes altholz,primary,seed,1.00
+kontaminiertes_altholz,de,Kontaminiertes Altholz,kontaminiertesaltholz,auto,seed,0.85
+konvektionsheizungen,de,Konvektionsheizungen,konvektionsheizungen,primary,seed,1.00
+konvektoren_heizkoerper,de,Konvektoren (Heizkörper),konvektoren heizkoerper,auto,seed,0.90
+konvektoren_heizkoerper,de,Konvektoren (Heizkörper),konvektoren heizkorper,primary,seed,1.00
+konvektoren_heizkoerper,de,Konvektoren (Heizkörper),konvektorenheizkoerper,auto,seed,0.80
+konvektoren_heizkoerper,de,Konvektoren (Heizkörper),konvektorenheizkorper,auto,seed,0.85
+kopfhoerer,de,Kopfhörer,kopfhoerer,auto,seed,0.90
+kopfhoerer,de,Kopfhörer,kopfhorer,primary,seed,1.00
+kopierfolien,de,Kopierfolien,kopierfolien,primary,seed,1.00
+kopiergeraete,de,Kopiergeräte,kopiergeraete,auto,seed,0.90
+kopiergeraete,de,Kopiergeräte,kopiergerate,primary,seed,1.00
+korbwaren,de,Korbwaren,korbwaren,primary,seed,1.00
+korken,de,Korken,korken,primary,seed,1.00
+korkreste_unbehandelt,de,"Korkreste, unbehandelt",korkreste unbehandelt,primary,seed,1.00
+korkreste_unbehandelt,de,"Korkreste, unbehandelt",korkresteunbehandelt,auto,seed,0.85
+korkrindenstuecke,de,Korkrindenstücke,korkrindenstucke,primary,seed,1.00
+korkrindenstuecke,de,Korkrindenstücke,korkrindenstuecke,auto,seed,0.90
+korrekturfluessigkeiten,de,Korrekturflüssigkeiten,korrekturfluessigkeiten,auto,seed,0.90
+korrekturfluessigkeiten,de,Korrekturflüssigkeiten,korrekturflussigkeiten,primary,seed,1.00
+kosmetika,de,Kosmetika,kosmetika,primary,seed,1.00
+kosmetiktuch,de,Kosmetiktuch,kosmetiktuch,primary,seed,1.00
+kosmetiktuecher,de,Kosmetiktücher,kosmetiktucher,primary,seed,1.00
+kosmetiktuecher,de,Kosmetiktücher,kosmetiktuecher,auto,seed,0.90
+kraeuter,de,Kräuter,kraeuter,auto,seed,0.90
+kraftfahrzeuge_kraftfahrzeugteile,de,"Kraftfahrzeuge, Kraftfahrzeugteile",kraftfahrzeuge kraftfahrzeugteile,primary,seed,1.00
+kraftfahrzeuge_kraftfahrzeugteile,de,"Kraftfahrzeuge, Kraftfahrzeugteile",kraftfahrzeugekraftfahrzeugteile,auto,seed,0.85
+kraftstoff,de,Kraftstoff,kraftstoff,primary,seed,1.00
+kraeuter,de,Kräuter,krauter,primary,seed,1.00
+kreditkarten_zerschnitten,de,Kreditkarten (zerschnitten),kreditkarten zerschnitten,primary,seed,1.00
+kreditkarten_zerschnitten,de,Kreditkarten (zerschnitten),kreditkartenzerschnitten,auto,seed,0.85
+kreissaege,de,Kreissäge,kreissaege,auto,seed,0.90
+kreissaege,de,Kreissäge,kreissage,primary,seed,1.00
+kristallglaeser,de,Kristallgläser,kristallglaeser,auto,seed,0.90
+kristallglas,de,Kristallglas,kristallglas,primary,seed,1.00
+kristallglaeser,de,Kristallgläser,kristallglaser,primary,seed,1.00
+kronkorken,de,Kronkorken,kronkorken,primary,seed,1.00
+kuchen,de,Kuchen,kuchen,primary,seed,1.00
+kuechenabfall,de,Küchenabfall,kuchenabfall,primary,seed,1.00
+kuechenabfaelle,de,Küchenabfälle,kuchenabfalle,primary,seed,1.00
+kuechengeschirr,de,Küchengeschirr,kuchengeschirr,primary,seed,1.00
+kuechenkraeuter,de,Küchenkräuter,kuchenkrauter,primary,seed,1.00
+kuechenkrepp_benutzt,de,Küchenkrepp (benutzt),kuchenkrepp benutzt,primary,seed,1.00
+kuechenkrepp_benutzt,de,Küchenkrepp (benutzt),kuchenkreppbenutzt,auto,seed,0.85
+kuechenmaschine,de,Küchenmaschine,kuchenmaschine,primary,seed,1.00
+kuechenrolle_benutzt,de,Küchenrolle (benutzt),kuchenrolle benutzt,primary,seed,1.00
+kuechenrolle_benutzt,de,Küchenrolle (benutzt),kuchenrollebenutzt,auto,seed,0.85
+kuechenabfaelle,de,Küchenabfälle,kuechenabfaelle,auto,seed,0.90
+kuechenabfall,de,Küchenabfall,kuechenabfall,auto,seed,0.90
+kuechengeschirr,de,Küchengeschirr,kuechengeschirr,auto,seed,0.90
+kuechenkraeuter,de,Küchenkräuter,kuechenkraeuter,auto,seed,0.90
+kuechenkrepp_benutzt,de,Küchenkrepp (benutzt),kuechenkrepp benutzt,auto,seed,0.90
+kuechenkrepp_benutzt,de,Küchenkrepp (benutzt),kuechenkreppbenutzt,auto,seed,0.80
+kuechenmaschine,de,Küchenmaschine,kuechenmaschine,auto,seed,0.90
+kuechenrolle_benutzt,de,Küchenrolle (benutzt),kuechenrolle benutzt,auto,seed,0.90
+kuechenrolle_benutzt,de,Küchenrolle (benutzt),kuechenrollebenutzt,auto,seed,0.80
+kuehlakkus,de,Kühlakkus,kuehlakkus,auto,seed,0.90
+kuehlerfluessigkeit,de,Kühlerflüssigkeit,kuehlerfluessigkeit,auto,seed,0.90
+kuehlerfrostschutz,de,Kühlerfrostschutz,kuehlerfrostschutz,auto,seed,0.90
+kuehlgeraet,de,Kühlgerät,kuehlgeraet,auto,seed,0.90
+kuehlgeraete,de,Kühlgeräte,kuehlgeraete,auto,seed,0.90
+kuehlmittel_solaranlagen,de,Kühlmittel (Solaranlagen),kuehlmittel solaranlagen,auto,seed,0.90
+kuehlmittel_solaranlagen,de,Kühlmittel (Solaranlagen),kuehlmittelsolaranlagen,auto,seed,0.80
+kuehlschraenke,de,Kühlschränke,kuehlschraenke,auto,seed,0.90
+kuehlschrank,de,Kühlschrank,kuehlschrank,auto,seed,0.90
+kugelschreiber,de,Kugelschreiber,kugelschreiber,primary,seed,1.00
+kuehlakkus,de,Kühlakkus,kuhlakkus,primary,seed,1.00
+kuehlerfluessigkeit,de,Kühlerflüssigkeit,kuhlerflussigkeit,primary,seed,1.00
+kuehlerfrostschutz,de,Kühlerfrostschutz,kuhlerfrostschutz,primary,seed,1.00
+kuehlgeraet,de,Kühlgerät,kuhlgerat,primary,seed,1.00
+kuehlgeraete,de,Kühlgeräte,kuhlgerate,primary,seed,1.00
+kuehlmittel_solaranlagen,de,Kühlmittel (Solaranlagen),kuhlmittel solaranlagen,primary,seed,1.00
+kuehlmittel_solaranlagen,de,Kühlmittel (Solaranlagen),kuhlmittelsolaranlagen,auto,seed,0.85
+kuehlschrank,de,Kühlschrank,kuhlschrank,primary,seed,1.00
+kuehlschraenke,de,Kühlschränke,kuhlschranke,primary,seed,1.00
+kunstharz,de,Kunstharz,kunstharz,primary,seed,1.00
+kunstharzverduennung,de,Kunstharzverdünnung,kunstharzverduennung,auto,seed,0.90
+kunstharzverduennung,de,Kunstharzverdünnung,kunstharzverdunnung,primary,seed,1.00
+kunstrasen,de,Kunstrasen,kunstrasen,primary,seed,1.00
+kunststoff,de,Kunststoff,kunststoff,primary,seed,1.00
+kunststoffbuegel,de,Kunststoffbügel,kunststoffbuegel,auto,seed,0.90
+kunststoffbuegel,de,Kunststoffbügel,kunststoffbugel,primary,seed,1.00
+kunststoffe_kleinteilig,de,Kunststoffe - Kleinteilig,kunststoffe kleinteilig,primary,seed,1.00
+kunststoffe_kleinteilig,de,Kunststoffe - Kleinteilig,kunststoffekleinteilig,auto,seed,0.85
+kunststofffaesser,de,Kunststofffässer,kunststofffaesser,auto,seed,0.90
+kunststofffass,de,Kunststofffass,kunststofffass,primary,seed,1.00
+kunststofffaesser,de,Kunststofffässer,kunststofffasser,primary,seed,1.00
+kunststoffflaschen,de,Kunststoffflaschen,kunststoffflaschen,primary,seed,1.00
+kunststoffkanister,de,Kunststoffkanister,kunststoffkanister,primary,seed,1.00
+kunststoffputze,de,Kunststoffputze,kunststoffputze,primary,seed,1.00
+kunststoffrohre,de,Kunststoffrohre,kunststoffrohre,primary,seed,1.00
+kunststoffschuesseln,de,Kunststoffschüsseln,kunststoffschuesseln,auto,seed,0.90
+kunststoffschuesseln,de,Kunststoffschüsseln,kunststoffschusseln,primary,seed,1.00
+kunststoffspielzeug,de,Kunststoffspielzeug,kunststoffspielzeug,primary,seed,1.00
+kunststofftuben,de,Kunststofftuben,kunststofftuben,primary,seed,1.00
+kunststofftuete,de,Kunststofftüte,kunststofftuete,auto,seed,0.90
+kunststofftuete,de,Kunststofftüte,kunststofftute,primary,seed,1.00
+kunststoffverpackung,de,Kunststoffverpackung,kunststoffverpackung,primary,seed,1.00
+kunststoffverschluesse,de,Kunststoffverschlüsse,kunststoffverschluesse,auto,seed,0.90
+kunststoffverschluss,de,Kunststoffverschluss,kunststoffverschluss,primary,seed,1.00
+kunststoffverschluesse,de,Kunststoffverschlüsse,kunststoffverschlusse,primary,seed,1.00
+kupfer_kupferrohre,de,"Kupfer, Kupferrohre",kupfer kupferrohre,primary,seed,1.00
+kupfer_kupferrohre,de,"Kupfer, Kupferrohre",kupferkupferrohre,auto,seed,0.85
+kupplungstraeger_fuer_fahrraeder,de,Kupplungsträger für Fahrräder,kupplungstraeger fuer fahrraeder,auto,seed,0.90
+kupplungstraeger_fuer_fahrraeder,de,Kupplungsträger für Fahrräder,kupplungstraegerfuerfahrraeder,auto,seed,0.80
+kupplungstraeger_fuer_fahrraeder,de,Kupplungsträger für Fahrräder,kupplungstrager fur fahrrader,primary,seed,1.00
+kupplungstraeger_fuer_fahrraeder,de,Kupplungsträger für Fahrräder,kupplungstragerfurfahrrader,auto,seed,0.85
+kuscheltiere,de,Kuscheltiere,kuscheltiere,primary,seed,1.00
+laborchemikalien,de,Laborchemikalien,laborchemikalien,primary,seed,1.00
+laborglaeser,de,Laborgläser,laborglaeser,auto,seed,0.90
+laborglas,de,Laborglas,laborglas,primary,seed,1.00
+laborglaeser,de,Laborgläser,laborglaser,primary,seed,1.00
+lachgas,de,Lachgas,lachgas,primary,seed,1.00
+lachgaskartusche_voll_und_nicht_vollstaendig_entleert,de,Lachgaskartusche (voll und nicht vollständig entleert),lachgaskartusche voll und nicht vollstaendig entleert,auto,seed,0.90
+lachgaskartusche_voll_und_nicht_vollstaendig_entleert,de,Lachgaskartusche (voll und nicht vollständig entleert),lachgaskartusche voll und nicht vollstandig entleert,primary,seed,1.00
+lachgaskartusche_vollstaendig_entleert,de,Lachgaskartusche (vollständig entleert),lachgaskartusche vollstaendig entleert,auto,seed,0.90
+lachgaskartusche_vollstaendig_entleert,de,Lachgaskartusche (vollständig entleert),lachgaskartusche vollstandig entleert,primary,seed,1.00
+lachgaskartusche_vollstaendig_entleert,de,Lachgaskartusche (vollständig entleert),lachgaskartuschevollstaendigentleert,auto,seed,0.80
+lachgaskartusche_vollstaendig_entleert,de,Lachgaskartusche (vollständig entleert),lachgaskartuschevollstandigentleert,auto,seed,0.85
+lachgaskartusche_voll_und_nicht_vollstaendig_entleert,de,Lachgaskartusche (voll und nicht vollständig entleert),lachgaskartuschevollundnichtvollstaendigentleert,auto,seed,0.80
+lachgaskartusche_voll_und_nicht_vollstaendig_entleert,de,Lachgaskartusche (voll und nicht vollständig entleert),lachgaskartuschevollundnichtvollstandigentleert,auto,seed,0.85
+lack,de,Lack,lack,primary,seed,1.00
+lackabbeizer,de,Lackabbeizer,lackabbeizer,primary,seed,1.00
+lacke,de,Lacke,lacke,primary,seed,1.00
+lackspraydosen,de,Lackspraydosen,lackspraydosen,primary,seed,1.00
+lametta,de,Lametta,lametta,primary,seed,1.00
+laminat,de,Laminat,laminat,primary,seed,1.00
+lampe,de,Lampe,lampe,primary,seed,1.00
+lampenschirme,de,Lampenschirme,lampenschirme,primary,seed,1.00
+laptops,de,Laptops,laptops,primary,seed,1.00
+lasuren,de,Lasuren,lasuren,primary,seed,1.00
+latexfarbe,de,Latexfarbe,latexfarbe,primary,seed,1.00
+lattenroste,de,Lattenroste,lattenroste,primary,seed,1.00
+laub,de,Laub,laub,primary,seed,1.00
+laub_befallen_von_eichenprozessionsspinner,de,Laub (befallen von Eichenprozessionsspinner),laub befallen von eichenprozessionsspinner,primary,seed,1.00
+laub_und_rasenschnitt,de,Laub- und Rasenschnitt,laub und rasenschnitt,primary,seed,1.00
+laub_befallen_von_eichenprozessionsspinner,de,Laub (befallen von Eichenprozessionsspinner),laubbefallenvoneichenprozessionsspinner,auto,seed,0.85
+laub_und_rasenschnitt,de,Laub- und Rasenschnitt,laubundrasenschnitt,auto,seed,0.85
+laufbaender,de,Laufbänder,laufbaender,auto,seed,0.90
+laufbaender,de,Laufbänder,laufbander,primary,seed,1.00
+laufgitter,de,Laufgitter,laufgitter,primary,seed,1.00
+laugen,de,Laugen,laugen,primary,seed,1.00
+lautsprecher,de,Lautsprecher,lautsprecher,primary,seed,1.00
+lautsprecherbox,de,Lautsprecherbox,lautsprecherbox,primary,seed,1.00
+lavasubstrat,de,Lavasubstrat,lavasubstrat,primary,seed,1.00
+lebensmittel_ueberlagert,de,Lebensmittel (überlagert),lebensmittel uberlagert,primary,seed,1.00
+lebensmittel_ueberlagert,de,Lebensmittel (überlagert),lebensmittel ueberlagert,auto,seed,0.90
+lebensmittelreste,de,Lebensmittelreste,lebensmittelreste,primary,seed,1.00
+lebensmittel_ueberlagert,de,Lebensmittel (überlagert),lebensmitteluberlagert,auto,seed,0.85
+lebensmittel_ueberlagert,de,Lebensmittel (überlagert),lebensmittelueberlagert,auto,seed,0.80
+led_lampen_und_leuchten,de,LED-Lampen und -Leuchten,led lampen und leuchten,primary,seed,1.00
+lederpflegemittel,de,Lederpflegemittel,lederpflegemittel,primary,seed,1.00
+lederreste,de,Lederreste,lederreste,primary,seed,1.00
+led_lampen_und_leuchten,de,LED-Lampen und -Leuchten,ledlampenundleuchten,auto,seed,0.85
+leds,de,LEDs,leds,primary,seed,1.00
+lehmputz,de,Lehmputz,lehmputz,primary,seed,1.00
+lehmschlag,de,Lehmschlag,lehmschlag,primary,seed,1.00
+leichtverpackungen,de,Leichtverpackungen,leichtverpackungen,primary,seed,1.00
+leimfarben,de,Leimfarben,leimfarben,primary,seed,1.00
+leinoelfirnis,de,Leinölfirnis,leinoelfirnis,auto,seed,0.90
+leinoelfirnis,de,Leinölfirnis,leinolfirnis,primary,seed,1.00
+leitern,de,Leitern,leitern,primary,seed,1.00
+leitungsmasten,de,Leitungsmasten,leitungsmasten,primary,seed,1.00
+leuchten_metall,de,Leuchten (Metall),leuchten metall,primary,seed,1.00
+leuchten_metall,de,Leuchten (Metall),leuchtenmetall,auto,seed,0.85
+leuchtstofflampen,de,Leuchtstofflampen,leuchtstofflampen,primary,seed,1.00
+leuchtstofflampen_roehren,de,"Leuchtstofflampen, -röhren",leuchtstofflampen roehren,auto,seed,0.90
+leuchtstofflampen_roehren,de,"Leuchtstofflampen, -röhren",leuchtstofflampen rohren,primary,seed,1.00
+leuchtstofflampen_roehren,de,"Leuchtstofflampen, -röhren",leuchtstofflampenroehren,auto,seed,0.80
+leuchtstofflampen_roehren,de,"Leuchtstofflampen, -röhren",leuchtstofflampenrohren,auto,seed,0.85
+leuchtstoffroehren,de,Leuchtstoffröhren,leuchtstoffroehren,auto,seed,0.90
+leuchtstoffroehren_energiesparlampen_leds,de,"Leuchtstoffröhren, Energiesparlampen, LEDs",leuchtstoffroehren energiesparlampen leds,auto,seed,0.90
+leuchtstoffroehren_energiesparlampen_leds,de,"Leuchtstoffröhren, Energiesparlampen, LEDs",leuchtstoffroehrenenergiesparlampenleds,auto,seed,0.80
+leuchtstoffroehren,de,Leuchtstoffröhren,leuchtstoffrohren,primary,seed,1.00
+leuchtstoffroehren_energiesparlampen_leds,de,"Leuchtstoffröhren, Energiesparlampen, LEDs",leuchtstoffrohren energiesparlampen leds,primary,seed,1.00
+leuchtstoffroehren_energiesparlampen_leds,de,"Leuchtstoffröhren, Energiesparlampen, LEDs",leuchtstoffrohrenenergiesparlampenleds,auto,seed,0.85
+lichterkette,de,Lichterkette,lichterkette,primary,seed,1.00
+liegen,de,Liegen,liegen,primary,seed,1.00
+linoleum,de,Linoleum,linoleum,primary,seed,1.00
+lithium_akkus,de,Lithium-Akkus,lithium akkus,primary,seed,1.00
+lithium_akkus,de,Lithium-Akkus,lithiumakkus,auto,seed,0.85
+lithiumbatterien,de,Lithiumbatterien,lithiumbatterien,primary,seed,1.00
+lockenstab,de,Lockenstab,lockenstab,primary,seed,1.00
+loesemittel,de,Lösemittel,loesemittel,auto,seed,0.90
+loesungsmittel,de,Lösungsmittel,loesungsmittel,auto,seed,0.90
+loetkolben,de,Lötkolben,loetkolben,auto,seed,0.90
+loesemittel,de,Lösemittel,losemittel,primary,seed,1.00
+loesungsmittel,de,Lösungsmittel,losungsmittel,primary,seed,1.00
+loetkolben,de,Lötkolben,lotkolben,primary,seed,1.00
+luftballons,de,Luftballons,luftballons,primary,seed,1.00
+luftbefeuchter_elektrisch,de,Luftbefeuchter (elektrisch),luftbefeuchter elektrisch,primary,seed,1.00
+luftbefeuchter_elektrisch,de,Luftbefeuchter (elektrisch),luftbefeuchterelektrisch,auto,seed,0.85
+luftfilter,de,Luftfilter,luftfilter,primary,seed,1.00
+luftmatratzen,de,Luftmatratzen,luftmatratzen,primary,seed,1.00
+luftpumpen_kunststoff,de,Luftpumpen (Kunststoff),luftpumpen kunststoff,primary,seed,1.00
+luftpumpen_metall,de,Luftpumpen (Metall),luftpumpen metall,primary,seed,1.00
+luftpumpen_kunststoff,de,Luftpumpen (Kunststoff),luftpumpenkunststoff,auto,seed,0.85
+luftpumpen_metall,de,Luftpumpen (Metall),luftpumpenmetall,auto,seed,0.85
+malerflies,de,Malerflies,malerflies,primary,seed,1.00
+malervlies,de,Malervlies,malervlies,primary,seed,1.00
+manometer,de,Manometer,manometer,primary,seed,1.00
+margarinebecher,de,Margarinebecher,margarinebecher,primary,seed,1.00
+markisen,de,Markisen,markisen,primary,seed,1.00
+maschendraht,de,Maschendraht,maschendraht,primary,seed,1.00
+masten,de,Masten,masten,primary,seed,1.00
+matratze,de,Matratze,matratze,primary,seed,1.00
+matratzen,de,Matratzen,matratzen,primary,seed,1.00
+medikamente,de,Medikamente,medikamente,primary,seed,1.00
+mehrkomponentenkleber,de,Mehrkomponentenkleber,mehrkomponentenkleber,primary,seed,1.00
+melamin_fussbodenbelag,de,Melamin Fußbodenbelag,melamin fu bodenbelag,primary,seed,1.00
+melamin_fussbodenbelag,de,Melamin Fußbodenbelag,melamin fussbodenbelag,auto,seed,0.90
+melamin_fussbodenbelag,de,Melamin Fußbodenbelag,melaminfubodenbelag,auto,seed,0.85
+melamin_fussbodenbelag,de,Melamin Fußbodenbelag,melaminfussbodenbelag,auto,seed,0.80
+menueschalen,de,Menüschalen,menueschalen,auto,seed,0.90
+menueschalen,de,Menüschalen,menuschalen,primary,seed,1.00
+messer,de,Messer,messer,primary,seed,1.00
+messingteile,de,Messingteile,messingteile,primary,seed,1.00
+metall,de,Metall,metall,primary,seed,1.00
+metallisches_quecksilber,de,metallisches Quecksilber,metallisches quecksilber,primary,seed,1.00
+metallisches_quecksilber,de,metallisches Quecksilber,metallischesquecksilber,auto,seed,0.85
+metalloefen,de,Metallöfen,metalloefen,auto,seed,0.90
+metallofen,de,Metallofen,metallofen,primary,seed,1.00
+metallrohre,de,Metallrohre,metallrohre,primary,seed,1.00
+metallspuelen,de,Metallspülen,metallspuelen,auto,seed,0.90
+metallspuelen,de,Metallspülen,metallspulen,primary,seed,1.00
+miederwaren,de,Miederwaren,miederwaren,primary,seed,1.00
+mikrowelle,de,Mikrowelle,mikrowelle,primary,seed,1.00
+mikrowellengeraete,de,Mikrowellengeräte,mikrowellengeraete,auto,seed,0.90
+mikrowellengeraete,de,Mikrowellengeräte,mikrowellengerate,primary,seed,1.00
+milchkartons,de,Milchkartons,milchkartons,primary,seed,1.00
+milchtuete,de,Milchtüte,milchtuete,auto,seed,0.90
+milchtuete,de,Milchtüte,milchtute,primary,seed,1.00
+mineralfaserplatten,de,Mineralfaserplatten,mineralfaserplatten,primary,seed,1.00
+mineralischer_bauschutt_fliesen_ziegel_und_keramik,de,"Mineralischer Bauschutt (Fliesen, Ziegel und Keramik)",mineralischer bauschutt fliesen ziegel und keramik,primary,seed,1.00
+mineralischer_bauschutt_fliesen_ziegel_und_keramik,de,"Mineralischer Bauschutt (Fliesen, Ziegel und Keramik)",mineralischerbauschuttfliesenziegelundkeramik,auto,seed,0.85
+mineraloel,de,Mineralöl,mineraloel,auto,seed,0.90
+mineraloel,de,Mineralöl,mineralol,primary,seed,1.00
+mineralwolle,de,Mineralwolle,mineralwolle,primary,seed,1.00
+mineralwolle_faser,de,"Mineralwolle, -faser",mineralwolle faser,primary,seed,1.00
+mineralwolle_faser,de,"Mineralwolle, -faser",mineralwollefaser,auto,seed,0.85
+minikueche,de,Miniküche,minikuche,primary,seed,1.00
+minikueche,de,Miniküche,minikueche,auto,seed,0.90
+mixer,de,Mixer,mixer,primary,seed,1.00
+moebel,de,Möbel,mobel,primary,seed,1.00
+moebel_oder_sperrabfaelle_mit_holzwurm_schaedlingsbefall,de,Möbel oder Sperrabfälle mit Holzwurm-/Schädlingsbefall,mobel oder sperrabfalle mit holzwurm schadlingsbefall,primary,seed,1.00
+moebel_oder_sperrabfaelle_mit_schimmelbefall,de,Möbel oder Sperrabfälle mit Schimmelbefall,mobel oder sperrabfalle mit schimmelbefall,primary,seed,1.00
+moebel_oder_sperrgut_mit_brandschaeden,de,Möbel oder Sperrgut mit Brandschäden,mobel oder sperrgut mit brandschaden,primary,seed,1.00
+moebel_oder_sperrabfaelle_mit_holzwurm_schaedlingsbefall,de,Möbel oder Sperrabfälle mit Holzwurm-/Schädlingsbefall,mobelodersperrabfallemitholzwurmschadlingsbefall,auto,seed,0.85
+moebel_oder_sperrabfaelle_mit_schimmelbefall,de,Möbel oder Sperrabfälle mit Schimmelbefall,mobelodersperrabfallemitschimmelbefall,auto,seed,0.85
+moebel_oder_sperrgut_mit_brandschaeden,de,Möbel oder Sperrgut mit Brandschäden,mobelodersperrgutmitbrandschaden,auto,seed,0.85
+moebelpflegemittel,de,Möbelpflegemittel,mobelpflegemittel,primary,seed,1.00
+mobiltelefon,de,Mobiltelefon,mobiltelefon,primary,seed,1.00
+moebel,de,Möbel,moebel,auto,seed,0.90
+moebel_oder_sperrabfaelle_mit_holzwurm_schaedlingsbefall,de,Möbel oder Sperrabfälle mit Holzwurm-/Schädlingsbefall,moebel oder sperrabfaelle mit holzwurm schaedlingsbefall,auto,seed,0.90
+moebel_oder_sperrabfaelle_mit_schimmelbefall,de,Möbel oder Sperrabfälle mit Schimmelbefall,moebel oder sperrabfaelle mit schimmelbefall,auto,seed,0.90
+moebel_oder_sperrgut_mit_brandschaeden,de,Möbel oder Sperrgut mit Brandschäden,moebel oder sperrgut mit brandschaeden,auto,seed,0.90
+moebel_oder_sperrabfaelle_mit_holzwurm_schaedlingsbefall,de,Möbel oder Sperrabfälle mit Holzwurm-/Schädlingsbefall,moebelodersperrabfaellemitholzwurmschaedlingsbefall,auto,seed,0.80
+moebel_oder_sperrabfaelle_mit_schimmelbefall,de,Möbel oder Sperrabfälle mit Schimmelbefall,moebelodersperrabfaellemitschimmelbefall,auto,seed,0.80
+moebel_oder_sperrgut_mit_brandschaeden,de,Möbel oder Sperrgut mit Brandschäden,moebelodersperrgutmitbrandschaeden,auto,seed,0.80
+moebelpflegemittel,de,Möbelpflegemittel,moebelpflegemittel,auto,seed,0.90
+moertel,de,Mörtel,moertel,auto,seed,0.90
+mofa,de,Mofa,mofa,primary,seed,1.00
+monitor,de,Monitor,monitor,primary,seed,1.00
+monitore,de,Monitore,monitore,primary,seed,1.00
+montageschaeume,de,Montageschäume,montageschaeume,auto,seed,0.90
+montageschaum,de,Montageschaum,montageschaum,primary,seed,1.00
+montageschaum_ausgehaertet,de,Montageschaum ausgehärtet,montageschaum ausgehaertet,auto,seed,0.90
+montageschaum_ausgehaertet,de,Montageschaum ausgehärtet,montageschaum ausgehartet,primary,seed,1.00
+montageschaum_ausgehaertet,de,Montageschaum ausgehärtet,montageschaumausgehaertet,auto,seed,0.80
+montageschaum_ausgehaertet,de,Montageschaum ausgehärtet,montageschaumausgehartet,auto,seed,0.85
+montageschaeume,de,Montageschäume,montageschaume,primary,seed,1.00
+moos,de,Moos,moos,primary,seed,1.00
+moertel,de,Mörtel,mortel,primary,seed,1.00
+motoroel,de,Motoröl,motoroel,auto,seed,0.90
+motoroel,de,Motoröl,motorol,primary,seed,1.00
+motorrad,de,Motorrad,motorrad,primary,seed,1.00
+motorradbatterie,de,Motorradbatterie,motorradbatterie,primary,seed,1.00
+motorradbatterien,de,Motorradbatterien,motorradbatterien,primary,seed,1.00
+motorraeder,de,Motorräder,motorrader,primary,seed,1.00
+motorradhelm,de,Motorradhelm,motorradhelm,primary,seed,1.00
+motorradreifen,de,Motorradreifen,motorradreifen,primary,seed,1.00
+motorraeder,de,Motorräder,motorraeder,auto,seed,0.90
+mp3_player,de,MP3-Player,mp3 player,primary,seed,1.00
+mp3_player_walkman,de,MP3-Player / Walkman,mp3 player walkman,primary,seed,1.00
+mp3_player,de,MP3-Player,mp3player,auto,seed,0.85
+mp3_player_walkman,de,MP3-Player / Walkman,mp3playerwalkman,auto,seed,0.85
+mund_nasen_maske,de,Mund-Nasen-Maske,mund nasen maske,primary,seed,1.00
+mund_nasen_schutz,de,Mund-Nasen-Schutz,mund nasen schutz,primary,seed,1.00
+mund_nasen_maske,de,Mund-Nasen-Maske,mundnasenmaske,auto,seed,0.85
+mund_nasen_schutz,de,Mund-Nasen-Schutz,mundnasenschutz,auto,seed,0.85
+munition,de,Munition,munition,primary,seed,1.00
+munition_z_b_gaspatronen,de,"Munition, (z. B. Gaspatronen)",munition z b gaspatronen,primary,seed,1.00
+munition_z_b_gaspatronen,de,"Munition, (z. B. Gaspatronen)",munitionzbgaspatronen,auto,seed,0.85
+musikinstrumente,de,Musikinstrumente,musikinstrumente,primary,seed,1.00
+musikinstrumente_elektrisch,de,Musikinstrumente (elektrisch),musikinstrumente elektrisch,primary,seed,1.00
+musikinstrumente_elektrisch,de,Musikinstrumente (elektrisch),musikinstrumenteelektrisch,auto,seed,0.85
+musikkassetten,de,Musikkassetten,musikkassetten,primary,seed,1.00
+nachtspeicheroefen,de,Nachtspeicheröfen,nachtspeicheroefen,auto,seed,0.90
+nachtspeicheroefen,de,Nachtspeicheröfen,nachtspeicherofen,primary,seed,1.00
+naegel,de,Nägel,naegel,auto,seed,0.90
+naehmaschinen_elektrisch,de,Nähmaschinen (elektrisch),naehmaschinen elektrisch,auto,seed,0.90
+naehmaschinen_elektrisch,de,Nähmaschinen (elektrisch),naehmaschinenelektrisch,auto,seed,0.80
+naegel,de,Nägel,nagel,primary,seed,1.00
+nagellack_entferner,de,Nagellack-Entferner,nagellack entferner,primary,seed,1.00
+nagellacke,de,Nagellacke,nagellacke,primary,seed,1.00
+nagellackentferner,de,Nagellackentferner,nagellackentferner,primary,seed,1.00
+naehmaschinen_elektrisch,de,Nähmaschinen (elektrisch),nahmaschinen elektrisch,primary,seed,1.00
+naehmaschinen_elektrisch,de,Nähmaschinen (elektrisch),nahmaschinenelektrisch,auto,seed,0.85
+nahrungsreste_pflanzlich_ungekocht,de,Nahrungsreste (pflanzlich/ungekocht),nahrungsreste pflanzlich ungekocht,primary,seed,1.00
+nahrungsreste_tierisch_verdorben_gekocht,de,"Nahrungsreste (tierisch, verdorben, gekocht)",nahrungsreste tierisch verdorben gekocht,primary,seed,1.00
+nahrungsreste_pflanzlich_ungekocht,de,Nahrungsreste (pflanzlich/ungekocht),nahrungsrestepflanzlichungekocht,auto,seed,0.85
+nahrungsreste_tierisch_verdorben_gekocht,de,"Nahrungsreste (tierisch, verdorben, gekocht)",nahrungsrestetierischverdorbengekocht,auto,seed,0.85
+natronlauge,de,Natronlauge,natronlauge,primary,seed,1.00
+naturharzlacke,de,Naturharzlacke,naturharzlacke,primary,seed,1.00
+naturkork,de,Naturkork,naturkork,primary,seed,1.00
+neonroehren,de,Neonröhren,neonroehren,auto,seed,0.90
+neonroehren,de,Neonröhren,neonrohren,primary,seed,1.00
+ni_cd_akkus,de,Ni-Cd-Akkus,ni cd akkus,primary,seed,1.00
+ni_cd_akkus,de,Ni-Cd-Akkus,nicdakkus,auto,seed,0.85
+nickelbatterien,de,Nickelbatterien,nickelbatterien,primary,seed,1.00
+nitrolacke,de,Nitrolacke,nitrolacke,primary,seed,1.00
+nitroverduennung,de,Nitroverdünnung,nitroverduennung,auto,seed,0.90
+nitroverduennung,de,Nitroverdünnung,nitroverdunnung,primary,seed,1.00
+notebooks,de,Notebooks,notebooks,primary,seed,1.00
+notizzettel,de,Notizzettel,notizzettel,primary,seed,1.00
+nudeln,de,Nudeln,nudeln,primary,seed,1.00
+nussschalen,de,Nussschalen,nussschalen,primary,seed,1.00
+nylonstruempfe,de,Nylonstrümpfe,nylonstruempfe,auto,seed,0.90
+nylonstruempfe,de,Nylonstrümpfe,nylonstrumpfe,primary,seed,1.00
+oberbetten,de,Oberbetten,oberbetten,primary,seed,1.00
+obst,de,Obst,obst,primary,seed,1.00
+obstkisten,de,Obstkisten,obstkisten,primary,seed,1.00
+obstschalen,de,Obstschalen,obstschalen,primary,seed,1.00
+obstschalen_obstkerne,de,Obstschalen/Obstkerne,obstschalen obstkerne,primary,seed,1.00
+obstschalen_obstkerne,de,Obstschalen/Obstkerne,obstschalenobstkerne,auto,seed,0.85
+oefen,de,Öfen,oefen,auto,seed,0.90
+oefen_metall,de,Öfen (Metall),oefen metall,auto,seed,0.90
+oefen_metall,de,Öfen (Metall),oefenmetall,auto,seed,0.80
+oel,de,Öl,oel,auto,seed,0.90
+oel_und_benzinabscheiderinhalt,de,Öl- und Benzinabscheiderinhalt,oel und benzinabscheiderinhalt,auto,seed,0.90
+oelbehaelter,de,Ölbehälter,oelbehaelter,auto,seed,0.90
+oelbindemittel,de,Ölbindemittel,oelbindemittel,auto,seed,0.90
+oelfilter,de,Ölfilter,oelfilter,auto,seed,0.90
+oelkanister_mineraloel,de,Ölkanister (Mineralöl),oelkanister mineraloel,auto,seed,0.90
+oelkanister_speiseoel,de,Ölkanister (Speiseöl),oelkanister speiseoel,auto,seed,0.90
+oelkanister_mineraloel,de,Ölkanister (Mineralöl),oelkanistermineraloel,auto,seed,0.80
+oelkanister_speiseoel,de,Ölkanister (Speiseöl),oelkanisterspeiseoel,auto,seed,0.80
+oeloefen,de,Ölöfen,oeloefen,auto,seed,0.90
+oelofen,de,Ölofen,oelofen,auto,seed,0.90
+oelradiator,de,Ölradiator,oelradiator,auto,seed,0.90
+oelradiatoren,de,Ölradiatoren,oelradiatoren,auto,seed,0.90
+oelsand,de,Ölsand,oelsand,auto,seed,0.90
+oeltank,de,Öltank,oeltank,auto,seed,0.90
+oel_und_benzinabscheiderinhalt,de,Öl- und Benzinabscheiderinhalt,oelundbenzinabscheiderinhalt,auto,seed,0.80
+oelverschmutzte_betriebsmittel,de,Ölverschmutzte Betriebsmittel,oelverschmutzte betriebsmittel,auto,seed,0.90
+oelverschmutzte_putzlappen,de,Ölverschmutzte Putzlappen,oelverschmutzte putzlappen,auto,seed,0.90
+oelverschmutzte_betriebsmittel,de,Ölverschmutzte Betriebsmittel,oelverschmutztebetriebsmittel,auto,seed,0.80
+oelverschmutzte_putzlappen,de,Ölverschmutzte Putzlappen,oelverschmutzteputzlappen,auto,seed,0.80
+oelverunreinigter_boden,de,Ölverunreinigter Boden,oelverunreinigter boden,auto,seed,0.90
+oelverunreinigter_boden,de,Ölverunreinigter Boden,oelverunreinigterboden,auto,seed,0.80
+oefen,de,Öfen,ofen,primary,seed,1.00
+ofen_metall,de,Ofen (Metall),ofen metall,primary,seed,1.00
+ofenabbruch,de,Ofenabbruch,ofenabbruch,primary,seed,1.00
+ofen_metall,de,Ofen (Metall),ofenmetall,auto,seed,0.85
+ofenrohre,de,Ofenrohre,ofenrohre,primary,seed,1.00
+oel,de,Öl,ol,primary,seed,1.00
+oel_und_benzinabscheiderinhalt,de,Öl- und Benzinabscheiderinhalt,ol und benzinabscheiderinhalt,primary,seed,1.00
+oelbehaelter,de,Ölbehälter,olbehalter,primary,seed,1.00
+oelbindemittel,de,Ölbindemittel,olbindemittel,primary,seed,1.00
+oelfilter,de,Ölfilter,olfilter,primary,seed,1.00
+oelkanister_mineraloel,de,Ölkanister (Mineralöl),olkanister mineralol,primary,seed,1.00
+oelkanister_speiseoel,de,Ölkanister (Speiseöl),olkanister speiseol,primary,seed,1.00
+oelkanister_mineraloel,de,Ölkanister (Mineralöl),olkanistermineralol,auto,seed,0.85
+oelkanister_speiseoel,de,Ölkanister (Speiseöl),olkanisterspeiseol,auto,seed,0.85
+oelofen,de,Ölofen,olofen,primary,seed,1.00
+oelradiator,de,Ölradiator,olradiator,primary,seed,1.00
+oelradiatoren,de,Ölradiatoren,olradiatoren,primary,seed,1.00
+oelsand,de,Ölsand,olsand,primary,seed,1.00
+oeltank,de,Öltank,oltank,primary,seed,1.00
+oel_und_benzinabscheiderinhalt,de,Öl- und Benzinabscheiderinhalt,olundbenzinabscheiderinhalt,auto,seed,0.85
+oelverschmutzte_betriebsmittel,de,Ölverschmutzte Betriebsmittel,olverschmutzte betriebsmittel,primary,seed,1.00
+oelverschmutzte_putzlappen,de,Ölverschmutzte Putzlappen,olverschmutzte putzlappen,primary,seed,1.00
+oelverschmutzte_betriebsmittel,de,Ölverschmutzte Betriebsmittel,olverschmutztebetriebsmittel,auto,seed,0.85
+oelverschmutzte_putzlappen,de,Ölverschmutzte Putzlappen,olverschmutzteputzlappen,auto,seed,0.85
+oelverunreinigter_boden,de,Ölverunreinigter Boden,olverunreinigter boden,primary,seed,1.00
+oelverunreinigter_boden,de,Ölverunreinigter Boden,olverunreinigterboden,auto,seed,0.85
+onduline_bitumenwellplatten,de,Onduline Bitumenwellplatten,onduline bitumenwellplatten,primary,seed,1.00
+onduline_bitumenwellplatten,de,Onduline Bitumenwellplatten,ondulinebitumenwellplatten,auto,seed,0.85
+op_masken,de,OP-Masken,op masken,primary,seed,1.00
+op_masken,de,OP-Masken,opmasken,auto,seed,0.85
+orgel,de,Orgel,orgel,primary,seed,1.00
+overheadfolien,de,Overheadfolien,overheadfolien,primary,seed,1.00
+packpapier,de,Packpapier,packpapier,primary,seed,1.00
+paletten,de,Paletten,paletten,primary,seed,1.00
+palisaden,de,Palisaden,palisaden,primary,seed,1.00
+paneele_aus_holz,de,Paneele aus Holz,paneele aus holz,primary,seed,1.00
+paneele_aus_holz,de,Paneele aus Holz,paneeleausholz,auto,seed,0.85
+papier,de,Papier,papier,primary,seed,1.00
+papier_pappe_kartonagen,de,"Papier, Pappe, Kartonagen",papier pappe kartonagen,primary,seed,1.00
+papierbasierte_legoverpackungsbeutel,de,Papierbasierte Legoverpackungsbeutel,papierbasierte legoverpackungsbeutel,primary,seed,1.00
+papierbasierte_legoverpackungsbeutel,de,Papierbasierte Legoverpackungsbeutel,papierbasiertelegoverpackungsbeutel,auto,seed,0.85
+papierhandtuecher,de,Papierhandtücher,papierhandtucher,primary,seed,1.00
+papierhandtuecher,de,Papierhandtücher,papierhandtuecher,auto,seed,0.90
+papierkaffeebecher,de,Papierkaffeebecher,papierkaffeebecher,primary,seed,1.00
+papier_pappe_kartonagen,de,"Papier, Pappe, Kartonagen",papierpappekartonagen,auto,seed,0.85
+papiertaschentuch,de,Papiertaschentuch,papiertaschentuch,primary,seed,1.00
+papiertaschentuecher,de,Papiertaschentücher,papiertaschentucher,primary,seed,1.00
+papiertaschentuecher,de,Papiertaschentücher,papiertaschentuecher,auto,seed,0.90
+papiertueten,de,Papiertüten,papiertueten,auto,seed,0.90
+papiertueten,de,Papiertüten,papiertuten,primary,seed,1.00
+pappbecher,de,Pappbecher,pappbecher,primary,seed,1.00
+pappbecher_beschichtet,de,Pappbecher (beschichtet),pappbecher beschichtet,primary,seed,1.00
+pappbecher_beschichtet,de,Pappbecher (beschichtet),pappbecherbeschichtet,auto,seed,0.85
+pappe,de,Pappe,pappe,primary,seed,1.00
+pappschachteln,de,Pappschachteln,pappschachteln,primary,seed,1.00
+parabolantenne_satellitenschuessel,de,Parabolantenne / Satellitenschüssel,parabolantenne satellitenschuessel,auto,seed,0.90
+parabolantenne_satellitenschuessel,de,Parabolantenne / Satellitenschüssel,parabolantenne satellitenschussel,primary,seed,1.00
+parabolantenne_satellitenschuessel,de,Parabolantenne / Satellitenschüssel,parabolantennesatellitenschuessel,auto,seed,0.80
+parabolantenne_satellitenschuessel,de,Parabolantenne / Satellitenschüssel,parabolantennesatellitenschussel,auto,seed,0.85
+parathion_e_605_pflanzenschutzmittel,de,Parathion (E-605)/Pflanzenschutzmittel,parathion e 605 pflanzenschutzmittel,primary,seed,1.00
+parathion_e_605_pflanzenschutzmittel,de,Parathion (E-605)/Pflanzenschutzmittel,parathione605pflanzenschutzmittel,auto,seed,0.85
+paravant,de,Paravant,paravant,primary,seed,1.00
+parkett,de,Parkett,parkett,primary,seed,1.00
+parkettfussboden,de,Parkettfußboden,parkettfu boden,primary,seed,1.00
+parkettfussboden,de,Parkettfußboden,parkettfuboden,auto,seed,0.85
+parkettfussboden,de,Parkettfußboden,parkettfussboden,auto,seed,0.90
+parkettschleifstaeube,de,Parkettschleifstäube,parkettschleifstaeube,auto,seed,0.90
+parkettschleifstaub,de,Parkettschleifstaub,parkettschleifstaub,primary,seed,1.00
+parkettschleifstaeube,de,Parkettschleifstäube,parkettschleifstaube,primary,seed,1.00
+parkettstaub,de,Parkettstaub,parkettstaub,primary,seed,1.00
+partyzelte,de,Partyzelte,partyzelte,primary,seed,1.00
+patronenhuelsen,de,Patronenhülsen,patronenhuelsen,auto,seed,0.90
+patronenhuelsen,de,Patronenhülsen,patronenhulsen,primary,seed,1.00
+pedelecs,de,Pedelecs,pedelecs,primary,seed,1.00
+pergola,de,Pergola,pergola,primary,seed,1.00
+pergolen,de,Pergolen,pergolen,primary,seed,1.00
+perlitschuettung,de,Perlitschüttung,perlitschuettung,auto,seed,0.90
+perlitschuettung,de,Perlitschüttung,perlitschuttung,primary,seed,1.00
+pestizide,de,Pestizide,pestizide,primary,seed,1.00
+petroleum,de,Petroleum,petroleum,primary,seed,1.00
+pfaehle,de,Pfähle,pfaehle,auto,seed,0.90
+pfaehle,de,Pfähle,pfahle,primary,seed,1.00
+pfanne,de,Pfanne,pfanne,primary,seed,1.00
+pfannen,de,Pfannen,pfannen,primary,seed,1.00
+pferdemist,de,Pferdemist,pferdemist,primary,seed,1.00
+pferdesattel,de,Pferdesattel,pferdesattel,primary,seed,1.00
+pflanzen,de,Pflanzen,pflanzen,primary,seed,1.00
+pflanzenschutzmittel,de,Pflanzenschutzmittel,pflanzenschutzmittel,primary,seed,1.00
+pflanzkuebel_eternit_asbestzement,de,Pflanzkübel (Eternit / Asbestzement),pflanzkubel eternit asbestzement,primary,seed,1.00
+pflanzkuebel_kunststoff,de,Pflanzkübel (Kunststoff),pflanzkubel kunststoff,primary,seed,1.00
+pflanzkuebel_eternit_asbestzement,de,Pflanzkübel (Eternit / Asbestzement),pflanzkubeleternitasbestzement,auto,seed,0.85
+pflanzkuebel_kunststoff,de,Pflanzkübel (Kunststoff),pflanzkubelkunststoff,auto,seed,0.85
+pflanzkuebel_eternit_asbestzement,de,Pflanzkübel (Eternit / Asbestzement),pflanzkuebel eternit asbestzement,auto,seed,0.90
+pflanzkuebel_kunststoff,de,Pflanzkübel (Kunststoff),pflanzkuebel kunststoff,auto,seed,0.90
+pflanzkuebel_eternit_asbestzement,de,Pflanzkübel (Eternit / Asbestzement),pflanzkuebeleternitasbestzement,auto,seed,0.80
+pflanzkuebel_kunststoff,de,Pflanzkübel (Kunststoff),pflanzkuebelkunststoff,auto,seed,0.80
+pflastersteine,de,Pflastersteine,pflastersteine,primary,seed,1.00
+photovoltaikanlagen,de,Photovoltaikanlagen,photovoltaikanlagen,primary,seed,1.00
+photovoltaikmodule,de,Photovoltaikmodule,photovoltaikmodule,primary,seed,1.00
+pillen,de,Pillen,pillen,primary,seed,1.00
+pinsel,de,Pinsel,pinsel,primary,seed,1.00
+pinselreiniger,de,Pinselreiniger,pinselreiniger,primary,seed,1.00
+pizzakarton,de,Pizzakarton,pizzakarton,primary,seed,1.00
+pizzakartons,de,Pizzakartons,pizzakartons,primary,seed,1.00
+pizzakartons_mit_alufolie,de,Pizzakartons (mit Alufolie),pizzakartons mit alufolie,primary,seed,1.00
+pizzakartons_mit_alufolie,de,Pizzakartons (mit Alufolie),pizzakartonsmitalufolie,auto,seed,0.85
+pkw_batterie,de,Pkw-Batterie,pkw batterie,primary,seed,1.00
+pkw_batterie,de,Pkw-Batterie,pkwbatterie,auto,seed,0.85
+planschbecken,de,Planschbecken,planschbecken,primary,seed,1.00
+plastikbuegel,de,Plastikbügel,plastikbuegel,auto,seed,0.90
+plastikbuegel,de,Plastikbügel,plastikbugel,primary,seed,1.00
+plastikflaschen,de,Plastikflaschen,plastikflaschen,primary,seed,1.00
+plastikgeschirr_einweg,de,Plastikgeschirr (Einweg),plastikgeschirr einweg,primary,seed,1.00
+plastikgeschirr_einweg,de,Plastikgeschirr (Einweg),plastikgeschirreinweg,auto,seed,0.85
+plastiktueten,de,Plastiktüten,plastiktueten,auto,seed,0.90
+plastiktueten,de,Plastiktüten,plastiktuten,primary,seed,1.00
+plattenspieler,de,Plattenspieler,plattenspieler,primary,seed,1.00
+plexiglaeser,de,Plexigläser,plexiglaeser,auto,seed,0.90
+plexiglas,de,Plexiglas,plexiglas,primary,seed,1.00
+plexiglaeser,de,Plexigläser,plexiglaser,primary,seed,1.00
+poller,de,Poller,poller,primary,seed,1.00
+polstermoebel,de,Polstermöbel,polstermobel,primary,seed,1.00
+polstermoebel,de,Polstermöbel,polstermoebel,auto,seed,0.90
+polyester_profilplatten,de,Polyester Profilplatten,polyester profilplatten,primary,seed,1.00
+polyester_profilplatten,de,Polyester Profilplatten,polyesterprofilplatten,auto,seed,0.85
+polyurethanschaum_dosen,de,Polyurethanschaum (Dosen),polyurethanschaum dosen,primary,seed,1.00
+polyurethanschaum_dosen,de,Polyurethanschaum (Dosen),polyurethanschaumdosen,auto,seed,0.85
+pool_chlor,de,Pool-Chlor,pool chlor,primary,seed,1.00
+pool_teichfilter,de,Pool-/Teichfilter,pool teichfilter,primary,seed,1.00
+pool_chlor,de,Pool-Chlor,poolchlor,auto,seed,0.85
+pooltabs,de,Pooltabs,pooltabs,primary,seed,1.00
+pool_teichfilter,de,Pool-/Teichfilter,poolteichfilter,auto,seed,0.85
+pop_up_zelt,de,Pop up Zelt,pop up zelt,primary,seed,1.00
+pop_up_zelt,de,Pop up Zelt,popupzelt,auto,seed,0.85
+porzellan,de,Porzellan,porzellan,primary,seed,1.00
+postkarten,de,Postkarten,postkarten,primary,seed,1.00
+power_stationen_fuer_kfz,de,Power Stationen für KFZ,power stationen fuer kfz,auto,seed,0.90
+power_stationen_fuer_kfz,de,Power Stationen für KFZ,power stationen fur kfz,primary,seed,1.00
+power_stationen_fuer_kfz,de,Power Stationen für KFZ,powerstationenfuerkfz,auto,seed,0.80
+power_stationen_fuer_kfz,de,Power Stationen für KFZ,powerstationenfurkfz,auto,seed,0.85
+pressspanplatten,de,Pressspanplatten,pressspanplatten,primary,seed,1.00
+propangasflaschen,de,Propangasflaschen,propangasflaschen,primary,seed,1.00
+prospekte,de,Prospekte,prospekte,primary,seed,1.00
+pu_schaum,de,PU-Schaum,pu schaum,primary,seed,1.00
+pulverloescher,de,Pulverlöscher,pulverloescher,auto,seed,0.90
+pulverloescher,de,Pulverlöscher,pulverloscher,primary,seed,1.00
+puppen_kunststoff,de,Puppen (Kunststoff),puppen kunststoff,primary,seed,1.00
+puppen_kunststoff,de,Puppen (Kunststoff),puppenkunststoff,auto,seed,0.85
+puppenwagen_karre,de,"Puppenwagen ,-karre",puppenwagen karre,primary,seed,1.00
+puppenwagen_karre,de,"Puppenwagen ,-karre",puppenwagenkarre,auto,seed,0.85
+pu_schaum,de,PU-Schaum,puschaum,auto,seed,0.85
+putz,de,Putz,putz,primary,seed,1.00
+putzmittel,de,Putzmittel,putzmittel,primary,seed,1.00
+pvc_asbest_platten,de,PVC-Asbest-Platten,pvc asbest platten,primary,seed,1.00
+pvc_belaege,de,PVC-Beläge,pvc belaege,auto,seed,0.90
+pvc_belag,de,PVC-Belag,pvc belag,primary,seed,1.00
+pvc_belaege,de,PVC-Beläge,pvc belage,primary,seed,1.00
+pvc_bodenbelaege,de,PVC-Bodenbeläge,pvc bodenbelaege,auto,seed,0.90
+pvc_bodenbelag,de,PVC Bodenbelag,pvc bodenbelag,primary,seed,1.00
+pvc_bodenbelaege,de,PVC-Bodenbeläge,pvc bodenbelage,primary,seed,1.00
+pvc_rohr,de,PVC-Rohr,pvc rohr,primary,seed,1.00
+pvc_asbest_platten,de,PVC-Asbest-Platten,pvcasbestplatten,auto,seed,0.85
+pvc_belaege,de,PVC-Beläge,pvcbelaege,auto,seed,0.80
+pvc_belag,de,PVC-Belag,pvcbelag,auto,seed,0.85
+pvc_belaege,de,PVC-Beläge,pvcbelage,auto,seed,0.85
+pvc_bodenbelaege,de,PVC-Bodenbeläge,pvcbodenbelaege,auto,seed,0.80
+pvc_bodenbelag,de,PVC Bodenbelag,pvcbodenbelag,auto,seed,0.85
+pvc_bodenbelaege,de,PVC-Bodenbeläge,pvcbodenbelage,auto,seed,0.85
+pvc_rohr,de,PVC-Rohr,pvcrohr,auto,seed,0.85
+quarzsand,de,Quarzsand,quarzsand,primary,seed,1.00
+quecksilber,de,Quecksilber,quecksilber,primary,seed,1.00
+quecksilber_und_quecksilberhaltige_abfaelle,de,Quecksilber und quecksilberhaltige Abfälle,quecksilber und quecksilberhaltige abfaelle,auto,seed,0.90
+quecksilber_und_quecksilberhaltige_abfaelle,de,Quecksilber und quecksilberhaltige Abfälle,quecksilber und quecksilberhaltige abfalle,primary,seed,1.00
+quecksilberdampflampen,de,Quecksilberdampflampen,quecksilberdampflampen,primary,seed,1.00
+quecksilberschalter,de,Quecksilberschalter,quecksilberschalter,primary,seed,1.00
+quecksilberthermometer,de,Quecksilberthermometer,quecksilberthermometer,primary,seed,1.00
+quecksilber_und_quecksilberhaltige_abfaelle,de,Quecksilber und quecksilberhaltige Abfälle,quecksilberundquecksilberhaltigeabfaelle,auto,seed,0.80
+quecksilber_und_quecksilberhaltige_abfaelle,de,Quecksilber und quecksilberhaltige Abfälle,quecksilberundquecksilberhaltigeabfalle,auto,seed,0.85
+radiatoren,de,Radiatoren,radiatoren,primary,seed,1.00
+radio,de,Radio,radio,primary,seed,1.00
+radioaktive_stoffe,de,Radioaktive Stoffe,radioaktive stoffe,primary,seed,1.00
+radioaktive_stoffe,de,Radioaktive Stoffe,radioaktivestoffe,auto,seed,0.85
+radtraeger_fuer_anhaengerkupplungen,de,Radträger für Anhängerkupplungen,radtraeger fuer anhaengerkupplungen,auto,seed,0.90
+radtraeger_fuer_anhaengerkupplungen,de,Radträger für Anhängerkupplungen,radtraegerfueranhaengerkupplungen,auto,seed,0.80
+radtraeger_fuer_anhaengerkupplungen,de,Radträger für Anhängerkupplungen,radtrager fur anhangerkupplungen,primary,seed,1.00
+radtraeger_fuer_anhaengerkupplungen,de,Radträger für Anhängerkupplungen,radtragerfuranhangerkupplungen,auto,seed,0.85
+rasenduenger,de,Rasendünger,rasenduenger,auto,seed,0.90
+rasenduenger,de,Rasendünger,rasendunger,primary,seed,1.00
+rasenmaeher,de,Rasenmäher,rasenmaeher,auto,seed,0.90
+rasenmaeher_benzinmotor,de,"Rasenmäher, Benzinmotor",rasenmaeher benzinmotor,auto,seed,0.90
+rasenmaeher_elektrisch,de,Rasenmäher (elektrisch),rasenmaeher elektrisch,auto,seed,0.90
+rasenmaeher_benzinmotor,de,"Rasenmäher, Benzinmotor",rasenmaeherbenzinmotor,auto,seed,0.80
+rasenmaeher_elektrisch,de,Rasenmäher (elektrisch),rasenmaeherelektrisch,auto,seed,0.80
+rasenmaeher,de,Rasenmäher,rasenmaher,primary,seed,1.00
+rasenmaeher_benzinmotor,de,"Rasenmäher, Benzinmotor",rasenmaher benzinmotor,primary,seed,1.00
+rasenmaeher_elektrisch,de,Rasenmäher (elektrisch),rasenmaher elektrisch,primary,seed,1.00
+rasenmaeher_benzinmotor,de,"Rasenmäher, Benzinmotor",rasenmaherbenzinmotor,auto,seed,0.85
+rasenmaeher_elektrisch,de,Rasenmäher (elektrisch),rasenmaherelektrisch,auto,seed,0.85
+rasenschnitt,de,Rasenschnitt,rasenschnitt,primary,seed,1.00
+rasensoden_grassoden,de,Rasensoden / Grassoden,rasensoden grassoden,primary,seed,1.00
+rasensoden_grassoden,de,Rasensoden / Grassoden,rasensodengrassoden,auto,seed,0.85
+rasierapparat,de,Rasierapparat,rasierapparat,primary,seed,1.00
+rasierer_elektrisch,de,Rasierer (elektrisch),rasierer elektrisch,primary,seed,1.00
+rasierer_elektrisch,de,Rasierer (elektrisch),rasiererelektrisch,auto,seed,0.85
+rasierklinge,de,Rasierklinge,rasierklinge,primary,seed,1.00
+rattengift,de,Rattengift,rattengift,primary,seed,1.00
+rauchmelder,de,Rauchmelder,rauchmelder,primary,seed,1.00
+receiver,de,Receiver,receiver,primary,seed,1.00
+recupbecher_wiederverwendbare_kaffeebecher,de,Recupbecher/ wiederverwendbare Kaffeebecher,recupbecher wiederverwendbare kaffeebecher,primary,seed,1.00
+recupbecher_wiederverwendbare_kaffeebecher,de,Recupbecher/ wiederverwendbare Kaffeebecher,recupbecherwiederverwendbarekaffeebecher,auto,seed,0.85
+regal,de,Regal,regal,primary,seed,1.00
+regenrinnen,de,Regenrinnen,regenrinnen,primary,seed,1.00
+regenschirme,de,Regenschirme,regenschirme,primary,seed,1.00
+regentonne_kunststoff,de,Regentonne (Kunststoff),regentonne kunststoff,primary,seed,1.00
+regentonne_kunststoff,de,Regentonne (Kunststoff),regentonnekunststoff,auto,seed,0.85
+reifen,de,Reifen,reifen,primary,seed,1.00
+reinigungsmittel,de,Reinigungsmittel,reinigungsmittel,primary,seed,1.00
+reisekoffer,de,Reisekoffer,reisekoffer,primary,seed,1.00
+reisig,de,Reisig,reisig,primary,seed,1.00
+renovierungsabfaelle,de,Renovierungsabfälle,renovierungsabfaelle,auto,seed,0.90
+renovierungsabfall,de,Renovierungsabfall,renovierungsabfall,primary,seed,1.00
+renovierungsabfaelle,de,Renovierungsabfälle,renovierungsabfalle,primary,seed,1.00
+resopalplatten,de,Resopalplatten,resopalplatten,primary,seed,1.00
+restabfall,de,Restabfall,restabfall,primary,seed,1.00
+reste_aus_dem_3d_drucker,de,Reste aus dem 3D-Drucker,reste aus dem 3d drucker,primary,seed,1.00
+reste_aus_dem_3d_drucker,de,Reste aus dem 3D-Drucker,resteausdem3ddrucker,auto,seed,0.85
+restmuell,de,Restmüll,restmuell,auto,seed,0.90
+restmuell,de,Restmüll,restmull,primary,seed,1.00
+rettungswesten,de,Rettungswesten,rettungswesten,primary,seed,1.00
+riesenbaerenklau,de,Riesenbärenklau,riesenbaerenklau,auto,seed,0.90
+riesenbaerenklau,de,Riesenbärenklau,riesenbarenklau,primary,seed,1.00
+rigips,de,Rigips,rigips,primary,seed,1.00
+rigips_gipskarton_mit_anhaftungen,de,Rigips/ Gipskarton mit Anhaftungen,rigips gipskarton mit anhaftungen,primary,seed,1.00
+rigips_gipskarton_mit_anhaftungen,de,Rigips/ Gipskarton mit Anhaftungen,rigipsgipskartonmitanhaftungen,auto,seed,0.85
+rigipsplatten,de,Rigipsplatten,rigipsplatten,primary,seed,1.00
+rindenmulch,de,Rindenmulch,rindenmulch,primary,seed,1.00
+rodungsabfaelle,de,Rodungsabfälle,rodungsabfaelle,auto,seed,0.90
+rodungsabfaelle,de,Rodungsabfälle,rodungsabfalle,primary,seed,1.00
+roentgenbilder,de,Röntgenbilder,roentgenbilder,auto,seed,0.90
+rohrabschnitte,de,Rohrabschnitte,rohrabschnitte,primary,seed,1.00
+rohrreiniger,de,Rohrreiniger,rohrreiniger,primary,seed,1.00
+rollator,de,Rollator,rollator,primary,seed,1.00
+rolllaeden_aus_holz,de,Rollläden aus Holz,rollladen aus holz,primary,seed,1.00
+rolllaeden_aus_holz,de,Rollläden aus Holz,rollladenausholz,auto,seed,0.85
+rolllaeden_aus_holz,de,Rollläden aus Holz,rolllaeden aus holz,auto,seed,0.90
+rolllaeden_aus_holz,de,Rollläden aus Holz,rolllaedenausholz,auto,seed,0.80
+rollos,de,Rollos,rollos,primary,seed,1.00
+rollrasen,de,Rollrasen,rollrasen,primary,seed,1.00
+rollschuhe,de,Rollschuhe,rollschuhe,primary,seed,1.00
+rollstuhl,de,Rollstuhl,rollstuhl,primary,seed,1.00
+rollstuhl_elektrisch,de,Rollstuhl (elektrisch),rollstuhl elektrisch,primary,seed,1.00
+rollstuhl_mechanisch,de,"Rollstuhl, mechanisch",rollstuhl mechanisch,primary,seed,1.00
+rollstuhl_elektrisch,de,Rollstuhl (elektrisch),rollstuhlelektrisch,auto,seed,0.85
+rollstuhl_mechanisch,de,"Rollstuhl, mechanisch",rollstuhlmechanisch,auto,seed,0.85
+roentgenbilder,de,Röntgenbilder,rontgenbilder,primary,seed,1.00
+rostschutzmittel,de,Rostschutzmittel,rostschutzmittel,primary,seed,1.00
+rostumwandler,de,Rostumwandler,rostumwandler,primary,seed,1.00
+round_up,de,Round-Up,round up,primary,seed,1.00
+round_up,de,Round-Up,roundup,auto,seed,0.85
+rucksack,de,Rucksack,rucksack,primary,seed,1.00
+rucksaecke,de,Rucksäcke,rucksacke,primary,seed,1.00
+rucksaecke,de,Rucksäcke,rucksaecke,auto,seed,0.90
+sadolin,de,Sadolin,sadolin,primary,seed,1.00
+saegemehl,de,Sägemehl,saegemehl,auto,seed,0.90
+saegespaene,de,Sägespäne,saegespaene,auto,seed,0.90
+saeuren,de,Säuren,saeuren,auto,seed,0.90
+saftkartons,de,Saftkartons,saftkartons,primary,seed,1.00
+saegemehl,de,Sägemehl,sagemehl,primary,seed,1.00
+saegespaene,de,Sägespäne,sagespane,primary,seed,1.00
+sahnesiphons,de,Sahnesiphons,sahnesiphons,primary,seed,1.00
+salmiakgeist,de,Salmiakgeist,salmiakgeist,primary,seed,1.00
+sand,de,Sand,sand,primary,seed,1.00
+sanitaerkeramik,de,Sanitärkeramik,sanitaerkeramik,auto,seed,0.90
+sanitaerreiniger,de,Sanitärreiniger,sanitaerreiniger,auto,seed,0.90
+sanitaerkeramik,de,Sanitärkeramik,sanitarkeramik,primary,seed,1.00
+sanitaerreiniger,de,Sanitärreiniger,sanitarreiniger,primary,seed,1.00
+satelliten_anlage,de,Satelliten-Anlage,satelliten anlage,primary,seed,1.00
+satelliten_anlage,de,Satelliten-Anlage,satellitenanlage,auto,seed,0.85
+sattel,de,Sattel,sattel,primary,seed,1.00
+sauerkrautplatten,de,Sauerkrautplatten,sauerkrautplatten,primary,seed,1.00
+sauerkrautplatten_holzwolle_leichtbauplatte,de,Sauerkrautplatten/Holzwolle-Leichtbauplatte,sauerkrautplatten holzwolle leichtbauplatte,primary,seed,1.00
+sauerkrautplatten_holzwolle_leichtbauplatte,de,Sauerkrautplatten/Holzwolle-Leichtbauplatte,sauerkrautplattenholzwolleleichtbauplatte,auto,seed,0.85
+saunaoefen,de,Saunaöfen,saunaoefen,auto,seed,0.90
+saunaoefen,de,Saunaöfen,saunaofen,primary,seed,1.00
+saeuren,de,Säuren,sauren,primary,seed,1.00
+schaedlingsbekaempfungsmittel,de,Schädlingsbekämpfungsmittel,schadlingsbekampfungsmittel,primary,seed,1.00
+schadstoffe,de,Schadstoffe,schadstoffe,primary,seed,1.00
+schaedlingsbekaempfungsmittel,de,Schädlingsbekämpfungsmittel,schaedlingsbekaempfungsmittel,auto,seed,0.90
+schalen_von_zitrusfruechten,de,Schalen von Zitrusfrüchten,schalen von zitrusfruchten,primary,seed,1.00
+schalen_von_zitrusfruechten,de,Schalen von Zitrusfrüchten,schalen von zitrusfruechten,auto,seed,0.90
+schalen_von_zitrusfruechten,de,Schalen von Zitrusfrüchten,schalenvonzitrusfruchten,auto,seed,0.85
+schalen_von_zitrusfruechten,de,Schalen von Zitrusfrüchten,schalenvonzitrusfruechten,auto,seed,0.80
+schallplatten,de,Schallplatten,schallplatten,primary,seed,1.00
+schamottesteine,de,Schamottesteine,schamottesteine,primary,seed,1.00
+schaschlikspiesse,de,Schaschlikspieße,schaschlikspie e,primary,seed,1.00
+schaschlikspiesse,de,Schaschlikspieße,schaschlikspiee,auto,seed,0.85
+schaschlikspiesse,de,Schaschlikspieße,schaschlikspiesse,auto,seed,0.90
+schaukelstuehle,de,Schaukelstühle,schaukelstuehle,auto,seed,0.90
+schaukelstuhl,de,Schaukelstuhl,schaukelstuhl,primary,seed,1.00
+schaukelstuehle,de,Schaukelstühle,schaukelstuhle,primary,seed,1.00
+schaumloescher,de,Schaumlöscher,schaumloescher,auto,seed,0.90
+schaumloescher,de,Schaumlöscher,schaumloscher,primary,seed,1.00
+schaumstoffverpackungen,de,Schaumstoffverpackungen,schaumstoffverpackungen,primary,seed,1.00
+scheckkarten_zerschnitten,de,Scheckkarten (zerschnitten),scheckkarten zerschnitten,primary,seed,1.00
+scheckkarten_zerschnitten,de,Scheckkarten (zerschnitten),scheckkartenzerschnitten,auto,seed,0.85
+scherben,de,Scherben,scherben,primary,seed,1.00
+schiefer_schieferplatten,de,Schiefer/ Schieferplatten,schiefer schieferplatten,primary,seed,1.00
+schiefer_schieferplatten,de,Schiefer/ Schieferplatten,schieferschieferplatten,auto,seed,0.85
+schilf,de,Schilf,schilf,primary,seed,1.00
+schimmelentferner,de,Schimmelentferner,schimmelentferner,primary,seed,1.00
+schlacke,de,Schlacke,schlacke,primary,seed,1.00
+schlafsack,de,Schlafsack,schlafsack,primary,seed,1.00
+schlafsaecke,de,Schlafsäcke,schlafsacke,primary,seed,1.00
+schlafsaecke,de,Schlafsäcke,schlafsaecke,auto,seed,0.90
+schlauchboote,de,Schlauchboote,schlauchboote,primary,seed,1.00
+schleifpapier_schleifscheiben,de,"Schleifpapier, Schleifscheiben",schleifpapier schleifscheiben,primary,seed,1.00
+schleifpapier_schleifscheiben,de,"Schleifpapier, Schleifscheiben",schleifpapierschleifscheiben,auto,seed,0.85
+schleifstaub,de,Schleifstaub,schleifstaub,primary,seed,1.00
+schleuder,de,Schleuder,schleuder,primary,seed,1.00
+schlitten,de,Schlitten,schlitten,primary,seed,1.00
+schluessel,de,Schlüssel,schluessel,auto,seed,0.90
+schluessel,de,Schlüssel,schlussel,primary,seed,1.00
+schmelzsicherungen,de,Schmelzsicherungen,schmelzsicherungen,primary,seed,1.00
+schmierfette,de,Schmierfette,schmierfette,primary,seed,1.00
+schmieroel,de,Schmieröl,schmieroel,auto,seed,0.90
+schmieroel,de,Schmieröl,schmierol,primary,seed,1.00
+schmutzentferner,de,Schmutzentferner,schmutzentferner,primary,seed,1.00
+schornsteinabbruch,de,Schornsteinabbruch,schornsteinabbruch,primary,seed,1.00
+schotter,de,Schotter,schotter,primary,seed,1.00
+schraenke,de,Schränke,schraenke,auto,seed,0.90
+schrank,de,Schrank,schrank,primary,seed,1.00
+schraenke,de,Schränke,schranke,primary,seed,1.00
+schrankwaende,de,Schrankwände,schrankwaende,auto,seed,0.90
+schrankwand,de,Schrankwand,schrankwand,primary,seed,1.00
+schrankwaende,de,Schrankwände,schrankwande,primary,seed,1.00
+schrauben,de,Schrauben,schrauben,primary,seed,1.00
+schraubverschluesse,de,Schraubverschlüsse,schraubverschluesse,auto,seed,0.90
+schraubverschluesse,de,Schraubverschlüsse,schraubverschlusse,primary,seed,1.00
+schreckschusspistole_softair_pistolen_showwaffen,de,Schreckschusspistole / Softair-Pistolen / Showwaffen,schreckschusspistole softair pistolen showwaffen,primary,seed,1.00
+schreckschusspistole_softair_pistolen_showwaffen,de,Schreckschusspistole / Softair-Pistolen / Showwaffen,schreckschusspistolesoftairpistolenshowwaffen,auto,seed,0.85
+schreibmaschine_elektrisch,de,Schreibmaschine (elektrisch),schreibmaschine elektrisch,primary,seed,1.00
+schreibmaschine_elektrisch,de,Schreibmaschine (elektrisch),schreibmaschineelektrisch,auto,seed,0.85
+schreibpapier,de,Schreibpapier,schreibpapier,primary,seed,1.00
+schrott,de,Schrott,schrott,primary,seed,1.00
+schrott_sperrig,de,Schrott (sperrig),schrott sperrig,primary,seed,1.00
+schrott_sperrig,de,Schrott (sperrig),schrottsperrig,auto,seed,0.85
+schuhcreme,de,Schuhcreme,schuhcreme,primary,seed,1.00
+schuhcremes,de,Schuhcremes,schuhcremes,primary,seed,1.00
+schuhe,de,Schuhe,schuhe,primary,seed,1.00
+schuhschraenke,de,Schuhschränke,schuhschraenke,auto,seed,0.90
+schuhschrank,de,Schuhschrank,schuhschrank,primary,seed,1.00
+schuhschraenke,de,Schuhschränke,schuhschranke,primary,seed,1.00
+schulhefte,de,Schulhefte,schulhefte,primary,seed,1.00
+schwerter_katana,de,Schwerter / Katana,schwerter katana,primary,seed,1.00
+schwerter_katana,de,Schwerter / Katana,schwerterkatana,auto,seed,0.85
+schwimmbadchlorierungsmittel,de,Schwimmbadchlorierungsmittel,schwimmbadchlorierungsmittel,primary,seed,1.00
+sekundenkleber,de,Sekundenkleber,sekundenkleber,primary,seed,1.00
+senfglaeser,de,Senfgläser,senfglaeser,auto,seed,0.90
+senfglas,de,Senfglas,senfglas,primary,seed,1.00
+senfglaeser,de,Senfgläser,senfglaser,primary,seed,1.00
+seramis_blaehton,de,Seramis/Blähton,seramis blaehton,auto,seed,0.90
+seramis_blaehton,de,Seramis/Blähton,seramis blahton,primary,seed,1.00
+seramis_blaehton,de,Seramis/Blähton,seramisblaehton,auto,seed,0.80
+seramis_blaehton,de,Seramis/Blähton,seramisblahton,auto,seed,0.85
+servietten,de,Servietten,servietten,primary,seed,1.00
+sessel,de,Sessel,sessel,primary,seed,1.00
+shampooflasche,de,Shampooflasche,shampooflasche,primary,seed,1.00
+sicherheitsglas,de,Sicherheitsglas,sicherheitsglas,primary,seed,1.00
+sicherungen,de,Sicherungen,sicherungen,primary,seed,1.00
+sideboards,de,Sideboards,sideboards,primary,seed,1.00
+signalrakete,de,Signalrakete,signalrakete,primary,seed,1.00
+silberfischgift,de,Silberfischgift,silberfischgift,primary,seed,1.00
+silberputzmittel,de,Silberputzmittel,silberputzmittel,primary,seed,1.00
+silikon_acryl,de,Silikon/Acryl,silikon acryl,primary,seed,1.00
+silikon_acryl,de,Silikon/Acryl,silikonacryl,auto,seed,0.85
+silitatkleber,de,Silitatkleber,silitatkleber,primary,seed,1.00
+silvesterraketen,de,Silvesterraketen,silvesterraketen,primary,seed,1.00
+skateboards,de,Skateboards,skateboards,primary,seed,1.00
+skier,de,Skier,skier,primary,seed,1.00
+slipeinlagen,de,Slipeinlagen,slipeinlagen,primary,seed,1.00
+smartphone,de,Smartphone,smartphone,primary,seed,1.00
+snowboards,de,Snowboards,snowboards,primary,seed,1.00
+soda,de,Soda,soda,primary,seed,1.00
+sofa,de,Sofa,sofa,primary,seed,1.00
+sofas,de,Sofas,sofas,primary,seed,1.00
+solarbatterie,de,Solarbatterie,solarbatterie,primary,seed,1.00
+solarfluessigkeit,de,Solarflüssigkeit,solarfluessigkeit,auto,seed,0.90
+solarfluessigkeit,de,Solarflüssigkeit,solarflussigkeit,primary,seed,1.00
+solarien,de,Solarien,solarien,primary,seed,1.00
+solarienroehren,de,Solarienröhren,solarienroehren,auto,seed,0.90
+solarienroehren,de,Solarienröhren,solarienrohren,primary,seed,1.00
+solarium_braeunungsgeraet_heimsolarium_gesichtssolarium,de,Solarium/ Bräunungsgerät/ Heimsolarium/ Gesichtssolarium,solarium braeunungsgeraet heimsolarium gesichtssolarium,auto,seed,0.90
+solarium_braeunungsgeraet_heimsolarium_gesichtssolarium,de,Solarium/ Bräunungsgerät/ Heimsolarium/ Gesichtssolarium,solarium braunungsgerat heimsolarium gesichtssolarium,primary,seed,1.00
+solarium_braeunungsgeraet_heimsolarium_gesichtssolarium,de,Solarium/ Bräunungsgerät/ Heimsolarium/ Gesichtssolarium,solariumbraeunungsgeraetheimsolariumgesichtssolarium,auto,seed,0.80
+solarium_braeunungsgeraet_heimsolarium_gesichtssolarium,de,Solarium/ Bräunungsgerät/ Heimsolarium/ Gesichtssolarium,solariumbraunungsgeratheimsolariumgesichtssolarium,auto,seed,0.85
+solariumroehren,de,Solariumröhren,solariumroehren,auto,seed,0.90
+solariumroehren,de,Solariumröhren,solariumrohren,primary,seed,1.00
+solarmodule,de,Solarmodule,solarmodule,primary,seed,1.00
+solarpanele,de,Solarpanele,solarpanele,primary,seed,1.00
+solarspeicherbatterien_solarspeicher,de,Solarspeicherbatterien / Solarspeicher,solarspeicherbatterien solarspeicher,primary,seed,1.00
+solarspeicherbatterien_solarspeicher,de,Solarspeicherbatterien / Solarspeicher,solarspeicherbatteriensolarspeicher,auto,seed,0.85
+solarthermie,de,Solarthermie,solarthermie,primary,seed,1.00
+sonderabfall,de,Sonderabfall,sonderabfall,primary,seed,1.00
+sondermuell,de,Sondermüll,sondermuell,auto,seed,0.90
+sondermuell,de,Sondermüll,sondermull,primary,seed,1.00
+sonnenbrillen,de,Sonnenbrillen,sonnenbrillen,primary,seed,1.00
+sonnencremes,de,Sonnencremes,sonnencremes,primary,seed,1.00
+sonnenschirme,de,Sonnenschirme,sonnenschirme,primary,seed,1.00
+speicherbatterien_fuer_photovoltaikanlagen_pv_anlagen,de,Speicherbatterien für Photovoltaikanlagen (PV Anlagen),speicherbatterien fuer photovoltaikanlagen pv anlagen,auto,seed,0.90
+speicherbatterien_fuer_photovoltaikanlagen_pv_anlagen,de,Speicherbatterien für Photovoltaikanlagen (PV Anlagen),speicherbatterien fur photovoltaikanlagen pv anlagen,primary,seed,1.00
+speicherbatterien_fuer_photovoltaikanlagen_pv_anlagen,de,Speicherbatterien für Photovoltaikanlagen (PV Anlagen),speicherbatterienfuerphotovoltaikanlagenpvanlagen,auto,seed,0.80
+speicherbatterien_fuer_photovoltaikanlagen_pv_anlagen,de,Speicherbatterien für Photovoltaikanlagen (PV Anlagen),speicherbatterienfurphotovoltaikanlagenpvanlagen,auto,seed,0.85
+speichersteine,de,Speichersteine,speichersteine,primary,seed,1.00
+speichersteine_aus_nachtspeicheroefen,de,Speichersteine aus Nachtspeicheröfen,speichersteine aus nachtspeicheroefen,auto,seed,0.90
+speichersteine_aus_nachtspeicheroefen,de,Speichersteine aus Nachtspeicheröfen,speichersteine aus nachtspeicherofen,primary,seed,1.00
+speichersteine_aus_nachtspeicheroefen,de,Speichersteine aus Nachtspeicheröfen,speichersteineausnachtspeicheroefen,auto,seed,0.80
+speichersteine_aus_nachtspeicheroefen,de,Speichersteine aus Nachtspeicheröfen,speichersteineausnachtspeicherofen,auto,seed,0.85
+speisefette_fest,de,Speisefette (fest),speisefette fest,primary,seed,1.00
+speisefette_fest,de,Speisefette (fest),speisefettefest,auto,seed,0.85
+speiseoel,de,Speiseöl,speiseoel,auto,seed,0.90
+speiseoele,de,Speiseöle,speiseoele,auto,seed,0.90
+speiseoel,de,Speiseöl,speiseol,primary,seed,1.00
+speiseoele,de,Speiseöle,speiseole,primary,seed,1.00
+speisereste,de,Speisereste,speisereste,primary,seed,1.00
+sperrabfall,de,Sperrabfall,sperrabfall,primary,seed,1.00
+sperrmuell,de,Sperrmüll,sperrmuell,auto,seed,0.90
+sperrmuell,de,Sperrmüll,sperrmull,primary,seed,1.00
+spiegel,de,Spiegel,spiegel,primary,seed,1.00
+spiegelglas,de,Spiegelglas,spiegelglas,primary,seed,1.00
+spiegelscherben,de,Spiegelscherben,spiegelscherben,primary,seed,1.00
+spiegelschrank,de,Spiegelschrank,spiegelschrank,primary,seed,1.00
+spielautomat,de,Spielautomat,spielautomat,primary,seed,1.00
+spielkarten,de,Spielkarten,spielkarten,primary,seed,1.00
+spielsand,de,Spielsand,spielsand,primary,seed,1.00
+spielzeug,de,Spielzeug,spielzeug,primary,seed,1.00
+spielzeug_kunststoff,de,Spielzeug (Kunststoff),spielzeug kunststoff,primary,seed,1.00
+spielzeug_metall,de,Spielzeug (Metall),spielzeug metall,primary,seed,1.00
+spielzeug_kunststoff,de,Spielzeug (Kunststoff),spielzeugkunststoff,auto,seed,0.85
+spielzeug_metall,de,Spielzeug (Metall),spielzeugmetall,auto,seed,0.85
+spind_metallschrank,de,Spind (Metallschrank),spind metallschrank,primary,seed,1.00
+spind_metallschrank,de,Spind (Metallschrank),spindmetallschrank,auto,seed,0.85
+spiritus,de,Spiritus,spiritus,primary,seed,1.00
+split_rollsplit,de,Split/Rollsplit,split rollsplit,primary,seed,1.00
+split_rollsplit,de,Split/Rollsplit,splitrollsplit,auto,seed,0.85
+sportgeraete_gross,de,"Sportgeräte, groß",sportgeraete gross,auto,seed,0.90
+sportgeraete_gross,de,"Sportgeräte, groß",sportgeraetegross,auto,seed,0.80
+sportgeraete_gross,de,"Sportgeräte, groß",sportgerate gro,primary,seed,1.00
+sportgeraete_gross,de,"Sportgeräte, groß",sportgerategro,auto,seed,0.85
+spraydose,de,Spraydose,spraydose,primary,seed,1.00
+spraydosen_mit_gefahrstoffzeichen,de,Spraydosen mit Gefahrstoffzeichen,spraydosen mit gefahrstoffzeichen,primary,seed,1.00
+spraydosen_ohne_gefahrtstoffzeichen,de,Spraydosen ohne Gefahrtstoffzeichen,spraydosen ohne gefahrtstoffzeichen,primary,seed,1.00
+spraydosen_mit_gefahrstoffzeichen,de,Spraydosen mit Gefahrstoffzeichen,spraydosenmitgefahrstoffzeichen,auto,seed,0.85
+spraydosen_ohne_gefahrtstoffzeichen,de,Spraydosen ohne Gefahrtstoffzeichen,spraydosenohnegefahrtstoffzeichen,auto,seed,0.85
+sprengstoffe,de,Sprengstoffe,sprengstoffe,primary,seed,1.00
+sprit,de,Sprit,sprit,primary,seed,1.00
+spritzasbest,de,Spritzasbest,spritzasbest,primary,seed,1.00
+spritzen,de,Spritzen,spritzen,primary,seed,1.00
+spuelkaesten,de,Spülkästen,spuelkaesten,auto,seed,0.90
+spuelkasten,de,Spülkasten,spuelkasten,auto,seed,0.90
+spuelmittelflasche,de,Spülmittelflasche,spuelmittelflasche,auto,seed,0.90
+spuelkaesten,de,Spülkästen,spulkasten,primary,seed,1.00
+spuelmittelflasche,de,Spülmittelflasche,spulmittelflasche,primary,seed,1.00
+stammholz,de,Stammholz,stammholz,primary,seed,1.00
+staubsauger,de,Staubsauger,staubsauger,primary,seed,1.00
+staubsaugerbeutel,de,Staubsaugerbeutel,staubsaugerbeutel,primary,seed,1.00
+steine,de,Steine,steine,primary,seed,1.00
+steingut,de,Steingut,steingut,primary,seed,1.00
+steinkohle,de,Steinkohle,steinkohle,primary,seed,1.00
+steinwolle,de,Steinwolle,steinwolle,primary,seed,1.00
+stoffreste,de,Stoffreste,stoffreste,primary,seed,1.00
+stofftiere,de,Stofftiere,stofftiere,primary,seed,1.00
+stoma_kuenstlicher_darmausgang,de,Stoma/ künstlicher Darmausgang,stoma kuenstlicher darmausgang,auto,seed,0.90
+stoma_kuenstlicher_darmausgang,de,Stoma/ künstlicher Darmausgang,stoma kunstlicher darmausgang,primary,seed,1.00
+stoma_kuenstlicher_darmausgang,de,Stoma/ künstlicher Darmausgang,stomakuenstlicherdarmausgang,auto,seed,0.80
+stoma_kuenstlicher_darmausgang,de,Stoma/ künstlicher Darmausgang,stomakunstlicherdarmausgang,auto,seed,0.85
+strassenaufbruch,de,Straßenaufbruch,stra enaufbruch,primary,seed,1.00
+strassenaufbruch,de,Straßenaufbruch,straenaufbruch,auto,seed,0.85
+stragula_linoleum_platten_stragula_linoleum_imitation,de,Stragula-Linoleum-Platten/ Stragula Linoleum-Imitation,stragula linoleum platten stragula linoleum imitation,primary,seed,1.00
+stragula_linoleum_platten_stragula_linoleum_imitation,de,Stragula-Linoleum-Platten/ Stragula Linoleum-Imitation,stragulalinoleumplattenstragulalinoleumimitation,auto,seed,0.85
+strassenaufbruch,de,Straßenaufbruch,strassenaufbruch,auto,seed,0.90
+strauchschnitt,de,Strauchschnitt,strauchschnitt,primary,seed,1.00
+streichhoelzer,de,Streichhölzer,streichhoelzer,auto,seed,0.90
+streichhoelzer,de,Streichhölzer,streichholzer,primary,seed,1.00
+streu,de,Streu,streu,primary,seed,1.00
+streusalz,de,Streusalz,streusalz,primary,seed,1.00
+streusalze,de,Streusalze,streusalze,primary,seed,1.00
+strumpfhosen,de,Strumpfhosen,strumpfhosen,primary,seed,1.00
+stubben,de,Stubben,stubben,primary,seed,1.00
+stuehle,de,Stühle,stuehle,auto,seed,0.90
+stuhl,de,Stuhl,stuhl,primary,seed,1.00
+stuehle,de,Stühle,stuhle,primary,seed,1.00
+styrodur,de,Styrodur,styrodur,primary,seed,1.00
+styrodurdaemmung,de,Styrodurdämmung,styrodurdaemmung,auto,seed,0.90
+styrodurdaemmung,de,Styrodurdämmung,styrodurdammung,primary,seed,1.00
+styropor,de,Styropor®,styropor,primary,seed,1.00
+styropordaemmung,de,Styropordämmung,styropordaemmung,auto,seed,0.90
+styropordaemmung,de,Styropordämmung,styropordammung,primary,seed,1.00
+styroporverpackungen,de,Styroporverpackungen,styroporverpackungen,primary,seed,1.00
+suedfruechte,de,Südfrüchte,sudfruchte,primary,seed,1.00
+suedfruechte,de,Südfrüchte,suedfruechte,auto,seed,0.90
+super_8_filme,de,Super-8-Filme,super 8 filme,primary,seed,1.00
+super_8_filme,de,Super-8-Filme,super8filme,auto,seed,0.85
+surfbrett,de,Surfbrett,surfbrett,primary,seed,1.00
+surfbretter,de,Surfbretter,surfbretter,primary,seed,1.00
+tabletten,de,Tabletten,tabletten,primary,seed,1.00
+tampons,de,Tampons,tampons,primary,seed,1.00
+tannenbaum,de,Tannenbaum,tannenbaum,primary,seed,1.00
+tannennadeln,de,Tannennadeln,tannennadeln,primary,seed,1.00
+tapeten,de,Tapeten,tapeten,primary,seed,1.00
+tapetenkleister,de,Tapetenkleister,tapetenkleister,primary,seed,1.00
+tapetenreste,de,Tapetenreste,tapetenreste,primary,seed,1.00
+taschenfilter,de,Taschenfilter,taschenfilter,primary,seed,1.00
+taschenrechner,de,Taschenrechner,taschenrechner,primary,seed,1.00
+tastatur,de,Tastatur,tastatur,primary,seed,1.00
+taubenkot,de,Taubenkot,taubenkot,primary,seed,1.00
+taubenverschlag,de,Taubenverschlag,taubenverschlag,primary,seed,1.00
+taucheranzuege,de,Taucheranzüge,taucheranzuege,auto,seed,0.90
+taucheranzuege,de,Taucheranzüge,taucheranzuge,primary,seed,1.00
+tauchsieder,de,Tauchsieder,tauchsieder,primary,seed,1.00
+teebeutel,de,Teebeutel,teebeutel,primary,seed,1.00
+teefilter,de,Teefilter,teefilter,primary,seed,1.00
+teelichter,de,Teelichter,teelichter,primary,seed,1.00
+teelichthalter_aus_aluminium,de,Teelichthalter (aus Aluminium),teelichthalter aus aluminium,primary,seed,1.00
+teelichthalter_aus_aluminium,de,Teelichthalter (aus Aluminium),teelichthalterausaluminium,auto,seed,0.85
+teer,de,Teer,teer,primary,seed,1.00
+teerpappe,de,Teerpappe,teerpappe,primary,seed,1.00
+teewagen,de,Teewagen,teewagen,primary,seed,1.00
+teichfolie,de,Teichfolie,teichfolie,primary,seed,1.00
+teichfolien,de,Teichfolien,teichfolien,primary,seed,1.00
+teichschlamm,de,Teichschlamm,teichschlamm,primary,seed,1.00
+teichwanne,de,Teichwanne,teichwanne,primary,seed,1.00
+telefon,de,Telefon,telefon,primary,seed,1.00
+telefonbuch,de,Telefonbuch,telefonbuch,primary,seed,1.00
+telefonbuecher,de,Telefonbücher,telefonbucher,primary,seed,1.00
+telefonbuecher,de,Telefonbücher,telefonbuecher,auto,seed,0.90
+teppich,de,Teppich,teppich,primary,seed,1.00
+teppichboden,de,Teppichboden,teppichboden,primary,seed,1.00
+teppiche,de,Teppiche,teppiche,primary,seed,1.00
+teppichfliesen,de,Teppichfliesen,teppichfliesen,primary,seed,1.00
+teppichkleber,de,Teppichkleber,teppichkleber,primary,seed,1.00
+terpentin_terpentinersatz,de,"Terpentin, Terpentinersatz",terpentin terpentinersatz,primary,seed,1.00
+terpentinersatz,de,Terpentinersatz,terpentinersatz,primary,seed,1.00
+terpentin_terpentinersatz,de,"Terpentin, Terpentinersatz",terpentinterpentinersatz,auto,seed,0.85
+terrassenfliesen_aus_holz_mit_holzschutzmittel_behandelt,de,Terrassenfliesen aus Holz (mit Holzschutzmittel behandelt),terrassenfliesen aus holz mit holzschutzmittel behandelt,primary,seed,1.00
+terrassenfliesen_aus_holz_ohne_holzschutzmittel,de,Terrassenfliesen aus Holz (ohne Holzschutzmittel),terrassenfliesen aus holz ohne holzschutzmittel,primary,seed,1.00
+terrassenfliesen_aus_kunststoff_wpc,de,"Terrassenfliesen aus Kunststoff (""WPC"")",terrassenfliesen aus kunststoff wpc,primary,seed,1.00
+terrassenfliesen_aus_holz_mit_holzschutzmittel_behandelt,de,Terrassenfliesen aus Holz (mit Holzschutzmittel behandelt),terrassenfliesenausholzmitholzschutzmittelbehandelt,auto,seed,0.85
+terrassenfliesen_aus_holz_ohne_holzschutzmittel,de,Terrassenfliesen aus Holz (ohne Holzschutzmittel),terrassenfliesenausholzohneholzschutzmittel,auto,seed,0.85
+terrassenfliesen_aus_kunststoff_wpc,de,"Terrassenfliesen aus Kunststoff (""WPC"")",terrassenfliesenauskunststoffwpc,auto,seed,0.85
+tesafilm,de,Tesafilm,tesafilm,primary,seed,1.00
+tetrapaks,de,Tetrapaks,tetrapaks,primary,seed,1.00
+textilien_daunen_kamelhaar_schafwoll_schurwoll_baumwollbettdecken,de,"Textilien, Daunen-/ Kamelhaar-/Schafwoll-/ Schurwoll-/ Baumwollbettdecken",textilien daunen kamelhaar schafwoll schurwoll baumwollbettdecken,primary,seed,1.00
+textilien_mit_schimmelbefall,de,Textilien mit Schimmelbefall,textilien mit schimmelbefall,primary,seed,1.00
+textilien_daunen_kamelhaar_schafwoll_schurwoll_baumwollbettdecken,de,"Textilien, Daunen-/ Kamelhaar-/Schafwoll-/ Schurwoll-/ Baumwollbettdecken",textiliendaunenkamelhaarschafwollschurwollbaumwollbettdecken,auto,seed,0.85
+textilien_mit_schimmelbefall,de,Textilien mit Schimmelbefall,textilienmitschimmelbefall,auto,seed,0.85
+textmarker,de,Textmarker,textmarker,primary,seed,1.00
+thermometer,de,Thermometer,thermometer,primary,seed,1.00
+thermopapier,de,Thermopapier,thermopapier,primary,seed,1.00
+thermoskanne,de,Thermoskanne,thermoskanne,primary,seed,1.00
+thermoskannen,de,Thermoskannen,thermoskannen,primary,seed,1.00
+tiefkuehlverpackungen,de,Tiefkühlverpackungen,tiefkuehlverpackungen,auto,seed,0.90
+tiefkuehlverpackungen,de,Tiefkühlverpackungen,tiefkuhlverpackungen,primary,seed,1.00
+tiereinstreu,de,Tiereinstreu,tiereinstreu,primary,seed,1.00
+tierfaekalien,de,Tierfäkalien,tierfaekalien,auto,seed,0.90
+tierfaekalien,de,Tierfäkalien,tierfakalien,primary,seed,1.00
+tierinnereien_schlachte_abfall,de,Tierinnereien/ Schlachte Abfall,tierinnereien schlachte abfall,primary,seed,1.00
+tierinnereien_schlachte_abfall,de,Tierinnereien/ Schlachte Abfall,tierinnereienschlachteabfall,auto,seed,0.85
+tierkadaver,de,Tierkadaver,tierkadaver,primary,seed,1.00
+tierkaefige,de,Tierkäfige,tierkaefige,auto,seed,0.90
+tierkaefige,de,Tierkäfige,tierkafige,primary,seed,1.00
+tierkoerper,de,Tierkörper,tierkoerper,auto,seed,0.90
+tierkoerper,de,Tierkörper,tierkorper,primary,seed,1.00
+tierkot,de,Tierkot,tierkot,primary,seed,1.00
+tierpraeparate,de,Tierpräparate,tierpraeparate,auto,seed,0.90
+tierpraeparate,de,Tierpräparate,tierpraparate,primary,seed,1.00
+tierstreu,de,Tierstreu,tierstreu,primary,seed,1.00
+tinten_toner_patronen_kartuschen,de,"Tinten-, Toner- patronen/ -kartuschen",tinten toner patronen kartuschen,primary,seed,1.00
+tinten_toner_patronen_kartuschen,de,"Tinten-, Toner- patronen/ -kartuschen",tintentonerpatronenkartuschen,auto,seed,0.85
+tisch,de,Tisch,tisch,primary,seed,1.00
+tische,de,Tische,tische,primary,seed,1.00
+tischtennisplatten,de,Tischtennisplatten,tischtennisplatten,primary,seed,1.00
+tischwaesche,de,Tischwäsche,tischwaesche,auto,seed,0.90
+tischwaesche,de,Tischwäsche,tischwasche,primary,seed,1.00
+toaster,de,Toaster,toaster,primary,seed,1.00
+toilettenbecken,de,Toilettenbecken,toilettenbecken,primary,seed,1.00
+toilettenbrillen,de,Toilettenbrillen,toilettenbrillen,primary,seed,1.00
+toilettendeckel,de,Toilettendeckel,toilettendeckel,primary,seed,1.00
+toilettenspuelkaesten,de,Toilettenspülkästen,toilettenspuelkaesten,auto,seed,0.90
+toilettenspuelkasten,de,Toilettenspülkasten,toilettenspuelkasten,auto,seed,0.90
+toilettenspuelkasten,de,Toilettenspülkasten,toilettenspulkasten,primary,seed,1.00
+tonbaender,de,Tonbänder,tonbaender,auto,seed,0.90
+tonband,de,Tonband,tonband,primary,seed,1.00
+tonbaender,de,Tonbänder,tonbander,primary,seed,1.00
+tonbandgeraete,de,Tonbandgeräte,tonbandgeraete,auto,seed,0.90
+tonbandgeraete,de,Tonbandgeräte,tonbandgerate,primary,seed,1.00
+tonerkartuschen,de,Tonerkartuschen,tonerkartuschen,primary,seed,1.00
+tonsubstrat,de,Tonsubstrat,tonsubstrat,primary,seed,1.00
+topf,de,Topf,topf,primary,seed,1.00
+treckerreifen,de,Treckerreifen,treckerreifen,primary,seed,1.00
+tresor,de,Tresor,tresor,primary,seed,1.00
+trinkbecher,de,Trinkbecher,trinkbecher,primary,seed,1.00
+trinkglaeser,de,Trinkgläser,trinkglaeser,auto,seed,0.90
+trinkglas,de,Trinkglas,trinkglas,primary,seed,1.00
+trinkglaeser,de,Trinkgläser,trinkglaser,primary,seed,1.00
+trinkhalme,de,Trinkhalme,trinkhalme,primary,seed,1.00
+trinkpaeckchen,de,Trinkpäckchen,trinkpackchen,primary,seed,1.00
+trinkpaeckchen,de,Trinkpäckchen,trinkpaeckchen,auto,seed,0.90
+trittschalldaemmplatten,de,Trittschalldämmplatten,trittschalldaemmplatten,auto,seed,0.90
+trittschalldaemmplatten,de,Trittschalldämmplatten,trittschalldammplatten,primary,seed,1.00
+trockenbatterien,de,Trockenbatterien,trockenbatterien,primary,seed,1.00
+trockenhauben,de,Trockenhauben,trockenhauben,primary,seed,1.00
+tuben,de,Tuben,tuben,primary,seed,1.00
+tuer,de,Tür,tuer,auto,seed,0.90
+tuerblaetter,de,Türblätter,tuerblaetter,auto,seed,0.90
+tuerblatt,de,Türblatt,tuerblatt,auto,seed,0.90
+tueren_aus_holz_aussenbereich,de,Türen aus Holz (Außenbereich),tueren aus holz aussenbereich,auto,seed,0.90
+tueren_aus_holz_innenbereich,de,Türen aus Holz (Innenbereich),tueren aus holz innenbereich,auto,seed,0.90
+tueren_kunststoff,de,Türen (Kunststoff),tueren kunststoff,auto,seed,0.90
+tueren_metall,de,Türen (Metall),tueren metall,auto,seed,0.90
+tueren_aus_holz_aussenbereich,de,Türen aus Holz (Außenbereich),tuerenausholzaussenbereich,auto,seed,0.80
+tueren_aus_holz_innenbereich,de,Türen aus Holz (Innenbereich),tuerenausholzinnenbereich,auto,seed,0.80
+tueren_kunststoff,de,Türen (Kunststoff),tuerenkunststoff,auto,seed,0.80
+tueren_metall,de,Türen (Metall),tuerenmetall,auto,seed,0.80
+tuerrahmen,de,Türrahmen,tuerrahmen,auto,seed,0.90
+tupperware,de,Tupperware,tupperware,primary,seed,1.00
+tuer,de,Tür,tur,primary,seed,1.00
+tuerblatt,de,Türblatt,turblatt,primary,seed,1.00
+tuerblaetter,de,Türblätter,turblatter,primary,seed,1.00
+tueren_aus_holz_aussenbereich,de,Türen aus Holz (Außenbereich),turen aus holz au enbereich,primary,seed,1.00
+tueren_aus_holz_innenbereich,de,Türen aus Holz (Innenbereich),turen aus holz innenbereich,primary,seed,1.00
+tueren_kunststoff,de,Türen (Kunststoff),turen kunststoff,primary,seed,1.00
+tueren_metall,de,Türen (Metall),turen metall,primary,seed,1.00
+tueren_aus_holz_aussenbereich,de,Türen aus Holz (Außenbereich),turenausholzauenbereich,auto,seed,0.85
+tueren_aus_holz_innenbereich,de,Türen aus Holz (Innenbereich),turenausholzinnenbereich,auto,seed,0.85
+tueren_kunststoff,de,Türen (Kunststoff),turenkunststoff,auto,seed,0.85
+tueren_metall,de,Türen (Metall),turenmetall,auto,seed,0.85
+tuerrahmen,de,Türrahmen,turrahmen,primary,seed,1.00
+tv_geraete,de,TV-Geräte,tv geraete,auto,seed,0.90
+tv_geraete,de,TV-Geräte,tv gerate,primary,seed,1.00
+tv_geraete,de,TV-Geräte,tvgeraete,auto,seed,0.80
+tv_geraete,de,TV-Geräte,tvgerate,auto,seed,0.85
+umverpackung,de,Umverpackung,umverpackung,primary,seed,1.00
+universalverduennung,de,Universalverdünnung,universalverduennung,auto,seed,0.90
+universalverduennung,de,Universalverdünnung,universalverdunnung,primary,seed,1.00
+unkraut,de,Unkraut,unkraut,primary,seed,1.00
+unkrautvernichtungsmittel,de,Unkrautvernichtungsmittel,unkrautvernichtungsmittel,primary,seed,1.00
+unterbodenschutz,de,Unterbodenschutz,unterbodenschutz,primary,seed,1.00
+urinale,de,Urinale,urinale,primary,seed,1.00
+usb_stick,de,USB-Stick,usb stick,primary,seed,1.00
+usb_stick,de,USB-Stick,usbstick,auto,seed,0.85
+vapes_e_zigarette,de,Vapes (E-Zigarette),vapes e zigarette,primary,seed,1.00
+vapes_e_zigarette,de,Vapes (E-Zigarette),vapesezigarette,auto,seed,0.85
+vasen,de,Vasen,vasen,primary,seed,1.00
+ventilator,de,Ventilator,ventilator,primary,seed,1.00
+verbandsmaterial,de,Verbandsmaterial,verbandsmaterial,primary,seed,1.00
+verduenner,de,Verdünner,verduenner,auto,seed,0.90
+verduennung,de,Verdünnung,verduennung,auto,seed,0.90
+verduenner,de,Verdünner,verdunner,primary,seed,1.00
+verduennung,de,Verdünnung,verdunnung,primary,seed,1.00
+verpackung,de,Verpackung,verpackung,primary,seed,1.00
+verpackungen,de,Verpackungen,verpackungen,primary,seed,1.00
+verpackungschips,de,Verpackungschips,verpackungschips,primary,seed,1.00
+verpackungsfolien,de,Verpackungsfolien,verpackungsfolien,primary,seed,1.00
+versandtaschen_gefuettert,de,"Versandtaschen, gefüttert",versandtaschen gefuettert,auto,seed,0.90
+versandtaschen_gefuettert,de,"Versandtaschen, gefüttert",versandtaschen gefuttert,primary,seed,1.00
+versandtaschen_gefuettert,de,"Versandtaschen, gefüttert",versandtaschengefuettert,auto,seed,0.80
+versandtaschen_gefuettert,de,"Versandtaschen, gefüttert",versandtaschengefuttert,auto,seed,0.85
+verstaerker,de,Verstärker,verstaerker,auto,seed,0.90
+verstaerker,de,Verstärker,verstarker,primary,seed,1.00
+vertaefelung,de,Vertäfelung,vertaefelung,auto,seed,0.90
+vertaefelung,de,Vertäfelung,vertafelung,primary,seed,1.00
+vertikutiergut,de,Vertikutiergut,vertikutiergut,primary,seed,1.00
+videokamera,de,Videokamera,videokamera,primary,seed,1.00
+videokassette,de,Videokassette,videokassette,primary,seed,1.00
+videokassetten,de,Videokassetten,videokassetten,primary,seed,1.00
+videorecorder,de,Videorecorder,videorecorder,primary,seed,1.00
+videorekorder,de,Videorekorder,videorekorder,primary,seed,1.00
+videospiele,de,Videospiele,videospiele,primary,seed,1.00
+videospielkonsolen,de,Videospielkonsolen,videospielkonsolen,primary,seed,1.00
+vinyl_schallplatten,de,Vinyl-Schallplatten,vinyl schallplatten,primary,seed,1.00
+vinyl_schallplatten,de,Vinyl-Schallplatten,vinylschallplatten,auto,seed,0.85
+virentoeter,de,Virentöter,virentoeter,auto,seed,0.90
+virentoeter,de,Virentöter,virentoter,primary,seed,1.00
+vogelkot,de,Vogelkot,vogelkot,primary,seed,1.00
+vogelsand,de,Vogelsand,vogelsand,primary,seed,1.00
+vollgummireifen,de,Vollgummireifen,vollgummireifen,primary,seed,1.00
+vollhoelzer_aussenbereich,de,Vollhölzer (Außenbereich),vollhoelzer aussenbereich,auto,seed,0.90
+vollhoelzer_innenbereich,de,Vollhölzer (Innenbereich),vollhoelzer innenbereich,auto,seed,0.90
+vollhoelzer_aussenbereich,de,Vollhölzer (Außenbereich),vollhoelzeraussenbereich,auto,seed,0.80
+vollhoelzer_innenbereich,de,Vollhölzer (Innenbereich),vollhoelzerinnenbereich,auto,seed,0.80
+vollholz_aussenbereich,de,Vollholz (Außenbereich),vollholz au enbereich,primary,seed,1.00
+vollholz_aussenbereich,de,Vollholz (Außenbereich),vollholz aussenbereich,auto,seed,0.90
+vollholz_innenbereich,de,Vollholz (Innenbereich),vollholz innenbereich,primary,seed,1.00
+vollholz_aussenbereich,de,Vollholz (Außenbereich),vollholzauenbereich,auto,seed,0.85
+vollholz_aussenbereich,de,Vollholz (Außenbereich),vollholzaussenbereich,auto,seed,0.80
+vollhoelzer_aussenbereich,de,Vollhölzer (Außenbereich),vollholzer au enbereich,primary,seed,1.00
+vollhoelzer_innenbereich,de,Vollhölzer (Innenbereich),vollholzer innenbereich,primary,seed,1.00
+vollhoelzer_aussenbereich,de,Vollhölzer (Außenbereich),vollholzerauenbereich,auto,seed,0.85
+vollhoelzer_innenbereich,de,Vollhölzer (Innenbereich),vollholzerinnenbereich,auto,seed,0.85
+vollholz_innenbereich,de,Vollholz (Innenbereich),vollholzinnenbereich,auto,seed,0.85
+vorhaenge,de,Vorhänge,vorhaenge,auto,seed,0.90
+vorhaenge,de,Vorhänge,vorhange,primary,seed,1.00
+vorox,de,Vorox,vorox,primary,seed,1.00
+waage_elektrisch,de,Waage (elektrisch),waage elektrisch,primary,seed,1.00
+waage_elektrisch,de,Waage (elektrisch),waageelektrisch,auto,seed,0.85
+waagen_mechanisch,de,Waagen (mechanisch),waagen mechanisch,primary,seed,1.00
+waagen_mechanisch,de,Waagen (mechanisch),waagenmechanisch,auto,seed,0.85
+wachsstifte,de,Wachsstifte,wachsstifte,primary,seed,1.00
+waermedaemmplatten_hbcd_belastet,de,"Wärmedämmplatten, HBCD-belastet",waermedaemmplatten hbcd belastet,auto,seed,0.90
+waermedaemmplatten_hbcd_belastet,de,"Wärmedämmplatten, HBCD-belastet",waermedaemmplattenhbcdbelastet,auto,seed,0.80
+waermepumpe,de,Wärmepumpe,waermepumpe,auto,seed,0.90
+waermflaschen,de,Wärmflaschen,waermflaschen,auto,seed,0.90
+waesche,de,Wäsche,waesche,auto,seed,0.90
+waeschemangel,de,Wäschemangel,waeschemangel,auto,seed,0.90
+waescheschleuder,de,Wäscheschleuder,waescheschleuder,auto,seed,0.90
+waeschestaender,de,Wäscheständer,waeschestaender,auto,seed,0.90
+waeschetrockner,de,Wäschetrockner,waeschetrockner,auto,seed,0.90
+waeschetruhe,de,Wäschetruhe,waeschetruhe,auto,seed,0.90
+waffeleisen,de,Waffeleisen,waffeleisen,primary,seed,1.00
+waffen,de,Waffen,waffen,primary,seed,1.00
+waffen_schusswaffen,de,Waffen / Schusswaffen,waffen schusswaffen,primary,seed,1.00
+waffen_schusswaffen,de,Waffen / Schusswaffen,waffenschusswaffen,auto,seed,0.85
+walkmen,de,Walkmen,walkmen,primary,seed,1.00
+walnuesse,de,Walnüsse,walnuesse,auto,seed,0.90
+walnussbaumlaub,de,Walnussbaumlaub,walnussbaumlaub,primary,seed,1.00
+walnuesse,de,Walnüsse,walnusse,primary,seed,1.00
+wandfarben,de,Wandfarben,wandfarben,primary,seed,1.00
+waermedaemmplatten_hbcd_belastet,de,"Wärmedämmplatten, HBCD-belastet",warmedammplatten hbcd belastet,primary,seed,1.00
+waermedaemmplatten_hbcd_belastet,de,"Wärmedämmplatten, HBCD-belastet",warmedammplattenhbcdbelastet,auto,seed,0.85
+waermepumpe,de,Wärmepumpe,warmepumpe,primary,seed,1.00
+waermflaschen,de,Wärmflaschen,warmflaschen,primary,seed,1.00
+warmwasserspeicher,de,Warmwasserspeicher,warmwasserspeicher,primary,seed,1.00
+waschbecken,de,Waschbecken,waschbecken,primary,seed,1.00
+waschbenzin,de,Waschbenzin,waschbenzin,primary,seed,1.00
+waschbetonplatten,de,Waschbetonplatten,waschbetonplatten,primary,seed,1.00
+waesche,de,Wäsche,wasche,primary,seed,1.00
+waeschemangel,de,Wäschemangel,waschemangel,primary,seed,1.00
+waescheschleuder,de,Wäscheschleuder,wascheschleuder,primary,seed,1.00
+waeschestaender,de,Wäscheständer,waschestander,primary,seed,1.00
+waeschetrockner,de,Wäschetrockner,waschetrockner,primary,seed,1.00
+waeschetruhe,de,Wäschetruhe,waschetruhe,primary,seed,1.00
+waschmaschine,de,Waschmaschine,waschmaschine,primary,seed,1.00
+waschmaschinen,de,Waschmaschinen,waschmaschinen,primary,seed,1.00
+waschmittel,de,Waschmittel,waschmittel,primary,seed,1.00
+wasser_wasser_waermepumpe,de,Wasser-Wasser-Wärmepumpe,wasser wasser waermepumpe,auto,seed,0.90
+wasser_wasser_waermepumpe,de,Wasser-Wasser-Wärmepumpe,wasser wasser warmepumpe,primary,seed,1.00
+wasserbett,de,Wasserbett,wasserbett,primary,seed,1.00
+wasserkocher,de,Wasserkocher,wasserkocher,primary,seed,1.00
+wasserlacke,de,Wasserlacke,wasserlacke,primary,seed,1.00
+wasserloescher,de,Wasserlöscher,wasserloescher,auto,seed,0.90
+wasserloescher,de,Wasserlöscher,wasserloscher,primary,seed,1.00
+wasser_wasser_waermepumpe,de,Wasser-Wasser-Wärmepumpe,wasserwasserwaermepumpe,auto,seed,0.80
+wasser_wasser_waermepumpe,de,Wasser-Wasser-Wärmepumpe,wasserwasserwarmepumpe,auto,seed,0.85
+wattestaebchen,de,Wattestäbchen,wattestabchen,primary,seed,1.00
+wattestaebchen,de,Wattestäbchen,wattestaebchen,auto,seed,0.90
+wc_reiniger,de,WC-Reiniger,wc reiniger,primary,seed,1.00
+wc_reiniger,de,WC-Reiniger,wcreiniger,auto,seed,0.85
+wedi_bauplatten,de,Wedi®-Bauplatten,wedi bauplatten,primary,seed,1.00
+wedi_bauplatten,de,Wedi®-Bauplatten,wedibauplatten,auto,seed,0.85
+weissblech,de,Weißblech,wei blech,primary,seed,1.00
+weissblech,de,Weißblech,weiblech,auto,seed,0.85
+weichspueler,de,Weichspüler,weichspueler,auto,seed,0.90
+weichspueler,de,Weichspüler,weichspuler,primary,seed,1.00
+weihnachtsbaeume,de,Weihnachtsbäume,weihnachtsbaeume,auto,seed,0.90
+weihnachtsbaeume,de,Weihnachtsbäume,weihnachtsbaume,primary,seed,1.00
+weihnachtskugeln,de,Weihnachtskugeln,weihnachtskugeln,primary,seed,1.00
+weinflaschen,de,Weinflaschen,weinflaschen,primary,seed,1.00
+weinkuehlschrank,de,Weinkühlschrank,weinkuehlschrank,auto,seed,0.90
+weinkuehlschrank,de,Weinkühlschrank,weinkuhlschrank,primary,seed,1.00
+weissblech,de,Weißblech,weissblech,auto,seed,0.90
+wellasbest,de,Wellasbest,wellasbest,primary,seed,1.00
+welldacheternit,de,Welldacheternit,welldacheternit,primary,seed,1.00
+welldachplatten,de,Welldachplatten,welldachplatten,primary,seed,1.00
+wellpappe,de,Wellpappe,wellpappe,primary,seed,1.00
+wellplatten_eternit_asbestzement,de,Wellplatten (Eternit / Asbestzement),wellplatten eternit asbestzement,primary,seed,1.00
+wellplatten_eternit_asbestzement,de,Wellplatten (Eternit / Asbestzement),wellplatteneternitasbestzement,auto,seed,0.85
+werkzeuge,de,Werkzeuge,werkzeuge,primary,seed,1.00
+whirlpool,de,Whirlpool,whirlpool,primary,seed,1.00
+wiederverwendbare_kaffeebecher,de,wiederverwendbare Kaffeebecher,wiederverwendbare kaffeebecher,primary,seed,1.00
+wiederverwendbare_kaffeebecher,de,wiederverwendbare Kaffeebecher,wiederverwendbarekaffeebecher,auto,seed,0.85
+wildkraeuter,de,Wildkräuter,wildkraeuter,auto,seed,0.90
+wildkraeuter,de,Wildkräuter,wildkrauter,primary,seed,1.00
+windeln,de,Windeln,windeln,primary,seed,1.00
+windeln_einweg,de,Windeln (Einweg),windeln einweg,primary,seed,1.00
+windeln_einweg,de,Windeln (Einweg),windelneinweg,auto,seed,0.85
+wohnwagen,de,Wohnwagen,wohnwagen,primary,seed,1.00
+wolldecken,de,Wolldecken,wolldecken,primary,seed,1.00
+wpc_wood_plastic_composites,de,WPC (Wood-Plastic-Composites),wpc wood plastic composites,primary,seed,1.00
+wpc_wood_plastic_composites,de,WPC (Wood-Plastic-Composites),wpcwoodplasticcomposites,auto,seed,0.85
+wurfzelt,de,Wurfzelt,wurfzelt,primary,seed,1.00
+wurst,de,Wurst,wurst,primary,seed,1.00
+wurstreste,de,Wurstreste,wurstreste,primary,seed,1.00
+wurzelballen,de,Wurzelballen,wurzelballen,primary,seed,1.00
+wurzeln,de,Wurzeln,wurzeln,primary,seed,1.00
+xylamon,de,Xylamon,xylamon,primary,seed,1.00
+ytong_steine,de,Ytong®-Steine,ytong steine,primary,seed,1.00
+ytong_steine,de,Ytong®-Steine,ytongsteine,auto,seed,0.85
+zahnbuerste_elektrisch,de,Zahnbürste (elektrisch),zahnbuerste elektrisch,auto,seed,0.90
+zahnbuerste_elektrisch,de,Zahnbürste (elektrisch),zahnbuersteelektrisch,auto,seed,0.80
+zahnbuersten,de,Zahnbürsten,zahnbuersten,auto,seed,0.90
+zahnbuerste_elektrisch,de,Zahnbürste (elektrisch),zahnburste elektrisch,primary,seed,1.00
+zahnbuerste_elektrisch,de,Zahnbürste (elektrisch),zahnbursteelektrisch,auto,seed,0.85
+zahnbuersten,de,Zahnbürsten,zahnbursten,primary,seed,1.00
+zeichentisch,de,Zeichentisch,zeichentisch,primary,seed,1.00
+zeitschriften,de,Zeitschriften,zeitschriften,primary,seed,1.00
+zeitungen,de,Zeitungen,zeitungen,primary,seed,1.00
+zelte,de,Zelte,zelte,primary,seed,1.00
+zelte_mit_stangen,de,Zelte mit Stangen,zelte mit stangen,primary,seed,1.00
+zelte_mit_stangen,de,Zelte mit Stangen,zeltemitstangen,auto,seed,0.85
+zement,de,Zement,zement,primary,seed,1.00
+zementpulver_im_sack_unausgehaertet,de,Zementpulver im Sack (unausgehärtet),zementpulver im sack unausgehaertet,auto,seed,0.90
+zementpulver_im_sack_unausgehaertet,de,Zementpulver im Sack (unausgehärtet),zementpulver im sack unausgehartet,primary,seed,1.00
+zementpulver_im_sack_unausgehaertet,de,Zementpulver im Sack (unausgehärtet),zementpulverimsackunausgehaertet,auto,seed,0.80
+zementpulver_im_sack_unausgehaertet,de,Zementpulver im Sack (unausgehärtet),zementpulverimsackunausgehartet,auto,seed,0.85
+zementsack,de,Zementsack,zementsack,primary,seed,1.00
+zementsack_leer,de,"Zementsack, leer",zementsack leer,primary,seed,1.00
+zementsack_leer,de,"Zementsack, leer",zementsackleer,auto,seed,0.85
+zewa_kuechenpapier,de,Zewa/Küchenpapier,zewa kuchenpapier,primary,seed,1.00
+zewa_kuechenpapier,de,Zewa/Küchenpapier,zewa kuechenpapier,auto,seed,0.90
+zewa_kuechenpapier,de,Zewa/Küchenpapier,zewakuchenpapier,auto,seed,0.85
+zewa_kuechenpapier,de,Zewa/Küchenpapier,zewakuechenpapier,auto,seed,0.80
+ziegel,de,Ziegel,ziegel,primary,seed,1.00
+ziegelmehl,de,Ziegelmehl,ziegelmehl,primary,seed,1.00
+zierkies,de,Zierkies,zierkies,primary,seed,1.00
+zigaretten,de,Zigaretten,zigaretten,primary,seed,1.00
+zigarettenkippen,de,Zigarettenkippen,zigarettenkippen,primary,seed,1.00
+zimmerpflanzen,de,Zimmerpflanzen,zimmerpflanzen,primary,seed,1.00
+zitrusfruechte,de,Zitrusfrüchte,zitrusfruchte,primary,seed,1.00
+zitrusfruechte,de,Zitrusfrüchte,zitrusfruechte,auto,seed,0.90
+zweige,de,Zweige,zweige,primary,seed,1.00

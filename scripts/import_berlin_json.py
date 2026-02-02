@@ -32,8 +32,29 @@ CITY_CODE = "berlin"
 
 def slug(value: str) -> str:
   value = (value or "").strip().lower()
+  # German transliteration before stripping non-ascii chars
+  value = (
+    value.replace("ä", "ae")
+    .replace("ö", "oe")
+    .replace("ü", "ue")
+    .replace("ß", "ss")
+  )
   value = re.sub(r"[^a-z0-9]+", "_", value).strip("_")
   return value or "item"
+
+
+def make_unique_slugs(values: List[str]) -> List[str]:
+  """Ensure slugs are unique by appending -2, -3, ... on collisions."""
+  counts: Dict[str, int] = {}
+  result: List[str] = []
+  for val in values:
+    base = val or "item"
+    counts[base] = counts.get(base, 0) + 1
+    if counts[base] == 1:
+      result.append(base)
+    else:
+      result.append(f"{base}-{counts[base]}")
+  return result
 
 
 def upsert_translation(conn: Connection, key: str, text_value: str) -> None:
@@ -217,15 +238,23 @@ def main() -> None:
     print(json.dumps(data[:3], ensure_ascii=False, indent=2))
     return
 
+  # Precompute unique canonical keys from titles to avoid collisions.
+  titles: List[str] = []
+  for entry in data:
+    title = entry.get("synonymTitle") or ""
+    titles.append(str(title))
+  base_slugs = [slug(t) for t in titles]
+  canonical_keys = make_unique_slugs(base_slugs)
+
   engine = create_engine(args.database_url)
   with engine.begin() as conn:
     city_id = ensure_city(conn, CITY_CODE)
     items = 0
-    for entry in data:
+    for idx, entry in enumerate(data):
       title = entry.get("synonymTitle")
       if not title:
         continue
-      canonical_key = slug(title)
+      canonical_key = canonical_keys[idx]
       title_key = f"item.{canonical_key}.title"
       desc_val = build_desc(entry)
       desc_key = f"item.{canonical_key}.desc.berlin" if desc_val else None
