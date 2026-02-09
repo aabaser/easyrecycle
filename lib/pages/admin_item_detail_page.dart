@@ -4,7 +4,6 @@ import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
-import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
 import "../models/admin_item.dart";
 import "../models/admin_image.dart";
@@ -12,7 +11,6 @@ import "../models/city.dart";
 import "../services/admin_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
-import "../widgets/app_bottom_nav.dart";
 import "../widgets/primary_button.dart";
 import "../widgets/max_width_center.dart";
 import "home_shell.dart";
@@ -590,9 +588,9 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
 
   Widget _buildImageTile(AdminImageAsset image) {
     final isSelected = image.imageId == _selectedImageId;
-    final resolvedUrl = image.imageUrl.startsWith("http")
+    final resolvedUrl = (image.imageUrl.trim().isNotEmpty && image.imageUrl.startsWith("http"))
         ? image.imageUrl
-        : "${ApiConfig.baseUrl}${image.imageUrl}";
+        : null;
     return GestureDetector(
       onTap: () => _setPrimaryImage(image.imageId),
       child: Container(
@@ -609,7 +607,21 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Image.network(resolvedUrl, fit: BoxFit.cover),
+          child: resolvedUrl == null
+              ? Container(
+                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  child: const Icon(Icons.image_not_supported_outlined),
+                )
+              : Image.network(
+                  resolvedUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      child: const Icon(Icons.image_not_supported_outlined),
+                    );
+                  },
+                ),
         ),
       ),
     );
@@ -787,9 +799,6 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                       ],
                     )),
         ),
-      ),
-      bottomNavigationBar: const AppBottomNav(
-        selectedIndex: HomeShell.tabSettings,
       ),
     );
   }

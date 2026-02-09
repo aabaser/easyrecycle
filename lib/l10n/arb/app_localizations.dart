@@ -370,6 +370,36 @@ abstract class AppLocalizations {
   /// **'Find recycling center'**
   String get find_recycling_center;
 
+  /// No description provided for @recycle_centers_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading recycling centers...'**
+  String get recycle_centers_loading;
+
+  /// No description provided for @recycle_centers_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load recycling centers.'**
+  String get recycle_centers_error;
+
+  /// No description provided for @recycle_centers_open_maps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Google Maps'**
+  String get recycle_centers_open_maps;
+
+  /// No description provided for @recycle_centers_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No recycling centers found.'**
+  String get recycle_centers_empty;
+
+  /// No description provided for @recycle_centers_location_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable, listing by city.'**
+  String get recycle_centers_location_denied;
+
   /// No description provided for @info_title.
   ///
   /// In en, this message translates to:

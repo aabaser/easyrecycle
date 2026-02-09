@@ -144,6 +144,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get find_recycling_center => 'Recyclinghof finden';
 
   @override
+  String get recycle_centers_loading => 'Recyclinghöfe werden geladen...';
+
+  @override
+  String get recycle_centers_error =>
+      'Recyclinghöfe konnten nicht geladen werden.';
+
+  @override
+  String get recycle_centers_open_maps => 'In Google Maps öffnen';
+
+  @override
+  String get recycle_centers_empty => 'Keine Recyclinghöfe gefunden.';
+
+  @override
+  String get recycle_centers_location_denied =>
+      'Standort nicht verfügbar, Liste nach Stadt.';
+
+  @override
   String get info_title => 'Info';
 
   @override

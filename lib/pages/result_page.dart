@@ -23,8 +23,8 @@ import "../widgets/max_width_center.dart";
 import "../widgets/primary_button.dart";
 import "../widgets/section_title.dart";
 import "../widgets/similar_item_card.dart";
-import "../widgets/app_bottom_nav.dart";
 import "home_shell.dart";
+import "recycle_centers_page.dart";
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key, required this.result});
@@ -40,9 +40,6 @@ class _ResultPageState extends State<ResultPage> {
   final _rulesService = MockRulesService();
   bool _showFullDescription = false;
   int _feedbackValue = 0;
-  static const double _bottomBarHeight = 72;
-  static const double _notFoundBarHeight = 104;
-  static const double _navBarHeight = 80;
   Uint8List? get _effectiveImageBytes =>
       _result.state == ScanState.notFound ? null : _result.imageBytes;
   String? get _effectiveImageUrl {
@@ -285,31 +282,15 @@ class _ResultPageState extends State<ResultPage> {
               : _buildNotFound(context, loc),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _result.state == ScanState.found
-                ? _buildFoundBottomBar(loc)
-                : _buildNotFoundBottomBar(loc),
-            Container(
-              height: 1,
-              color: colorScheme.outline,
-            ),
-            AppBottomNav(
-              selectedIndex: _result.searchMode == SearchMode.text
-                  ? HomeShell.tabText
-                  : HomeShell.tabCamera,
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: _result.state == ScanState.found
+          ? _buildFoundBottomBar(loc)
+          : _buildNotFoundBottomBar(loc),
     );
   }
 
   Widget _buildFoundBottomBar(AppLocalizations loc) {
     final colorScheme = Theme.of(context).colorScheme;
+    final appState = context.read<AppState>();
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: DesignTokens.sectionSpacing,
@@ -333,7 +314,14 @@ class _ResultPageState extends State<ResultPage> {
                   borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
                 ),
               ),
-              onPressed: () => _showInfoDialog(loc),
+              onPressed: () {
+                final cityCode = appState.selectedCity?.id ?? "hannover";
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => RecycleCentersPage(cityCode: cityCode),
+                  ),
+                );
+              },
               child: Text(loc.t("find_recycling_center")),
             ),
           ),
@@ -540,9 +528,7 @@ class _ResultPageState extends State<ResultPage> {
   Widget _buildFound(BuildContext context, AppLocalizations loc) {
     final colorScheme = Theme.of(context).colorScheme;
     return ListView(
-      padding: const EdgeInsets.only(
-        bottom: _bottomBarHeight + _navBarHeight + 16,
-      ),
+      padding: const EdgeInsets.only(bottom: DesignTokens.sectionSpacing),
       children: [
         _buildImagePreview(),
         const SizedBox(height: DesignTokens.sectionSpacing),
@@ -630,6 +616,15 @@ class _ResultPageState extends State<ResultPage> {
                         ? _effectiveImageUrl!
                         : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Icon(
+                          Icons.inventory_2_outlined,
+                          size: 64,
+                          color: colorScheme.primary,
+                        ),
+                      );
+                    },
                   )
                 : Icon(
                     Icons.inventory_2_outlined,
@@ -842,13 +837,8 @@ class _ResultPageState extends State<ResultPage> {
   Widget _buildNotFound(BuildContext context, AppLocalizations loc) {
     final colorScheme = Theme.of(context).colorScheme;
     final hintLines = _hintLinesForMode(loc, _result.searchMode);
-    final barHeight = _shouldShowNotFoundBar(_result.searchMode)
-        ? _notFoundBarHeight
-        : 0;
     return ListView(
-      padding: EdgeInsets.only(
-        bottom: barHeight + _navBarHeight + 16,
-      ),
+      padding: const EdgeInsets.only(bottom: DesignTokens.sectionSpacing),
       children: [
         _buildEmptyStateBadge(),
         const SizedBox(height: DesignTokens.baseSpacing),

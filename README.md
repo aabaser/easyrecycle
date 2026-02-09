@@ -46,7 +46,7 @@ Prereqs:
 
 Build:
 ```bash
-flutter build apk --dart-define=API_BASE_URL=http://<PC_IP>:8000
+flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000
 ```
 
 Install APK:
@@ -79,18 +79,31 @@ Berlin JSON import:
 python scripts/import_berlin_json.py data/berlin_abfall.json
 ```
 
+Hannover recycling centers (AHA addresses):
+```bash
+curl.exe -L "https://www.aha-region.de/app-fileadmin/annahmestellen/addresses.json" -o "data/hannover_addresses.json"
+```
+Build the CSV:
+```bash
+python scripts/build_hannover_recycle_center.py
+```
+Import into Postgres:
+```bash
+python scripts/import_recycle_centers.py --city hannover --csv data/aha_locations.csv --replace
+```
+
 ## Item Alias Seed (DB → CSV → Import)
 
 Build alias seed CSV directly from DB:
 ```bash
 python scripts/build_item_alias_seed.py --database-url "$DATABASE_URL" \
-  --out item_alias_seed.csv \
-  --collisions item_alias_collisions.csv
+  --out data/item_alias_seed.csv \
+  --collisions data/item_alias_collisions.csv
 ```
 
 Import alias seed CSV into `core.item_alias`:
 ```bash
-python scripts/import_item_alias_seed.py --database-url "$DATABASE_URL" --csv item_alias_seed.csv
+python scripts/import_item_alias_seed.py --database-url "$DATABASE_URL" --csv data/item_alias_seed.csv
 ```
 Note: `import_item_alias_seed.py` uses psycopg directly and expects a DSN like
 `postgresql://...` (not `postgresql+psycopg://...`). If your `DATABASE_URL`
@@ -131,4 +144,61 @@ export COGNITO_USER_POOL_ID=eu-central-1_XXXXXXXXX
 export COGNITO_APP_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
 # Optional:
 # export COGNITO_ISSUER=https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_XXXXXXXXX
+```
+
+## Image Storage (S3)
+
+Set env vars (local dev):
+```bash
+export AWS_REGION=eu-central-1
+export S3_BUCKET_NAME=easy-recycle-images-dev
+export S3_PRESIGN_TTL_SECONDS=120
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+```
+
+Presign upload (guest/user auth required):
+```bash
+curl -X POST http://localhost:8000/uploads/presign \
+  -H "Authorization: Bearer <JWT>" \
+  -H "Content-Type: application/json" \
+  -d '{"content_type":"image/jpeg","file_ext":"jpg"}'
+```
+
+Upload to S3:
+```bash
+curl -X PUT "<upload_url>" \
+  -H "Content-Type: image/jpeg" \
+  --data-binary @/path/to/image.jpg
+```
+
+Analyze with s3_key:
+```bash
+curl -X POST http://localhost:8000/analyze \
+  -H "Authorization: Bearer <JWT>" \
+  -H "Content-Type: application/json" \
+  -d '{"city":"hannover","lang":"de","s3_key":"guest/<device_id>/2026/02/xxxx.jpg"}'
+```
+
+Analyze with multipart upload:
+```bash
+curl -X POST http://localhost:8000/analyze \
+  -H "Authorization: Bearer <JWT>" \
+  -F "city=hannover" \
+  -F "lang=de" \
+  -F "file=@/path/to/image.jpg"
+```
+
+## Recycle Centers API
+
+List recycle centers for a city (type_code=5 is filtered out):
+```bash
+curl -H "Authorization: Bearer <JWT>" \
+  "http://localhost:8000/recycle-centers?city=hannover"
+```
+
+List nearest centers (requires location):
+```bash
+curl -H "Authorization: Bearer <JWT>" \
+  "http://localhost:8000/recycle-centers?city=hannover&lat=52.37&lng=9.73&limit=20"
 ```

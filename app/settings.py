@@ -19,6 +19,10 @@ class Settings(BaseSettings):
 
     RATE_LIMIT_ENABLED: bool = True
 
+    AWS_REGION: str | None = None
+    S3_BUCKET_NAME: str | None = None
+    S3_PRESIGN_TTL_SECONDS: int = 120
+    MAX_IMAGE_BYTES: int = 5 * 1024 * 1024
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,

@@ -4,6 +4,8 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 import re
 import unicodedata
+from app.settings import Settings
+from app.storage.s3 import create_presigned_get
 
 def _city_id(db: Session, city_code: str) -> Optional[str]:
   r = db.execute(
@@ -258,7 +260,38 @@ def _create_missing_city_prospects(db: Session, item_id: str, lang: str, exclude
   return missing
 
 
-def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str, item_name: Optional[str] = None) -> Dict[str, Any]:
+def _image_url(db: Session, settings: Settings, image_id: Optional[str]) -> Optional[str]:
+  if not image_id:
+    return None
+  row = db.execute(
+    text(
+      """
+      SELECT storage_key
+      FROM core.image_asset
+      WHERE image_id::uuid = :image_id
+      """
+    ),
+    {"image_id": image_id},
+  ).fetchone()
+  if not row or not row[0]:
+    return None
+  storage_key = row[0]
+  return create_presigned_get(
+    settings,
+    settings.S3_BUCKET_NAME,
+    storage_key,
+    settings.S3_PRESIGN_TTL_SECONDS,
+  )
+
+
+def resolve_item(
+  db: Session,
+  city_code: str,
+  item_id: Optional[str],
+  lang: str,
+  settings: Settings,
+  item_name: Optional[str] = None,
+) -> Dict[str, Any]:
   city_id = _city_id(db, city_code)
   if not city_id:
     return {"error": f"unknown city: {city_code}"}
@@ -307,6 +340,9 @@ def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str,
   if r:
     if r[0]: title_key = r[0]
     if r[1]: desc_key = r[1]
+  elif desc_key and not desc_key.endswith(f".desc.{city_code}"):
+    # No city-specific override and base desc is not for this city -> do not show cross-city description
+    desc_key = None
 
   title = _t(db, title_key, lang)
   desc = _t(db, desc_key, lang) if desc_key else None
@@ -358,7 +394,7 @@ def resolve_item(db: Session, city_code: str, item_id: Optional[str], lang: str,
     # item exists with rules in requested city; check other cities and create prospects there if missing
     missing_other_cities = _create_missing_city_prospects(db, item_id=item[0], lang=lang, exclude_city_id=city_id, exclude_city_code=city_code)
 
-  image_url = f"/images/{image_id}" if image_id else None
+  image_url = _image_url(db, settings, image_id)
   return {
     "city": city_code,
     "item": {

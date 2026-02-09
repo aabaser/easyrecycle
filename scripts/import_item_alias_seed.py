@@ -8,7 +8,7 @@ import psycopg
 
 
 def main() -> None:
-    csv_path = "item_alias_seed.csv"
+    csv_path = "data/item_alias_seed.csv"
     if not os.path.exists(csv_path):
         print(f"CSV not found: {csv_path}")
         sys.exit(1)

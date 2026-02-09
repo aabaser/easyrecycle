@@ -1,15 +1,26 @@
 from typing import Optional
+from math import radians, sin, cos, sqrt, atan2
+import base64
+from io import BytesIO
 import logging
-import os
 from dotenv import load_dotenv
 import time
-from fastapi import FastAPI, Depends, Query, Body, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import FastAPI, Depends, Query, Body, HTTPException, Request, Response
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.db import get_db
 from app.services.resolve import resolve_item
-from app.integrations.openai_vision import recognize_item_from_base64, store_image_from_base64
+from app.integrations.openai_vision import recognize_item_from_bytes, store_image_from_base64
+from app.storage.s3 import (
+  build_object_key,
+  create_presigned_get,
+  create_presigned_put,
+  ensure_allowed_content_type,
+  get_object_bytes,
+  upload_fileobj,
+  validate_settings as validate_s3_settings,
+)
 from app.settings import get_settings
 from app.auth.cognito import verify_cognito_jwt
 from app.auth.guest import issue_guest_token, verify_guest_token
@@ -33,13 +44,17 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
+
+@app.on_event("startup")
+def _validate_startup():
+  validate_s3_settings(settings)
+
 _AUTH_EXEMPT_PATHS = {
   "/health",
   "/healthz",
   "/auth/guest",
   "/auth/me",
   "/auth/verify",
-  "/images",
   "/docs",
   "/openapi.json",
   "/redoc",
@@ -51,7 +66,7 @@ async def auth_guard(request: Request, call_next):
   if request.method == "OPTIONS":
     return await call_next(request)
   path = request.url.path
-  if path in _AUTH_EXEMPT_PATHS or path.startswith("/images/"):
+  if path in _AUTH_EXEMPT_PATHS:
     return await call_next(request)
   try:
     principal = _resolve_principal(request)
@@ -75,6 +90,41 @@ def _rate_limit_or_429(key: str, limit: int, window_seconds: int = 60) -> None:
     return
   if not rate_limiter.hit(key, limit=limit, window_seconds=window_seconds):
     raise HTTPException(status_code=429, detail="Rate limit exceeded")
+
+
+def _principal_prefix(principal: dict) -> str:
+  role = principal.get("type")
+  sub = principal.get("sub")
+  if not sub:
+    raise HTTPException(status_code=401, detail="Invalid or expired token")
+  if role == "guest" and sub.startswith("guest:"):
+    sub = sub.split("guest:", 1)[1]
+  prefix = "user" if role == "user" else "guest"
+  return f"{prefix}/{sub}"
+
+
+def _decode_base64_payload(image_base64: str) -> bytes:
+  if "," in image_base64 and "base64" in image_base64[:50]:
+    image_base64 = image_base64.split(",", 1)[1]
+  try:
+    return base64.b64decode(image_base64, validate=True)
+  except Exception:
+    raise HTTPException(status_code=400, detail="invalid_image_base64")
+
+
+def _detect_content_type(image_bytes: bytes) -> str:
+  if image_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
+    return "image/png"
+  return "image/jpeg"
+
+
+def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+  r = 6371.0
+  dlat = radians(lat2 - lat1)
+  dlon = radians(lon2 - lon1)
+  a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
+  c = 2 * atan2(sqrt(a), sqrt(1 - a))
+  return r * c
 
 
 def _resolve_principal(request: Request) -> dict:
@@ -141,6 +191,37 @@ class PrincipalResponse(BaseModel):
   scopes: list[str]
 
 
+class PresignRequest(BaseModel):
+  content_type: str
+  file_ext: Optional[str] = None
+
+
+class PresignResponse(BaseModel):
+  upload_url: str
+  s3_key: str
+  expires_in: int
+  required_headers: dict
+
+
+class RecycleCenterItem(BaseModel):
+  id: str
+  name: str
+  address: str
+  lat: float
+  lng: float
+  typ_code: Optional[int] = None
+  typ_label: Optional[str] = None
+  has_glas: Optional[bool] = None
+  has_kleider: Optional[bool] = None
+  has_papier: Optional[bool] = None
+  distance_km: Optional[float] = None
+
+
+class RecycleCenterResponse(BaseModel):
+  city: str
+  centers: list[RecycleCenterItem]
+
+
 @app.post("/auth/guest", response_model=GuestResponse)
 def auth_guest(payload: GuestRequest, request: Request):
   _rate_limit_or_429(_client_ip(request), limit=10, window_seconds=60)
@@ -189,6 +270,29 @@ def auth_verify(request: Request):
     "scopes": sorted(principal.get("scopes") or []),
   }
 
+
+@app.post("/uploads/presign", response_model=PresignResponse)
+def uploads_presign(payload: PresignRequest, request: Request):
+  principal = getattr(request.state, "principal", None)
+  if not principal or principal.get("type") == "anonymous":
+    raise HTTPException(status_code=401, detail="Unauthorized")
+  ensure_allowed_content_type(payload.content_type)
+  filename = f"upload.{payload.file_ext}" if payload.file_ext else None
+  s3_key = build_object_key(principal, payload.content_type, filename)
+  presigned = create_presigned_put(
+    settings,
+    settings.S3_BUCKET_NAME,
+    s3_key,
+    payload.content_type,
+    settings.S3_PRESIGN_TTL_SECONDS,
+  )
+  return {
+    "upload_url": presigned.upload_url,
+    "s3_key": presigned.s3_key,
+    "expires_in": presigned.expires_in,
+    "required_headers": presigned.required_headers,
+  }
+
 @app.get("/resolve")
 def resolve(
   city: str = Query(..., description="city code, e.g. hannover, berlin"),
@@ -204,7 +308,7 @@ def resolve(
     item_id,
     item_name,
   )
-  resolved = resolve_item(db, city, item_id, lang, item_name=item_name)
+  resolved = resolve_item(db, city, item_id, lang, settings, item_name=item_name)
   suggestions_count = len(resolved.get("suggestions") or [])
   logger.info(
     "resolve: done item=%s error=%s suggestions=%s prospect=%s",
@@ -214,6 +318,72 @@ def resolve(
     bool(resolved.get("prospect")),
   )
   return resolved
+
+
+@app.get("/recycle-centers", response_model=RecycleCenterResponse)
+def list_recycle_centers(
+  city: str = Query(..., description="city code, e.g. hannover, berlin"),
+  lat: Optional[float] = Query(None),
+  lng: Optional[float] = Query(None),
+  limit: int = Query(200, ge=1, le=500),
+  db: Session = Depends(get_db),
+):
+  if (lat is None) != (lng is None):
+    raise HTTPException(status_code=400, detail="lat_lng_required")
+
+  city_id = _city_id_from_code(db, city)
+  if not city_id:
+    raise HTTPException(status_code=400, detail="invalid_city")
+
+  rows = db.execute(
+    text(
+      """
+      SELECT
+        rc.center_id::text,
+        rc.name,
+        rc.address,
+        rc.lat,
+        rc.lng,
+        rc.typ_code,
+        rc.typ_label,
+        rc.has_glas,
+        rc.has_kleider,
+        rc.has_papier
+      FROM core.recycle_center rc
+      WHERE rc.city_id = :city_id
+        AND rc.is_active = true
+        AND (rc.typ_code IS NULL OR rc.typ_code <> 5)
+      ORDER BY rc.name ASC
+      """
+    ),
+    {"city_id": city_id},
+  ).fetchall()
+
+  centers: list[dict] = []
+  for row in rows:
+    centers.append(
+      {
+        "id": row[0],
+        "name": row[1],
+        "address": row[2],
+        "lat": row[3],
+        "lng": row[4],
+        "typ_code": row[5],
+        "typ_label": row[6],
+        "has_glas": row[7],
+        "has_kleider": row[8],
+        "has_papier": row[9],
+      }
+    )
+
+  if lat is not None and lng is not None:
+    for center in centers:
+      center["distance_km"] = _haversine_km(
+        lat, lng, center["lat"], center["lng"]
+      )
+    centers.sort(key=lambda c: c.get("distance_km") or 0.0)
+
+  return {"city": city, "centers": centers[:limit]}
 
 
 @app.get("/items/search")
@@ -268,14 +438,15 @@ def search_items(
   }
 
 
-class AnalyzeRequest(BaseModel):
+class AnalyzeJsonRequest(BaseModel):
   city: str
   lang: str
-  image_base64: str
+  s3_key: str
   search_text: Optional[str] = None
 
 
 class AnalyzeResponse(BaseModel):
+  s3_key: Optional[str] = None
   item: Optional[dict]
   recycle: dict
   repair: dict
@@ -419,8 +590,27 @@ def _insert_scan_event(
   db.commit()
 
 
-def _image_url(image_id: Optional[str]) -> Optional[str]:
-  return f"/images/{image_id}" if image_id else None
+def _image_url(db: Session, image_id: Optional[str]) -> Optional[str]:
+  if not image_id:
+    return None
+  row = db.execute(
+    text(
+      """
+      SELECT storage_key
+      FROM core.image_asset
+      WHERE image_id::uuid = :image_id
+      """
+    ),
+    {"image_id": image_id},
+  ).fetchone()
+  if not row or not row[0]:
+    return None
+  return create_presigned_get(
+    settings,
+    settings.S3_BUCKET_NAME,
+    row[0],
+    settings.S3_PRESIGN_TTL_SECONDS,
+  )
 
 
 def _t(db: Session, key: Optional[str], lang: str) -> Optional[str]:
@@ -602,7 +792,7 @@ def _admin_item_detail(db: Session, item_id: str, city_id: str, lang: str) -> di
       "description": desc,
       "is_active": row[4],
       "primary_image_id": image_id,
-      "image_url": _image_url(image_id),
+      "image_url": _image_url(db, image_id),
     },
     "categories": [{"code": r[0], "label": _t(db, r[1], lang)} for r in categories],
     "disposals": [{"code": r[0], "label": _t(db, r[1], lang)} for r in disposals],
@@ -613,22 +803,71 @@ def _admin_item_detail(db: Session, item_id: str, city_id: str, lang: str) -> di
   }
 
 @app.post("/analyze", response_model=AnalyzeResponse)
-def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
+async def analyze(request: Request, db: Session = Depends(get_db)):
+  principal = getattr(request.state, "principal", None)
+  if not principal or principal.get("type") == "anonymous":
+    raise HTTPException(status_code=401, detail="Unauthorized")
+
+  image_bytes: Optional[bytes] = None
+  s3_key: Optional[str] = None
+  search_text: Optional[str] = None
+  city: Optional[str] = None
+  lang: Optional[str] = None
+
+  content_type = request.headers.get("content-type", "")
+  if content_type.startswith("multipart/form-data"):
+    form = await request.form()
+    upload = form.get("file")
+    city = form.get("city")
+    lang = form.get("lang")
+    search_text = form.get("search_text") or None
+    if not upload:
+      raise HTTPException(status_code=400, detail="file_required")
+    file_ct = getattr(upload, "content_type", None) or ""
+    ensure_allowed_content_type(file_ct)
+    raw = await upload.read()
+    if len(raw) > settings.MAX_IMAGE_BYTES:
+      raise HTTPException(status_code=413, detail="image_too_large")
+    s3_key = build_object_key(principal, file_ct, getattr(upload, "filename", None))
+    upload_fileobj(settings, BytesIO(raw), settings.S3_BUCKET_NAME, s3_key, file_ct)
+    image_bytes = raw
+  elif content_type.startswith("application/json"):
+    body = await request.json()
+    if "image_base64" in body:
+      raise HTTPException(status_code=400, detail="image_base64_not_supported")
+    if "s3_key" not in body:
+      raise HTTPException(status_code=400, detail="s3_key_required")
+    payload = AnalyzeJsonRequest(**body)
+    city = payload.city
+    lang = payload.lang
+    search_text = payload.search_text
+    prefix = _principal_prefix(principal)
+    if not payload.s3_key.startswith(f"{prefix}/"):
+      raise HTTPException(status_code=403, detail="forbidden_s3_key")
+    s3_key = payload.s3_key
+    image_bytes = get_object_bytes(settings, settings.S3_BUCKET_NAME, s3_key)
+    if len(image_bytes) > settings.MAX_IMAGE_BYTES:
+      raise HTTPException(status_code=413, detail="image_too_large")
+  else:
+    raise HTTPException(status_code=415, detail="unsupported_content_type")
+
+  if not city or not lang:
+    raise HTTPException(status_code=400, detail="city_and_lang_required")
+
   logger.info(
-    "analyze: start city=%s lang=%s has_image=%s image_len=%s has_search_text=%s",
-    payload.city,
-    payload.lang,
-    bool(payload.image_base64),
-    len(payload.image_base64 or ""),
-    bool(payload.search_text),
+    "analyze: start city=%s lang=%s s3_key=%s has_search_text=%s image_len=%s",
+    city,
+    lang,
+    s3_key,
+    bool(search_text),
+    len(image_bytes or b""),
   )
-  # validate base64 inside recognize_item_from_base64
-  vision = recognize_item_from_base64(payload.image_base64, payload.lang)
+  vision = recognize_item_from_bytes(image_bytes, lang, storage_key=s3_key)
   canonical_key = vision.get("canonical_key")
   item_id = _find_item_id(db, canonical_key) if canonical_key else None
   image_id = vision.get("image_id")
   cache_key = vision.get("cache_key")
-  city_id = _city_id_from_code(db, payload.city)
+  city_id = _city_id_from_code(db, city)
   logger.info(
     "analyze: vision canonical_key=%s confidence=%s labels=%s notes=%s item_id=%s",
     canonical_key,
@@ -637,10 +876,38 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
     vision.get("notes"),
     item_id,
   )
+  if vision.get("notes") in ("parse_error",) or str(vision.get("notes", "")).startswith("vision_error"):
+    msg_by_lang = {
+      "de": "Ihre Anfrage kann aktuell nicht verarbeitet werden.",
+      "en": "We can?t process your request right now.",
+      "tr": "?ste?iniz ?u an ger?ekle?tiremiyoruz.",
+    }
+    warn_msg = msg_by_lang.get(lang, msg_by_lang["en"])
+    _insert_scan_event(
+      db,
+      image_id=image_id,
+      cache_key=cache_key,
+      city_id=city_id,
+      item_id=None,
+      prospect_id=None,
+      search_text=search_text,
+      source="scan",
+    )
+    logger.info("analyze: vision_error -> no resolve")
+    return AnalyzeResponse(
+      s3_key=s3_key,
+      item=None,
+      recycle={"disposals": []},
+      repair={"available": False},
+      donate={"available": False},
+      warnings=[{"code": "vision_unavailable", "label": warn_msg, "severity": 2}],
+      suggestions=None,
+      prospect=None,
+      error="vision_unavailable",
+      debug={"city_chain": [city], "vision": vision},
+    )
 
-  # If no canonical_key or item_id not found, fall back to suggestion/prospect flow using labels/search_text.
   if not item_id:
-    search_text = payload.search_text
     if not search_text and vision.get("labels"):
       search_text = vision["labels"][0]
     if not search_text:
@@ -656,6 +923,7 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
       )
       logger.info("analyze: no item_id and no search_text -> item_not_found")
       return AnalyzeResponse(
+        s3_key=s3_key,
         item=None,
         recycle={"disposals": []},
         repair={"available": False},
@@ -664,9 +932,9 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
         suggestions=None,
         prospect=None,
         error="item_not_found",
-        debug={"city_chain": [payload.city], "vision": vision},
+        debug={"city_chain": [city], "vision": vision},
       )
-    resolved = resolve_item(db, payload.city, None, payload.lang, item_name=search_text)
+    resolved = resolve_item(db, city, None, lang, settings, item_name=search_text)
     resolved_item = resolved.get("item") or {}
     resolved_item_id = resolved_item.get("id")
     prospect_id = None
@@ -674,7 +942,7 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
       prospect_id = _find_prospect_id(
         db,
         city_id=city_id,
-        lang=payload.lang,
+        lang=lang,
         item_id=resolved_item_id,
         search_text=search_text,
       )
@@ -696,6 +964,7 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
       bool(resolved.get("prospect")),
     )
     return AnalyzeResponse(
+      s3_key=s3_key,
       item=resolved.get("item"),
       recycle={"disposals": resolved.get("disposals", [])},
       repair={"available": False},
@@ -704,18 +973,18 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
       suggestions=resolved.get("suggestions"),
       prospect=resolved.get("prospect"),
       error=resolved.get("error") or ("item_not_found" if resolved.get("not_found") else None),
-      debug={"city_chain": [payload.city], "vision": vision},
+      debug={"city_chain": [city], "vision": vision},
     )
 
-  resolved = resolve_item(db, payload.city, item_id, payload.lang, item_name=payload.search_text)
+  resolved = resolve_item(db, city, item_id, lang, settings, item_name=search_text)
   prospect_id = None
   if resolved.get("prospect"):
     prospect_id = _find_prospect_id(
       db,
       city_id=city_id,
-      lang=payload.lang,
+      lang=lang,
       item_id=item_id,
-      search_text=payload.search_text,
+      search_text=search_text,
     )
   _insert_scan_event(
     db,
@@ -724,7 +993,7 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
     city_id=city_id,
     item_id=item_id,
     prospect_id=prospect_id,
-    search_text=payload.search_text,
+    search_text=search_text,
     source="scan",
   )
   logger.info(
@@ -737,6 +1006,7 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
   )
   recycle = {"disposals": resolved.get("disposals", [])}
   return AnalyzeResponse(
+    s3_key=s3_key,
     item=resolved.get("item"),
     recycle=recycle,
     repair={"available": False},
@@ -745,9 +1015,8 @@ def analyze(payload: AnalyzeRequest = Body(...), db: Session = Depends(get_db)):
     suggestions=resolved.get("suggestions"),
     prospect=resolved.get("prospect"),
     error=resolved.get("error"),
-    debug={"city_chain": [payload.city], "vision": vision},
+    debug={"city_chain": [city], "vision": vision},
   )
-
 
 @app.post("/feedback", response_model=FeedbackResponse)
 def feedback(payload: FeedbackRequest = Body(...), db: Session = Depends(get_db)):
@@ -792,24 +1061,6 @@ def feedback(payload: FeedbackRequest = Body(...), db: Session = Depends(get_db)
   return FeedbackResponse(ok=True)
 
 
-@app.get("/images/{image_id}")
-def get_image(image_id: str, db: Session = Depends(get_db)):
-  row = db.execute(
-    text(
-      """
-      SELECT storage_key, content_type
-      FROM core.image_asset
-      WHERE image_id::uuid = :image_id
-      """
-    ),
-    {"image_id": image_id},
-  ).fetchone()
-  if not row:
-    raise HTTPException(status_code=404, detail="image_not_found")
-  path = row[0].replace("/", os.sep)
-  return FileResponse(path, media_type=row[1] or "image/jpeg")
-
-
 @app.get("/admin/images")
 def admin_list_images(
   limit: int = Query(50, ge=1, le=200),
@@ -831,7 +1082,7 @@ def admin_list_images(
     "images": [
       {
         "image_id": r[0],
-        "image_url": _image_url(r[0]),
+        "image_url": _image_url(db, r[0]),
         "width": r[1],
         "height": r[2],
         "source": r[3],
@@ -948,10 +1199,20 @@ def admin_options(
 
 
 @app.post("/admin/images")
-def admin_upload_image(payload: AdminImageUploadRequest = Body(...)):
-  stored = store_image_from_base64(payload.image_base64, source=payload.source or "admin")
+def admin_upload_image(request: Request, payload: AdminImageUploadRequest = Body(...)):
+  principal = getattr(request.state, "principal", None) if request else None
+  if not principal or principal.get("type") == "anonymous":
+    raise HTTPException(status_code=401, detail="Unauthorized")
+  raw = _decode_base64_payload(payload.image_base64)
+  if len(raw) > settings.MAX_IMAGE_BYTES:
+    raise HTTPException(status_code=413, detail="image_too_large")
+  content_type = _detect_content_type(raw)
+  ensure_allowed_content_type(content_type)
+  s3_key = build_object_key(principal, content_type, None)
+  upload_fileobj(settings, BytesIO(raw), settings.S3_BUCKET_NAME, s3_key, content_type)
+  stored = store_image_from_base64(payload.image_base64, storage_key=s3_key, source=payload.source or "admin")
   image_id = stored["image_id"]
-  return {"image_id": image_id, "image_url": _image_url(image_id)}
+  return {"image_id": image_id, "image_url": _image_url(db, image_id), "s3_key": s3_key}
 
 
 @app.get("/admin/items")
@@ -992,7 +1253,7 @@ def admin_list_items(
         "title": r[2],
         "description": None,
         "primary_image_id": r[3],
-        "image_url": _image_url(r[3]),
+        "image_url": _image_url(db, r[3]),
         "is_active": bool(r[4]),
       }
       for r in rows
@@ -1046,7 +1307,7 @@ def admin_item_images(
     "images": [
       {
         "image_id": r[0],
-        "image_url": _image_url(r[0]),
+        "image_url": _image_url(db, r[0]),
         "width": r[1],
         "height": r[2],
         "source": r[3],
@@ -1061,13 +1322,24 @@ def admin_item_images(
 @app.post("/admin/items/{item_id}/images")
 def admin_upload_item_image(
   item_id: str,
+  request: Request,
   payload: AdminItemImageUploadRequest = Body(...),
   db: Session = Depends(get_db),
 ):
   city_id = _city_id_from_code(db, payload.city)
   if not city_id:
     raise HTTPException(status_code=400, detail="invalid_city")
-  stored = store_image_from_base64(payload.image_base64, source=payload.source or "admin")
+  principal = getattr(request.state, "principal", None) if request else None
+  if not principal or principal.get("type") == "anonymous":
+    raise HTTPException(status_code=401, detail="Unauthorized")
+  raw = _decode_base64_payload(payload.image_base64)
+  if len(raw) > settings.MAX_IMAGE_BYTES:
+    raise HTTPException(status_code=413, detail="image_too_large")
+  content_type = _detect_content_type(raw)
+  ensure_allowed_content_type(content_type)
+  s3_key = build_object_key(principal, content_type, None)
+  upload_fileobj(settings, BytesIO(raw), settings.S3_BUCKET_NAME, s3_key, content_type)
+  stored = store_image_from_base64(payload.image_base64, storage_key=s3_key, source=payload.source or "admin")
   image_id = stored["image_id"]
   db.execute(
     text(
@@ -1084,7 +1356,7 @@ def admin_upload_item_image(
     },
   )
   db.commit()
-  return {"image_id": image_id, "image_url": _image_url(image_id)}
+  return {"image_id": image_id, "image_url": _image_url(db, image_id)}
 
 
 @app.delete("/admin/items/{item_id}/images/{image_id}")

@@ -144,6 +144,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get find_recycling_center => 'Find recycling center';
 
   @override
+  String get recycle_centers_loading => 'Loading recycling centers...';
+
+  @override
+  String get recycle_centers_error => 'Could not load recycling centers.';
+
+  @override
+  String get recycle_centers_open_maps => 'Open in Google Maps';
+
+  @override
+  String get recycle_centers_empty => 'No recycling centers found.';
+
+  @override
+  String get recycle_centers_location_denied =>
+      'Location unavailable, listing by city.';
+
+  @override
   String get info_title => 'Info';
 
   @override

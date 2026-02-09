@@ -22,10 +22,10 @@ class TextSearchPage extends StatefulWidget {
   const TextSearchPage({super.key});
 
   @override
-  State<TextSearchPage> createState() => _TextSearchPageState();
+  TextSearchPageState createState() => TextSearchPageState();
 }
 
-class _TextSearchPageState extends State<TextSearchPage> {
+class TextSearchPageState extends State<TextSearchPage> {
   final _controller = TextEditingController();
   final _similarityService = MockSimilarityService();
   Timer? _debounce;
@@ -33,6 +33,8 @@ class _TextSearchPageState extends State<TextSearchPage> {
   String _query = "";
   String? _lastQuery;
   ScanResult? _foundResult;
+  ScanResult? _lastResult;
+  bool _restoredLastResult = false;
   List<SimilarItem> _suggestions = [];
   List<SimilarItem> _liveResults = [];
   bool _showNoMatch = false;
@@ -55,6 +57,33 @@ class _TextSearchPageState extends State<TextSearchPage> {
     _debounce?.cancel();
     _controller.dispose();
     super.dispose();
+  }
+
+  void setActive(bool active) {
+    if (!active) {
+      return;
+    }
+    _restoredLastResult = false;
+    _maybeRestoreLastResult();
+  }
+
+  void _maybeRestoreLastResult() {
+    if (_restoredLastResult) {
+      return;
+    }
+    final last = _lastResult;
+    if (last == null) {
+      return;
+    }
+    _restoredLastResult = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => ResultPage(result: last)),
+      );
+    });
   }
 
   void _onQueryChanged(String value) {
@@ -397,6 +426,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
     if (!mounted) {
       return;
     }
+    _lastResult = result;
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => ResultPage(result: result)),
     );
@@ -436,6 +466,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
     final hasQuery = _query.trim().isNotEmpty;
 
     return ListView(
+      key: const PageStorageKey<String>("tab_text_list"),
       padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
       children: [
         TextField(

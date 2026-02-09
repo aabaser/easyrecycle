@@ -14,6 +14,7 @@ import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
 import "../services/mock_similarity_service.dart";
+import "../services/presigned_upload_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/primary_button.dart";
@@ -34,9 +35,21 @@ class CameraTabPageState extends State<CameraTabPage> {
   bool _isLoading = false;
   bool _hasAutoLaunched = false;
   bool _isPicking = false;
+  bool _restoredLastResult = false;
+  bool _clearedPreviewForResult = false;
+  bool _isScanning = false;
+  ScanResult? _lastResult;
 
   void handleTabSelected() {
-    // Intentionally no auto-open on tab selection.
+    _maybeRestoreLastResult();
+  }
+
+  void setActive(bool active) {
+    if (!active) {
+      return;
+    }
+    _restoredLastResult = false;
+    _maybeRestoreLastResult();
   }
 
   Future<void> openCamera({bool force = false}) async {
@@ -69,6 +82,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       return;
     }
     _isPicking = true;
+    _isScanning = true;
     try {
       if (useFilePicker) {
         final result = await FilePicker.platform.pickFiles(
@@ -81,6 +95,7 @@ class CameraTabPageState extends State<CameraTabPage> {
         }
         setState(() {
           _imageBytes = bytes;
+          _clearedPreviewForResult = false;
         });
         await _runAnalyze();
         return;
@@ -94,11 +109,37 @@ class CameraTabPageState extends State<CameraTabPage> {
       final bytes = await file.readAsBytes();
       setState(() {
         _imageBytes = bytes;
+        _clearedPreviewForResult = false;
       });
       await _runAnalyze();
     } finally {
       _isPicking = false;
+      _isScanning = false;
     }
+  }
+
+  void _maybeRestoreLastResult() {
+    if (_restoredLastResult) {
+      return;
+    }
+    final last = _lastResult;
+    if (last == null) {
+      return;
+    }
+    _restoredLastResult = true;
+    if (_imageBytes != null) {
+      setState(() {
+        _imageBytes = null;
+      });
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => ResultPage(result: last)),
+      );
+    });
   }
 
   String _localizedItemName(String keyOrName, AppLocalizations loc) {
@@ -169,7 +210,19 @@ class CameraTabPageState extends State<CameraTabPage> {
     });
 
     try {
+      final contentType = PresignedUploadService.detectContentType(_imageBytes!);
+      debugPrint("analyze(image): content_type=$contentType bytes=${_imageBytes!.length}");
+      final presign = await PresignedUploadService.presign(
+        appState: appState,
+        contentType: contentType,
+      );
+      await PresignedUploadService.upload(
+        presign: presign,
+        bytes: _imageBytes!,
+      );
+
       final uri = Uri.parse("${ApiConfig.baseUrl}/analyze");
+      debugPrint("analyze(image): calling /analyze s3_key=${presign.s3Key}");
       final headers = await appState.authHeaders(
         extra: const {"Content-Type": "application/json"},
       );
@@ -179,14 +232,19 @@ class CameraTabPageState extends State<CameraTabPage> {
         body: json.encode({
           "city": city.id,
           "lang": appState.locale.languageCode,
-          "image_base64": base64Encode(_imageBytes!),
+          "s3_key": presign.s3Key,
         }),
       );
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
       final body = json.decode(response.body) as Map<String, dynamic>;
 
       final item = body["item"];
-      final notFound = item == null || body["error"] == "item_not_found";
+      final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
+      final recycle = body["recycle"] as Map<String, dynamic>? ?? {};
+      final disposals = (recycle["disposals"] as List<dynamic>?) ?? [];
+      final noCityRules = item != null && disposals.isEmpty && suggestions.isNotEmpty;
+      final notFound =
+          item == null || body["error"] == "item_not_found" || noCityRules;
       if (notFound && !statusOk) {
         throw Exception("Analyze failed");
       }
@@ -215,6 +273,7 @@ class CameraTabPageState extends State<CameraTabPage> {
           queryText: null,
         );
         appState.setLastResult(result);
+        _lastResult = result;
         if (!mounted) {
           return;
         }
@@ -227,8 +286,6 @@ class CameraTabPageState extends State<CameraTabPage> {
         return;
       }
 
-      final recycle = body["recycle"] as Map<String, dynamic>? ?? {};
-      final disposals = (recycle["disposals"] as List<dynamic>?) ?? [];
       final disposalLabel = disposals.isNotEmpty
           ? (disposals.first["label"]?.toString() ??
               disposals.first["code"]?.toString())
@@ -263,6 +320,7 @@ class CameraTabPageState extends State<CameraTabPage> {
         queryText: null,
       );
       appState.setLastResult(result);
+      _lastResult = result;
       if (!mounted) {
         return;
       }
@@ -342,6 +400,19 @@ class CameraTabPageState extends State<CameraTabPage> {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final preview = _imageBytes;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeRestoreLastResult();
+      if (_lastResult != null &&
+          _imageBytes != null &&
+          !_clearedPreviewForResult &&
+          !_isScanning &&
+          mounted) {
+        setState(() {
+          _imageBytes = null;
+          _clearedPreviewForResult = true;
+        });
+      }
+    });
 
     return Padding(
       padding: const EdgeInsets.all(DesignTokens.sectionSpacing),

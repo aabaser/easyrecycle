@@ -26,7 +26,6 @@ DEFAULT_MODEL = os.getenv("OPENAI_VISION_MODEL", "gpt-4o-mini")
 MAX_SIDE = int(os.getenv("OPENAI_VISION_MAX_IMAGE_SIDE", "768"))
 JPEG_QUALITY = int(os.getenv("OPENAI_VISION_JPEG_QUALITY", "75"))
 CACHE_TTL_DAYS = int(os.getenv("VISION_CACHE_TTL_DAYS", "30"))
-IMAGE_STORAGE_DIR = os.getenv("IMAGE_STORAGE_DIR", "data/images")
 
 
 def _clean_base64(image_base64: str) -> str:
@@ -265,17 +264,16 @@ def _upsert_image_asset(
   sha256_hash: str,
   width: int,
   height: int,
+  storage_key: Optional[str],
+  content_type: str = "image/jpeg",
+  byte_size: Optional[int] = None,
   source: str = "scan",
 ) -> Optional[str]:
   engine = _get_engine()
   if not engine:
     return None
-  os.makedirs(IMAGE_STORAGE_DIR, exist_ok=True)
-  filename = f"{sha256_hash}.jpg"
-  storage_key = os.path.join(IMAGE_STORAGE_DIR, filename)
-  if not os.path.exists(storage_key):
-    with open(storage_key, "wb") as f:
-      f.write(normalized_bytes)
+  if not storage_key:
+    return None
   try:
     with engine.begin() as conn:
       row = conn.execute(
@@ -291,10 +289,10 @@ def _upsert_image_asset(
           """
         ),
         {
-          "storage_key": storage_key.replace("\\", "/"),
+          "storage_key": storage_key,
           "sha256": sha256_hash,
-          "content_type": "image/jpeg",
-          "byte_size": len(normalized_bytes),
+          "content_type": content_type,
+          "byte_size": byte_size or len(normalized_bytes),
           "width": width,
           "height": height,
           "source": source,
@@ -307,13 +305,21 @@ def _upsert_image_asset(
     return None
 
 
-def recognize_item_from_base64(image_base64: str, lang: str) -> Dict[str, Any]:
-  raw_bytes = _validate_base64(image_base64)
-  normalized_bytes, normalized_b64, width, height = _normalize_image(raw_bytes)
+def recognize_item_from_bytes(image_bytes: bytes, lang: str, storage_key: Optional[str]) -> Dict[str, Any]:
+  normalized_bytes, normalized_b64, width, height = _normalize_image(image_bytes)
   model = DEFAULT_MODEL
   cache_key = _cache_key(normalized_bytes, model)
   sha256_hash = cache_key.split(":", 1)[0]
-  image_id = _upsert_image_asset(normalized_bytes, sha256_hash, width, height, source="scan")
+  image_id = _upsert_image_asset(
+    normalized_bytes,
+    sha256_hash,
+    width,
+    height,
+    storage_key=storage_key,
+    content_type="image/jpeg",
+    byte_size=len(normalized_bytes),
+    source="scan",
+  )
   logger.info("vision: cache_lookup key=%s", cache_key)
   print(f"vision: cache_lookup key={cache_key}")
 
@@ -355,15 +361,33 @@ def recognize_item_from_base64(image_base64: str, lang: str) -> Dict[str, Any]:
     "image_id": image_id,
     "cache_key": cache_key,
   }
+  if out.get("notes") in ("parse_error",) or str(out.get("notes", "")).startswith("vision_error"):
+    logger.info("vision: cache_set skipped due to error notes")
+    print("vision: cache_set skipped due to error notes")
+    return out
   _cache_set(cache_key, out)
   return out
 
 
-def store_image_from_base64(image_base64: str, source: str = "admin") -> Dict[str, Any]:
+def recognize_item_from_base64(image_base64: str, lang: str, storage_key: Optional[str] = None) -> Dict[str, Any]:
+  raw_bytes = _validate_base64(image_base64)
+  return recognize_item_from_bytes(raw_bytes, lang, storage_key=storage_key)
+
+
+def store_image_from_base64(image_base64: str, storage_key: str, source: str = "admin") -> Dict[str, Any]:
   raw_bytes = _validate_base64(image_base64)
   normalized_bytes, _, width, height = _normalize_image(raw_bytes)
   sha256_hash = hashlib.sha256(normalized_bytes).hexdigest()
-  image_id = _upsert_image_asset(normalized_bytes, sha256_hash, width, height, source=source)
+  image_id = _upsert_image_asset(
+    normalized_bytes,
+    sha256_hash,
+    width,
+    height,
+    storage_key=storage_key,
+    content_type="image/jpeg",
+    byte_size=len(normalized_bytes),
+    source=source,
+  )
   if not image_id:
     raise HTTPException(status_code=500, detail="image_store_failed")
   return {

@@ -16,6 +16,7 @@ import "../models/warning.dart";
 import "../services/mock_rules_service.dart";
 import "../services/mock_similarity_service.dart";
 import "../services/mock_vision_service.dart";
+import "../services/presigned_upload_service.dart";
 import "../services/rules_service.dart";
 import "../services/vision_service.dart";
 import "../state/app_state.dart";
@@ -67,17 +68,6 @@ class _ScanPageState extends State<ScanPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final appState = context.read<AppState>();
-    if (appState.lastResult != null) {
-      appState.setLastResult(null);
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _imageBytes = null;
-        _analyzeJson = null;
-      });
-    }
   }
 
   @override
@@ -348,7 +338,19 @@ class _ScanPageState extends State<ScanPage> {
     });
 
     try {
+      final contentType = PresignedUploadService.detectContentType(_imageBytes!);
+      debugPrint("analyze(image): content_type=$contentType bytes=${_imageBytes!.length}");
+      final presign = await PresignedUploadService.presign(
+        appState: appState,
+        contentType: contentType,
+      );
+      await PresignedUploadService.upload(
+        presign: presign,
+        bytes: _imageBytes!,
+      );
+
       final uri = Uri.parse("${ApiConfig.baseUrl}/analyze");
+      debugPrint("analyze(image): calling /analyze s3_key=${presign.s3Key}");
       final headers = await appState.authHeaders(
         extra: const {"Content-Type": "application/json"},
       );
@@ -358,7 +360,7 @@ class _ScanPageState extends State<ScanPage> {
         body: json.encode({
           "city": city.id,
           "lang": appState.locale.languageCode,
-          "image_base64": base64Encode(_imageBytes!),
+          "s3_key": presign.s3Key,
         }),
       );
       final statusOk = response.statusCode >= 200 && response.statusCode < 300;
@@ -369,7 +371,12 @@ class _ScanPageState extends State<ScanPage> {
       });
 
       final item = body["item"];
-      final notFound = item == null || body["error"] == "item_not_found";
+      final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
+      final recycle = body["recycle"] as Map<String, dynamic>? ?? {};
+      final disposals = (recycle["disposals"] as List<dynamic>?) ?? [];
+      final noCityRules = item != null && disposals.isEmpty && suggestions.isNotEmpty;
+      final notFound =
+          item == null || body["error"] == "item_not_found" || noCityRules;
       if (notFound && !statusOk) {
         throw Exception("Analyze failed");
       }
@@ -409,8 +416,6 @@ class _ScanPageState extends State<ScanPage> {
         return;
       }
 
-      final recycle = body["recycle"] as Map<String, dynamic>? ?? {};
-      final disposals = (recycle["disposals"] as List<dynamic>?) ?? [];
       final disposalLabel = disposals.isNotEmpty
           ? (disposals.first["label"]?.toString() ??
               disposals.first["code"]?.toString())

@@ -144,6 +144,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get find_recycling_center => 'Geri dönüşüm merkezi bul';
 
   @override
+  String get recycle_centers_loading => 'Geri dönüşüm noktaları yükleniyor...';
+
+  @override
+  String get recycle_centers_error => 'Geri dönüşüm noktaları yüklenemedi.';
+
+  @override
+  String get recycle_centers_open_maps => 'Google Maps\'te aç';
+
+  @override
+  String get recycle_centers_empty => 'Geri dönüşüm noktası bulunamadı.';
+
+  @override
+  String get recycle_centers_location_denied =>
+      'Konum yok, şehir bazında listeleniyor.';
+
+  @override
   String get info_title => 'Bilgi';
 
   @override

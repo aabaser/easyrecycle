@@ -3,14 +3,12 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
-import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
 import "../models/admin_item.dart";
 import "../services/admin_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/max_width_center.dart";
-import "../widgets/app_bottom_nav.dart";
 import "admin_item_detail_page.dart";
 import "home_shell.dart";
 
@@ -72,11 +70,9 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
 
   Widget _buildItemTile(AdminItemSummary item) {
     final imageUrl = item.imageUrl;
-    final resolvedUrl = imageUrl == null
-        ? null
-        : (imageUrl.startsWith("http")
-            ? imageUrl
-            : "${ApiConfig.baseUrl}$imageUrl");
+    final resolvedUrl = (imageUrl != null && imageUrl.trim().isNotEmpty && imageUrl.startsWith("http"))
+        ? imageUrl
+        : null;
     return ListTile(
       leading: resolvedUrl == null
           ? Container(
@@ -95,6 +91,14 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
                 width: 48,
                 height: 48,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 48,
+                    height: 48,
+                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    child: const Icon(Icons.image_not_supported_outlined),
+                  );
+                },
               ),
             ),
       title: Text(item.title ?? item.canonicalKey),
@@ -159,9 +163,6 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: const AppBottomNav(
-        selectedIndex: HomeShell.tabSettings,
       ),
     );
   }

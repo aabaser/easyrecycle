@@ -216,8 +216,8 @@ if __name__ == "__main__":
 
     p = argparse.ArgumentParser()
     p.add_argument("--database-url", dest="database_url", required=True, help="Read from DB (core.item + i18n)")
-    p.add_argument("--out", dest="out_csv", default="item_alias_seed.csv")
-    p.add_argument("--collisions", dest="collisions_csv", default="item_alias_collisions.csv")
+    p.add_argument("--out", dest="out_csv", default="data/item_alias_seed.csv")
+    p.add_argument("--collisions", dest="collisions_csv", default="data/item_alias_collisions.csv")
     p.add_argument("--langs", dest="langs", default=None, help="Comma-separated langs, e.g. de,en,tr")
     args = p.parse_args()
 

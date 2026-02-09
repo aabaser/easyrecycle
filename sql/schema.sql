@@ -73,6 +73,29 @@ CREATE TABLE IF NOT EXISTS core.image_asset (
 );
 CREATE INDEX IF NOT EXISTS ix_image_asset_created ON core.image_asset(created_at);
 
+CREATE TABLE IF NOT EXISTS core.recycle_center (
+  center_id   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  city_id     uuid NOT NULL REFERENCES core.city(city_id) ON DELETE CASCADE,
+  source      text NOT NULL DEFAULT 'import',
+  external_id text NULL,
+  name        text NOT NULL,
+  address     text NOT NULL,
+  lat         double precision NOT NULL,
+  lng         double precision NOT NULL,
+  typ_code    int NULL,
+  typ_label   text NULL,
+  has_glas    boolean NULL,
+  has_kleider boolean NULL,
+  has_papier  boolean NULL,
+  is_active   boolean NOT NULL DEFAULT true,
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  updated_at  timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS ix_recycle_center_city
+  ON core.recycle_center(city_id);
+CREATE INDEX IF NOT EXISTS ix_recycle_center_city_type
+  ON core.recycle_center(city_id, typ_code);
+
 CREATE TABLE IF NOT EXISTS core.item (
   item_id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   external_document_id  text UNIQUE,
