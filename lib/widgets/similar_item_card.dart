@@ -12,41 +12,45 @@ class SimilarItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
-      padding: const EdgeInsets.all(DesignTokens.cardPadding),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
+    return Material(
+      color: colorScheme.surface,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        border: Border.all(color: colorScheme.outline),
+        side: BorderSide(color: colorScheme.outline),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.aliasTitle ?? item.itemTitle,
-                  style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(DesignTokens.cardPadding),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.aliasTitle ?? item.itemTitle,
+                      style: DesignTokens.titleM
+                          .copyWith(color: colorScheme.onSurface),
+                    ),
+                    if (item.disposalLabels.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      _buildChips(item.disposalLabels, colorScheme),
+                    ],
+                  ],
                 ),
-                if (item.disposalLabels.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  _buildChips(item.disposalLabels, colorScheme),
-                ],
-              ],
-            ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                Icons.chevron_right,
+                color: colorScheme.onSurface.withOpacity(0.4),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: onTap,
-            child: Text(
-              loc.t("details_button"),
-              style: DesignTokens.caption.copyWith(color: colorScheme.primary),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

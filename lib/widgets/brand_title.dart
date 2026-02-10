@@ -7,6 +7,7 @@ class BrandTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final baseStyle = textStyle ??
         Theme.of(context).textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.w700,
@@ -16,18 +17,18 @@ class BrandTitle extends StatelessWidget {
       textAlign: TextAlign.center,
       text: TextSpan(
         style: baseStyle,
-        children: const [
+        children: [
           TextSpan(
             text: "Easy ",
-            style: TextStyle(color: Color(0xFF4338CA)),
+            style: TextStyle(color: colorScheme.secondary),
           ),
           TextSpan(
             text: "Recycle",
-            style: TextStyle(color: Color(0xFF0B1220)),
+            style: TextStyle(color: colorScheme.onSurface),
           ),
           TextSpan(
             text: "•",
-            style: TextStyle(color: Color(0xFF22D3EE)),
+            style: TextStyle(color: colorScheme.tertiary),
           ),
         ],
       ),

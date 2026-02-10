@@ -1,5 +1,6 @@
 import "dart:math";
 import "dart:convert";
+import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
@@ -54,7 +55,7 @@ class AppState extends ChangeNotifier {
 
     adminEnabled = prefs.getBool("adminEnabled") ?? false;
     currentTabIndex = prefs.getInt("currentTabIndex") ?? 1;
-    await ensureGuestToken();
+    unawaited(ensureGuestToken());
   }
 
   Future<void> setLocale(Locale newLocale) async {
@@ -89,11 +90,20 @@ class AppState extends ChangeNotifier {
     }
 
     final uri = Uri.parse("${ApiConfig.baseUrl}/auth/guest");
-    final response = await http.post(
-      uri,
-      headers: const {"Content-Type": "application/json"},
-      body: jsonEncode({"device_id": sessionId, "attestation": "TODO"}),
-    );
+    http.Response response;
+    try {
+      response = await http
+          .post(
+            uri,
+            headers: const {"Content-Type": "application/json"},
+            body: jsonEncode({"device_id": sessionId, "attestation": "TODO"}),
+          )
+          .timeout(const Duration(seconds: 4));
+    } on TimeoutException {
+      return;
+    } catch (_) {
+      return;
+    }
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return;

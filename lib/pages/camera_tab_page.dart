@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:typed_data";
+import "dart:math";
 
 import "package:file_picker/file_picker.dart";
 import "package:flutter/foundation.dart";
@@ -7,6 +8,7 @@ import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:image_picker/image_picker.dart";
 import "package:provider/provider.dart";
+import "package:image/image.dart" as img;
 
 import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
@@ -35,21 +37,12 @@ class CameraTabPageState extends State<CameraTabPage> {
   bool _isLoading = false;
   bool _hasAutoLaunched = false;
   bool _isPicking = false;
-  bool _restoredLastResult = false;
-  bool _clearedPreviewForResult = false;
   bool _isScanning = false;
-  ScanResult? _lastResult;
 
   void handleTabSelected() {
-    _maybeRestoreLastResult();
   }
 
   void setActive(bool active) {
-    if (!active) {
-      return;
-    }
-    _restoredLastResult = false;
-    _maybeRestoreLastResult();
   }
 
   Future<void> openCamera({bool force = false}) async {
@@ -93,9 +86,9 @@ class CameraTabPageState extends State<CameraTabPage> {
         if (bytes == null) {
           return;
         }
+        final cropped = _cropToFocus(bytes);
         setState(() {
-          _imageBytes = bytes;
-          _clearedPreviewForResult = false;
+          _imageBytes = cropped;
         });
         await _runAnalyze();
         return;
@@ -107,9 +100,9 @@ class CameraTabPageState extends State<CameraTabPage> {
         return;
       }
       final bytes = await file.readAsBytes();
+      final cropped = _cropToFocus(bytes);
       setState(() {
-        _imageBytes = bytes;
-        _clearedPreviewForResult = false;
+        _imageBytes = cropped;
       });
       await _runAnalyze();
     } finally {
@@ -118,28 +111,27 @@ class CameraTabPageState extends State<CameraTabPage> {
     }
   }
 
-  void _maybeRestoreLastResult() {
-    if (_restoredLastResult) {
-      return;
-    }
-    final last = _lastResult;
-    if (last == null) {
-      return;
-    }
-    _restoredLastResult = true;
-    if (_imageBytes != null) {
-      setState(() {
-        _imageBytes = null;
-      });
-    }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
+  Uint8List _cropToFocus(Uint8List bytes) {
+    try {
+      final decoded = img.decodeImage(bytes);
+      if (decoded == null) {
+        return bytes;
       }
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => ResultPage(result: last)),
+      final size = min(decoded.width, decoded.height);
+      final cropSize = (size * 0.6).round();
+      final x = ((decoded.width - cropSize) / 2).round();
+      final y = ((decoded.height - cropSize) / 2).round();
+      final cropped = img.copyCrop(
+        decoded,
+        x: x,
+        y: y,
+        width: cropSize,
+        height: cropSize,
       );
-    });
+      return Uint8List.fromList(img.encodeJpg(cropped, quality: 88));
+    } catch (_) {
+      return bytes;
+    }
   }
 
   String _localizedItemName(String keyOrName, AppLocalizations loc) {
@@ -273,16 +265,20 @@ class CameraTabPageState extends State<CameraTabPage> {
           queryText: null,
         );
         appState.setLastResult(result);
-        _lastResult = result;
         if (!mounted) {
           return;
         }
         setState(() {
           _isLoading = false;
         });
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => ResultPage(result: result)),
         );
+        if (mounted) {
+          setState(() {
+            _imageBytes = null;
+          });
+        }
         return;
       }
 
@@ -320,16 +316,20 @@ class CameraTabPageState extends State<CameraTabPage> {
         queryText: null,
       );
       appState.setLastResult(result);
-      _lastResult = result;
       if (!mounted) {
         return;
       }
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).push(
+      await Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => ResultPage(result: result)),
       );
+      if (mounted) {
+        setState(() {
+          _imageBytes = null;
+        });
+      }
     } catch (_) {
       if (!mounted) {
         return;
@@ -400,19 +400,6 @@ class CameraTabPageState extends State<CameraTabPage> {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final preview = _imageBytes;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _maybeRestoreLastResult();
-      if (_lastResult != null &&
-          _imageBytes != null &&
-          !_clearedPreviewForResult &&
-          !_isScanning &&
-          mounted) {
-        setState(() {
-          _imageBytes = null;
-          _clearedPreviewForResult = true;
-        });
-      }
-    });
 
     return Padding(
       padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
@@ -445,6 +432,16 @@ class CameraTabPageState extends State<CameraTabPage> {
                         ),
                       ),
               ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: _FocusFramePainter(
+                      frameColor: colorScheme.onSurface.withOpacity(0.6),
+                      overlayColor: colorScheme.onSurface.withOpacity(0.12),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           if (_isLoading) ...[
@@ -464,5 +461,45 @@ class CameraTabPageState extends State<CameraTabPage> {
         ],
       ),
     );
+  }
+}
+
+class _FocusFramePainter extends CustomPainter {
+  _FocusFramePainter({
+    required this.frameColor,
+    required this.overlayColor,
+  });
+
+  final Color frameColor;
+  final Color overlayColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final shortest = min(size.width, size.height);
+    final frameSize = shortest * 0.6;
+    final left = (size.width - frameSize) / 2;
+    final top = (size.height - frameSize) / 2;
+    final rect = Rect.fromLTWH(left, top, frameSize, frameSize);
+
+    final overlayPaint = Paint()
+      ..color = overlayColor
+      ..style = PaintingStyle.fill;
+    final overlayPath = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..addRect(rect)
+      ..fillType = PathFillType.evenOdd;
+    canvas.drawPath(overlayPath, overlayPaint);
+
+    final framePaint = Paint()
+      ..color = frameColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+    canvas.drawRect(rect, framePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _FocusFramePainter oldDelegate) {
+    return oldDelegate.frameColor != frameColor ||
+        oldDelegate.overlayColor != overlayColor;
   }
 }

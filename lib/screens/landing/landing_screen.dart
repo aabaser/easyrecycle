@@ -42,6 +42,7 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
     final selectedLang = appState.locale.languageCode;
+    final colorScheme = Theme.of(context).colorScheme;
 
     const copy = {
       "de": {
@@ -107,7 +108,7 @@ class _LandingScreenState extends State<LandingScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7FAFF),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -121,7 +122,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 56),
                     BrandTitle(
                       textStyle: Theme.of(context)
                           .textTheme
@@ -138,7 +139,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: const Color(0xFF0B1220),
+                            color: colorScheme.onSurface,
                             fontSize: 21,
                           ),
                     ),
@@ -147,7 +148,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       subtitle,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: const Color(0xFF0B1220).withOpacity(0.7),
+                            color: colorScheme.onSurface.withOpacity(0.7),
                             fontSize: 15,
                           ),
                     ),
@@ -157,7 +158,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: const Color(0xFF0B1220),
+                            color: colorScheme.onSurface,
                           ),
                     ),
                     const SizedBox(height: 8),
@@ -176,8 +177,8 @@ class _LandingScreenState extends State<LandingScreen> {
                             height: 52,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF2563EB),
-                                foregroundColor: Colors.white,
+                                backgroundColor: colorScheme.primary,
+                                foregroundColor: colorScheme.onPrimary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14),
                                 ),
@@ -194,7 +195,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                 loginGoogle,
                                 style: DesignTokens.body.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                                  color: colorScheme.onPrimary,
                                 ),
                               ),
                             ),
@@ -204,9 +205,9 @@ class _LandingScreenState extends State<LandingScreen> {
                             height: 48,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
-                                foregroundColor: const Color(0xFF2563EB),
-                                side: const BorderSide(
-                                  color: Color(0xFF2563EB),
+                                foregroundColor: colorScheme.primary,
+                                side: BorderSide(
+                                  color: colorScheme.primary,
                                   width: 1.2,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -224,7 +225,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                 loginEmail,
                                 style: DesignTokens.body.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF2563EB),
+                                  color: colorScheme.primary,
                                 ),
                               ),
                             ),
@@ -246,7 +247,7 @@ class _LandingScreenState extends State<LandingScreen> {
                             child: Text(
                               loginGuest,
                               style: DesignTokens.body.copyWith(
-                                color: const Color(0xFF0B1220).withOpacity(0.7),
+                                color: colorScheme.onSurface.withOpacity(0.7),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -261,7 +262,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         Text(
                           privacyPrefix,
                           style: DesignTokens.caption.copyWith(
-                            color: const Color(0xFF0B1220).withOpacity(0.6),
+                            color: colorScheme.onSurface.withOpacity(0.6),
                           ),
                         ),
                         GestureDetector(
@@ -275,7 +276,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           child: Text(
                             privacyLink,
                             style: DesignTokens.caption.copyWith(
-                              color: const Color(0xFF4338CA),
+                              color: colorScheme.secondary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -283,7 +284,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         Text(
                           " ve ",
                           style: DesignTokens.caption.copyWith(
-                            color: const Color(0xFF0B1220).withOpacity(0.6),
+                            color: colorScheme.onSurface.withOpacity(0.6),
                           ),
                         ),
                         GestureDetector(
@@ -297,7 +298,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           child: Text(
                             termsLink,
                             style: DesignTokens.caption.copyWith(
-                              color: const Color(0xFF4338CA),
+                              color: colorScheme.secondary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -305,7 +306,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         Text(
                           privacySuffix,
                           style: DesignTokens.caption.copyWith(
-                            color: const Color(0xFF0B1220).withOpacity(0.6),
+                            color: colorScheme.onSurface.withOpacity(0.6),
                           ),
                         ),
                       ],
