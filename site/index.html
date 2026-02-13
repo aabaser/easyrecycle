@@ -63,16 +63,17 @@
       .brand {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
         font-size: clamp(28px, 4vw, 36px);
         font-weight: 800;
         letter-spacing: -0.3px;
       }
 
-      .footer-logo {
-        height: 24px;
+      .brand-logo {
+        height: clamp(32px, 4.8vw, 48px);
         width: auto;
         display: block;
+        flex: 0 0 auto;
       }
 
       .brand span:first-child {
@@ -300,6 +301,13 @@
       <header>
         <div class="topbar">
           <a class="brand" href="/" aria-label="Easy Recycle home">
+            <img
+              src="assets/logo/app_logo_mark_web.png"
+              alt="Easy Recycle"
+              class="brand-logo"
+              loading="eager"
+              decoding="async"
+            />
             <span>Easy</span> Recycle
           </a>
           <div class="lang-switch" aria-label="Language">

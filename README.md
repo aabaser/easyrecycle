@@ -219,6 +219,16 @@ curl -H "Authorization: Bearer <JWT>" \
 
 The static landing page lives in `site/` and can be deployed as a Render Static Site.
 
+Run locally (from repo root):
+```bash
+python -m http.server 8080 --directory site
+```
+
+Open:
+```text
+http://localhost:8080
+```
+
 Waitlist/contact form is currently wired to **Formspree** (no FastAPI required).
 Endpoint is configured in `site/index.html`:
 
