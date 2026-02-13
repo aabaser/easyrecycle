@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.db import get_db
-from app.services.resolve import resolve_item
+from app.services.resolve import resolve_item, find_item_id_by_aliases
 from app.integrations.openai_vision import recognize_item_from_bytes, store_image_from_base64
 from app.storage.s3 import (
   build_object_key,
@@ -32,13 +32,24 @@ load_dotenv()
 settings = get_settings()
 logging.basicConfig(level=settings.LOG_LEVEL.upper())
 logger = logging.getLogger("easy_recycle")
-app = FastAPI(title="Easy Recycle API")
+docs_enabled = settings.APP_ENV.lower() != "production" and settings.API_DOCS_ENABLED
+app = FastAPI(
+  title="Easy Recycle API",
+  docs_url="/docs" if docs_enabled else None,
+  redoc_url="/redoc" if docs_enabled else None,
+  openapi_url="/openapi.json" if docs_enabled else None,
+)
 rate_limiter = FixedWindowRateLimiter()
 
-# CORS for local file/test UIs (e.g., docs/ui_mock.html opened via file://)
+# CORS
+cors_origins = [o.strip() for o in settings.CORS_ALLOW_ORIGINS.split(",") if o.strip()]
+if settings.APP_ENV.lower() == "production":
+  allow_origins = cors_origins
+else:
+  allow_origins = cors_origins or ["*"]
 app.add_middleware(
   CORSMiddleware,
-  allow_origins=["*"],
+  allow_origins=allow_origins,
   allow_credentials=False,
   allow_methods=["*"],
   allow_headers=["*"],
@@ -55,10 +66,9 @@ _AUTH_EXEMPT_PATHS = {
   "/auth/guest",
   "/auth/me",
   "/auth/verify",
-  "/docs",
-  "/openapi.json",
-  "/redoc",
 }
+if docs_enabled:
+  _AUTH_EXEMPT_PATHS.update({"/docs", "/openapi.json", "/redoc"})
 
 
 @app.middleware("http")
@@ -149,6 +159,22 @@ def _resolve_principal(request: Request) -> dict:
     return {"type": "guest", "sub": claims.get("sub"), "scopes": scopes}
   except Exception:
     raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+
+def _require_admin(request: Request) -> dict:
+  if not settings.ADMIN_ENABLED:
+    raise HTTPException(status_code=404, detail="not_found")
+  principal = getattr(request.state, "principal", None)
+  if not principal or principal.get("type") == "anonymous":
+    raise HTTPException(status_code=401, detail="Unauthorized")
+  if settings.ADMIN_REQUIRE_USER and principal.get("type") != "user":
+    raise HTTPException(status_code=403, detail="Forbidden")
+  token = request.headers.get("X-Admin-Token")
+  if not settings.ADMIN_API_KEY:
+    raise HTTPException(status_code=403, detail="Admin API key not configured")
+  if not token or token != settings.ADMIN_API_KEY:
+    raise HTTPException(status_code=403, detail="Forbidden")
+  return principal
 
 
 @app.middleware("http")
@@ -292,6 +318,7 @@ def uploads_presign(payload: PresignRequest, request: Request):
     "expires_in": presigned.expires_in,
     "required_headers": presigned.required_headers,
   }
+
 
 @app.get("/resolve")
 def resolve(
@@ -863,11 +890,13 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
     len(image_bytes or b""),
   )
   vision = recognize_item_from_bytes(image_bytes, lang, storage_key=s3_key)
+  city_id = _city_id_from_code(db, city)
   canonical_key = vision.get("canonical_key")
   item_id = _find_item_id(db, canonical_key) if canonical_key else None
+  if not item_id and vision.get("labels"):
+    item_id = find_item_id_by_aliases(db, vision.get("labels") or [], lang, city_id)
   image_id = vision.get("image_id")
   cache_key = vision.get("cache_key")
-  city_id = _city_id_from_code(db, city)
   logger.info(
     "analyze: vision canonical_key=%s confidence=%s labels=%s notes=%s item_id=%s",
     canonical_key,
@@ -1063,10 +1092,12 @@ def feedback(payload: FeedbackRequest = Body(...), db: Session = Depends(get_db)
 
 @app.get("/admin/images")
 def admin_list_images(
+  request: Request,
   limit: int = Query(50, ge=1, le=200),
   offset: int = Query(0, ge=0),
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   rows = db.execute(
     text(
       """
@@ -1095,9 +1126,11 @@ def admin_list_images(
 
 @app.get("/admin/cities")
 def admin_list_cities(
+  request: Request,
   lang: str = Query("de"),
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   rows = db.execute(
     text(
       """
@@ -1117,10 +1150,12 @@ def admin_list_cities(
 
 @app.get("/admin/options")
 def admin_options(
+  request: Request,
   lang: str = Query("de"),
   city: Optional[str] = Query(None),
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   city_id = None
   if city:
     city_id = _city_id_from_code(db, city)
@@ -1199,10 +1234,12 @@ def admin_options(
 
 
 @app.post("/admin/images")
-def admin_upload_image(request: Request, payload: AdminImageUploadRequest = Body(...)):
-  principal = getattr(request.state, "principal", None) if request else None
-  if not principal or principal.get("type") == "anonymous":
-    raise HTTPException(status_code=401, detail="Unauthorized")
+def admin_upload_image(
+  request: Request,
+  payload: AdminImageUploadRequest = Body(...),
+  db: Session = Depends(get_db),
+):
+  principal = _require_admin(request)
   raw = _decode_base64_payload(payload.image_base64)
   if len(raw) > settings.MAX_IMAGE_BYTES:
     raise HTTPException(status_code=413, detail="image_too_large")
@@ -1217,12 +1254,14 @@ def admin_upload_image(request: Request, payload: AdminImageUploadRequest = Body
 
 @app.get("/admin/items")
 def admin_list_items(
+  request: Request,
   lang: str = Query("de"),
   q: Optional[str] = Query(None),
   limit: int = Query(50, ge=1, le=200),
   offset: int = Query(0, ge=0),
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   query = f"%{q.strip()}%" if q and q.strip() else None
   base_sql = """
       SELECT i.item_id::text, i.canonical_key, t1.text, i.primary_image_id::text, i.is_active
@@ -1263,11 +1302,13 @@ def admin_list_items(
 
 @app.get("/admin/items/{item_id}")
 def admin_get_item(
+  request: Request,
   item_id: str,
   city: str = Query(...),
   lang: str = Query("de"),
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   city_id = _city_id_from_code(db, city)
   if not city_id:
     raise HTTPException(status_code=400, detail="invalid_city")
@@ -1276,9 +1317,11 @@ def admin_get_item(
 
 @app.get("/admin/items/{item_id}/images")
 def admin_item_images(
+  request: Request,
   item_id: str,
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   primary_row = db.execute(
     text("SELECT primary_image_id::text FROM core.item WHERE item_id::uuid = :item_id"),
     {"item_id": item_id},
@@ -1321,17 +1364,15 @@ def admin_item_images(
 
 @app.post("/admin/items/{item_id}/images")
 def admin_upload_item_image(
-  item_id: str,
   request: Request,
+  item_id: str,
   payload: AdminItemImageUploadRequest = Body(...),
   db: Session = Depends(get_db),
 ):
+  principal = _require_admin(request)
   city_id = _city_id_from_code(db, payload.city)
   if not city_id:
     raise HTTPException(status_code=400, detail="invalid_city")
-  principal = getattr(request.state, "principal", None) if request else None
-  if not principal or principal.get("type") == "anonymous":
-    raise HTTPException(status_code=401, detail="Unauthorized")
   raw = _decode_base64_payload(payload.image_base64)
   if len(raw) > settings.MAX_IMAGE_BYTES:
     raise HTTPException(status_code=413, detail="image_too_large")
@@ -1361,10 +1402,12 @@ def admin_upload_item_image(
 
 @app.delete("/admin/items/{item_id}/images/{image_id}")
 def admin_delete_item_image(
+  request: Request,
   item_id: str,
   image_id: str,
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   db.execute(
     text(
       """
@@ -1407,10 +1450,12 @@ def admin_delete_item_image(
 
 @app.put("/admin/items/{item_id}")
 def admin_update_item(
+  request: Request,
   item_id: str,
   payload: AdminItemUpdateRequest = Body(...),
   db: Session = Depends(get_db),
 ):
+  _require_admin(request)
   city_id = _city_id_from_code(db, payload.city)
   if not city_id:
     raise HTTPException(status_code=400, detail="invalid_city")

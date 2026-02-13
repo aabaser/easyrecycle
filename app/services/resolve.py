@@ -142,6 +142,36 @@ def _find_item_by_alias(db: Session, name: str, lang: str, city_id: str) -> Opti
   r = db.execute(sql, {"lang": lang, "norm": norm, "city_id": city_id}).fetchone()
   return r[0] if r else None
 
+
+def find_item_id_by_aliases(db: Session, names: List[str], lang: str, city_id: str) -> Optional[str]:
+  norms: List[str] = []
+  seen = set()
+  for name in names or []:
+    norm = _normalize_basic(name)
+    if not norm or norm in seen:
+      continue
+    seen.add(norm)
+    norms.append(norm)
+  if not norms:
+    return None
+  sql = text("""
+    SELECT i.item_id::text
+    FROM core.item_alias a
+    JOIN core.item i ON i.canonical_key = a.canonical_key
+    WHERE a.lang = :lang AND a.alias_norm = ANY(:norms)
+      AND EXISTS (
+        SELECT 1 FROM core.item_city_category icc
+        WHERE icc.item_id = i.item_id AND icc.city_id = :city_id
+        UNION ALL
+        SELECT 1 FROM core.item_city_disposal icd
+        WHERE icd.item_id = i.item_id AND icd.city_id = :city_id
+      )
+    ORDER BY array_position(CAST(:norms AS text[]), a.alias_norm)
+    LIMIT 1
+  """)
+  r = db.execute(sql, {"lang": lang, "norms": norms, "city_id": city_id}).fetchone()
+  return r[0] if r else None
+
 def _find_item_by_name(db: Session, name: str, lang: str, city_id: str) -> Optional[str]:
   """
   Exact match search (case-insensitive) across:

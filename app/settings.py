@@ -7,6 +7,11 @@ class Settings(BaseSettings):
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
     LOG_LEVEL: str = "info"
+    API_DOCS_ENABLED: bool = True
+    CORS_ALLOW_ORIGINS: str = ""
+    ADMIN_ENABLED: bool = True
+    ADMIN_REQUIRE_USER: bool = False
+    ADMIN_API_KEY: str | None = None
 
     COGNITO_ENABLED: bool = False
     COGNITO_REGION: str = "eu-central-1"

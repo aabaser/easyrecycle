@@ -1,0 +1,663 @@
+﻿<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="formspree-endpoint" content="https://formspree.io/f/xpqjqgra" />
+    <title>Easy Recycle</title>
+    <meta name="description" content="" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --primary-indigo: #4338ca;
+        --accent-cyan: #22d3ee;
+        --ink: #0b1220;
+        --muted: #475569;
+        --bg: #f7faff;
+        --border: #e2e8f0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Manrope", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+      }
+
+      header {
+        display: grid;
+        gap: 12px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: clamp(28px, 4vw, 36px);
+        font-weight: 800;
+        letter-spacing: -0.3px;
+      }
+
+      .footer-logo {
+        height: 24px;
+        width: auto;
+        display: block;
+      }
+
+      .brand span:first-child {
+        color: var(--primary-indigo);
+      }
+
+      .lang-switch {
+        display: inline-flex;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .lang-switch button {
+        border: none;
+        background: transparent;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        cursor: pointer;
+      }
+
+      .lang-switch button.active {
+        color: var(--primary-indigo);
+        background: rgba(67, 56, 202, 0.1);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--accent-cyan);
+        color: var(--primary-indigo);
+        font-size: 12px;
+        font-weight: 600;
+        width: fit-content;
+      }
+
+      .subhead {
+        margin: 0;
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .active-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .feature {
+        display: grid;
+        gap: 10px;
+        padding: 8px 0 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .feature:last-child {
+        border-bottom: none;
+      }
+
+      .feature-icon {
+        width: 32px;
+        height: 32px;
+        color: var(--primary-indigo);
+      }
+
+      .feature h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .feature p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .steps,
+      .recommend {
+        display: grid;
+        gap: 8px;
+      }
+
+      .step-text {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--accent-cyan);
+        color: var(--primary-indigo);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .pill.active {
+        background: var(--accent-cyan);
+        border-color: transparent;
+        color: var(--ink);
+      }
+
+      .pill.soon {
+        border-color: var(--border);
+        color: var(--muted);
+        background: transparent;
+      }
+
+      .recommend-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--border);
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .recommend-item:last-child {
+        border-bottom: none;
+      }
+
+      .waitlist {
+        display: grid;
+        gap: 16px;
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        font: inherit;
+        background: #fff;
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 12px;
+        background: var(--primary-indigo);
+        color: white;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+      }
+
+      .button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .status {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      footer {
+        display: grid;
+        gap: 4px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+
+      hr {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 0;
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 32px 18px 64px;
+        }
+
+        .feature {
+          border-bottom: none;
+          padding-bottom: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <div class="topbar">
+          <a class="brand" href="/" aria-label="Easy Recycle home">
+            <span>Easy</span> Recycle
+          </a>
+          <div class="lang-switch" aria-label="Language">
+            <button type="button" data-lang="tr">TR</button>
+            <button type="button" data-lang="de">DE</button>
+            <button type="button" data-lang="en">EN</button>
+          </div>
+        </div>
+        <span class="badge" data-i18n="chip.soon"></span>
+        <p class="subhead" data-i18n="brand.subtitle"></p>
+      </header>
+
+      <section>
+        <h2 class="section-title" data-i18n="section.activeFeatures.title"></h2>
+        <div class="active-grid">
+          <div class="feature">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <path d="M8 11h6"></path>
+              <path d="M9 8h4"></path>
+            </svg>
+            <h3 data-i18n="feature.textSearch.title"></h3>
+            <p data-i18n="feature.textSearch.desc"></p>
+          </div>
+          <div class="feature">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M8 5l1.5-2h5L16 5"></path>
+            </svg>
+            <h3 data-i18n="feature.imageSearch.title"></h3>
+            <p data-i18n="feature.imageSearch.desc"></p>
+          </div>
+          <div class="feature">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 21s7-6.2 7-11.5A7 7 0 1 0 5 9.5C5 14.8 12 21 12 21z"></path>
+              <circle cx="12" cy="9.5" r="2.5"></circle>
+            </svg>
+            <h3 data-i18n="feature.centerFinder.title"></h3>
+            <p data-i18n="feature.centerFinder.desc"></p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="section.howItWorks.title"></h2>
+        <p class="step-text" data-i18n="howItWorks.p1"></p>
+        <p class="step-text" data-i18n="howItWorks.p2"></p>
+        <p class="step-text" data-i18n="howItWorks.p3"></p>
+      </section>
+
+      <section>
+        <h2 class="section-title" data-i18n="section.suggests.title"></h2>
+        <div class="recommend">
+          <div class="recommend-item">
+            <strong data-i18n="suggests.recycle"></strong>
+            <span class="pill active" data-i18n="chip.active"></span>
+          </div>
+          <div class="recommend-item">
+            <span data-i18n="suggests.donate"></span>
+            <span class="pill soon" data-i18n="chip.soon"></span>
+          </div>
+          <div class="recommend-item">
+            <span data-i18n="suggests.repair"></span>
+            <span class="pill soon" data-i18n="chip.soon"></span>
+          </div>
+          <div class="recommend-item">
+            <span data-i18n="suggests.reuseSell"></span>
+            <span class="pill soon" data-i18n="chip.soon"></span>
+          </div>
+        </div>
+      </section>
+
+      <hr />
+
+      <section class="waitlist" id="contact">
+        <div>
+          <h2 class="section-title" data-i18n="section.waitlist.title"></h2>
+          <p class="subhead" data-i18n="section.waitlist.subtitle"></p>
+        </div>
+        <form id="contactForm">
+          <div class="form-row">
+            <div>
+              <label for="email" data-i18n="form.email.label"></label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                data-i18n-placeholder="form.email.placeholder"
+              />
+            </div>
+            <div>
+              <label for="name" data-i18n="form.name.label"></label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                data-i18n-placeholder="form.name.placeholder"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="message" data-i18n="form.message.label"></label>
+            <textarea
+              id="message"
+              name="message"
+              data-i18n-placeholder="form.message.placeholder"
+            ></textarea>
+          </div>
+          <button class="button" type="submit" id="submitButton" data-i18n="form.submit"></button>
+          <div class="status" id="formStatus"></div>
+        </form>
+      </section>
+
+      <footer>
+        <span data-i18n="footer.slogan1"></span>
+        <span data-i18n="footer.slogan2"></span>
+      </footer>
+    </main>
+
+    <script>
+      const translations = {
+        tr: {
+          "brand.title": "Easy Recycle",
+          "brand.subtitle": "Şehrine göre geri dönüşümü kolaylaştırır.",
+          "section.activeFeatures.title": "Şu an aktif özellikler",
+          "feature.textSearch.title": "Metin ile arama",
+          "feature.textSearch.desc": "Aradığın objeyi yaz, doğru yönlendirmeyi al.",
+          "feature.imageSearch.title": "Görüntü ile arama",
+          "feature.imageSearch.desc": "Fotoğrafla tanı, hızlıca sonuç gör.",
+          "feature.centerFinder.title": "Recycle merkezi bulma",
+          "feature.centerFinder.desc": "Yakınındaki merkezleri harita üzerinde bul.",
+          "section.howItWorks.title": "Nasıl çalışır?",
+          "howItWorks.p1": "Fotoğraf veya metin ile arama yaparak objeyi tanımlarsınız.",
+          "howItWorks.p2": "Ardından uygulama, şehrine özel geri dönüşüm önerisini gösterir.",
+          "howItWorks.p3": "Böylece objeleri kolay bir şekilde doğru şekilde geri dönüştürebilirsiniz.",
+          "section.suggests.title": "Neleri önerir?",
+          "suggests.recycle": "Geri dönüşüm",
+          "suggests.donate": "Bağış",
+          "suggests.repair": "Onarım",
+          "suggests.reuseSell": "Yeniden kullanım / Sat",
+          "chip.active": "Şu an aktif",
+          "chip.soon": "Yakında",
+          "section.waitlist.title": "Uygulama yakında çıkıyor",
+          "section.waitlist.subtitle": "Çıkınca haberdar olmak için email listesine kayıt ol.",
+          "form.email.label": "Email",
+          "form.email.placeholder": "ornek@eposta.com",
+          "form.name.label": "İsim Soyisim (opsiyonel)",
+          "form.name.placeholder": "Ad Soyad",
+          "form.message.label": "Mesaj",
+          "form.message.placeholder": "Mesajını yaz",
+          "form.submit": "Beni haberdar et",
+          "form.success": "Kaydın alındı. Yayınlandığında haber vereceğiz.",
+          "form.error": "Kayıt alınamadı, tekrar dene.",
+          "form.validation.emailRequired": "Email zorunludur.",
+          "form.validation.emailInvalid": "Geçerli bir email gir.",
+          "footer.slogan1": "Azalt. Ayır. Paylaş.",
+          "footer.slogan2": "Küçük adımlar, büyük etki yaratır.",
+        },
+        de: {
+          "brand.title": "Easy Recycle",
+          "brand.subtitle": "Macht Recycling in deiner Stadt einfacher.",
+          "section.activeFeatures.title": "Aktive Funktionen",
+          "feature.textSearch.title": "Textsuche",
+          "feature.textSearch.desc": "Gegenstand eingeben und passende Entsorgung erhalten.",
+          "feature.imageSearch.title": "Bildsuche",
+          "feature.imageSearch.desc": "Foto machen, schnell ein Ergebnis bekommen.",
+          "feature.centerFinder.title": "Recyclinghof finden",
+          "feature.centerFinder.desc": "Nahegelegene Höfe auf der Karte entdecken.",
+          "section.howItWorks.title": "So funktioniert’s",
+          "howItWorks.p1": "Du identifizierst den Gegenstand per Foto oder Texteingabe.",
+          "howItWorks.p2": "Anschließend zeigt dir die App eine stadtspezifische Recycling-Empfehlung.",
+          "howItWorks.p3": "So entsorgst du Dinge einfach und korrekt.",
+          "section.suggests.title": "Was wird empfohlen?",
+          "suggests.recycle": "Recycling",
+          "suggests.donate": "Spenden",
+          "suggests.repair": "Reparieren",
+          "suggests.reuseSell": "Wiederverwenden / Verkaufen",
+          "chip.active": "Aktiv",
+          "chip.soon": "Demnächst",
+          "section.waitlist.title": "Die App kommt bald",
+          "section.waitlist.subtitle": "Trag dich ein, wir benachrichtigen dich zum Launch.",
+          "form.email.label": "E-Mail",
+          "form.email.placeholder": "beispiel@mail.de",
+          "form.name.label": "Name (optional)",
+          "form.name.placeholder": "Vor- und Nachname",
+          "form.message.label": "Nachricht",
+          "form.message.placeholder": "Deine Nachricht",
+          "form.submit": "Benachrichtigen",
+          "form.success": "Du bist eingetragen. Wir melden uns zum Launch.",
+          "form.error": "Eintragung fehlgeschlagen. Bitte erneut versuchen.",
+          "form.validation.emailRequired": "E-Mail ist erforderlich.",
+          "form.validation.emailInvalid": "Bitte eine gültige E-Mail eingeben.",
+          "footer.slogan1": "Reduziere. Trenne. Teile.",
+          "footer.slogan2": "Kleine Schritte, große Wirkung.",
+        },
+        en: {
+          "brand.title": "Easy Recycle",
+          "brand.subtitle": "Makes recycling easier in your city.",
+          "section.activeFeatures.title": "Active features",
+          "feature.textSearch.title": "Text search",
+          "feature.textSearch.desc": "Type an item and get the right disposal guidance.",
+          "feature.imageSearch.title": "Image search",
+          "feature.imageSearch.desc": "Snap a photo and get results fast.",
+          "feature.centerFinder.title": "Find recycling centers",
+          "feature.centerFinder.desc": "Discover nearby centers on the map.",
+          "section.howItWorks.title": "How it works",
+          "howItWorks.p1": "Identify an item by photo or text search.",
+          "howItWorks.p2": "Then the app shows a city-specific recycling recommendation.",
+          "howItWorks.p3": "So you can recycle items easily and correctly.",
+          "section.suggests.title": "What it recommends",
+          "suggests.recycle": "Recycling",
+          "suggests.donate": "Donate",
+          "suggests.repair": "Repair",
+          "suggests.reuseSell": "Reuse / Sell",
+          "chip.active": "Active",
+          "chip.soon": "Coming soon",
+          "section.waitlist.title": "Launching soon",
+          "section.waitlist.subtitle": "Join the email list to get notified when we launch.",
+          "form.email.label": "Email",
+          "form.email.placeholder": "name@example.com",
+          "form.name.label": "Full name (optional)",
+          "form.name.placeholder": "Full name",
+          "form.message.label": "Message",
+          "form.message.placeholder": "Your message",
+          "form.submit": "Notify me",
+          "form.success": "You’re on the list. We’ll email you at launch.",
+          "form.error": "Could not sign you up. Please try again.",
+          "form.validation.emailRequired": "Email is required.",
+          "form.validation.emailInvalid": "Please enter a valid email.",
+          "footer.slogan1": "Reduce. Sort. Share.",
+          "footer.slogan2": "Small steps, big impact.",
+        },
+      };
+
+      function normalizeLang(lang) {
+        if (!lang) return "en";
+        const lower = lang.toLowerCase();
+        if (lower.startsWith("tr")) return "tr";
+        if (lower.startsWith("de")) return "de";
+        return "en";
+      }
+
+      function getLang() {
+        const saved = localStorage.getItem("er_lang");
+        if (saved && translations[saved]) return saved;
+        const browser = navigator.languages?.[0] || navigator.language;
+        return normalizeLang(browser);
+      }
+
+      function setLang(lang) {
+        if (!translations[lang]) return;
+        localStorage.setItem("er_lang", lang);
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (key && translations[lang][key]) {
+            el.textContent = translations[lang][key];
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-placeholder");
+          if (key && translations[lang][key]) {
+            el.setAttribute("placeholder", translations[lang][key]);
+          }
+        });
+
+        document.title = translations[lang]["brand.title"];
+        const meta = document.querySelector("meta[name='description']");
+        if (meta) {
+          meta.setAttribute("content", translations[lang]["brand.subtitle"]);
+        }
+
+        document.querySelectorAll(".lang-switch button").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.lang === lang);
+        });
+      }
+
+      const form = document.getElementById("contactForm");
+      const statusEl = document.getElementById("formStatus");
+      const submitButton = document.getElementById("submitButton");
+      let currentLang = getLang();
+      setLang(currentLang);
+
+      document.querySelectorAll(".lang-switch button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentLang = btn.dataset.lang;
+          setLang(currentLang);
+        });
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        statusEl.textContent = "";
+        submitButton.disabled = true;
+
+        const email = form.email.value.trim();
+        const name = form.name.value.trim();
+        const message = form.message.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email) {
+          statusEl.textContent = translations[currentLang]["form.validation.emailRequired"];
+          submitButton.disabled = false;
+          return;
+        }
+
+        if (!emailRegex.test(email)) {
+          statusEl.textContent = translations[currentLang]["form.validation.emailInvalid"];
+          submitButton.disabled = false;
+          return;
+        }
+
+        statusEl.textContent = "...";
+
+        const payload = {
+          email,
+          name: name || "",
+          message,
+        };
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+
+        const formspreeMeta = document.querySelector("meta[name='formspree-endpoint']");
+        const formspreeEndpoint = (formspreeMeta?.getAttribute("content") || "").trim();
+
+        if (!formspreeEndpoint || formspreeEndpoint.includes("PASTE_FORMSPREE_URL_HERE")) {
+          statusEl.textContent = translations[currentLang]["form.error"];
+          submitButton.disabled = false;
+          return;
+        }
+
+        try {
+          const res = await fetch(formspreeEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+          });
+
+          if (!res.ok) {
+            throw new Error("fail");
+          }
+
+          form.reset();
+          statusEl.textContent = translations[currentLang]["form.success"];
+        } catch (err) {
+          statusEl.textContent = translations[currentLang]["form.error"];
+        } finally {
+          clearTimeout(timeout);
+          submitButton.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -26,6 +26,18 @@ Optional env (Vision):
 export OPENAI_API_KEY="..."
 ```
 
+Production hardening (recommended):
+```bash
+export APP_ENV=production
+export API_DOCS_ENABLED=false
+export CORS_ALLOW_ORIGINS="https://your-frontend.example"
+# Admin endpoints (protected)
+export ADMIN_ENABLED=true
+export ADMIN_API_KEY="change_me"
+# Optional: only allow authenticated users
+# export ADMIN_REQUIRE_USER=true
+```
+
 Health check:
 ```
 http://<PC_IP>:8000/health
@@ -202,3 +214,19 @@ List nearest centers (requires location):
 curl -H "Authorization: Bearer <JWT>" \
   "http://localhost:8000/recycle-centers?city=hannover&lat=52.37&lng=9.73&limit=20"
 ```
+
+## Website Landing Page (Static + Formspree)
+
+The static landing page lives in `site/` and can be deployed as a Render Static Site.
+
+Waitlist/contact form is currently wired to **Formspree** (no FastAPI required).
+Endpoint is configured in `site/index.html`:
+
+```html
+<meta name="formspree-endpoint" content="https://formspree.io/f/xpqjqgra" />
+```
+
+Form fields:
+- `email` (required)
+- `name` (optional)
+- `message` (optional)
