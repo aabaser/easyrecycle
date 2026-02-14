@@ -45,7 +45,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Kamera, atik ogesini tanimlamak icin fotograf cekmekte kullanilir.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Galeriden fotograf secerek analiz yapabilmek icin erisim gerekir.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Standort wird verwendet, um Recyclinghöfe in Ihrer Nähe anzuzeigen.</string>
 </dict>
 </plist>
+

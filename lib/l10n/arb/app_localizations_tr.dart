@@ -54,6 +54,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scan_upload => 'Görsel yükle';
 
   @override
+  String get scan_focus_hint =>
+      'Objeyi kare içine hizala ve Fotoğraf çek\'e bas.';
+
+  @override
+  String get scan_camera_unavailable =>
+      'Kamera önizlemesi kullanılamıyor. Yine de çekebilir veya yükleyebilirsin.';
+
+  @override
   String get scan_text_placeholder => 'örn. pil, kablo, cam şişe';
 
   @override

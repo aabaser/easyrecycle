@@ -54,6 +54,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scan_upload => 'Bild hochladen';
 
   @override
+  String get scan_focus_hint =>
+      'Objekt im Quadrat ausrichten und auf Foto aufnehmen tippen.';
+
+  @override
+  String get scan_camera_unavailable =>
+      'Kameravorschau nicht verfügbar. Du kannst trotzdem aufnehmen oder hochladen.';
+
+  @override
   String get scan_text_placeholder => 'z.B. Batterie, Kabel, Glasflasche';
 
   @override

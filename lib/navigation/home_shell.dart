@@ -77,6 +77,11 @@ class _HomeShellState extends State<HomeShell> {
   void _handleTabActivation() {
     _textKey.currentState?.setActive(_index == HomeShell.tabText);
     _cameraKey.currentState?.setActive(_index == HomeShell.tabCamera);
+    if (_index == HomeShell.tabCamera) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _cameraKey.currentState?.openCamera(force: true);
+      });
+    }
   }
 
   GlobalKey<NavigatorState> _currentNavKey() {
@@ -101,6 +106,10 @@ class _HomeShellState extends State<HomeShell> {
   void _onTabSelected(int value) async {
     final appState = context.read<AppState>();
     if (value == _index) {
+      if (value == HomeShell.tabCamera) {
+        _cameraKey.currentState?.openCamera(force: true);
+        return;
+      }
       final navKey = _currentNavKey();
       navKey.currentState?.popUntil((route) => route.isFirst);
       return;

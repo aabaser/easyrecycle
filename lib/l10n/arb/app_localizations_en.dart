@@ -54,6 +54,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scan_upload => 'Upload image';
 
   @override
+  String get scan_focus_hint =>
+      'Align the item inside the square and tap Take photo.';
+
+  @override
+  String get scan_camera_unavailable =>
+      'Camera preview unavailable. You can still take or upload a photo.';
+
+  @override
   String get scan_text_placeholder => 'e.g. battery, cable, glass bottle';
 
   @override

@@ -1,7 +1,9 @@
+import "dart:async";
 import "dart:convert";
 import "dart:typed_data";
 import "dart:math";
 
+import "package:camera/camera.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -31,29 +33,155 @@ class CameraTabPage extends StatefulWidget {
   CameraTabPageState createState() => CameraTabPageState();
 }
 
-class CameraTabPageState extends State<CameraTabPage> {
+class CameraTabPageState extends State<CameraTabPage>
+    with WidgetsBindingObserver {
   final _similarityService = MockSimilarityService();
   Uint8List? _imageBytes;
+  CameraController? _cameraController;
+  Future<void>? _cameraInitFuture;
   bool _isLoading = false;
-  bool _hasAutoLaunched = false;
   bool _isPicking = false;
   bool _isScanning = false;
+  bool _isCameraReady = false;
+  bool _cameraUnavailable = false;
+  bool _isActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    unawaited(_stopCamera());
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!_isActive) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      unawaited(_stopCamera());
+      return;
+    }
+    if (state == AppLifecycleState.resumed) {
+      unawaited(_ensureCameraStarted());
+    }
+  }
 
   void handleTabSelected() {
   }
 
   void setActive(bool active) {
+    if (_isActive == active) {
+      return;
+    }
+    _isActive = active;
+    if (active) {
+      unawaited(_ensureCameraStarted());
+      return;
+    }
+    unawaited(_stopCamera());
   }
 
   Future<void> openCamera({bool force = false}) async {
     if (_isPicking) {
       return;
     }
-    if (!force && _hasAutoLaunched) {
+    await _ensureCameraStarted();
+    if (force && _cameraUnavailable) {
+      await _pickImage();
+    }
+  }
+
+  Future<void> _ensureCameraStarted() async {
+    if (_isCameraReady || _cameraInitFuture != null) {
+      return _cameraInitFuture ?? Future.value();
+    }
+
+    final init = _startCameraInternal();
+    _cameraInitFuture = init;
+    try {
+      await init;
+    } finally {
+      _cameraInitFuture = null;
+    }
+  }
+
+  Future<void> _startCameraInternal() async {
+    if (!_isActive || _isPicking) {
       return;
     }
-    _hasAutoLaunched = true;
-    await _pickImage();
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {
+          _isCameraReady = false;
+          _cameraUnavailable = true;
+        });
+        return;
+      }
+      final selected = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.back,
+        orElse: () => cameras.first,
+      );
+
+      final previousController = _cameraController;
+      final controller = CameraController(
+        selected,
+        ResolutionPreset.medium,
+        enableAudio: false,
+      );
+      await controller.initialize();
+      await controller.setFlashMode(FlashMode.off);
+
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
+
+      setState(() {
+        _cameraController = controller;
+        _isCameraReady = true;
+        _cameraUnavailable = false;
+      });
+      if (previousController != null && previousController != controller) {
+        await previousController.dispose();
+      }
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _cameraController = null;
+        _isCameraReady = false;
+        _cameraUnavailable = true;
+      });
+    }
+  }
+
+  Future<void> _stopCamera() async {
+    final controller = _cameraController;
+    _cameraController = null;
+    if (mounted) {
+      setState(() {
+        _isCameraReady = false;
+      });
+    } else {
+      _isCameraReady = false;
+    }
+    if (controller != null) {
+      await controller.dispose();
+    }
   }
 
   Future<void> _pickImage() async {
@@ -101,6 +229,34 @@ class CameraTabPageState extends State<CameraTabPage> {
       }
       final bytes = await file.readAsBytes();
       final cropped = _cropToFocus(bytes);
+      setState(() {
+        _imageBytes = cropped;
+      });
+      await _runAnalyze();
+    } finally {
+      _isPicking = false;
+      _isScanning = false;
+    }
+  }
+
+  Future<void> _captureFromPreview() async {
+    if (_isPicking || _isLoading || _isScanning) {
+      return;
+    }
+    final controller = _cameraController;
+    if (controller == null || !controller.value.isInitialized) {
+      await _pickImage();
+      return;
+    }
+    _isPicking = true;
+    _isScanning = true;
+    try {
+      final file = await controller.takePicture();
+      final bytes = await file.readAsBytes();
+      final cropped = _cropToFocus(bytes);
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _imageBytes = cropped;
       });
@@ -400,49 +556,84 @@ class CameraTabPageState extends State<CameraTabPage> {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final preview = _imageBytes;
+    final cameraController = _cameraController;
 
     return Padding(
       padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Stack(
-            children: [
-              Container(
-                height: 240,
-                decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                ),
-                child: preview == null
-                    ? Center(
-                        child: Icon(
-                          Icons.camera_alt,
-                          size: 56,
-                          color: colorScheme.primary,
-                        ),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                        child: Image.memory(
-                          preview,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                      ),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: _FocusFramePainter(
-                      frameColor: colorScheme.onSurface.withOpacity(0.6),
-                      overlayColor: colorScheme.onSurface.withOpacity(0.12),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Builder(
+                      builder: (_) {
+                        if (preview != null) {
+                          return Image.memory(
+                            preview,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          );
+                        }
+                        if (_isCameraReady &&
+                            cameraController != null &&
+                            cameraController.value.isInitialized) {
+                          return CameraPreview(cameraController);
+                        }
+                        return Container(
+                          color: colorScheme.primaryContainer,
+                          child: Center(
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 56,
+                              color: colorScheme.primary,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                ),
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: CustomPaint(
+                        painter: _FocusFramePainter(
+                          frameColor: colorScheme.onSurface.withOpacity(0.7),
+                          overlayColor: colorScheme.onSurface.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 12,
+                    right: 12,
+                    top: 12,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: colorScheme.surface.withOpacity(0.78),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        child: Text(
+                          _cameraUnavailable
+                              ? loc.t("scan_camera_unavailable")
+                              : loc.t("scan_focus_hint"),
+                          textAlign: TextAlign.center,
+                          style: DesignTokens.caption,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           if (_isLoading) ...[
             const SizedBox(height: 12),
@@ -451,12 +642,14 @@ class CameraTabPageState extends State<CameraTabPage> {
           const SizedBox(height: DesignTokens.sectionSpacing),
           PrimaryButton(
             label: loc.t("scan_take_photo"),
-            onPressed: _isLoading ? null : _pickImage,
+            onPressed: _isLoading || _isScanning
+                ? null
+                : (_isCameraReady ? _captureFromPreview : _pickImage),
           ),
           const SizedBox(height: DesignTokens.baseSpacing),
           SecondaryButton(
             label: loc.t("scan_upload"),
-            onPressed: _isLoading ? null : _pickGallery,
+            onPressed: _isLoading || _isScanning ? null : _pickGallery,
           ),
         ],
       ),

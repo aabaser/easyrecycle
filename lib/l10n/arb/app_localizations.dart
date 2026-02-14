@@ -190,6 +190,18 @@ abstract class AppLocalizations {
   /// **'Upload image'**
   String get scan_upload;
 
+  /// No description provided for @scan_focus_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Align the item inside the square and tap Take photo.'**
+  String get scan_focus_hint;
+
+  /// No description provided for @scan_camera_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera preview unavailable. You can still take or upload a photo.'**
+  String get scan_camera_unavailable;
+
   /// No description provided for @scan_text_placeholder.
   ///
   /// In en, this message translates to:
