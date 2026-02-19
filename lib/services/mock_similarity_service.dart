@@ -1,4 +1,4 @@
-﻿import "dart:math";
+import "dart:math";
 import "dart:typed_data";
 import "../models/similar_item.dart";
 import "../models/scan_result.dart";

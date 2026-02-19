@@ -1,5 +1,4 @@
 import "dart:convert";
-import "dart:typed_data";
 
 import "package:http/http.dart" as http;
 import "package:flutter/foundation.dart";
@@ -20,7 +19,16 @@ class PresignedUploadResult {
 }
 
 class PresignedUploadService {
-  static const List<int> _pngMagic = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
+  static const List<int> _pngMagic = [
+    0x89,
+    0x50,
+    0x4E,
+    0x47,
+    0x0D,
+    0x0A,
+    0x1A,
+    0x0A
+  ];
 
   static String detectContentType(Uint8List bytes) {
     if (bytes.length >= _pngMagic.length) {
@@ -63,13 +71,17 @@ class PresignedUploadService {
       }),
     );
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      debugPrint("presign: failed status=${response.statusCode} body=${response.body}");
+      debugPrint(
+          "presign: failed status=${response.statusCode} body=${response.body}");
       throw Exception("presign_failed");
     }
     final body = jsonDecode(response.body) as Map<String, dynamic>;
     final uploadUrl = body["upload_url"]?.toString();
     final s3Key = body["s3_key"]?.toString();
-    if (uploadUrl == null || uploadUrl.isEmpty || s3Key == null || s3Key.isEmpty) {
+    if (uploadUrl == null ||
+        uploadUrl.isEmpty ||
+        s3Key == null ||
+        s3Key.isEmpty) {
       debugPrint("presign: invalid response body=$body");
       throw Exception("presign_invalid");
     }
@@ -94,7 +106,8 @@ class PresignedUploadService {
       body: bytes,
     );
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      debugPrint("upload: failed status=${response.statusCode} body=${response.body}");
+      debugPrint(
+          "upload: failed status=${response.statusCode} body=${response.body}");
       throw Exception("upload_failed");
     }
     debugPrint("upload: ok");

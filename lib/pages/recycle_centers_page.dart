@@ -149,8 +149,8 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
               ? Center(
                   child: Text(
                     loc.t("recycle_centers_loading"),
-                    style:
-                        DesignTokens.body.copyWith(color: colorScheme.onSurface),
+                    style: DesignTokens.body
+                        .copyWith(color: colorScheme.onSurface),
                   ),
                 )
               : _error != null
@@ -233,7 +233,8 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                                               center.address,
                                               style: DesignTokens.body.copyWith(
                                                 color: colorScheme.primary,
-                                                decoration: TextDecoration.underline,
+                                                decoration:
+                                                    TextDecoration.underline,
                                               ),
                                             ),
                                           ),

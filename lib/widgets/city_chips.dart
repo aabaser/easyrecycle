@@ -26,7 +26,8 @@ class CityChips extends StatelessWidget {
           label: Text(
             city.name,
             style: TextStyle(
-              color: isSelected ? const Color(0xFF4338CA) : colorScheme.onSurface,
+              color:
+                  isSelected ? const Color(0xFF4338CA) : colorScheme.onSurface,
               fontWeight: FontWeight.w600,
             ),
           ),

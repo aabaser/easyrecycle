@@ -17,12 +17,8 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final appState = context.watch<AppState>();
-    final city = appState.selectedCity;
-    final cityLabel = city == null
-        ? "-"
-        : (city.id == "berlin"
-            ? loc.t("city_berlin")
-            : loc.t("city_hannover"));
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final cityOptions = City.defaults(
       berlinName: loc.t("city_berlin"),
       hannoverName: loc.t("city_hannover"),
@@ -32,42 +28,72 @@ class SettingsPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
       children: [
-        Text(
-          loc.t("settings_language"),
-          style: DesignTokens.titleM,
-        ),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        LanguageToggle(
-          selected: selectedLocale,
-          onChanged: (value) {
-            appState.setLocale(Locale(value));
-          },
-          primaryColor: Theme.of(context).colorScheme.primary,
-          outlineColor: Theme.of(context).colorScheme.outline,
-          textColor: Theme.of(context).colorScheme.onSurface,
-        ),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        Text(
-          loc.t("settings_city"),
-          style: DesignTokens.titleM,
-        ),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: cityOptions
-              .map(
-                (city) => ChoiceChip(
-                  label: Text(city.name),
-                  selected: city.id == appState.selectedCity?.id,
-                  onSelected: (_) {
-                    appState.setSelectedCity(city);
-                  },
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: colorScheme.outlineVariant),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                loc.t("settings_language"),
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
-              )
-              .toList(),
+              ),
+              const SizedBox(height: DesignTokens.baseSpacing),
+              LanguageToggle(
+                selected: selectedLocale,
+                onChanged: (value) {
+                  appState.setLocale(Locale(value));
+                },
+                primaryColor: colorScheme.primary,
+                outlineColor: colorScheme.outline,
+                textColor: colorScheme.onSurface,
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: DesignTokens.baseSpacing),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: colorScheme.outlineVariant),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                loc.t("settings_city"),
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: DesignTokens.baseSpacing),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: cityOptions
+                    .map(
+                      (city) => ChoiceChip(
+                        label: Text(city.name),
+                        selected: city.id == appState.selectedCity?.id,
+                        onSelected: (_) {
+                          appState.setSelectedCity(city);
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
         ListTile(
           title: Text(loc.t("settings_theme_preview")),
           trailing: const Icon(Icons.chevron_right),
@@ -77,7 +103,7 @@ class SettingsPage extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: DesignTokens.sectionSpacing),
+        const SizedBox(height: 12),
         SwitchListTile(
           title: Text(loc.t("settings_admin_toggle")),
           value: appState.adminEnabled,

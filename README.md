@@ -38,6 +38,11 @@ export ADMIN_API_KEY="change_me"
 # export ADMIN_REQUIRE_USER=true
 ```
 
+Generate a strong admin key:
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
 Health check:
 ```
 http://<PC_IP>:8000/health
@@ -49,6 +54,8 @@ flutter pub get
 flutter gen-l10n
 flutter run -d chrome --dart-define=API_BASE_URL=http://<PC_IP>:8000
 flutter run -d chrome --dart-define=API_BASE_URL=http://192.168.2.177:8000
+# If using admin pages:
+flutter run -d chrome --dart-define=API_BASE_URL=http://192.168.2.177:8000 --dart-define=ADMIN_API_KEY=xk5kwWY5KaBfz2O31HcnHHE_YXo_Km_O1i6D01yMhYej2lkuzLfQ5Rr44UTDEwa3
 ```
 
 ### Flutter (Android APK)
@@ -59,6 +66,8 @@ Prereqs:
 Build:
 ```bash
 flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000
+# If using admin pages:
+# flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000 --dart-define=ADMIN_API_KEY=<YOUR_ADMIN_API_KEY>
 ```
 
 Install APK:

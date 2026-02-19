@@ -131,13 +131,35 @@ class _HomeShellState extends State<HomeShell> {
       _ => loc.t("scan_title"),
     };
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final shouldExit = await _onWillPop();
+        if (shouldExit && context.mounted) {
+          Navigator.of(context).pop();
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           leading: null,
           title: Text(title, style: DesignTokens.titleM),
           actions: const [],
+          flexibleSpace: Align(
+            alignment: Alignment.topCenter,
+            child: IgnorePointer(
+              child: Opacity(
+                opacity: 0.09,
+                child: Image.asset(
+                  "assets/uix/bg_top_abstract.png",
+                  fit: BoxFit.fitWidth,
+                  width: double.infinity,
+                ),
+              ),
+            ),
+          ),
         ),
         body: MaxWidthCenter(
           child: IndexedStack(

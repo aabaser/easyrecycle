@@ -28,9 +28,7 @@ class LanguagePickerPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: canPop
-            ? const BackButton()
-            : null,
+        leading: canPop ? const BackButton() : null,
         title: Text(
           loc.t("language_title"),
           style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
@@ -51,7 +49,8 @@ class LanguagePickerPage extends StatelessWidget {
                     activeColor: colorScheme.primary,
                     title: Text(
                       entry.value,
-                      style: DesignTokens.body.copyWith(color: colorScheme.onSurface),
+                      style: DesignTokens.body
+                          .copyWith(color: colorScheme.onSurface),
                     ),
                     onChanged: (value) {
                       if (value == null) {

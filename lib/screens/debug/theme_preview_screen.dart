@@ -31,15 +31,20 @@ class ThemePreviewScreen extends StatelessWidget {
                 title: const Text("Dark Mode"),
                 value: appState.themeMode == ThemeMode.dark,
                 onChanged: (value) {
-                  appState.setThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+                  appState
+                      .setThemeMode(value ? ThemeMode.dark : ThemeMode.light);
                 },
               ),
               const SizedBox(height: DesignTokens.sectionSpacing),
-              Text("Title Large", style: Theme.of(context).textTheme.titleLarge),
-              Text("Title Medium", style: Theme.of(context).textTheme.titleMedium),
+              Text("Title Large",
+                  style: Theme.of(context).textTheme.titleLarge),
+              Text("Title Medium",
+                  style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: DesignTokens.baseSpacing),
-              Text("Body text example", style: Theme.of(context).textTheme.bodyLarge),
-              Text("Caption text", style: Theme.of(context).textTheme.bodySmall),
+              Text("Body text example",
+                  style: Theme.of(context).textTheme.bodyLarge),
+              Text("Caption text",
+                  style: Theme.of(context).textTheme.bodySmall),
               const SizedBox(height: DesignTokens.sectionSpacing),
               PrimaryButton(label: "Primary", onPressed: () {}),
               const SizedBox(height: DesignTokens.baseSpacing),

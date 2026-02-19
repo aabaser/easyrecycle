@@ -101,6 +101,33 @@ class AppLocalizationsTr extends AppLocalizations {
   String get entry_cta => 'Başla';
 
   @override
+  String get landing_city_label => 'Şehir';
+
+  @override
+  String get login_google => 'Google ile devam et';
+
+  @override
+  String get login_email => 'E-posta ile devam et';
+
+  @override
+  String get login_guest => 'Misafir olarak devam et';
+
+  @override
+  String get privacy_text_prefix => 'Devam ederek ';
+
+  @override
+  String get privacy_text_between => ' ve ';
+
+  @override
+  String get privacy_text_suffix => '\'ı kabul edersin.';
+
+  @override
+  String get privacy_link_label => 'Gizlilik';
+
+  @override
+  String get terms_link_label => 'Şartlar';
+
+  @override
   String get result_recognized => 'Tespit';
 
   @override
@@ -150,6 +177,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get find_recycling_center => 'Geri dönüşüm merkezi bul';
+
+  @override
+  String get recycling_centers_list => 'Geri dönüşüm merkezleri listesi';
 
   @override
   String get recycle_centers_loading => 'Geri dönüşüm noktaları yükleniyor...';

@@ -18,7 +18,6 @@ class EntryScreen extends StatelessWidget {
     final appState = context.watch<AppState>();
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
-    final size = MediaQuery.of(context).size;
     final selectedLocale = appState.locale.languageCode;
     final hasCitySelected = appState.selectedCity != null;
     final cityOptions = City.defaults(
@@ -42,7 +41,8 @@ class EntryScreen extends StatelessWidget {
       },
     };
     final slogan = copy[selectedLocale]?["slogan"] ?? copy["tr"]!["slogan"]!;
-    final subtitle = copy[selectedLocale]?["subtitle"] ?? copy["tr"]!["subtitle"]!;
+    final subtitle =
+        copy[selectedLocale]?["subtitle"] ?? copy["tr"]!["subtitle"]!;
 
     Widget heroHeader() {
       return Column(
@@ -214,5 +214,4 @@ class EntryScreen extends StatelessWidget {
       ),
     );
   }
-
 }

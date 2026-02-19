@@ -14,7 +14,6 @@ dependencies:
   shared_preferences: ^2.3.2
   intl: 0.20.2
   image_picker: ^1.1.2
-  camera: ^0.11.1
   file_picker: ^8.1.2
   http: ^1.2.2
   url_launcher: ^6.3.0
@@ -24,6 +23,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.13.1
 
 flutter:
@@ -34,6 +34,20 @@ flutter:
     - lib/l10n/arb/app_tr.arb
     - lib/l10n/arb/app_en.arb
     - assets/logo/
+    - assets/images/
+    - assets/uix/
+    - assets/fonts/
+    - assets/easy_recycle_images/
+    - assets/Easy Recycle Images/
+  fonts:
+    - family: Jost
+      fonts:
+        - asset: assets/fonts/Jost-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Jost-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Jost-Bold.ttf
+          weight: 700
 
 flutter_launcher_icons:
   android: true

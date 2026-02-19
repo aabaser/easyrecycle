@@ -8,9 +8,9 @@ import "../models/admin_item.dart";
 import "../services/admin_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
+import "../ui/components/er_plant_card.dart";
 import "../widgets/max_width_center.dart";
 import "admin_item_detail_page.dart";
-import "home_shell.dart";
 
 class AdminItemsPage extends StatefulWidget {
   const AdminItemsPage({super.key});
@@ -70,39 +70,24 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
 
   Widget _buildItemTile(AdminItemSummary item) {
     final imageUrl = item.imageUrl;
-    final resolvedUrl = (imageUrl != null && imageUrl.trim().isNotEmpty && imageUrl.startsWith("http"))
+    final resolvedUrl = (imageUrl != null &&
+            imageUrl.trim().isNotEmpty &&
+            imageUrl.startsWith("http"))
         ? imageUrl
         : null;
-    return ListTile(
-      leading: resolvedUrl == null
-          ? Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceVariant,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(Icons.image_not_supported_outlined),
-            )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                resolvedUrl,
-                width: 48,
-                height: 48,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 48,
-                    height: 48,
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    child: const Icon(Icons.image_not_supported_outlined),
-                  );
-                },
-              ),
+    return ERPlantCard(
+      title: item.title ?? item.canonicalKey,
+      subtitle: item.canonicalKey,
+      tags: const [],
+      leadingIcon: Icons.eco_outlined,
+      image: resolvedUrl == null
+          ? null
+          : Image.network(
+              resolvedUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.image_not_supported_outlined),
             ),
-      title: Text(item.title ?? item.canonicalKey),
-      subtitle: Text(item.canonicalKey),
       trailing: const Icon(Icons.chevron_right),
       onTap: () {
         Navigator.of(context).push(
@@ -117,7 +102,6 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final appState = context.watch<AppState>();
 
     return Scaffold(
       appBar: AppBar(

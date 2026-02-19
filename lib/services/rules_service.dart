@@ -1,4 +1,4 @@
-﻿import "../models/action_option.dart";
+import "../models/action_option.dart";
 import "../models/warning.dart";
 import "vision_service.dart";
 

@@ -1,5 +1,4 @@
-﻿import "dart:convert";
-import "dart:typed_data";
+import "dart:convert";
 
 import "package:file_picker/file_picker.dart";
 import "package:flutter/foundation.dart";
@@ -18,7 +17,6 @@ import "../services/mock_similarity_service.dart";
 import "../services/mock_vision_service.dart";
 import "../services/presigned_upload_service.dart";
 import "../services/rules_service.dart";
-import "../services/vision_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/city_pill.dart";
@@ -145,6 +143,7 @@ class _ScanPageState extends State<ScanPage> {
             confidence: item.confidence,
             hintCategory: item.hintCategory,
             disposalLabels: item.disposalLabels,
+            disposalCodes: item.disposalCodes,
           ),
         )
         .toList();
@@ -224,7 +223,8 @@ class _ScanPageState extends State<ScanPage> {
         bestOption: null,
         otherOptions: [],
         warnings: [
-          Warning(severity: WarningSeverity.warn, messageKey: "no_match_message"),
+          Warning(
+              severity: WarningSeverity.warn, messageKey: "no_match_message"),
         ],
         similarItems: _localizeSimilarItems(similar, loc),
         imageBytes: _imageBytes,
@@ -265,6 +265,7 @@ class _ScanPageState extends State<ScanPage> {
         disposalSteps: resolution.disposalSteps,
         categories: const [],
         disposalLabels: [resolution.disposalMethod],
+        disposalCodes: const [],
         bestOption: resolution.bestOption,
         otherOptions: resolution.otherOptions,
         warnings: resolution.warnings,
@@ -302,7 +303,8 @@ class _ScanPageState extends State<ScanPage> {
         bestOption: null,
         otherOptions: [],
         warnings: [
-          Warning(severity: WarningSeverity.warn, messageKey: "no_match_message"),
+          Warning(
+              severity: WarningSeverity.warn, messageKey: "no_match_message"),
         ],
         similarItems: _localizeSimilarItems(similar, loc),
         imageBytes: _imageBytes,
@@ -338,8 +340,10 @@ class _ScanPageState extends State<ScanPage> {
     });
 
     try {
-      final contentType = PresignedUploadService.detectContentType(_imageBytes!);
-      debugPrint("analyze(image): content_type=$contentType bytes=${_imageBytes!.length}");
+      final contentType =
+          PresignedUploadService.detectContentType(_imageBytes!);
+      debugPrint(
+          "analyze(image): content_type=$contentType bytes=${_imageBytes!.length}");
       final presign = await PresignedUploadService.presign(
         appState: appState,
         contentType: contentType,
@@ -374,7 +378,8 @@ class _ScanPageState extends State<ScanPage> {
       final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
       final recycle = body["recycle"] as Map<String, dynamic>? ?? {};
       final disposals = (recycle["disposals"] as List<dynamic>?) ?? [];
-      final noCityRules = item != null && disposals.isEmpty && suggestions.isNotEmpty;
+      final noCityRules =
+          item != null && disposals.isEmpty && suggestions.isNotEmpty;
       final notFound =
           item == null || body["error"] == "item_not_found" || noCityRules;
       if (notFound && !statusOk) {
@@ -396,7 +401,8 @@ class _ScanPageState extends State<ScanPage> {
           bestOption: null,
           otherOptions: const [],
           warnings: [
-            Warning(severity: WarningSeverity.warn, messageKey: "no_match_message"),
+            Warning(
+                severity: WarningSeverity.warn, messageKey: "no_match_message"),
           ],
           similarItems: _localizeSimilarItems(similar, loc),
           imageBytes: _imageBytes,
@@ -440,6 +446,7 @@ class _ScanPageState extends State<ScanPage> {
         disposalSteps: const [],
         categories: _labelsFromList(body["categories"] ?? item["categories"]),
         disposalLabels: _labelsFromList(body["disposals"] ?? disposals),
+        disposalCodes: _codesFromList(body["disposals"] ?? disposals),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -498,7 +505,8 @@ class _ScanPageState extends State<ScanPage> {
           bestOption: null,
           otherOptions: [],
           warnings: [
-            Warning(severity: WarningSeverity.warn, messageKey: "no_match_message"),
+            Warning(
+                severity: WarningSeverity.warn, messageKey: "no_match_message"),
           ],
           similarItems: _localizeSimilarItems(similar, loc),
           imageBytes: null,
@@ -538,14 +546,16 @@ class _ScanPageState extends State<ScanPage> {
       final result = ScanResult(
         state: ScanState.found,
         itemId: item["id"]?.toString(),
-        itemName: (item["title"] ?? item["name"] ?? item["canonical_key"] ?? query)
-            .toString(),
+        itemName:
+            (item["title"] ?? item["name"] ?? item["canonical_key"] ?? query)
+                .toString(),
         confidence: ConfidenceLevel.medium,
         description: _cleanHtml(item["description"]?.toString()),
         disposalMethod: disposalLabel,
         disposalSteps: const [],
         categories: _labelsFromList(body["categories"]),
         disposalLabels: _labelsFromList(body["disposals"]),
+        disposalCodes: _codesFromList(body["disposals"] ?? disposals),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -584,7 +594,8 @@ class _ScanPageState extends State<ScanPage> {
         bestOption: null,
         otherOptions: [],
         warnings: [
-          Warning(severity: WarningSeverity.warn, messageKey: "no_match_message"),
+          Warning(
+              severity: WarningSeverity.warn, messageKey: "no_match_message"),
         ],
         similarItems: _localizeSimilarItems(similar, loc),
         imageBytes: null,
@@ -604,7 +615,8 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
-  List<SimilarItem> _similarityFromApi(Map<String, dynamic> body, String cityId) {
+  List<SimilarItem> _similarityFromApi(
+      Map<String, dynamic> body, String cityId) {
     final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
     if (suggestions.isEmpty) {
       return _similarityService.getTop3Similar(
@@ -628,7 +640,10 @@ class _ScanPageState extends State<ScanPage> {
                 entry["item_name"] ??
                 entry["title"])
             ?.toString();
-        final disposals = _labelsFromList(entry["disposals"] ?? entry["disposal_labels"]);
+        final disposals =
+            _labelsFromList(entry["disposals"] ?? entry["disposal_labels"]);
+        final disposalCodes =
+            _codesFromList(entry["disposals"] ?? entry["disposal_codes"]);
         return SimilarItem(
           itemId: entry["item_id"]?.toString(),
           itemTitle: name,
@@ -636,6 +651,7 @@ class _ScanPageState extends State<ScanPage> {
           confidence: ConfidenceLevel.medium,
           hintCategory: entry["category"]?.toString() ?? "unknown",
           disposalLabels: disposals,
+          disposalCodes: disposalCodes,
         );
       }
       return SimilarItem(
@@ -651,12 +667,31 @@ class _ScanPageState extends State<ScanPage> {
 
   List<String> _labelsFromList(dynamic rawList) {
     final list = (rawList as List<dynamic>?) ?? [];
-    return list.map((entry) {
-      if (entry is Map<String, dynamic>) {
-        return (entry["label"] ?? entry["code"] ?? "").toString();
-      }
-      return entry.toString();
-    }).where((value) => value.trim().isNotEmpty).toList();
+    return list
+        .map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return (entry["label"] ?? entry["code"] ?? "").toString();
+          }
+          return entry.toString();
+        })
+        .where((value) => value.trim().isNotEmpty)
+        .toList();
+  }
+
+  List<String> _codesFromList(dynamic rawList) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    return list
+        .map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return (entry["code"] ?? "").toString();
+          }
+          if (entry is String) {
+            return entry;
+          }
+          return "";
+        })
+        .where((value) => value.trim().isNotEmpty)
+        .toList();
   }
 
   @override
@@ -667,9 +702,7 @@ class _ScanPageState extends State<ScanPage> {
     final city = appState.selectedCity;
     final cityLabel = city == null
         ? ""
-        : (city.id == "berlin"
-            ? loc.t("city_berlin")
-            : loc.t("city_hannover"));
+        : (city.id == "berlin" ? loc.t("city_berlin") : loc.t("city_hannover"));
 
     return Scaffold(
       appBar: AppBar(
@@ -707,7 +740,8 @@ class _ScanPageState extends State<ScanPage> {
                     label: cityLabel,
                     onTap: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const CityPickerPage()),
+                        MaterialPageRoute(
+                            builder: (_) => const CityPickerPage()),
                       );
                     },
                   ),
@@ -727,7 +761,8 @@ class _ScanPageState extends State<ScanPage> {
                   height: 120,
                   decoration: BoxDecoration(
                     color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.cornerRadius),
                   ),
                   child: Icon(
                     Icons.camera_alt,
@@ -742,7 +777,9 @@ class _ScanPageState extends State<ScanPage> {
                 ),
                 const SizedBox(height: DesignTokens.baseSpacing),
                 SecondaryButton(
-                  label: kIsWeb ? loc.t("scan_upload") : loc.t("scan_pick_gallery"),
+                  label: kIsWeb
+                      ? loc.t("scan_upload")
+                      : loc.t("scan_pick_gallery"),
                   onPressed: _isLoading ? null : _pickGallery,
                 ),
                 const SizedBox(height: DesignTokens.sectionSpacing),
@@ -771,14 +808,16 @@ class _ScanPageState extends State<ScanPage> {
                   const SizedBox(height: DesignTokens.sectionSpacing),
                   Text(
                     loc.t("debug_json_title"),
-                    style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
+                    style: DesignTokens.titleM
+                        .copyWith(color: colorScheme.onSurface),
                   ),
                   const SizedBox(height: DesignTokens.baseSpacing),
                   Container(
                     padding: const EdgeInsets.all(DesignTokens.cardPadding),
                     decoration: BoxDecoration(
                       color: colorScheme.surface,
-                      borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+                      borderRadius:
+                          BorderRadius.circular(DesignTokens.cornerRadius),
                       border: Border.all(color: colorScheme.outline),
                     ),
                     child: Text(

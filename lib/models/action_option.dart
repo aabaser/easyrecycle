@@ -1,4 +1,4 @@
-﻿enum ActionType { donate, sell, repair, reuse }
+enum ActionType { donate, sell, repair, reuse }
 
 class ActionOption {
   ActionOption({

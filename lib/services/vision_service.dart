@@ -1,4 +1,4 @@
-﻿import "dart:typed_data";
+import "dart:typed_data";
 import "../models/scan_result.dart";
 
 class VisionInference {

@@ -21,6 +21,7 @@ class ScanResult {
     required this.disposalSteps,
     required this.categories,
     required this.disposalLabels,
+    this.disposalCodes = const [],
     required this.bestOption,
     required this.otherOptions,
     required this.warnings,
@@ -40,6 +41,7 @@ class ScanResult {
   final List<String> disposalSteps;
   final List<String> categories;
   final List<String> disposalLabels;
+  final List<String> disposalCodes;
   final ActionOption? bestOption;
   final List<ActionOption> otherOptions;
   final List<Warning> warnings;

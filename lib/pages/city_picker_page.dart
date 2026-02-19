@@ -86,7 +86,8 @@ class _CityPickerPageState extends State<CityPickerPage> {
                       return ListTile(
                         title: Text(city.name),
                         trailing: _selectedCity?.id == city.id
-                            ? Icon(Icons.check_circle, color: colorScheme.primary)
+                            ? Icon(Icons.check_circle,
+                                color: colorScheme.primary)
                             : null,
                         onTap: () {
                           setState(() {

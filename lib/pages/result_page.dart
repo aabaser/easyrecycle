@@ -12,15 +12,13 @@ import "../l10n/app_localizations.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
-import "../services/mock_rules_service.dart";
-import "../services/vision_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
+import "../utils/recycling_center_rules.dart";
+import "../ui/components/er_plant_card.dart";
 import "../widgets/action_card.dart";
-import "../widgets/disposal_chips.dart";
 import "../widgets/info_banner.dart";
 import "../widgets/max_width_center.dart";
-import "../widgets/primary_button.dart";
 import "../widgets/section_title.dart";
 import "../widgets/similar_item_card.dart";
 import "home_shell.dart";
@@ -37,7 +35,6 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   late ScanResult _result;
-  final _rulesService = MockRulesService();
   bool _showFullDescription = false;
   int _feedbackValue = 0;
   Uint8List? get _effectiveImageBytes =>
@@ -70,7 +67,8 @@ class _ResultPageState extends State<ResultPage> {
     for (final match in regex.allMatches(text)) {
       if (match.start > currentIndex) {
         spans.add(
-          TextSpan(text: text.substring(currentIndex, match.start), style: style),
+          TextSpan(
+              text: text.substring(currentIndex, match.start), style: style),
         );
       }
 
@@ -182,6 +180,7 @@ class _ResultPageState extends State<ResultPage> {
         disposalSteps: const [],
         categories: _labelsFromList(body["categories"]),
         disposalLabels: _labelsFromList(body["disposals"]),
+        disposalCodes: _codesFromList(body["disposals"] ?? disposals),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -201,53 +200,35 @@ class _ResultPageState extends State<ResultPage> {
     } catch (_) {
       return;
     }
-
-    final inference = VisionInference(
-      itemName: item.itemTitle,
-      category: item.hintCategory,
-      confidence: item.confidence,
-    );
-
-    final resolution = _rulesService.resolveFound(
-      cityId: cityId,
-      inference: inference,
-    );
-
-    final fallbackResult = ScanResult(
-      state: ScanState.found,
-      itemId: item.itemId,
-      itemName: item.itemTitle,
-      confidence: item.confidence,
-      description: null,
-      disposalMethod: resolution.disposalMethod,
-      disposalSteps: resolution.disposalSteps,
-      categories: const [],
-      disposalLabels: [resolution.disposalMethod],
-      bestOption: resolution.bestOption,
-      otherOptions: resolution.otherOptions,
-      warnings: resolution.warnings,
-      similarItems: [],
-      imageBytes: _effectiveImageBytes,
-      imageUrl: _result.imageUrl,
-      searchMode: _result.searchMode,
-      queryText: _result.queryText,
-    );
-    if (!mounted) {
-      return;
-    }
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => ResultPage(result: fallbackResult)),
-    );
   }
 
   List<String> _labelsFromList(dynamic rawList) {
     final list = (rawList as List<dynamic>?) ?? [];
-    return list.map((entry) {
-      if (entry is Map<String, dynamic>) {
-        return (entry["label"] ?? entry["code"] ?? "").toString();
-      }
-      return entry.toString();
-    }).where((value) => value.trim().isNotEmpty).toList();
+    return list
+        .map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return (entry["label"] ?? entry["code"] ?? "").toString();
+          }
+          return entry.toString();
+        })
+        .where((value) => value.trim().isNotEmpty)
+        .toList();
+  }
+
+  List<String> _codesFromList(dynamic rawList) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    return list
+        .map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return (entry["code"] ?? "").toString();
+          }
+          if (entry is String) {
+            return entry;
+          }
+          return "";
+        })
+        .where((value) => value.trim().isNotEmpty)
+        .toList();
   }
 
   @override
@@ -283,50 +264,8 @@ class _ResultPageState extends State<ResultPage> {
         ),
       ),
       bottomNavigationBar: _result.state == ScanState.found
-          ? _buildFoundBottomBar(loc)
+          ? null
           : _buildNotFoundBottomBar(loc),
-    );
-  }
-
-  Widget _buildFoundBottomBar(AppLocalizations loc) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final appState = context.read<AppState>();
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DesignTokens.sectionSpacing,
-        vertical: DesignTokens.baseSpacing,
-      ),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        border: Border(top: BorderSide(color: colorScheme.outline)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 52,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.primary,
-                foregroundColor: colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-                ),
-              ),
-              onPressed: () {
-                final cityCode = appState.selectedCity?.id ?? "hannover";
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => RecycleCentersPage(cityCode: cityCode),
-                  ),
-                );
-              },
-              child: Text(loc.t("find_recycling_center")),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -367,7 +306,8 @@ class _ResultPageState extends State<ResultPage> {
                 backgroundColor: colorScheme.primary,
                 foregroundColor: colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+                  borderRadius:
+                      BorderRadius.circular(DesignTokens.cornerRadius),
                 ),
               ),
               onPressed: () => _handleNotFoundPrimary(mode, loc),
@@ -383,7 +323,8 @@ class _ResultPageState extends State<ResultPage> {
                 foregroundColor: colorScheme.primary,
                 side: BorderSide(color: colorScheme.outline),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+                  borderRadius:
+                      BorderRadius.circular(DesignTokens.cornerRadius),
                 ),
               ),
               onPressed: () => _handleNotFoundSecondary(mode, loc),
@@ -489,6 +430,7 @@ class _ResultPageState extends State<ResultPage> {
         disposalSteps: const [],
         categories: _labelsFromList(body["categories"]),
         disposalLabels: _labelsFromList(body["disposals"]),
+        disposalCodes: _codesFromList(body["disposals"] ?? disposals),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -526,31 +468,12 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget _buildFound(BuildContext context, AppLocalizations loc) {
-    final colorScheme = Theme.of(context).colorScheme;
     return ListView(
       padding: const EdgeInsets.only(bottom: DesignTokens.sectionSpacing),
       children: [
-        _buildImagePreview(),
-        const SizedBox(height: DesignTokens.sectionSpacing),
-        Row(
-          children: [
-            const _LeadingIconBadge(icon: Icons.eco_outlined),
-            const SizedBox(width: DesignTokens.baseSpacing),
-            Expanded(
-              child: Text(
-                _result.itemName == null
-                    ? ""
-                    : _result.categories.isNotEmpty
-                        ? "${_result.itemName} (${_result.categories.join(", ")})"
-                        : _result.itemName!,
-                style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: DesignTokens.sectionSpacing),
         _buildDisposalCard(loc),
-        if (_result.description != null && _result.description!.trim().isNotEmpty) ...[
+        if (_result.description != null &&
+            _result.description!.trim().isNotEmpty) ...[
           const SizedBox(height: DesignTokens.sectionSpacing),
           SectionTitle(title: loc.t("result_description")),
           const SizedBox(height: DesignTokens.baseSpacing),
@@ -559,7 +482,8 @@ class _ResultPageState extends State<ResultPage> {
         if (_result.bestOption != null) ...[
           const SizedBox(height: DesignTokens.sectionSpacing),
           SectionTitle(
-            title: "${loc.t("best_option_title")} ${loc.t(_result.bestOption!.titleKey)}",
+            title:
+                "${loc.t("best_option_title")} ${loc.t(_result.bestOption!.titleKey)}",
           ),
           const SizedBox(height: DesignTokens.baseSpacing),
           ActionCard(option: _result.bestOption!),
@@ -569,14 +493,16 @@ class _ResultPageState extends State<ResultPage> {
           ExpansionTile(
             title: Text(
               loc.t("other_options_title"),
-              style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
+              style: DesignTokens.titleM.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             children: _result.otherOptions.map((option) {
               return ListTile(
                 leading: Icon(
                   Icons.circle,
                   size: 10,
-                  color: colorScheme.primary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 title: Text(loc.t(option.titleKey)),
                 trailing: const Icon(Icons.chevron_right),
@@ -597,78 +523,58 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  Widget _buildImagePreview() {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      height: 160,
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        border: Border.all(color: colorScheme.outline),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        child: _result.imageBytes != null
-            ? Image.memory(_result.imageBytes!, fit: BoxFit.cover)
-            : (_effectiveImageUrl != null
-                ? Image.network(
-                    _effectiveImageUrl!.startsWith("http")
-                        ? _effectiveImageUrl!
-                        : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Icon(
-                          Icons.inventory_2_outlined,
-                          size: 64,
-                          color: colorScheme.primary,
-                        ),
-                      );
-                    },
-                  )
-                : Icon(
-                    Icons.inventory_2_outlined,
-                    size: 64,
-                    color: colorScheme.primary,
-                  )),
-      ),
-    );
-  }
-
   Widget _buildDisposalCard(AppLocalizations loc) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final hasLabels = _result.disposalLabels.isNotEmpty;
-    final methodText = hasLabels ? "" : (_result.disposalMethod ?? "");
-    return Container(
-      padding: const EdgeInsets.all(DesignTokens.cardPadding),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        border: Border.all(color: colorScheme.outline),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const _LeadingIconBadge(icon: Icons.delete_outline),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  methodText.isEmpty
-                      ? loc.t("disposal_title_prefix")
-                      : "${loc.t("disposal_title_prefix")} $methodText",
-                  style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: DesignTokens.baseSpacing),
-          if (_result.disposalLabels.isNotEmpty)
-            DisposalChips(labels: _result.disposalLabels),
-          if (_result.disposalLabels.isNotEmpty)
-            const SizedBox(height: DesignTokens.baseSpacing),
-          _buildFeedbackRow(loc),
+    final appState = context.read<AppState>();
+    final canFindCenter =
+        hasEligibleRecyclingCenterDisposal(_result.disposalCodes);
+    final methodText = (_result.disposalMethod ?? "").trim();
+    final title = loc.t("disposal_title_prefix");
+    final subtitle = _result.categories.isNotEmpty
+        ? _result.categories.join(" • ")
+        : null;
+    final disposalTags = <String>[
+      ..._result.disposalLabels.where((e) => e.trim().isNotEmpty),
+      if (_result.disposalLabels.isEmpty && methodText.isNotEmpty) methodText,
+    ];
+    final hasPreviewImage = _result.imageBytes != null ||
+        (_effectiveImageUrl != null && _effectiveImageUrl!.trim().isNotEmpty);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ERPlantCard(
+          title: title,
+          subtitle: subtitle,
+          image: hasPreviewImage
+              ? (_result.imageBytes != null
+                  ? Image.memory(_result.imageBytes!, fit: BoxFit.cover)
+                  : Image.network(
+                      _effectiveImageUrl!.startsWith("http")
+                          ? _effectiveImageUrl!
+                          : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.image_not_supported_outlined,
+                      ),
+                    ))
+              : null,
+          tags: disposalTags,
+          leadingIcon: Icons.delete_outline,
+          ctaLabel: canFindCenter ? loc.t("find_recycling_center") : null,
+          onCtaTap: canFindCenter
+              ? () {
+                  final cityCode = appState.selectedCity?.id ?? "hannover";
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => RecycleCentersPage(cityCode: cityCode),
+                    ),
+                  );
+                }
+              : null,
+        ),
+        const SizedBox(height: 8),
+        _buildFeedbackRow(loc),
+        if (_result.disposalSteps.isNotEmpty) ...[
           const SizedBox(height: DesignTokens.baseSpacing),
           ..._result.disposalSteps.map(
             (step) => Padding(
@@ -691,7 +597,7 @@ class _ResultPageState extends State<ResultPage> {
             ),
           ),
         ],
-      ),
+      ],
     );
   }
 
@@ -717,7 +623,9 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
             maxLines: _showFullDescription ? null : 3,
-            overflow: _showFullDescription ? TextOverflow.visible : TextOverflow.ellipsis,
+            overflow: _showFullDescription
+                ? TextOverflow.visible
+                : TextOverflow.ellipsis,
           ),
         ),
         if (hasMore)
@@ -840,20 +748,6 @@ class _ResultPageState extends State<ResultPage> {
     return ListView(
       padding: const EdgeInsets.only(bottom: DesignTokens.sectionSpacing),
       children: [
-        _buildEmptyStateBadge(),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        Text(
-          loc.t("no_match_title"),
-          style: DesignTokens.titleL.copyWith(color: colorScheme.onSurface),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          loc.t("no_match_subtitle"),
-          style: DesignTokens.body.copyWith(color: colorScheme.onSurfaceVariant),
-        ),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        _buildHintCard(loc, hintLines),
-        const SizedBox(height: DesignTokens.sectionSpacing),
         SectionTitle(title: loc.t("similar_suggestions")),
         const SizedBox(height: DesignTokens.baseSpacing),
         ..._result.similarItems.map(
@@ -861,10 +755,37 @@ class _ResultPageState extends State<ResultPage> {
             padding: const EdgeInsets.only(bottom: DesignTokens.baseSpacing),
             child: SimilarItemCard(
               item: item,
+              findCenterLabel: loc.t("find_recycling_center"),
+              onFindCenterTap: () {
+                final cityCode =
+                    context.read<AppState>().selectedCity?.id ?? "hannover";
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => RecycleCentersPage(cityCode: cityCode),
+                  ),
+                );
+              },
               onTap: () => _resolveSimilarItem(item),
             ),
           ),
         ),
+        const SizedBox(height: DesignTokens.sectionSpacing),
+        _buildEmptyStateBadge(),
+        const SizedBox(height: DesignTokens.baseSpacing),
+        Text(
+          loc.t("no_match_title"),
+          style: DesignTokens.titleM.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          loc.t("no_match_subtitle"),
+          style:
+              DesignTokens.body.copyWith(color: colorScheme.onSurfaceVariant),
+        ),
+        const SizedBox(height: DesignTokens.baseSpacing),
+        _buildHintCard(loc, hintLines),
       ],
     );
   }
@@ -936,26 +857,3 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 }
-
-class _LeadingIconBadge extends StatelessWidget {
-  const _LeadingIconBadge({required this.icon});
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Icon(icon, color: colorScheme.primary, size: 20),
-    );
-  }
-}
-
-
-

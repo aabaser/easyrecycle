@@ -1,4 +1,4 @@
-﻿import "dart:typed_data";
+import "dart:typed_data";
 
 import "vision_service.dart";
 import "../models/scan_result.dart";
@@ -11,7 +11,9 @@ class MockVisionService implements VisionService {
     String? queryText,
   }) async {
     final text = (queryText ?? "").toLowerCase();
-    if (text.contains("batterie") || text.contains("akku") || text.contains("battery")) {
+    if (text.contains("batterie") ||
+        text.contains("akku") ||
+        text.contains("battery")) {
       return VisionInference(
         itemName: "item_battery",
         category: "battery",

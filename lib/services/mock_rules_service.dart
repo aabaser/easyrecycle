@@ -1,5 +1,4 @@
-﻿import "../models/action_option.dart";
-import "../models/scan_result.dart";
+import "../models/action_option.dart";
 import "../models/warning.dart";
 import "rules_service.dart";
 import "vision_service.dart";

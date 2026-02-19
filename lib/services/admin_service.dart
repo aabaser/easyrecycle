@@ -15,7 +15,15 @@ class AdminService {
   final AppState _appState;
 
   Future<Map<String, String>> _headers({Map<String, String>? extra}) {
-    return _appState.authHeaders(extra: extra);
+    final adminHeader = ApiConfig.adminApiKey.trim().isEmpty
+        ? const <String, String>{}
+        : {"X-Admin-Token": ApiConfig.adminApiKey};
+    return _appState.authHeaders(
+      extra: {
+        ...adminHeader,
+        if (extra != null) ...extra,
+      },
+    );
   }
 
   Future<List<AdminItemSummary>> listItems({
@@ -61,11 +69,13 @@ class AdminService {
     return _parseDetail(body);
   }
 
-  Future<AdminOptions> getOptions({required String lang, String? cityId}) async {
+  Future<AdminOptions> getOptions(
+      {required String lang, String? cityId}) async {
     final cityParam = cityId != null && cityId.isNotEmpty
         ? "&city=${Uri.encodeComponent(cityId)}"
         : "";
-    final uri = Uri.parse("${ApiConfig.baseUrl}/admin/options?lang=$lang$cityParam");
+    final uri =
+        Uri.parse("${ApiConfig.baseUrl}/admin/options?lang=$lang$cityParam");
     final response = await http.get(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_options_failed");
@@ -212,7 +222,8 @@ class AdminService {
     required String itemId,
     required String imageId,
   }) async {
-    final uri = Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images/$imageId");
+    final uri =
+        Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images/$imageId");
     final response = await http.delete(uri, headers: await _headers());
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("admin_item_image_delete_failed");

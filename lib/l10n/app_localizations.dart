@@ -1,4 +1,4 @@
-﻿import "dart:convert";
+import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -33,7 +33,7 @@ class AppLocalizations {
 
   static Future<AppLocalizations> load(Locale locale) async {
     final code = locale.languageCode;
-    final path = "lib/l10n/arb/app_${code}.arb";
+    final path = "lib/l10n/arb/app_$code.arb";
     final raw = await rootBundle.loadString(path);
     final jsonMap = json.decode(raw) as Map<String, dynamic>;
 

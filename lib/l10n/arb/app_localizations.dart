@@ -280,6 +280,60 @@ abstract class AppLocalizations {
   /// **'Start'**
   String get entry_cta;
 
+  /// No description provided for @landing_city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get landing_city_label;
+
+  /// No description provided for @login_google.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get login_google;
+
+  /// No description provided for @login_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with email'**
+  String get login_email;
+
+  /// No description provided for @login_guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as guest'**
+  String get login_guest;
+
+  /// No description provided for @privacy_text_prefix.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you accept '**
+  String get privacy_text_prefix;
+
+  /// No description provided for @privacy_text_between.
+  ///
+  /// In en, this message translates to:
+  /// **' and '**
+  String get privacy_text_between;
+
+  /// No description provided for @privacy_text_suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get privacy_text_suffix;
+
+  /// No description provided for @privacy_link_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacy_link_label;
+
+  /// No description provided for @terms_link_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms'**
+  String get terms_link_label;
+
   /// No description provided for @result_recognized.
   ///
   /// In en, this message translates to:
@@ -381,6 +435,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find recycling center'**
   String get find_recycling_center;
+
+  /// No description provided for @recycling_centers_list.
+  ///
+  /// In en, this message translates to:
+  /// **'List recycling centers'**
+  String get recycling_centers_list;
 
   /// No description provided for @recycle_centers_loading.
   ///

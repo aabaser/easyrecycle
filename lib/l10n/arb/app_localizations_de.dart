@@ -101,6 +101,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String get entry_cta => 'Starten';
 
   @override
+  String get landing_city_label => 'Stadt';
+
+  @override
+  String get login_google => 'Mit Google fortfahren';
+
+  @override
+  String get login_email => 'Mit E-Mail fortfahren';
+
+  @override
+  String get login_guest => 'Als Gast fortfahren';
+
+  @override
+  String get privacy_text_prefix => 'Mit dem Fortfahren akzeptierst du ';
+
+  @override
+  String get privacy_text_between => ' und ';
+
+  @override
+  String get privacy_text_suffix => '.';
+
+  @override
+  String get privacy_link_label => 'Datenschutz';
+
+  @override
+  String get terms_link_label => 'AGB';
+
+  @override
   String get result_recognized => 'Erkannt';
 
   @override
@@ -150,6 +177,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get find_recycling_center => 'Recyclinghof finden';
+
+  @override
+  String get recycling_centers_list => 'Liste der Recyclinghöfe';
 
   @override
   String get recycle_centers_loading => 'Recyclinghöfe werden geladen...';

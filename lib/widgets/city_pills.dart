@@ -1,4 +1,4 @@
-﻿import "package:flutter/material.dart";
+import "package:flutter/material.dart";
 
 import "../models/city.dart";
 
@@ -17,6 +17,7 @@ class CityPills extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -25,21 +26,18 @@ class CityPills extends StatelessWidget {
         return ChoiceChip(
           label: Text(
             city.name,
-            style: TextStyle(
-              color: isSelected
-                  ? const Color(0xFF4338CA)
-                  : colorScheme.onSurface,
-              fontWeight: FontWeight.w600,
+            style: textTheme.labelLarge?.copyWith(
+              color: isSelected ? colorScheme.primary : colorScheme.onSurface,
+              fontWeight: FontWeight.w700,
             ),
           ),
           selected: isSelected,
           showCheckmark: false,
-          selectedColor: const Color(0xFF4338CA).withOpacity(0.12),
-          backgroundColor: colorScheme.surface,
+          selectedColor: colorScheme.primaryContainer,
+          backgroundColor: colorScheme.surfaceContainerLow,
           side: BorderSide(
-            color: isSelected
-                ? const Color(0xFF4338CA)
-                : colorScheme.outline.withOpacity(0.6),
+            color: isSelected ? colorScheme.primary : colorScheme.outline,
+            width: isSelected ? 1.2 : 1,
           ),
           onSelected: (_) => onSelected(city),
         );

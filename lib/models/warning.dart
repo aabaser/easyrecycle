@@ -1,4 +1,4 @@
-﻿enum WarningSeverity { info, warn, danger }
+enum WarningSeverity { info, warn, danger }
 
 class Warning {
   Warning({required this.severity, required this.messageKey});

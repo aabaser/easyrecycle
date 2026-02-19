@@ -8,6 +8,7 @@ class SimilarItem {
     required this.confidence,
     required this.hintCategory,
     required this.disposalLabels,
+    this.disposalCodes = const [],
   });
 
   final String? itemId;
@@ -16,4 +17,5 @@ class SimilarItem {
   final ConfidenceLevel confidence;
   final String hintCategory;
   final List<String> disposalLabels;
+  final List<String> disposalCodes;
 }

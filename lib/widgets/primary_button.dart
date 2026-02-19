@@ -1,8 +1,9 @@
-﻿import "package:flutter/material.dart";
+import "package:flutter/material.dart";
 import "../theme/design_tokens.dart";
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({super.key, required this.label, required this.onPressed});
+  const PrimaryButton(
+      {super.key, required this.label, required this.onPressed});
 
   final String label;
   final VoidCallback? onPressed;

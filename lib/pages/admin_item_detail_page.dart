@@ -13,7 +13,6 @@ import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/primary_button.dart";
 import "../widgets/max_width_center.dart";
-import "home_shell.dart";
 
 class AdminItemDetailPage extends StatefulWidget {
   const AdminItemDetailPage({super.key, required this.itemId});
@@ -34,9 +33,6 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
   List<AdminImageAsset> _itemImages = [];
   final Map<String, AdminOptions> _optionsByCity = {};
   List<City> _cities = [];
-  List<String> _selectedCategoryCodes = [];
-  List<String> _selectedDisposalCodes = [];
-  List<String> _selectedWarningCodes = [];
   final Map<String, List<String>> _categoryCodesByCity = {};
   final Map<String, List<String>> _disposalCodesByCity = {};
   final Map<String, List<String>> _warningCodesByCity = {};
@@ -71,7 +67,9 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
     if (codes.isEmpty) {
       return fallback;
     }
-    final labelMap = {for (final opt in options) opt.code: opt.label ?? opt.code};
+    final labelMap = {
+      for (final opt in options) opt.code: opt.label ?? opt.code
+    };
     return codes.map((code) => labelMap[code] ?? code).join(", ");
   }
 
@@ -134,7 +132,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                     child: SizedBox(
                       width: double.infinity,
                       child: TextButton(
-                        onPressed: () => Navigator.of(context).pop(selectedSet.toList()),
+                        onPressed: () =>
+                            Navigator.of(context).pop(selectedSet.toList()),
                         child: Text(AppLocalizations.of(context).t("info_ok")),
                       ),
                     ),
@@ -191,7 +190,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                       ),
                     ),
                     const SizedBox(height: DesignTokens.sectionSpacing),
-                    Text(loc.t("admin_category_label"), style: DesignTokens.titleM),
+                    Text(loc.t("admin_category_label"),
+                        style: DesignTokens.titleM),
                     const SizedBox(height: DesignTokens.baseSpacing),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -218,7 +218,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                       },
                     ),
                     const SizedBox(height: DesignTokens.sectionSpacing),
-                    Text(loc.t("admin_disposal_label"), style: DesignTokens.titleM),
+                    Text(loc.t("admin_disposal_label"),
+                        style: DesignTokens.titleM),
                     const SizedBox(height: DesignTokens.baseSpacing),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -245,7 +246,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                       },
                     ),
                     const SizedBox(height: DesignTokens.sectionSpacing),
-                    Text(loc.t("admin_warning_label"), style: DesignTokens.titleM),
+                    Text(loc.t("admin_warning_label"),
+                        style: DesignTokens.titleM),
                     const SizedBox(height: DesignTokens.baseSpacing),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -315,7 +317,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
               cityId: city.id,
             );
           } catch (_) {
-            return const AdminOptions(categories: [], disposals: [], warnings: []);
+            return const AdminOptions(
+                categories: [], disposals: [], warnings: []);
           }
         }),
       );
@@ -344,24 +347,23 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
           ..clear()
           ..addAll(optionsByCity);
         _cities = cities;
-        _selectedCategoryCodes = firstDetail?.categories.map((c) => c.code).toList() ?? [];
-        _selectedDisposalCodes = firstDetail?.disposals.map((d) => d.code).toList() ?? [];
-        _selectedWarningCodes = firstDetail?.warnings.map((w) => w.code).toList() ?? [];
         _selectedImageId = firstDetail?.item.primaryImageId ??
-            images.firstWhere(
-              (img) => img.isPrimary,
-              orElse: () => images.isNotEmpty
-                  ? images.first
-                  : const AdminImageAsset(
-                      imageId: "",
-                      imageUrl: "",
-                      width: null,
-                      height: null,
-                      source: null,
-                      createdAt: null,
-                      isPrimary: false,
-                    ),
-        ).imageId;
+            images
+                .firstWhere(
+                  (img) => img.isPrimary,
+                  orElse: () => images.isNotEmpty
+                      ? images.first
+                      : const AdminImageAsset(
+                          imageId: "",
+                          imageUrl: "",
+                          width: null,
+                          height: null,
+                          source: null,
+                          createdAt: null,
+                          isPrimary: false,
+                        ),
+                )
+                .imageId;
         if (_selectedImageId != null && _selectedImageId!.isEmpty) {
           _selectedImageId = null;
         }
@@ -471,7 +473,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
             updated.warnings.map((w) => w.code).toList();
         controller.text = updated.item.description ?? "";
       });
-    } catch (_) {} finally {
+    } catch (_) {
+    } finally {
       if (!mounted) {
         return;
       }
@@ -567,18 +570,22 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
       }
       setState(() {
         _itemImages = images;
-        _selectedImageId = images.firstWhere(
-          (img) => img.isPrimary,
-          orElse: () => images.isNotEmpty ? images.first : const AdminImageAsset(
-            imageId: "",
-            imageUrl: "",
-            width: null,
-            height: null,
-            source: null,
-            createdAt: null,
-            isPrimary: false,
-          ),
-        ).imageId;
+        _selectedImageId = images
+            .firstWhere(
+              (img) => img.isPrimary,
+              orElse: () => images.isNotEmpty
+                  ? images.first
+                  : const AdminImageAsset(
+                      imageId: "",
+                      imageUrl: "",
+                      width: null,
+                      height: null,
+                      source: null,
+                      createdAt: null,
+                      isPrimary: false,
+                    ),
+            )
+            .imageId;
         if (_selectedImageId != null && _selectedImageId!.isEmpty) {
           _selectedImageId = null;
         }
@@ -588,9 +595,10 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
 
   Widget _buildImageTile(AdminImageAsset image) {
     final isSelected = image.imageId == _selectedImageId;
-    final resolvedUrl = (image.imageUrl.trim().isNotEmpty && image.imageUrl.startsWith("http"))
-        ? image.imageUrl
-        : null;
+    final resolvedUrl =
+        (image.imageUrl.trim().isNotEmpty && image.imageUrl.startsWith("http"))
+            ? image.imageUrl
+            : null;
     return GestureDetector(
       onTap: () => _setPrimaryImage(image.imageId),
       child: Container(
@@ -642,12 +650,13 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
               ? const Center(child: CircularProgressIndicator())
               : (_detail == null
                   ? Center(child: Text(loc.t("admin_item_not_found")))
-                      : ListView(
+                  : ListView(
                       children: [
                         Text(
                           _detail!.item.canonicalKey,
                           style: DesignTokens.caption.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                         const SizedBox(height: DesignTokens.baseSpacing),
@@ -670,7 +679,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                           },
                         ),
                         const SizedBox(height: DesignTokens.sectionSpacing),
-                        Text(loc.t("admin_images_title"), style: DesignTokens.titleM),
+                        Text(loc.t("admin_images_title"),
+                            style: DesignTokens.titleM),
                         const SizedBox(height: DesignTokens.baseSpacing),
                         Align(
                           alignment: Alignment.centerLeft,
@@ -698,14 +708,16 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                           ),
                         const SizedBox(height: DesignTokens.sectionSpacing),
                         PrimaryButton(
-                          label: _saving ? loc.t("admin_saving") : loc.t("admin_save"),
+                          label: _saving
+                              ? loc.t("admin_saving")
+                              : loc.t("admin_save"),
                           onPressed: _saving ? null : _saveChanges,
                         ),
                         const SizedBox(height: DesignTokens.sectionSpacing),
-                        Text(loc.t("admin_city_settings"), style: DesignTokens.titleM),
+                        Text(loc.t("admin_city_settings"),
+                            style: DesignTokens.titleM),
                         const SizedBox(height: DesignTokens.baseSpacing),
-                        if (_cities.isEmpty)
-                          Text(loc.t("admin_no_cities")),
+                        if (_cities.isEmpty) Text(loc.t("admin_no_cities")),
                         if (_cities.isNotEmpty)
                           Scrollbar(
                             controller: _tableScrollController,
@@ -718,17 +730,29 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                                 child: DataTable(
                                   columnSpacing: 24,
                                   columns: [
-                                    DataColumn(label: Text(loc.t("admin_city_label"))),
-                                    DataColumn(label: Text(loc.t("admin_category_label"))),
-                                    DataColumn(label: Text(loc.t("admin_disposal_label"))),
-                                    DataColumn(label: Text(loc.t("admin_warning_label"))),
-                                    DataColumn(label: Text(loc.t("admin_description_label"))),
-                                    DataColumn(label: Text(loc.t("admin_actions"))),
+                                    DataColumn(
+                                        label: Text(loc.t("admin_city_label"))),
+                                    DataColumn(
+                                        label: Text(
+                                            loc.t("admin_category_label"))),
+                                    DataColumn(
+                                        label: Text(
+                                            loc.t("admin_disposal_label"))),
+                                    DataColumn(
+                                        label:
+                                            Text(loc.t("admin_warning_label"))),
+                                    DataColumn(
+                                        label: Text(
+                                            loc.t("admin_description_label"))),
+                                    DataColumn(
+                                        label: Text(loc.t("admin_actions"))),
                                   ],
                                   rows: _cities.map((city) {
                                     final options = _optionsByCity[city.id];
-                                    final descController = _descControllers[city.id];
-                                    if (options == null || descController == null) {
+                                    final descController =
+                                        _descControllers[city.id];
+                                    if (options == null ||
+                                        descController == null) {
                                       return DataRow(
                                         cells: [
                                           DataCell(Text(city.name)),
@@ -740,9 +764,12 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                                         ],
                                       );
                                     }
-                                    final categoryCodes = _categoryCodesByCity[city.id] ?? [];
-                                    final disposalCodes = _disposalCodesByCity[city.id] ?? [];
-                                    final warningCodes = _warningCodesByCity[city.id] ?? [];
+                                    final categoryCodes =
+                                        _categoryCodesByCity[city.id] ?? [];
+                                    final disposalCodes =
+                                        _disposalCodesByCity[city.id] ?? [];
+                                    final warningCodes =
+                                        _warningCodesByCity[city.id] ?? [];
                                     return DataRow(
                                       cells: [
                                         DataCell(Text(city.name)),
@@ -775,7 +802,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                                         ),
                                         DataCell(
                                           ConstrainedBox(
-                                            constraints: const BoxConstraints(maxWidth: 280),
+                                            constraints: const BoxConstraints(
+                                                maxWidth: 280),
                                             child: Text(
                                               _previewText(descController.text),
                                               maxLines: 2,
@@ -785,7 +813,8 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                                         ),
                                         DataCell(
                                           TextButton(
-                                            onPressed: () => _openCityEditor(city),
+                                            onPressed: () =>
+                                                _openCityEditor(city),
                                             child: Text(loc.t("admin_edit")),
                                           ),
                                         ),

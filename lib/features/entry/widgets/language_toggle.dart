@@ -36,7 +36,8 @@ class LanguageToggle extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               onTap: () => onChanged(code.toLowerCase()),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: isSelected ? primaryColor : Colors.transparent,
                   borderRadius: BorderRadius.circular(14),

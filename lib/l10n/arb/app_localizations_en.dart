@@ -101,6 +101,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get entry_cta => 'Start';
 
   @override
+  String get landing_city_label => 'City';
+
+  @override
+  String get login_google => 'Continue with Google';
+
+  @override
+  String get login_email => 'Continue with email';
+
+  @override
+  String get login_guest => 'Continue as guest';
+
+  @override
+  String get privacy_text_prefix => 'By continuing, you accept ';
+
+  @override
+  String get privacy_text_between => ' and ';
+
+  @override
+  String get privacy_text_suffix => '.';
+
+  @override
+  String get privacy_link_label => 'Privacy';
+
+  @override
+  String get terms_link_label => 'Terms';
+
+  @override
   String get result_recognized => 'Recognized';
 
   @override
@@ -150,6 +177,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get find_recycling_center => 'Find recycling center';
+
+  @override
+  String get recycling_centers_list => 'List recycling centers';
 
   @override
   String get recycle_centers_loading => 'Loading recycling centers...';

@@ -1,9 +1,6 @@
-import "dart:async";
 import "dart:convert";
-import "dart:typed_data";
 import "dart:math";
 
-import "package:camera/camera.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -20,9 +17,7 @@ import "../models/warning.dart";
 import "../services/mock_similarity_service.dart";
 import "../services/presigned_upload_service.dart";
 import "../state/app_state.dart";
-import "../theme/design_tokens.dart";
-import "../widgets/primary_button.dart";
-import "../widgets/secondary_button.dart";
+import "../ui/components/er_button.dart";
 import "result_page.dart";
 import "city_picker_page.dart";
 
@@ -33,155 +28,22 @@ class CameraTabPage extends StatefulWidget {
   CameraTabPageState createState() => CameraTabPageState();
 }
 
-class CameraTabPageState extends State<CameraTabPage>
-    with WidgetsBindingObserver {
+class CameraTabPageState extends State<CameraTabPage> {
   final _similarityService = MockSimilarityService();
   Uint8List? _imageBytes;
-  CameraController? _cameraController;
-  Future<void>? _cameraInitFuture;
   bool _isLoading = false;
   bool _isPicking = false;
   bool _isScanning = false;
-  bool _isCameraReady = false;
-  bool _cameraUnavailable = false;
-  bool _isActive = false;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
+  void handleTabSelected() {}
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    unawaited(_stopCamera());
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!_isActive) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused ||
-        state == AppLifecycleState.detached) {
-      unawaited(_stopCamera());
-      return;
-    }
-    if (state == AppLifecycleState.resumed) {
-      unawaited(_ensureCameraStarted());
-    }
-  }
-
-  void handleTabSelected() {
-  }
-
-  void setActive(bool active) {
-    if (_isActive == active) {
-      return;
-    }
-    _isActive = active;
-    if (active) {
-      unawaited(_ensureCameraStarted());
-      return;
-    }
-    unawaited(_stopCamera());
-  }
+  void setActive(bool active) {}
 
   Future<void> openCamera({bool force = false}) async {
-    if (_isPicking) {
+    if (_isPicking || _isLoading || _isScanning) {
       return;
     }
-    await _ensureCameraStarted();
-    if (force && _cameraUnavailable) {
-      await _pickImage();
-    }
-  }
-
-  Future<void> _ensureCameraStarted() async {
-    if (_isCameraReady || _cameraInitFuture != null) {
-      return _cameraInitFuture ?? Future.value();
-    }
-
-    final init = _startCameraInternal();
-    _cameraInitFuture = init;
-    try {
-      await init;
-    } finally {
-      _cameraInitFuture = null;
-    }
-  }
-
-  Future<void> _startCameraInternal() async {
-    if (!_isActive || _isPicking) {
-      return;
-    }
-    try {
-      final cameras = await availableCameras();
-      if (cameras.isEmpty) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {
-          _isCameraReady = false;
-          _cameraUnavailable = true;
-        });
-        return;
-      }
-      final selected = cameras.firstWhere(
-        (camera) => camera.lensDirection == CameraLensDirection.back,
-        orElse: () => cameras.first,
-      );
-
-      final previousController = _cameraController;
-      final controller = CameraController(
-        selected,
-        ResolutionPreset.medium,
-        enableAudio: false,
-      );
-      await controller.initialize();
-      await controller.setFlashMode(FlashMode.off);
-
-      if (!mounted) {
-        await controller.dispose();
-        return;
-      }
-
-      setState(() {
-        _cameraController = controller;
-        _isCameraReady = true;
-        _cameraUnavailable = false;
-      });
-      if (previousController != null && previousController != controller) {
-        await previousController.dispose();
-      }
-    } catch (_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _cameraController = null;
-        _isCameraReady = false;
-        _cameraUnavailable = true;
-      });
-    }
-  }
-
-  Future<void> _stopCamera() async {
-    final controller = _cameraController;
-    _cameraController = null;
-    if (mounted) {
-      setState(() {
-        _isCameraReady = false;
-      });
-    } else {
-      _isCameraReady = false;
-    }
-    if (controller != null) {
-      await controller.dispose();
-    }
+    await _pickImage();
   }
 
   Future<void> _pickImage() async {
@@ -239,34 +101,6 @@ class CameraTabPageState extends State<CameraTabPage>
     }
   }
 
-  Future<void> _captureFromPreview() async {
-    if (_isPicking || _isLoading || _isScanning) {
-      return;
-    }
-    final controller = _cameraController;
-    if (controller == null || !controller.value.isInitialized) {
-      await _pickImage();
-      return;
-    }
-    _isPicking = true;
-    _isScanning = true;
-    try {
-      final file = await controller.takePicture();
-      final bytes = await file.readAsBytes();
-      final cropped = _cropToFocus(bytes);
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _imageBytes = cropped;
-      });
-      await _runAnalyze();
-    } finally {
-      _isPicking = false;
-      _isScanning = false;
-    }
-  }
-
   Uint8List _cropToFocus(Uint8List bytes) {
     try {
       final decoded = img.decodeImage(bytes);
@@ -312,6 +146,7 @@ class CameraTabPageState extends State<CameraTabPage>
             confidence: item.confidence,
             hintCategory: item.hintCategory,
             disposalLabels: item.disposalLabels,
+            disposalCodes: item.disposalCodes,
           ),
         )
         .toList();
@@ -358,8 +193,10 @@ class CameraTabPageState extends State<CameraTabPage>
     });
 
     try {
-      final contentType = PresignedUploadService.detectContentType(_imageBytes!);
-      debugPrint("analyze(image): content_type=$contentType bytes=${_imageBytes!.length}");
+      final contentType =
+          PresignedUploadService.detectContentType(_imageBytes!);
+      debugPrint(
+          "analyze(image): content_type=$contentType bytes=${_imageBytes!.length}");
       final presign = await PresignedUploadService.presign(
         appState: appState,
         contentType: contentType,
@@ -390,7 +227,8 @@ class CameraTabPageState extends State<CameraTabPage>
       final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
       final recycle = body["recycle"] as Map<String, dynamic>? ?? {};
       final disposals = (recycle["disposals"] as List<dynamic>?) ?? [];
-      final noCityRules = item != null && disposals.isEmpty && suggestions.isNotEmpty;
+      final noCityRules =
+          item != null && disposals.isEmpty && suggestions.isNotEmpty;
       final notFound =
           item == null || body["error"] == "item_not_found" || noCityRules;
       if (notFound && !statusOk) {
@@ -412,7 +250,8 @@ class CameraTabPageState extends State<CameraTabPage>
           bestOption: null,
           otherOptions: const [],
           warnings: [
-            Warning(severity: WarningSeverity.warn, messageKey: "no_match_message"),
+            Warning(
+                severity: WarningSeverity.warn, messageKey: "no_match_message"),
           ],
           similarItems: _localizeSimilarItems(similar, loc),
           imageBytes: _imageBytes,
@@ -462,6 +301,7 @@ class CameraTabPageState extends State<CameraTabPage>
         disposalSteps: const [],
         categories: _labelsFromList(body["categories"] ?? item["categories"]),
         disposalLabels: _labelsFromList(body["disposals"] ?? disposals),
+        disposalCodes: _codesFromList(body["disposals"] ?? disposals),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -496,7 +336,8 @@ class CameraTabPageState extends State<CameraTabPage>
     }
   }
 
-  List<SimilarItem> _similarityFromApi(Map<String, dynamic> body, String cityId) {
+  List<SimilarItem> _similarityFromApi(
+      Map<String, dynamic> body, String cityId) {
     final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
     if (suggestions.isEmpty) {
       return _similarityService.getTop3Similar(
@@ -520,7 +361,10 @@ class CameraTabPageState extends State<CameraTabPage>
                 entry["item_name"] ??
                 entry["title"])
             ?.toString();
-        final disposals = _labelsFromList(entry["disposals"] ?? entry["disposal_labels"]);
+        final disposals =
+            _labelsFromList(entry["disposals"] ?? entry["disposal_labels"]);
+        final disposalCodes =
+            _codesFromList(entry["disposals"] ?? entry["disposal_codes"]);
         return SimilarItem(
           itemId: entry["item_id"]?.toString(),
           itemTitle: name,
@@ -528,6 +372,7 @@ class CameraTabPageState extends State<CameraTabPage>
           confidence: ConfidenceLevel.medium,
           hintCategory: entry["category"]?.toString() ?? "unknown",
           disposalLabels: disposals,
+          disposalCodes: disposalCodes,
         );
       }
       return SimilarItem(
@@ -543,91 +388,98 @@ class CameraTabPageState extends State<CameraTabPage>
 
   List<String> _labelsFromList(dynamic rawList) {
     final list = (rawList as List<dynamic>?) ?? [];
-    return list.map((entry) {
-      if (entry is Map<String, dynamic>) {
-        return (entry["label"] ?? entry["code"] ?? "").toString();
-      }
-      return entry.toString();
-    }).where((value) => value.trim().isNotEmpty).toList();
+    return list
+        .map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return (entry["label"] ?? entry["code"] ?? "").toString();
+          }
+          return entry.toString();
+        })
+        .where((value) => value.trim().isNotEmpty)
+        .toList();
+  }
+
+  List<String> _codesFromList(dynamic rawList) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    return list
+        .map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return (entry["code"] ?? "").toString();
+          }
+          if (entry is String) {
+            return entry;
+          }
+          return "";
+        })
+        .where((value) => value.trim().isNotEmpty)
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
-    final preview = _imageBytes;
-    final cameraController = _cameraController;
 
     return Padding(
-      padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const SizedBox(height: 16),
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
+              borderRadius: BorderRadius.circular(24),
               child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  Positioned.fill(
-                    child: Builder(
-                      builder: (_) {
-                        if (preview != null) {
-                          return Image.memory(
-                            preview,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          );
-                        }
-                        if (_isCameraReady &&
-                            cameraController != null &&
-                            cameraController.value.isInitialized) {
-                          return CameraPreview(cameraController);
-                        }
-                        return Container(
-                          color: colorScheme.primaryContainer,
-                          child: Center(
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 56,
-                              color: colorScheme.primary,
-                            ),
-                          ),
-                        );
-                      },
+                  ColoredBox(color: colorScheme.surfaceContainerHigh),
+                  Opacity(
+                    opacity: 0.92,
+                    child: Image.asset(
+                      "assets/uix/header.png",
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: CustomPaint(
-                        painter: _FocusFramePainter(
-                          frameColor: colorScheme.onSurface.withOpacity(0.7),
-                          overlayColor: colorScheme.onSurface.withOpacity(0.2),
-                        ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.08),
+                          Colors.black.withValues(alpha: 0.25),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 86,
+                      height: 86,
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerLowest
+                            .withValues(alpha: 0.88),
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        size: 42,
+                        color: colorScheme.primary,
                       ),
                     ),
                   ),
                   Positioned(
-                    left: 12,
-                    right: 12,
-                    top: 12,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: colorScheme.surface.withOpacity(0.78),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          _cameraUnavailable
-                              ? loc.t("scan_camera_unavailable")
-                              : loc.t("scan_focus_hint"),
-                          textAlign: TextAlign.center,
-                          style: DesignTokens.caption,
-                        ),
+                    left: 16,
+                    right: 16,
+                    bottom: 14,
+                    child: Text(
+                      loc.t("scan_focus_hint"),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -635,64 +487,21 @@ class CameraTabPageState extends State<CameraTabPage>
               ),
             ),
           ),
-          if (_isLoading) ...[
-            const SizedBox(height: 12),
-            const LinearProgressIndicator(),
-          ],
-          const SizedBox(height: DesignTokens.sectionSpacing),
-          PrimaryButton(
+          const SizedBox(height: 24),
+          ERButton(
             label: loc.t("scan_take_photo"),
-            onPressed: _isLoading || _isScanning
-                ? null
-                : (_isCameraReady ? _captureFromPreview : _pickImage),
+            loading: _isLoading,
+            onPressed: _isLoading || _isScanning ? null : _pickImage,
           ),
-          const SizedBox(height: DesignTokens.baseSpacing),
-          SecondaryButton(
-            label: loc.t("scan_upload"),
+          const SizedBox(height: 10),
+          ERButton(
+            label: loc.t("scan_pick_gallery"),
+            variant: ERButtonVariant.secondary,
             onPressed: _isLoading || _isScanning ? null : _pickGallery,
           ),
+          const SizedBox(height: 24),
         ],
       ),
     );
-  }
-}
-
-class _FocusFramePainter extends CustomPainter {
-  _FocusFramePainter({
-    required this.frameColor,
-    required this.overlayColor,
-  });
-
-  final Color frameColor;
-  final Color overlayColor;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final shortest = min(size.width, size.height);
-    final frameSize = shortest * 0.6;
-    final left = (size.width - frameSize) / 2;
-    final top = (size.height - frameSize) / 2;
-    final rect = Rect.fromLTWH(left, top, frameSize, frameSize);
-
-    final overlayPaint = Paint()
-      ..color = overlayColor
-      ..style = PaintingStyle.fill;
-    final overlayPath = Path()
-      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
-      ..addRect(rect)
-      ..fillType = PathFillType.evenOdd;
-    canvas.drawPath(overlayPath, overlayPaint);
-
-    final framePaint = Paint()
-      ..color = frameColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-    canvas.drawRect(rect, framePaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _FocusFramePainter oldDelegate) {
-    return oldDelegate.frameColor != frameColor ||
-        oldDelegate.overlayColor != overlayColor;
   }
 }

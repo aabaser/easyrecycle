@@ -15,10 +15,10 @@ class ActionCard extends StatelessWidget {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final title = loc.t(option.titleKey);
-    final description = option.descriptionKey != null
-        ? loc.t(option.descriptionKey!)
-        : null;
-    final cta = option.ctaKey != null ? loc.t(option.ctaKey!) : loc.t("action_details");
+    final description =
+        option.descriptionKey != null ? loc.t(option.descriptionKey!) : null;
+    final cta =
+        option.ctaKey != null ? loc.t(option.ctaKey!) : loc.t("action_details");
 
     return Container(
       margin: const EdgeInsets.only(bottom: DesignTokens.baseSpacing),
