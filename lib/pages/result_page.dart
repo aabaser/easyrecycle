@@ -118,6 +118,8 @@ class _ResultPageState extends State<ResultPage> {
         .replaceAll(RegExp(r"<br\s*/?>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"</p>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"<p[^>]*>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"</li>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"<li[^>]*>", caseSensitive: false), "- ")
         .replaceAll(RegExp(r"<[^>]+>"), " ");
     text = text
         .replaceAll("&nbsp;", " ")
@@ -126,7 +128,11 @@ class _ResultPageState extends State<ResultPage> {
         .replaceAll("&#39;", "'")
         .replaceAll("&lt;", "<")
         .replaceAll("&gt;", ">");
-    text = text.replaceAll(RegExp(r"\s+"), " ").trim();
+    text = text.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+    text = text.replaceAll(RegExp(r"[^\S\n]+"), " ");
+    text = text.replaceAll(RegExp(r" *\n *"), "\n");
+    text = text.replaceAll(RegExp(r"\n{3,}"), "\n\n");
+    text = text.trim();
     return text.isEmpty ? null : text;
   }
 
@@ -238,7 +244,7 @@ class _ResultPageState extends State<ResultPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).maybePop();
@@ -398,6 +404,9 @@ class _ResultPageState extends State<ResultPage> {
       final body = json.decode(response.body) as Map<String, dynamic>;
       final itemJson = body["item"];
       if (!statusOk || itemJson == null || body["error"] == "item_not_found") {
+        if (!mounted) {
+          return;
+        }
         _showInfoDialog(AppLocalizations.of(context));
         return;
       }
@@ -447,6 +456,9 @@ class _ResultPageState extends State<ResultPage> {
         MaterialPageRoute(builder: (_) => ResultPage(result: foundResult)),
       );
     } catch (_) {
+      if (!mounted) {
+        return;
+      }
       _showInfoDialog(AppLocalizations.of(context));
     }
   }
@@ -471,6 +483,14 @@ class _ResultPageState extends State<ResultPage> {
     return ListView(
       padding: const EdgeInsets.only(bottom: DesignTokens.sectionSpacing),
       children: [
+        if (_hasPreviewImage) ...[
+          _buildPreviewImageCard(),
+          const SizedBox(height: DesignTokens.sectionSpacing),
+        ],
+        if (_result.categories.isNotEmpty) ...[
+          _buildFoundMetaRow(),
+          const SizedBox(height: DesignTokens.baseSpacing),
+        ],
         _buildDisposalCard(loc),
         if (_result.description != null &&
             _result.description!.trim().isNotEmpty) ...[
@@ -505,7 +525,7 @@ class _ResultPageState extends State<ResultPage> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 title: Text(loc.t(option.titleKey)),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right_rounded),
               );
             }).toList(),
           ),
@@ -523,43 +543,61 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
+  bool get _hasPreviewImage =>
+      _result.imageBytes != null ||
+      (_effectiveImageUrl != null && _effectiveImageUrl!.trim().isNotEmpty);
+
+  Widget _buildPreviewImageCard() {
+    final colorScheme = Theme.of(context).colorScheme;
+    final radius = BorderRadius.circular(20);
+    return ClipRRect(
+      borderRadius: radius,
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 180, maxHeight: 260),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          border: Border.all(color: colorScheme.outlineVariant),
+          borderRadius: radius,
+        ),
+        child: _result.imageBytes != null
+            ? Image.memory(_result.imageBytes!, fit: BoxFit.cover)
+            : Image.network(
+                _effectiveImageUrl!.startsWith("http")
+                    ? _effectiveImageUrl!
+                    : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const SizedBox(
+                  height: 180,
+                  child: Center(
+                    child: Icon(Icons.image_not_supported_outlined),
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
   Widget _buildDisposalCard(AppLocalizations loc) {
     final appState = context.read<AppState>();
-    final canFindCenter =
-        hasEligibleRecyclingCenterDisposal(_result.disposalCodes);
+    final canFindCenter = hasEligibleRecyclingCenterDisposal([
+      ..._result.disposalCodes,
+      ..._result.disposalLabels,
+    ]);
     final methodText = (_result.disposalMethod ?? "").trim();
     final title = loc.t("disposal_title_prefix");
-    final subtitle = _result.categories.isNotEmpty
-        ? _result.categories.join(" • ")
-        : null;
     final disposalTags = <String>[
       ..._result.disposalLabels.where((e) => e.trim().isNotEmpty),
       if (_result.disposalLabels.isEmpty && methodText.isNotEmpty) methodText,
     ];
-    final hasPreviewImage = _result.imageBytes != null ||
-        (_effectiveImageUrl != null && _effectiveImageUrl!.trim().isNotEmpty);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ERPlantCard(
           title: title,
-          subtitle: subtitle,
-          image: hasPreviewImage
-              ? (_result.imageBytes != null
-                  ? Image.memory(_result.imageBytes!, fit: BoxFit.cover)
-                  : Image.network(
-                      _effectiveImageUrl!.startsWith("http")
-                          ? _effectiveImageUrl!
-                          : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const Icon(
-                        Icons.image_not_supported_outlined,
-                      ),
-                    ))
-              : null,
+          image: null,
           tags: disposalTags,
-          leadingIcon: Icons.delete_outline,
+          leadingIcon: Icons.delete_outline_rounded,
           ctaLabel: canFindCenter ? loc.t("find_recycling_center") : null,
           onCtaTap: canFindCenter
               ? () {
@@ -597,6 +635,34 @@ class _ResultPageState extends State<ResultPage> {
             ),
           ),
         ],
+      ],
+    );
+  }
+
+  Widget _buildFoundMetaRow() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final typeText = _result.categories.join(" / ");
+
+    return Row(
+      children: [
+        Icon(
+          Icons.category_rounded,
+          size: 16,
+          color: colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 6),
+        Flexible(
+          child: Text(
+            typeText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -691,7 +757,7 @@ class _ResultPageState extends State<ResultPage> {
       constraints: const BoxConstraints.tightFor(width: 32, height: 32),
       splashRadius: 16,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(
           isSelected ? colorScheme.primaryContainer : Colors.transparent,
         ),
       ),
@@ -743,49 +809,35 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget _buildNotFound(BuildContext context, AppLocalizations loc) {
-    final colorScheme = Theme.of(context).colorScheme;
     final hintLines = _hintLinesForMode(loc, _result.searchMode);
     return ListView(
       padding: const EdgeInsets.only(bottom: DesignTokens.sectionSpacing),
       children: [
-        SectionTitle(title: loc.t("similar_suggestions")),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        ..._result.similarItems.map(
-          (item) => Padding(
-            padding: const EdgeInsets.only(bottom: DesignTokens.baseSpacing),
-            child: SimilarItemCard(
-              item: item,
-              findCenterLabel: loc.t("find_recycling_center"),
-              onFindCenterTap: () {
-                final cityCode =
-                    context.read<AppState>().selectedCity?.id ?? "hannover";
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => RecycleCentersPage(cityCode: cityCode),
-                  ),
-                );
-              },
-              onTap: () => _resolveSimilarItem(item),
+        _buildNotFoundSummaryCard(loc, hintLines),
+        if (_result.similarItems.isNotEmpty) ...[
+          const SizedBox(height: DesignTokens.sectionSpacing),
+          SectionTitle(title: loc.t("similar_suggestions")),
+          const SizedBox(height: DesignTokens.baseSpacing),
+          ..._result.similarItems.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: DesignTokens.baseSpacing),
+              child: SimilarItemCard(
+                item: item,
+                findCenterLabel: loc.t("find_recycling_center"),
+                onFindCenterTap: () {
+                  final cityCode =
+                      context.read<AppState>().selectedCity?.id ?? "hannover";
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => RecycleCentersPage(cityCode: cityCode),
+                    ),
+                  );
+                },
+                onTap: () => _resolveSimilarItem(item),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: DesignTokens.sectionSpacing),
-        _buildEmptyStateBadge(),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        Text(
-          loc.t("no_match_title"),
-          style: DesignTokens.titleM.copyWith(
-            color: colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          loc.t("no_match_subtitle"),
-          style:
-              DesignTokens.body.copyWith(color: colorScheme.onSurfaceVariant),
-        ),
-        const SizedBox(height: DesignTokens.baseSpacing),
-        _buildHintCard(loc, hintLines),
+        ],
       ],
     );
   }
@@ -804,56 +856,127 @@ class _ResultPageState extends State<ResultPage> {
     }
   }
 
-  Widget _buildHintCard(AppLocalizations loc, List<String> lines) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.all(DesignTokens.cardPadding),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        border: Border.all(color: colorScheme.outline),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            loc.t("warning_info"),
-            style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
-          ),
-          const SizedBox(height: 6),
-          ...lines.map(
-            (line) => Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
-                line,
-                style: DesignTokens.body.copyWith(
-                  color: colorScheme.onSurfaceVariant,
+  Widget _buildNotFoundSummaryCard(AppLocalizations loc, List<String> lines) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final radius = BorderRadius.circular(20);
+
+    return ClipRRect(
+      borderRadius: radius,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerLow,
+          border: Border.all(color: colorScheme.outlineVariant),
+          borderRadius: radius,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Opacity(
+                  opacity: 0.12,
+                  child: Image.asset(
+                    "assets/uix/bg_top_abstract.png",
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      colorScheme.primary.withValues(alpha: 0.05),
+                      colorScheme.surface.withValues(alpha: 0.02),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 46,
+                        height: 46,
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer
+                              .withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.search_off_rounded,
+                          color: colorScheme.primary,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              loc.t("no_match_title"),
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: colorScheme.onSurface,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              loc.t("no_match_subtitle"),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Divider(
+                    height: 1,
+                    color: colorScheme.outlineVariant.withValues(alpha: 0.8),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    loc.t("warning_info"),
+                    style: DesignTokens.titleM.copyWith(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  ...lines.map(
+                    (line) => Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        line,
+                        style: DesignTokens.body.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildEmptyStateBadge() {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          color: colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        ),
-        child: Icon(
-          Icons.search_off_outlined,
-          size: 30,
-          color: colorScheme.primary,
-        ),
-      ),
-    );
-  }
 }
+

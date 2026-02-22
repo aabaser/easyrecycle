@@ -5,7 +5,6 @@ import "../../l10n/app_localizations.dart";
 import "../../models/city.dart";
 import "../../state/app_state.dart";
 import "../../ui/components/er_button.dart";
-import "../../widgets/brand_title.dart";
 import "../../widgets/city_pills.dart";
 import "../../widgets/language_segment.dart";
 import "../../widgets/max_width_center.dart";
@@ -31,7 +30,7 @@ class _LandingScreenState extends State<LandingScreen> {
     final appState = context.read<AppState>();
     if (appState.selectedCity == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        appState.setSelectedCity(City(id: "berlin", name: "Berlin"));
+        appState.setSelectedCity(const City(id: "berlin", name: "Berlin"));
       });
     }
   }
@@ -44,7 +43,7 @@ class _LandingScreenState extends State<LandingScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final cities = <City>[
+    const cities = <City>[
       City(id: "berlin", name: "Berlin"),
       City(id: "hannover", name: "Hannover"),
     ];
@@ -54,28 +53,28 @@ class _LandingScreenState extends State<LandingScreen> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      colorScheme.primaryContainer.withValues(alpha: 0.5),
-                      colorScheme.surfaceContainerLowest,
-                    ],
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    "assets/uix/landing_vibrant_bg.jpg",
+                    fit: BoxFit.cover,
                   ),
-                ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Opacity(
-                    opacity: 0.16,
-                    child: Image.asset(
-                      "assets/uix/bg_top_abstract.png",
-                      fit: BoxFit.fitWidth,
-                      width: double.infinity,
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.14),
+                          colorScheme.surfaceContainerLowest.withValues(
+                            alpha: 0.92,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
             MaxWidthCenter(
@@ -84,62 +83,12 @@ class _LandingScreenState extends State<LandingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      constraints: const BoxConstraints(maxWidth: 520),
-                      height: 220,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(28),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            colorScheme.primaryContainer,
-                            colorScheme.secondaryContainer,
-                          ],
-                        ),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Opacity(
-                            opacity: 0.18,
-                            child: Image.asset(
-                              "assets/uix/bg_top_abstract.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
-                              child: Image.asset(
-                                "assets/images/login_hero.png",
-                                fit: BoxFit.contain,
-                                errorBuilder: (_, __, ___) => Image.asset(
-                                  "assets/uix/header.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 22),
-                    BrandTitle(
-                      textStyle: textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.4,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 120),
                     Text(
                       loc.t("entry_headline"),
                       textAlign: TextAlign.center,
                       style: textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -150,13 +99,14 @@ class _LandingScreenState extends State<LandingScreen> {
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 22),
                     Container(
                       width: double.infinity,
                       constraints: const BoxConstraints(maxWidth: 440),
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        color: colorScheme.surface,
+                        color:
+                            colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(22),
                         border: Border.all(color: colorScheme.outlineVariant),
                       ),
@@ -197,7 +147,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                   MaterialPageRoute(
                                     builder: (_) => const AuthChoiceScreen(),
                                   ),
-                        );
+                                );
                               },
                       ),
                     ),

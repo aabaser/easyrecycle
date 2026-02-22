@@ -10,7 +10,6 @@ import "../l10n/app_localizations.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
-import "../services/mock_similarity_service.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/similar_item_card.dart";
@@ -30,7 +29,6 @@ class TextSearchPage extends StatefulWidget {
 
 class TextSearchPageState extends State<TextSearchPage> {
   final _controller = TextEditingController();
-  final _similarityService = MockSimilarityService();
   Timer? _debounce;
   bool _isLoading = false;
   String _query = "";
@@ -139,7 +137,7 @@ class TextSearchPageState extends State<TextSearchPage> {
           });
           return;
         }
-        final similar = _similarityFromApi(body, city.id, trimmed);
+        final similar = _similarityFromApi(body);
         setState(() {
           _foundResult = null;
           _suggestions = similar;
@@ -172,17 +170,12 @@ class TextSearchPageState extends State<TextSearchPage> {
         });
         return;
       }
-      final similar = _similarityService.getTop3Similar(
-        cityId: city.id,
-        queryText: trimmed,
-        imageBytes: null,
-      );
       if (!mounted || trimmed != _query.trim()) {
         return;
       }
       setState(() {
         _foundResult = null;
-        _suggestions = similar;
+        _suggestions = const [];
         _showNoMatch = true;
         _liveResults = [];
         _isLoading = false;
@@ -235,8 +228,7 @@ class TextSearchPageState extends State<TextSearchPage> {
       final items = (body["items"] as List<dynamic>? ?? []);
       final results = items.map((entry) {
         if (entry is Map<String, dynamic>) {
-          final title = (entry["title"] ?? entry["canonical_key"] ?? "unknown")
-              .toString();
+          final title = _pickDisplayName(entry);
           final disposals = (entry["disposals"] as List<dynamic>? ?? [])
               .map((value) {
                 if (value is Map<String, dynamic>) {
@@ -255,6 +247,11 @@ class TextSearchPageState extends State<TextSearchPage> {
               })
               .where((code) => code.trim().isNotEmpty)
               .toList();
+          final explicitCodes = (entry["disposal_codes"] as List<dynamic>? ?? [])
+              .map((e) => e.toString())
+              .where((code) => code.trim().isNotEmpty)
+              .toList();
+          final allCodes = <String>{...disposalCodes, ...explicitCodes}.toList();
           return SimilarItem(
             itemId: entry["id"]?.toString(),
             itemTitle: title,
@@ -262,7 +259,7 @@ class TextSearchPageState extends State<TextSearchPage> {
             confidence: ConfidenceLevel.low,
             hintCategory: "unknown",
             disposalLabels: disposals,
-            disposalCodes: disposalCodes,
+            disposalCodes: allCodes,
           );
         }
         return SimilarItem(
@@ -362,32 +359,15 @@ class TextSearchPageState extends State<TextSearchPage> {
 
   List<SimilarItem> _similarityFromApi(
     Map<String, dynamic> body,
-    String cityId,
-    String query,
   ) {
     final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
     if (suggestions.isEmpty) {
-      return _similarityService.getTop3Similar(
-        cityId: cityId,
-        queryText: query,
-        imageBytes: null,
-      );
+      return const [];
     }
     return suggestions.take(3).map((entry) {
       if (entry is Map<String, dynamic>) {
-        final name = (entry["title"] ??
-                entry["label"] ??
-                entry["item_name"] ??
-                entry["canonical_key"] ??
-                entry["item_id"] ??
-                "unknown")
-            .toString();
-        final alias = (entry["alias"] ??
-                entry["alias_text"] ??
-                entry["label"] ??
-                entry["item_name"] ??
-                entry["title"])
-            ?.toString();
+        final name = _pickDisplayName(entry);
+        final alias = _pickAliasName(entry);
         final disposals = _labelsFromList(
           entry["disposals"] ?? entry["disposal_labels"],
         );
@@ -415,6 +395,84 @@ class TextSearchPageState extends State<TextSearchPage> {
     }).toList();
   }
 
+  String _pickDisplayName(Map<String, dynamic> entry) {
+    final primaryCandidates = <dynamic>[
+      entry["label"],
+      entry["item_name"],
+      entry["name"],
+      entry["display_name"],
+      entry["alias"],
+      entry["alias_text"],
+    ];
+    for (final candidate in primaryCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+
+    final fallbackCandidates = <dynamic>[
+      entry["title"],
+      entry["canonical_key"],
+      entry["item_id"],
+      entry["id"],
+    ];
+    String? idLikeFallback;
+    for (final candidate in fallbackCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text == null) {
+        continue;
+      }
+      if (!_looksLikeInternalId(text)) {
+        return text;
+      }
+      idLikeFallback ??= text;
+    }
+    return idLikeFallback ?? "unknown";
+  }
+
+  String? _pickAliasName(Map<String, dynamic> entry) {
+    final aliasCandidates = <dynamic>[
+      entry["alias"],
+      entry["alias_text"],
+      entry["label"],
+      entry["item_name"],
+      entry["name"],
+      entry["title"],
+    ];
+    for (final candidate in aliasCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+    return null;
+  }
+
+  String? _cleanCandidateText(dynamic value) {
+    final text = value?.toString().trim() ?? "";
+    if (text.isEmpty || text.toLowerCase() == "null") {
+      return null;
+    }
+    return text;
+  }
+
+  bool _looksLikeInternalId(String text) {
+    final lower = text.toLowerCase();
+    if (RegExp(r"^[0-9a-f]{8}-[0-9a-f-]{27,}$").hasMatch(lower)) {
+      return true;
+    }
+    if (RegExp(r"^\d{6,}$").hasMatch(lower)) {
+      return true;
+    }
+    if (lower.contains("_") &&
+        !lower.contains(" ") &&
+        RegExp(r"^[a-z0-9_]+$").hasMatch(lower)) {
+      return true;
+    }
+    return false;
+  }
+
   String? _cleanHtml(String? input) {
     if (input == null || input.trim().isEmpty) {
       return null;
@@ -423,6 +481,8 @@ class TextSearchPageState extends State<TextSearchPage> {
         .replaceAll(RegExp(r"<br\s*/?>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"</p>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"<p[^>]*>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"</li>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"<li[^>]*>", caseSensitive: false), "- ")
         .replaceAll(RegExp(r"<[^>]+>"), " ");
     text = text
         .replaceAll("&nbsp;", " ")
@@ -431,7 +491,11 @@ class TextSearchPageState extends State<TextSearchPage> {
         .replaceAll("&#39;", "'")
         .replaceAll("&lt;", "<")
         .replaceAll("&gt;", ">");
-    text = text.replaceAll(RegExp(r"\s+"), " ").trim();
+    text = text.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+    text = text.replaceAll(RegExp(r"[^\S\n]+"), " ");
+    text = text.replaceAll(RegExp(r" *\n *"), "\n");
+    text = text.replaceAll(RegExp(r"\n{3,}"), "\n\n");
+    text = text.trim();
     return text.isEmpty ? null : text;
   }
 
@@ -486,127 +550,9 @@ class TextSearchPageState extends State<TextSearchPage> {
     appState.requestCameraScan();
   }
 
-  Future<void> _openSimilarSuggestionsPage() async {
-    final query = _controller.text.trim();
-    if (query.isEmpty) {
-      return;
-    }
-    final appState = context.read<AppState>();
-    final city = appState.selectedCity;
-    if (city == null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const CityPickerPage()),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final uri = Uri.parse(
-        "${ApiConfig.baseUrl}/resolve?city=${city.id}"
-        "&lang=${appState.locale.languageCode}"
-        "&item_name=${Uri.encodeComponent(query)}",
-      );
-      final headers = await appState.authHeaders();
-      final response = await http.get(uri, headers: headers);
-      final statusOk = response.statusCode >= 200 && response.statusCode < 300;
-      final body = json.decode(response.body) as Map<String, dynamic>;
-      final item = body["item"];
-      final notFound = item == null || body["error"] == "item_not_found";
-      if (!notFound && statusOk) {
-        final result = _resultFromBody(body, query);
-        if (!mounted) {
-          return;
-        }
-        setState(() {
-          _isLoading = false;
-        });
-        await _openResult(result);
-        return;
-      }
-
-      final similar = _similarityFromApi(body, city.id, query);
-      final notFoundResult = ScanResult(
-        state: ScanState.notFound,
-        itemId: null,
-        itemName: null,
-        confidence: ConfidenceLevel.low,
-        description: null,
-        disposalMethod: null,
-        disposalSteps: const [],
-        categories: const [],
-        disposalLabels: const [],
-        disposalCodes: const [],
-        bestOption: null,
-        otherOptions: const [],
-        warnings: [
-          Warning(
-            severity: WarningSeverity.warn,
-            messageKey: "no_match_message",
-          ),
-        ],
-        similarItems: similar,
-        imageBytes: null,
-        imageUrl: null,
-        searchMode: SearchMode.text,
-        queryText: query,
-      );
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _isLoading = false;
-      });
-      await _openResult(notFoundResult);
-    } catch (_) {
-      if (!mounted) {
-        return;
-      }
-      final appState = context.read<AppState>();
-      final cityId = appState.selectedCity?.id ?? "hannover";
-      final fallback = _similarityService.getTop3Similar(
-        cityId: cityId,
-        queryText: query,
-        imageBytes: null,
-      );
-      final notFoundResult = ScanResult(
-        state: ScanState.notFound,
-        itemId: null,
-        itemName: null,
-        confidence: ConfidenceLevel.low,
-        description: null,
-        disposalMethod: null,
-        disposalSteps: const [],
-        categories: const [],
-        disposalLabels: const [],
-        disposalCodes: const [],
-        bestOption: null,
-        otherOptions: const [],
-        warnings: [
-          Warning(
-            severity: WarningSeverity.warn,
-            messageKey: "no_match_message",
-          ),
-        ],
-        similarItems: fallback,
-        imageBytes: null,
-        imageUrl: null,
-        searchMode: SearchMode.text,
-        queryText: query,
-      );
-      setState(() {
-        _isLoading = false;
-      });
-      await _openResult(notFoundResult);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final colorScheme = Theme.of(context).colorScheme;
     final hasQuery = _query.trim().isNotEmpty;
 
     return Column(
@@ -616,16 +562,6 @@ class TextSearchPageState extends State<TextSearchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                loc.t("text_search_title"),
-                style: Theme.of(
-                  context,
-                )
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 10),
               ERSearchBar(
                 controller: _controller,
                 hintText: loc.t("scan_text_placeholder"),
@@ -644,15 +580,6 @@ class TextSearchPageState extends State<TextSearchPage> {
               ),
               const SizedBox(height: 10),
               _buildModeChips(loc),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: _openRecycleCenters,
-                  icon: const Icon(Icons.place_outlined, size: 18),
-                  label: Text(loc.t("find_recycling_center")),
-                ),
-              ),
               if (_isLoading) ...[
                 const SizedBox(height: 12),
                 const LinearProgressIndicator(),
@@ -675,9 +602,7 @@ class TextSearchPageState extends State<TextSearchPage> {
                       itemTitle: _foundResult!.itemName ?? _query,
                       aliasTitle: null,
                       confidence: _foundResult!.confidence,
-                      hintCategory: _foundResult!.categories.isNotEmpty
-                          ? _foundResult!.categories.first
-                          : "unknown",
+                      hintCategory: "",
                       disposalLabels: _foundResult!.disposalLabels,
                       disposalCodes: _foundResult!.disposalCodes,
                     ),
@@ -707,39 +632,28 @@ class TextSearchPageState extends State<TextSearchPage> {
                   hasQuery &&
                   !_isLoading &&
                   _showNoMatch) ...[
-                ERSection(
-                  title: loc.t("similar_suggestions"),
-                  child: Column(
-                    children: _suggestions
-                        .map(
-                          (item) => Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: SimilarItemCard(
-                              item: item,
-                              findCenterLabel: loc.t("find_recycling_center"),
-                              onFindCenterTap: _openRecycleCenters,
-                              onTap: () => _resolveSuggestion(item),
+                _buildNotFoundSummaryCard(loc),
+                if (_suggestions.isNotEmpty) ...[
+                  const SizedBox(height: DesignTokens.sectionSpacing),
+                  ERSection(
+                    title: loc.t("similar_suggestions"),
+                    child: Column(
+                      children: _suggestions
+                          .map(
+                            (item) => Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: SimilarItemCard(
+                                item: item,
+                                findCenterLabel: loc.t("find_recycling_center"),
+                                onFindCenterTap: _openRecycleCenters,
+                                onTap: () => _resolveSuggestion(item),
+                              ),
                             ),
-                          ),
-                        )
-                        .toList(growable: false),
+                          )
+                          .toList(growable: false),
+                    ),
                   ),
-                ),
-                const SizedBox(height: DesignTokens.baseSpacing),
-                Text(
-                  loc.t("no_match_title"),
-                  style: DesignTokens.titleM
-                      .copyWith(color: colorScheme.onSurfaceVariant),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  loc.t("no_match_subtitle"),
-                  style: DesignTokens.body.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: DesignTokens.baseSpacing),
-                _buildHintCard(loc),
+                ],
               ],
             ],
           ),
@@ -748,30 +662,119 @@ class TextSearchPageState extends State<TextSearchPage> {
     );
   }
 
-  Widget _buildHintCard(AppLocalizations loc) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.all(DesignTokens.cardPadding),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(DesignTokens.cornerRadius),
-        border: Border.all(color: colorScheme.outline),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            loc.t("warning_info"),
-            style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            loc.t("hint_text_mode_text"),
-            style: DesignTokens.body.copyWith(
-              color: colorScheme.onSurfaceVariant,
+  Widget _buildNotFoundSummaryCard(AppLocalizations loc) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final radius = BorderRadius.circular(20);
+
+    return ClipRRect(
+      borderRadius: radius,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerLow,
+          border: Border.all(color: colorScheme.outlineVariant),
+          borderRadius: radius,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Opacity(
+                  opacity: 0.12,
+                  child: Image.asset(
+                    "assets/uix/bg_top_abstract.png",
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ],
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      colorScheme.primary.withValues(alpha: 0.05),
+                      colorScheme.surface.withValues(alpha: 0.02),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 46,
+                        height: 46,
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer
+                              .withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.search_off_rounded,
+                          color: colorScheme.primary,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              loc.t("no_match_title"),
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: colorScheme.onSurface,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              loc.t("no_match_subtitle"),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Divider(
+                    height: 1,
+                    color: colorScheme.outlineVariant.withValues(alpha: 0.8),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    loc.t("warning_info"),
+                    style: DesignTokens.titleM.copyWith(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    loc.t("hint_text_mode_text"),
+                    style: DesignTokens.body.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -818,26 +821,38 @@ class TextSearchPageState extends State<TextSearchPage> {
         children: [
           buildChip(
             label: loc.t("nav_text"),
-            icon: Icons.search,
+            icon: Icons.search_rounded,
             selected: true,
             onTap: () {},
           ),
           const SizedBox(width: 8),
           buildChip(
             label: loc.t("scan_title"),
-            icon: Icons.camera_alt_outlined,
+            icon: Icons.camera_alt_rounded,
             selected: false,
             onTap: _openCameraTab,
           ),
           const SizedBox(width: 8),
           buildChip(
-            label: loc.t("similar_suggestions"),
-            icon: Icons.auto_awesome_outlined,
+            label: _recyclingListChipLabel(),
+            icon: Icons.location_on_rounded,
             selected: false,
-            onTap: _openSimilarSuggestionsPage,
+            onTap: _openRecycleCenters,
           ),
         ],
       ),
     );
+  }
+
+  String _recyclingListChipLabel() {
+    final code = context.read<AppState>().locale.languageCode;
+    switch (code) {
+      case "de":
+        return "Liste der Recyclinghoefe";
+      case "tr":
+        return "Geri Donusum Merkezleri";
+      default:
+        return "Recycling Centers List";
+    }
   }
 }

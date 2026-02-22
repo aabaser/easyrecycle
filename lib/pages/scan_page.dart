@@ -157,6 +157,8 @@ class _ScanPageState extends State<ScanPage> {
         .replaceAll(RegExp(r"<br\s*/?>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"</p>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"<p[^>]*>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"</li>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"<li[^>]*>", caseSensitive: false), "- ")
         .replaceAll(RegExp(r"<[^>]+>"), " ");
     text = text
         .replaceAll("&nbsp;", " ")
@@ -165,7 +167,11 @@ class _ScanPageState extends State<ScanPage> {
         .replaceAll("&#39;", "'")
         .replaceAll("&lt;", "<")
         .replaceAll("&gt;", ">");
-    text = text.replaceAll(RegExp(r"\s+"), " ").trim();
+    text = text.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+    text = text.replaceAll(RegExp(r"[^\S\n]+"), " ");
+    text = text.replaceAll(RegExp(r" *\n *"), "\n");
+    text = text.replaceAll(RegExp(r"\n{3,}"), "\n\n");
+    text = text.trim();
     return text.isEmpty ? null : text;
   }
 
@@ -619,27 +625,12 @@ class _ScanPageState extends State<ScanPage> {
       Map<String, dynamic> body, String cityId) {
     final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
     if (suggestions.isEmpty) {
-      return _similarityService.getTop3Similar(
-        cityId: cityId,
-        queryText: _queryText,
-        imageBytes: _imageBytes,
-      );
+      return const [];
     }
     return suggestions.take(3).map((entry) {
       if (entry is Map<String, dynamic>) {
-        final name = (entry["title"] ??
-                entry["label"] ??
-                entry["item_name"] ??
-                entry["canonical_key"] ??
-                entry["item_id"] ??
-                "unknown")
-            .toString();
-        final alias = (entry["alias"] ??
-                entry["alias_text"] ??
-                entry["label"] ??
-                entry["item_name"] ??
-                entry["title"])
-            ?.toString();
+        final name = _pickDisplayName(entry);
+        final alias = _pickAliasName(entry);
         final disposals =
             _labelsFromList(entry["disposals"] ?? entry["disposal_labels"]);
         final disposalCodes =
@@ -665,12 +656,105 @@ class _ScanPageState extends State<ScanPage> {
     }).toList();
   }
 
+  String _pickDisplayName(Map<String, dynamic> entry) {
+    final primaryCandidates = <dynamic>[
+      entry["label"],
+      entry["item_name"],
+      entry["name"],
+      entry["display_name"],
+      entry["alias"],
+      entry["alias_text"],
+    ];
+    for (final candidate in primaryCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+
+    final fallbackCandidates = <dynamic>[
+      entry["title"],
+      entry["canonical_key"],
+      entry["item_id"],
+      entry["id"],
+    ];
+    String? idLikeFallback;
+    for (final candidate in fallbackCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text == null) {
+        continue;
+      }
+      if (!_looksLikeInternalId(text)) {
+        return text;
+      }
+      idLikeFallback ??= text;
+    }
+    return idLikeFallback ?? "unknown";
+  }
+
+  String? _pickAliasName(Map<String, dynamic> entry) {
+    final aliasCandidates = <dynamic>[
+      entry["alias"],
+      entry["alias_text"],
+      entry["label"],
+      entry["item_name"],
+      entry["name"],
+      entry["title"],
+    ];
+    for (final candidate in aliasCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+    return null;
+  }
+
+  String? _cleanCandidateText(dynamic value) {
+    final text = value?.toString().trim() ?? "";
+    if (text.isEmpty || text.toLowerCase() == "null") {
+      return null;
+    }
+    return text;
+  }
+
+  bool _looksLikeInternalId(String text) {
+    final lower = text.toLowerCase();
+    if (RegExp(r"^[0-9a-f]{8}-[0-9a-f-]{27,}$").hasMatch(lower)) {
+      return true;
+    }
+    if (RegExp(r"^\d{6,}$").hasMatch(lower)) {
+      return true;
+    }
+    if (lower.contains("_") &&
+        !lower.contains(" ") &&
+        RegExp(r"^[a-z0-9_]+$").hasMatch(lower)) {
+      return true;
+    }
+    return false;
+  }
+
   List<String> _labelsFromList(dynamic rawList) {
     final list = (rawList as List<dynamic>?) ?? [];
     return list
         .map((entry) {
           if (entry is Map<String, dynamic>) {
-            return (entry["label"] ?? entry["code"] ?? "").toString();
+            final nestedCategory = entry["category"];
+            if (nestedCategory is Map<String, dynamic>) {
+              return (nestedCategory["label"] ??
+                      nestedCategory["name"] ??
+                      nestedCategory["title"] ??
+                      nestedCategory["code"] ??
+                      "")
+                  .toString();
+            }
+            return (entry["label"] ??
+                    entry["name"] ??
+                    entry["title"] ??
+                    entry["category_label"] ??
+                    entry["code"] ??
+                    "")
+                .toString();
           }
           return entry.toString();
         })
@@ -706,6 +790,7 @@ class _ScanPageState extends State<ScanPage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         leading: null,
         title: Text(loc.t("scan_title"), style: DesignTokens.titleM),
         actions: [

@@ -144,6 +144,7 @@ class _HomeShellState extends State<HomeShell> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           leading: null,
           title: Text(title, style: DesignTokens.titleM),
           actions: const [],
@@ -185,15 +186,15 @@ class _HomeShellState extends State<HomeShell> {
           onDestinationSelected: _onTabSelected,
           destinations: [
             NavigationDestination(
-              icon: const Icon(Icons.search_outlined),
+              icon: const Icon(Icons.search_rounded),
               label: loc.t("nav_text"),
             ),
             NavigationDestination(
-              icon: const Icon(Icons.camera_alt_outlined),
+              icon: const Icon(Icons.camera_alt_rounded),
               label: loc.t("nav_camera"),
             ),
             NavigationDestination(
-              icon: const Icon(Icons.settings_outlined),
+              icon: const Icon(Icons.settings_rounded),
               label: loc.t("nav_settings"),
             ),
           ],

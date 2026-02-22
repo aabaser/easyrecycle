@@ -25,15 +25,16 @@ class SimilarItemCard extends StatelessWidget {
     final subtitle = category.isEmpty || category.toLowerCase() == "unknown"
         ? null
         : category;
-    final recommended =
-        item.disposalLabels.isNotEmpty ? item.disposalLabels.first : null;
-    final canFindCenter = hasEligibleRecyclingCenterDisposal(item.disposalCodes);
+    final canFindCenter = hasEligibleRecyclingCenterDisposal([
+      ...item.disposalCodes,
+      ...item.disposalLabels,
+    ]);
 
     return ResultCard(
       title: item.itemTitle,
-      recommendedLabel: recommended,
+      recommendedLabels: item.disposalLabels,
       subtitle: subtitle,
-      leadingIcon: Icons.eco_outlined,
+      leadingIcon: Icons.eco_rounded,
       onHeaderTap: onTap,
       primaryCtaLabel: findCenterLabel ?? loc.t("find_recycling_center"),
       onPrimaryTap: canFindCenter ? onFindCenterTap : null,

@@ -25,7 +25,7 @@ from app.settings import get_settings
 from app.auth.cognito import verify_cognito_jwt
 from app.auth.guest import issue_guest_token, verify_guest_token
 from app.middleware.rate_limit import FixedWindowRateLimiter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import text
 
 load_dotenv()
@@ -475,6 +475,7 @@ class AnalyzeJsonRequest(BaseModel):
 class AnalyzeResponse(BaseModel):
   s3_key: Optional[str] = None
   item: Optional[dict]
+  categories: list = Field(default_factory=list)
   recycle: dict
   repair: dict
   donate: dict
@@ -926,6 +927,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
     return AnalyzeResponse(
       s3_key=s3_key,
       item=None,
+      categories=[],
       recycle={"disposals": []},
       repair={"available": False},
       donate={"available": False},
@@ -954,6 +956,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
       return AnalyzeResponse(
         s3_key=s3_key,
         item=None,
+        categories=[],
         recycle={"disposals": []},
         repair={"available": False},
         donate={"available": False},
@@ -995,6 +998,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
     return AnalyzeResponse(
       s3_key=s3_key,
       item=resolved.get("item"),
+      categories=resolved.get("categories", []),
       recycle={"disposals": resolved.get("disposals", [])},
       repair={"available": False},
       donate={"available": False},
@@ -1037,6 +1041,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
   return AnalyzeResponse(
     s3_key=s3_key,
     item=resolved.get("item"),
+    categories=resolved.get("categories", []),
     recycle=recycle,
     repair={"available": False},
     donate={"available": False},

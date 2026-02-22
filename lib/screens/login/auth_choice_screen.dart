@@ -5,7 +5,6 @@ import "../../l10n/app_localizations.dart";
 import "../../pages/home_shell.dart";
 import "../../state/app_state.dart";
 import "../../ui/components/er_button.dart";
-import "../../widgets/brand_title.dart";
 import "../../widgets/max_width_center.dart";
 import "../legal/privacy_screen.dart";
 import "../legal/terms_screen.dart";
@@ -21,27 +20,31 @@ class AuthChoiceScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final titleStyle = textTheme.titleLarge?.copyWith(
-      fontWeight: FontWeight.w700,
-      letterSpacing: -0.2,
-    );
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
             Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      colorScheme.primaryContainer.withValues(alpha: 0.35),
-                      colorScheme.surfaceContainerLowest,
-                    ],
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    "assets/uix/boltuix_login_bg.jpg",
+                    fit: BoxFit.cover,
                   ),
-                ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.14),
+                          colorScheme.surfaceContainerLowest.withValues(alpha: 0.92),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             MaxWidthCenter(
@@ -61,20 +64,18 @@ class AuthChoiceScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        color: colorScheme.surface,
+                        color: colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(22),
                         border: Border.all(color: colorScheme.outlineVariant),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          BrandTitle(textStyle: titleStyle),
-                          const SizedBox(height: 8),
                           Text(
                             loc.t("entry_headline"),
                             textAlign: TextAlign.center,
                             style: textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
                           const SizedBox(height: 8),

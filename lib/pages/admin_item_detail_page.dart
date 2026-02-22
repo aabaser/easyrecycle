@@ -202,7 +202,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                           loc.t("admin_category_hint"),
                         ),
                       ),
-                      trailing: const Icon(Icons.chevron_right),
+                      trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () async {
                         await _pickCodes(
                           title: loc.t("admin_category_label"),
@@ -230,7 +230,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                           loc.t("admin_disposal_hint"),
                         ),
                       ),
-                      trailing: const Icon(Icons.chevron_right),
+                      trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () async {
                         await _pickCodes(
                           title: loc.t("admin_disposal_label"),
@@ -258,7 +258,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                           loc.t("admin_warning_hint"),
                         ),
                       ),
-                      trailing: const Icon(Icons.chevron_right),
+                      trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () async {
                         await _pickCodes(
                           title: loc.t("admin_warning_label"),
@@ -618,7 +618,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
           child: resolvedUrl == null
               ? Container(
                   color: Theme.of(context).colorScheme.surfaceVariant,
-                  child: const Icon(Icons.image_not_supported_outlined),
+                  child: const Icon(Icons.image_not_supported_rounded),
                 )
               : Image.network(
                   resolvedUrl,
@@ -626,7 +626,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
                       color: Theme.of(context).colorScheme.surfaceVariant,
-                      child: const Icon(Icons.image_not_supported_outlined),
+                      child: const Icon(Icons.image_not_supported_rounded),
                     );
                   },
                 ),
@@ -686,7 +686,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                           alignment: Alignment.centerLeft,
                           child: TextButton.icon(
                             onPressed: _uploadImage,
-                            icon: const Icon(Icons.upload_outlined),
+                            icon: const Icon(Icons.upload_rounded),
                             label: Text(loc.t("admin_upload_image")),
                           ),
                         ),
@@ -695,7 +695,7 @@ class _AdminItemDetailPageState extends State<AdminItemDetailPage> {
                             alignment: Alignment.centerLeft,
                             child: TextButton.icon(
                               onPressed: _deleteSelectedImage,
-                              icon: const Icon(Icons.delete_outline),
+                              icon: const Icon(Icons.delete_outline_rounded),
                               label: Text(loc.t("admin_remove_image")),
                             ),
                           ),

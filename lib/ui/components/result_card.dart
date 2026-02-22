@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "../disposal_chip_palette.dart";
 
 class ResultPill extends StatelessWidget {
   const ResultPill({
@@ -39,17 +40,19 @@ class ResultCard extends StatelessWidget {
     super.key,
     required this.title,
     this.recommendedLabel,
+    this.recommendedLabels = const [],
     required this.primaryCtaLabel,
     required this.onPrimaryTap,
     this.subtitle,
     this.onHeaderTap,
     this.secondaryCtaLabel,
     this.onSecondaryTap,
-    this.leadingIcon = Icons.eco_outlined,
+    this.leadingIcon = Icons.eco_rounded,
   });
 
   final String title;
   final String? recommendedLabel;
+  final List<String> recommendedLabels;
   final String primaryCtaLabel;
   final VoidCallback? onPrimaryTap;
   final String? subtitle;
@@ -112,7 +115,7 @@ class ResultCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Icon(
-                        Icons.chevron_right,
+                        Icons.chevron_right_rounded,
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ],
@@ -120,11 +123,23 @@ class ResultCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (recommendedLabel != null && recommendedLabel!.trim().isNotEmpty)
-              ...[
-                const SizedBox(height: 8),
-                ResultPill(text: recommendedLabel!),
-              ],
+            if (recommendedLabels.isNotEmpty ||
+                (recommendedLabel != null &&
+                    recommendedLabel!.trim().isNotEmpty)) ...[
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: (
+                  recommendedLabels.isNotEmpty
+                      ? recommendedLabels
+                      : <String>[recommendedLabel!]
+                )
+                    .where((e) => e.trim().isNotEmpty)
+                    .map((e) => _InlineResultPill(text: e))
+                    .toList(growable: false),
+              ),
+            ],
             if (subtitle != null && subtitle!.trim().isNotEmpty) ...[
               const SizedBox(height: 6),
               Text(
@@ -134,16 +149,27 @@ class ResultCard extends StatelessWidget {
                     ),
               ),
             ],
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              height: 46,
-              child: FilledButton.icon(
-                onPressed: onPrimaryTap,
-                icon: const Icon(Icons.place_outlined, size: 18),
-                label: Text(primaryCtaLabel),
+            if (onPrimaryTap != null && primaryCtaLabel.trim().isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: OutlinedButton.icon(
+                  onPressed: onPrimaryTap,
+                  icon: const Icon(Icons.location_on_rounded, size: 18),
+                  label: Text(primaryCtaLabel),
+                  style: OutlinedButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    minimumSize: const Size(0, 38),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    side: BorderSide(color: colorScheme.outlineVariant),
+                    foregroundColor: colorScheme.primary,
+                  ),
+                ),
               ),
-            ),
+            ],
             if (secondaryCtaLabel != null &&
                 secondaryCtaLabel!.trim().isNotEmpty &&
                 onSecondaryTap != null) ...[
@@ -158,6 +184,35 @@ class ResultCard extends StatelessWidget {
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _InlineResultPill extends StatelessWidget {
+  const _InlineResultPill({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final palette = disposalChipPaletteFor(text, theme.brightness);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: palette.background,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: palette.border, width: 1.0),
+      ),
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textTheme.labelMedium?.copyWith(
+              color: palette.foreground,
+              fontWeight: FontWeight.w700,
+            ),
       ),
     );
   }

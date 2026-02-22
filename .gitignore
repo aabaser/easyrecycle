@@ -25,3 +25,4 @@ android/app/google-services.json
 
 # macOS
 .DS_Store
+references/boltuix_theme/android/.kotlin/errors/*.log

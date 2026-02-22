@@ -79,16 +79,16 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
       title: item.title ?? item.canonicalKey,
       subtitle: item.canonicalKey,
       tags: const [],
-      leadingIcon: Icons.eco_outlined,
+      leadingIcon: Icons.eco_rounded,
       image: resolvedUrl == null
           ? null
           : Image.network(
               resolvedUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.image_not_supported_outlined),
+                  const Icon(Icons.image_not_supported_rounded),
             ),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const Icon(Icons.chevron_right_rounded),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -118,7 +118,7 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
                 decoration: InputDecoration(
                   hintText: loc.t("admin_search_hint"),
                   suffixIcon: IconButton(
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(Icons.search_rounded),
                     onPressed: () => _loadItems(
                       query: _searchController.text.trim(),
                     ),

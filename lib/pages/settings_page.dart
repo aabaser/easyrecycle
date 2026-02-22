@@ -96,7 +96,7 @@ class SettingsPage extends StatelessWidget {
         const SizedBox(height: 12),
         ListTile(
           title: Text(loc.t("settings_theme_preview")),
-          trailing: const Icon(Icons.chevron_right),
+          trailing: const Icon(Icons.chevron_right_rounded),
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const ThemePreviewScreen()),
@@ -113,7 +113,7 @@ class SettingsPage extends StatelessWidget {
           const SizedBox(height: DesignTokens.baseSpacing),
           ListTile(
             title: Text(loc.t("settings_admin_link")),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const AdminItemsPage()),
@@ -123,7 +123,7 @@ class SettingsPage extends StatelessWidget {
           const SizedBox(height: DesignTokens.baseSpacing),
           ListTile(
             title: Text(loc.t("settings_auth_test")),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const AuthTestPage()),

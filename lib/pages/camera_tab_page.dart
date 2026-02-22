@@ -14,7 +14,6 @@ import "../l10n/app_localizations.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
-import "../services/mock_similarity_service.dart";
 import "../services/presigned_upload_service.dart";
 import "../state/app_state.dart";
 import "../ui/components/er_button.dart";
@@ -29,7 +28,6 @@ class CameraTabPage extends StatefulWidget {
 }
 
 class CameraTabPageState extends State<CameraTabPage> {
-  final _similarityService = MockSimilarityService();
   Uint8List? _imageBytes;
   bool _isLoading = false;
   bool _isPicking = false;
@@ -157,9 +155,11 @@ class CameraTabPageState extends State<CameraTabPage> {
       return null;
     }
     var text = input
-        .replaceAll(RegExp(r"<br\\s*/?>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"<br\s*/?>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"</p>", caseSensitive: false), "\n")
         .replaceAll(RegExp(r"<p[^>]*>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"</li>", caseSensitive: false), "\n")
+        .replaceAll(RegExp(r"<li[^>]*>", caseSensitive: false), "- ")
         .replaceAll(RegExp(r"<[^>]+>"), " ");
     text = text
         .replaceAll("&nbsp;", " ")
@@ -168,7 +168,11 @@ class CameraTabPageState extends State<CameraTabPage> {
         .replaceAll("&#39;", "'")
         .replaceAll("&lt;", "<")
         .replaceAll("&gt;", ">");
-    text = text.replaceAll(RegExp(r"\\s+"), " ").trim();
+    text = text.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
+    text = text.replaceAll(RegExp(r"[^\S\n]+"), " ");
+    text = text.replaceAll(RegExp(r" *\n *"), "\n");
+    text = text.replaceAll(RegExp(r"\n{3,}"), "\n\n");
+    text = text.trim();
     return text.isEmpty ? null : text;
   }
 
@@ -340,27 +344,12 @@ class CameraTabPageState extends State<CameraTabPage> {
       Map<String, dynamic> body, String cityId) {
     final suggestions = (body["suggestions"] as List<dynamic>?) ?? [];
     if (suggestions.isEmpty) {
-      return _similarityService.getTop3Similar(
-        cityId: cityId,
-        queryText: null,
-        imageBytes: _imageBytes,
-      );
+      return const [];
     }
     return suggestions.take(3).map((entry) {
       if (entry is Map<String, dynamic>) {
-        final name = (entry["title"] ??
-                entry["label"] ??
-                entry["item_name"] ??
-                entry["canonical_key"] ??
-                entry["item_id"] ??
-                "unknown")
-            .toString();
-        final alias = (entry["alias"] ??
-                entry["alias_text"] ??
-                entry["label"] ??
-                entry["item_name"] ??
-                entry["title"])
-            ?.toString();
+        final name = _pickDisplayName(entry);
+        final alias = _pickAliasName(entry);
         final disposals =
             _labelsFromList(entry["disposals"] ?? entry["disposal_labels"]);
         final disposalCodes =
@@ -386,12 +375,105 @@ class CameraTabPageState extends State<CameraTabPage> {
     }).toList();
   }
 
+  String _pickDisplayName(Map<String, dynamic> entry) {
+    final primaryCandidates = <dynamic>[
+      entry["label"],
+      entry["item_name"],
+      entry["name"],
+      entry["display_name"],
+      entry["alias"],
+      entry["alias_text"],
+    ];
+    for (final candidate in primaryCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+
+    final fallbackCandidates = <dynamic>[
+      entry["title"],
+      entry["canonical_key"],
+      entry["item_id"],
+      entry["id"],
+    ];
+    String? idLikeFallback;
+    for (final candidate in fallbackCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text == null) {
+        continue;
+      }
+      if (!_looksLikeInternalId(text)) {
+        return text;
+      }
+      idLikeFallback ??= text;
+    }
+    return idLikeFallback ?? "unknown";
+  }
+
+  String? _pickAliasName(Map<String, dynamic> entry) {
+    final aliasCandidates = <dynamic>[
+      entry["alias"],
+      entry["alias_text"],
+      entry["label"],
+      entry["item_name"],
+      entry["name"],
+      entry["title"],
+    ];
+    for (final candidate in aliasCandidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+    return null;
+  }
+
+  String? _cleanCandidateText(dynamic value) {
+    final text = value?.toString().trim() ?? "";
+    if (text.isEmpty || text.toLowerCase() == "null") {
+      return null;
+    }
+    return text;
+  }
+
+  bool _looksLikeInternalId(String text) {
+    final lower = text.toLowerCase();
+    if (RegExp(r"^[0-9a-f]{8}-[0-9a-f-]{27,}$").hasMatch(lower)) {
+      return true;
+    }
+    if (RegExp(r"^\d{6,}$").hasMatch(lower)) {
+      return true;
+    }
+    if (lower.contains("_") &&
+        !lower.contains(" ") &&
+        RegExp(r"^[a-z0-9_]+$").hasMatch(lower)) {
+      return true;
+    }
+    return false;
+  }
+
   List<String> _labelsFromList(dynamic rawList) {
     final list = (rawList as List<dynamic>?) ?? [];
     return list
         .map((entry) {
           if (entry is Map<String, dynamic>) {
-            return (entry["label"] ?? entry["code"] ?? "").toString();
+            final nestedCategory = entry["category"];
+            if (nestedCategory is Map<String, dynamic>) {
+              return (nestedCategory["label"] ??
+                      nestedCategory["name"] ??
+                      nestedCategory["title"] ??
+                      nestedCategory["code"] ??
+                      "")
+                  .toString();
+            }
+            return (entry["label"] ??
+                    entry["name"] ??
+                    entry["title"] ??
+                    entry["category_label"] ??
+                    entry["code"] ??
+                    "")
+                .toString();
           }
           return entry.toString();
         })
@@ -464,7 +546,7 @@ class CameraTabPageState extends State<CameraTabPage> {
                       ),
                       alignment: Alignment.center,
                       child: Icon(
-                        Icons.camera_alt_outlined,
+                        Icons.camera_alt_rounded,
                         size: 42,
                         color: colorScheme.primary,
                       ),

@@ -6,6 +6,7 @@ class ERPlantCard extends StatelessWidget {
   const ERPlantCard({
     super.key,
     required this.title,
+    this.eyebrowLabel,
     this.primaryLabel,
     this.subtitle,
     this.image,
@@ -13,11 +14,12 @@ class ERPlantCard extends StatelessWidget {
     this.trailing,
     this.ctaLabel,
     this.onCtaTap,
-    this.leadingIcon = Icons.eco_outlined,
+    this.leadingIcon = Icons.eco_rounded,
     this.onTap,
   });
 
   final String title;
+  final String? eyebrowLabel;
   final String? primaryLabel;
   final String? subtitle;
   final Widget? image;
@@ -37,6 +39,7 @@ class ERPlantCard extends StatelessWidget {
         ? primaryLabel!.trim()
         : title;
     final showSecondaryTitle = topLabel != title;
+    final eyebrow = eyebrowLabel?.trim();
     final tagSource = tags.where((tag) => tag.trim().isNotEmpty).toList();
     final visibleTags = tagSource;
     final hasImage = image != null;
@@ -92,6 +95,19 @@ class ERPlantCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (eyebrow != null && eyebrow.isNotEmpty) ...[
+                              Text(
+                                eyebrow,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                            ],
                             Text(
                               topLabel,
                               maxLines: 1,
@@ -153,7 +169,7 @@ class ERPlantCard extends StatelessWidget {
                       width: double.infinity,
                       child: FilledButton.icon(
                         onPressed: onCtaTap,
-                        icon: const Icon(Icons.place_outlined, size: 18),
+                        icon: const Icon(Icons.location_on_rounded, size: 18),
                         label: Text(
                           ctaLabel!,
                           maxLines: 1,
@@ -185,21 +201,19 @@ Widget _buildDisposalRow({
 }) {
   final palette = disposalChipPaletteFor(tag, theme.brightness);
   return Container(
-    constraints: const BoxConstraints(minHeight: 48),
-    alignment: Alignment.center,
-    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     decoration: BoxDecoration(
       color: palette.background,
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: palette.border, width: 1.2),
+      borderRadius: BorderRadius.circular(999),
+      border: Border.all(color: palette.border, width: 1.0),
     ),
     child: Text(
       tag,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.labelLarge?.copyWith(
+      style: theme.textTheme.labelMedium?.copyWith(
         color: palette.foreground,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
       ),
     ),
   );
