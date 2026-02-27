@@ -62,6 +62,7 @@
   "recycle_centers_open_maps": "Google Maps'te aç",
   "recycle_centers_empty": "Geri dönüşüm noktası bulunamadı.",
   "recycle_centers_location_denied": "Konum yok, şehir bazında listeleniyor.",
+  "connection_error_message": "Bağlantı kurulamadı. Lütfen internetinizi kontrol edip tekrar deneyin.",
   "info_title": "Bilgi",
   "info_body": "Bu özellik şimdilik yalnızca bilgilendirme amaçlıdır.",
   "info_unavailable": "Bu özellik henüz kullanılamıyor.",

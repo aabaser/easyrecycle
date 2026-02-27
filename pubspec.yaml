@@ -52,7 +52,7 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: assets/logo/app_logo_light_1024.png
+  image_path: assets/logo/boltuix_layer_icon_green_padded_1024.png
   remove_alpha_ios: true
-  adaptive_icon_foreground: assets/logo/ic_launcher_foreground_432.png
-  adaptive_icon_background: "#F7FAFF"
+  adaptive_icon_foreground: assets/logo/boltuix_layer_icon_green_adaptive_fg_1024.png
+  adaptive_icon_background: "#FFFFFF"

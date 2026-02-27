@@ -21,33 +21,34 @@ class AuthChoiceScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    "assets/uix/boltuix_login_bg.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.14),
-                          colorScheme.surfaceContainerLowest.withValues(alpha: 0.92),
-                        ],
-                      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  "assets/uix/boltuix_login_bg.jpg",
+                  fit: BoxFit.cover,
+                ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withValues(alpha: 0.14),
+                        colorScheme.surfaceContainerLowest.withValues(alpha: 0.92),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            MaxWidthCenter(
+          ),
+          SafeArea(
+            child: MaxWidthCenter(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
@@ -203,8 +204,8 @@ class AuthChoiceScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

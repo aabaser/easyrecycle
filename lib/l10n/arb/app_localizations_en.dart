@@ -198,6 +198,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Location unavailable, listing by city.';
 
   @override
+  String get connection_error_message =>
+      'Connection failed. Please check your internet and try again.';
+
+  @override
   String get info_title => 'Info';
 
   @override

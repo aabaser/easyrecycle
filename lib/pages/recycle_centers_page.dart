@@ -27,10 +27,49 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
   Position? _position;
   List<RecycleCenter> _centers = [];
   String _cityCode = "hannover";
+  AppState? _appState;
+  int _openedCityVersion = 0;
+  bool _closingForCityChange = false;
 
   @override
   void initState() {
     super.initState();
+    _appState = context.read<AppState>();
+    _openedCityVersion = _appState!.citySelectionVersion;
+    _appState!.addListener(_handleAppStateChanged);
+    _load();
+  }
+
+  @override
+  void dispose() {
+    _appState?.removeListener(_handleAppStateChanged);
+    super.dispose();
+  }
+
+  void _handleAppStateChanged() {
+    final appState = _appState;
+    if (!mounted || appState == null || _closingForCityChange) {
+      return;
+    }
+    if (appState.citySelectionVersion == _openedCityVersion) {
+      return;
+    }
+    _openedCityVersion = appState.citySelectionVersion;
+    _closingForCityChange = true;
+
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).maybePop();
+      return;
+    }
+
+    setState(() {
+      _loading = true;
+      _error = null;
+      _locationDenied = false;
+      _position = null;
+      _centers = [];
+    });
+    _closingForCityChange = false;
     _load();
   }
 

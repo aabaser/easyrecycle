@@ -49,122 +49,129 @@ class _LandingScreenState extends State<LandingScreen> {
     ];
 
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    "assets/uix/landing_vibrant_bg.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.14),
-                          colorScheme.surfaceContainerLowest.withValues(
-                            alpha: 0.92,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            MaxWidthCenter(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 120),
-                    Text(
-                      loc.t("entry_headline"),
-                      textAlign: TextAlign.center,
-                      style: textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      loc.t("entry_subtitle"),
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyLarge?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 22),
-                    Container(
-                      width: double.infinity,
-                      constraints: const BoxConstraints(maxWidth: 440),
-                      padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color:
-                            colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
-                        borderRadius: BorderRadius.circular(22),
-                        border: Border.all(color: colorScheme.outlineVariant),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            loc.t("landing_city_label"),
-                            style: textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            loc.t("city_helper"),
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          CityPills(
-                            cities: cities,
-                            selectedCityId: appState.selectedCity?.id,
-                            onSelected: appState.setSelectedCity,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 440),
-                      child: ERButton(
-                        label: loc.t("entry_cta"),
-                        onPressed: appState.selectedCity == null
-                            ? null
-                            : () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => const AuthChoiceScreen(),
-                                  ),
-                                );
-                              },
-                      ),
-                    ),
-                  ],
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  "assets/uix/landing_vibrant_bg.jpg",
+                  fit: BoxFit.cover,
                 ),
-              ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withValues(alpha: 0.14),
+                        colorScheme.surfaceContainerLowest.withValues(
+                          alpha: 0.92,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 8,
-              right: 12,
-              child: LanguageSegment(
-                selected: selectedLang,
-                onChanged: (value) => appState.setLocale(Locale(value)),
-              ),
+          ),
+          SafeArea(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                MaxWidthCenter(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 120),
+                        Text(
+                          loc.t("entry_headline"),
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          loc.t("entry_subtitle"),
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(height: 22),
+                        Container(
+                          width: double.infinity,
+                          constraints: const BoxConstraints(maxWidth: 440),
+                          padding: const EdgeInsets.all(18),
+                          decoration: BoxDecoration(
+                            color: colorScheme.surfaceContainerLow.withValues(
+                              alpha: 0.9,
+                            ),
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: colorScheme.outlineVariant),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                loc.t("landing_city_label"),
+                                style: textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                loc.t("city_helper"),
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              CityPills(
+                                cities: cities,
+                                selectedCityId: appState.selectedCity?.id,
+                                onSelected: appState.setSelectedCity,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 440),
+                          child: ERButton(
+                            label: loc.t("entry_cta"),
+                            onPressed: appState.selectedCity == null
+                                ? null
+                                : () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => const AuthChoiceScreen(),
+                                      ),
+                                    );
+                                  },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 12,
+                  child: LanguageSegment(
+                    selected: selectedLang,
+                    onChanged: (value) => appState.setLocale(Locale(value)),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:typed_data";
+import "dart:ui" as ui;
 
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
@@ -53,6 +54,18 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
     _result = widget.result;
+  }
+
+  void _showConnectionError() {
+    if (!mounted) {
+      return;
+    }
+    final loc = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger?.hideCurrentSnackBar();
+    messenger?.showSnackBar(
+      SnackBar(content: Text(loc.t("connection_error_message"))),
+    );
   }
 
   List<InlineSpan> _linkify(
@@ -204,6 +217,7 @@ class _ResultPageState extends State<ResultPage> {
       );
       return;
     } catch (_) {
+      _showConnectionError();
       return;
     }
   }
@@ -459,7 +473,7 @@ class _ResultPageState extends State<ResultPage> {
       if (!mounted) {
         return;
       }
-      _showInfoDialog(AppLocalizations.of(context));
+      _showConnectionError();
     }
   }
 
@@ -550,6 +564,7 @@ class _ResultPageState extends State<ResultPage> {
   Widget _buildPreviewImageCard() {
     final colorScheme = Theme.of(context).colorScheme;
     final radius = BorderRadius.circular(20);
+    final imageUrl = _effectiveImageUrl;
     return ClipRRect(
       borderRadius: radius,
       child: Container(
@@ -559,20 +574,72 @@ class _ResultPageState extends State<ResultPage> {
           border: Border.all(color: colorScheme.outlineVariant),
           borderRadius: radius,
         ),
-        child: _result.imageBytes != null
-            ? Image.memory(_result.imageBytes!, fit: BoxFit.cover)
-            : Image.network(
-                _effectiveImageUrl!.startsWith("http")
-                    ? _effectiveImageUrl!
-                    : "${ApiConfig.baseUrl}${_effectiveImageUrl!}",
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const SizedBox(
-                  height: 180,
-                  child: Center(
-                    child: Icon(Icons.image_not_supported_outlined),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ColoredBox(color: colorScheme.surfaceContainerLow),
+            if (_result.imageBytes != null)
+              ImageFiltered(
+                imageFilter: ui.ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                child: Opacity(
+                  opacity: 0.35,
+                  child: Image.memory(
+                    _result.imageBytes!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )
+            else if (imageUrl != null)
+              ImageFiltered(
+                imageFilter: ui.ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                child: Opacity(
+                  opacity: 0.35,
+                  child: Image.network(
+                    imageUrl.startsWith("http")
+                        ? imageUrl
+                        : "${ApiConfig.baseUrl}$imageUrl",
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                   ),
                 ),
               ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    colorScheme.surface.withValues(alpha: 0.08),
+                    colorScheme.surface.withValues(alpha: 0.18),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ClipRect(
+                child: SizedBox.expand(
+                  child: _result.imageBytes != null
+                      ? Image.memory(
+                          _result.imageBytes!,
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                        )
+                      : Image.network(
+                          imageUrl!.startsWith("http")
+                              ? imageUrl
+                              : "${ApiConfig.baseUrl}$imageUrl",
+                          fit: BoxFit.fitHeight,
+                          alignment: Alignment.center,
+                          errorBuilder: (_, __, ___) => const Center(
+                            child: Icon(Icons.image_not_supported_outlined),
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

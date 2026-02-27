@@ -37,6 +37,30 @@ class CameraTabPageState extends State<CameraTabPage> {
 
   void setActive(bool active) {}
 
+  void resetForCityChange() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _imageBytes = null;
+      _isLoading = false;
+      _isPicking = false;
+      _isScanning = false;
+    });
+  }
+
+  void _showConnectionError() {
+    if (!mounted) {
+      return;
+    }
+    final loc = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger?.hideCurrentSnackBar();
+    messenger?.showSnackBar(
+      SnackBar(content: Text(loc.t("connection_error_message"))),
+    );
+  }
+
   Future<void> openCamera({bool force = false}) async {
     if (_isPicking || _isLoading || _isScanning) {
       return;
@@ -83,7 +107,12 @@ class CameraTabPageState extends State<CameraTabPage> {
       }
 
       final picker = ImagePicker();
-      final file = await picker.pickImage(source: source);
+      final file = source == ImageSource.camera
+          ? await picker.pickImage(
+              source: source,
+              preferredCameraDevice: CameraDevice.rear,
+            )
+          : await picker.pickImage(source: source);
       if (file == null) {
         return;
       }
@@ -337,6 +366,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       setState(() {
         _isLoading = false;
       });
+      _showConnectionError();
     }
   }
 

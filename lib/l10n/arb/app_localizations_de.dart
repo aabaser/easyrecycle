@@ -199,6 +199,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Standort nicht verfügbar, Liste nach Stadt.';
 
   @override
+  String get connection_error_message =>
+      'Verbindung fehlgeschlagen. Bitte Internet prüfen und erneut versuchen.';
+
+  @override
   String get info_title => 'Info';
 
   @override

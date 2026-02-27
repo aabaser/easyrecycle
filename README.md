@@ -67,7 +67,7 @@ Build:
 ```bash
 flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000
 # If using admin pages:
-# flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000 --dart-define=ADMIN_API_KEY=<YOUR_ADMIN_API_KEY>
+flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000 --dart-define=ADMIN_API_KEY=xk5kwWY5KaBfz2O31HcnHHE_YXo_Km_O1i6D01yMhYej2lkuzLfQ5Rr44UTDEwa3
 ```
 
 Install APK:

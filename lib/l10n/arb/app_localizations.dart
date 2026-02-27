@@ -472,6 +472,12 @@ abstract class AppLocalizations {
   /// **'Location unavailable, listing by city.'**
   String get recycle_centers_location_denied;
 
+  /// No description provided for @connection_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection failed. Please check your internet and try again.'**
+  String get connection_error_message;
+
   /// No description provided for @info_title.
   ///
   /// In en, this message translates to:

@@ -74,6 +74,18 @@ class _ScanPageState extends State<ScanPage> {
     super.dispose();
   }
 
+  void _showConnectionError() {
+    if (!mounted) {
+      return;
+    }
+    final loc = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger?.hideCurrentSnackBar();
+    messenger?.showSnackBar(
+      SnackBar(content: Text(loc.t("connection_error_message"))),
+    );
+  }
+
   Future<void> _pickImage() async {
     if (kIsWeb) {
       final result = await FilePicker.platform.pickFiles(
@@ -92,7 +104,10 @@ class _ScanPageState extends State<ScanPage> {
     }
 
     final picker = ImagePicker();
-    final file = await picker.pickImage(source: ImageSource.camera);
+    final file = await picker.pickImage(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.rear,
+    );
     if (file == null) {
       return;
     }
@@ -477,6 +492,7 @@ class _ScanPageState extends State<ScanPage> {
         _analyzeJson = "{\"error\":\"analyze_failed\"}";
         _isLoading = false;
       });
+      _showConnectionError();
     }
   }
 
@@ -582,42 +598,13 @@ class _ScanPageState extends State<ScanPage> {
         MaterialPageRoute(builder: (_) => ResultPage(result: result)),
       );
     } catch (_) {
-      final similar = _similarityService.getTop3Similar(
-        cityId: cityId,
-        queryText: query,
-        imageBytes: _imageBytes,
-      );
-      final result = ScanResult(
-        state: ScanState.notFound,
-        itemId: null,
-        itemName: null,
-        confidence: ConfidenceLevel.low,
-        description: null,
-        disposalMethod: null,
-        disposalSteps: [],
-        categories: const [],
-        disposalLabels: const [],
-        bestOption: null,
-        otherOptions: [],
-        warnings: [
-          Warning(
-              severity: WarningSeverity.warn, messageKey: "no_match_message"),
-        ],
-        similarItems: _localizeSimilarItems(similar, loc),
-        imageBytes: null,
-        searchMode: SearchMode.text,
-        queryText: query,
-      );
-      appState.setLastResult(result);
       if (!mounted) {
         return;
       }
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => ResultPage(result: result)),
-      );
+      _showConnectionError();
     }
   }
 

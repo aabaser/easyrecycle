@@ -60,6 +60,35 @@ class TextSearchPageState extends State<TextSearchPage> {
 
   void setActive(bool active) {}
 
+  void resetForCityChange() {
+    _debounce?.cancel();
+    _controller.clear();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _isLoading = false;
+      _query = "";
+      _lastQuery = null;
+      _foundResult = null;
+      _suggestions = [];
+      _liveResults = [];
+      _showNoMatch = false;
+    });
+  }
+
+  void _showConnectionError() {
+    if (!mounted) {
+      return;
+    }
+    final loc = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger?.hideCurrentSnackBar();
+    messenger?.showSnackBar(
+      SnackBar(content: Text(loc.t("connection_error_message"))),
+    );
+  }
+
   void _onQueryChanged(String value) {
     _query = value;
     _showNoMatch = false;
@@ -176,10 +205,11 @@ class TextSearchPageState extends State<TextSearchPage> {
       setState(() {
         _foundResult = null;
         _suggestions = const [];
-        _showNoMatch = true;
+        _showNoMatch = false;
         _liveResults = [];
         _isLoading = false;
       });
+      _showConnectionError();
     }
   }
 
@@ -531,6 +561,7 @@ class TextSearchPageState extends State<TextSearchPage> {
       final foundResult = _resultFromBody(body, _query.trim());
       await _openResult(foundResult);
     } catch (_) {
+      _showConnectionError();
       return;
     }
   }

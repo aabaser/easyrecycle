@@ -22,6 +22,9 @@ class AppState extends ChangeNotifier {
   int currentTabIndex = 1;
   int? _requestedTabIndex;
   bool _cameraScanRequested = false;
+  int _citySelectionVersion = 0;
+
+  int get citySelectionVersion => _citySelectionVersion;
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -66,7 +69,15 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> setSelectedCity(City city) async {
+    final previousCityId = selectedCity?.id;
     selectedCity = city;
+    if (previousCityId != city.id) {
+      // City-specific results and pending actions become invalid immediately.
+      lastResult = null;
+      _requestedTabIndex = null;
+      _cameraScanRequested = false;
+      _citySelectionVersion++;
+    }
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("selectedCityId", city.id);
     notifyListeners();

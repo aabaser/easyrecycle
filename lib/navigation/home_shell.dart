@@ -26,12 +26,14 @@ class _HomeShellState extends State<HomeShell> {
   final _cameraKey = GlobalKey<CameraTabPageState>();
   final _textKey = GlobalKey<TextSearchPageState>();
   late int _index;
+  late int _lastCitySelectionVersion;
 
   @override
   void initState() {
     super.initState();
     final appState = context.read<AppState>();
     _index = appState.currentTabIndex;
+    _lastCitySelectionVersion = appState.citySelectionVersion;
     appState.addListener(_handleAppState);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _handleTabActivation();
@@ -49,6 +51,10 @@ class _HomeShellState extends State<HomeShell> {
       return;
     }
     final appState = context.read<AppState>();
+    if (appState.citySelectionVersion != _lastCitySelectionVersion) {
+      _lastCitySelectionVersion = appState.citySelectionVersion;
+      _resetCityScopedUiState();
+    }
     final requestedTab = appState.consumeRequestedTab();
     if (requestedTab != null && requestedTab != _index) {
       setState(() {
@@ -72,6 +78,13 @@ class _HomeShellState extends State<HomeShell> {
         _cameraKey.currentState?.openCamera(force: true);
       }
     }
+  }
+
+  void _resetCityScopedUiState() {
+    _textKey.currentState?.resetForCityChange();
+    _cameraKey.currentState?.resetForCityChange();
+    NavKeys.textTab.currentState?.popUntil((route) => route.isFirst);
+    NavKeys.cameraTab.currentState?.popUntil((route) => route.isFirst);
   }
 
   void _handleTabActivation() {

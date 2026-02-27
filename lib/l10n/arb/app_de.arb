@@ -63,6 +63,7 @@
   "recycle_centers_open_maps": "In Google Maps öffnen",
   "recycle_centers_empty": "Keine Recyclinghöfe gefunden.",
   "recycle_centers_location_denied": "Standort nicht verfügbar, Liste nach Stadt.",
+  "connection_error_message": "Verbindung fehlgeschlagen. Bitte Internet prüfen und erneut versuchen.",
   "info_title": "Info",
   "info_body": "Diese Funktion dient aktuell nur zur Information.",
   "info_unavailable": "Diese Funktion ist noch nicht verfügbar.",

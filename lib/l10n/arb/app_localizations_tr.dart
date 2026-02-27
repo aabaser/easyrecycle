@@ -198,6 +198,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Konum yok, şehir bazında listeleniyor.';
 
   @override
+  String get connection_error_message =>
+      'Bağlantı kurulamadı. Lütfen internetinizi kontrol edip tekrar deneyin.';
+
+  @override
   String get info_title => 'Bilgi';
 
   @override
