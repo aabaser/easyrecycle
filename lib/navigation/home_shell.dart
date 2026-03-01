@@ -90,11 +90,6 @@ class _HomeShellState extends State<HomeShell> {
   void _handleTabActivation() {
     _textKey.currentState?.setActive(_index == HomeShell.tabText);
     _cameraKey.currentState?.setActive(_index == HomeShell.tabCamera);
-    if (_index == HomeShell.tabCamera) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _cameraKey.currentState?.openCamera(force: true);
-      });
-    }
   }
 
   GlobalKey<NavigatorState> _currentNavKey() {

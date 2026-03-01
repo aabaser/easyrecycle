@@ -27,6 +27,7 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
   Position? _position;
   List<RecycleCenter> _centers = [];
   String _cityCode = "hannover";
+  String? _selectedTypeLabel;
   AppState? _appState;
   int _openedCityVersion = 0;
   bool _closingForCityChange = false;
@@ -59,16 +60,18 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
 
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).maybePop();
+      _closingForCityChange = false;
       return;
     }
 
-    setState(() {
-      _loading = true;
-      _error = null;
-      _locationDenied = false;
-      _position = null;
-      _centers = [];
-    });
+      setState(() {
+        _loading = true;
+        _error = null;
+        _locationDenied = false;
+        _position = null;
+        _centers = [];
+        _selectedTypeLabel = null;
+      });
     _closingForCityChange = false;
     _load();
   }
@@ -113,13 +116,26 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
         lat: position?.latitude,
         lng: position?.longitude,
       );
+      final normalized = List<RecycleCenter>.from(centers);
+      if (position != null) {
+        normalized.sort((a, b) {
+          final aDistance = a.distanceKm ?? double.infinity;
+          final bDistance = b.distanceKm ?? double.infinity;
+          return aDistance.compareTo(bDistance);
+        });
+      }
+      final typeLabels = _typeLabelsFrom(normalized);
       if (!mounted) {
         return;
       }
       setState(() {
-        _centers = centers;
+        _centers = normalized;
         _position = position;
         _locationDenied = locationDenied;
+        if (_selectedTypeLabel != null &&
+            !typeLabels.contains(_selectedTypeLabel)) {
+          _selectedTypeLabel = null;
+        }
         _loading = false;
       });
     } catch (_) {
@@ -148,6 +164,41 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
     return Uri.https("www.google.com", "/maps/search/", params);
   }
 
+  List<String> _typeLabelsFrom(List<RecycleCenter> centers) {
+    final values = <String>{};
+    for (final center in centers) {
+      final label = center.typLabel?.trim() ?? "";
+      if (label.isEmpty) {
+        continue;
+      }
+      values.add(label);
+    }
+    final sorted = values.toList()..sort((a, b) => a.compareTo(b));
+    return sorted;
+  }
+
+  List<RecycleCenter> _filteredCenters(List<RecycleCenter> centers) {
+    final selected = _selectedTypeLabel;
+    if (selected == null || selected.isEmpty) {
+      return centers;
+    }
+    return centers
+        .where((center) => (center.typLabel?.trim() ?? "") == selected)
+        .toList();
+  }
+
+  String _allFilterLabel() {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (code) {
+      case "de":
+        return "Alle";
+      case "tr":
+        return "Tumu";
+      default:
+        return "All";
+    }
+  }
+
   Future<void> _openMaps() async {
     final uri = _buildMapsUrl();
     if (uri == null) {
@@ -173,6 +224,8 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
+    final typeLabels = _typeLabelsFrom(_centers);
+    final visibleCenters = _filteredCenters(_centers);
 
     return Scaffold(
       appBar: AppBar(
@@ -203,6 +256,45 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        if (typeLabels.isNotEmpty) ...[
+                          SizedBox(
+                            height: 38,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: FilterChip(
+                                    label: Text(_allFilterLabel()),
+                                    selected: _selectedTypeLabel == null,
+                                    showCheckmark: false,
+                                    onSelected: (_) {
+                                      setState(() {
+                                        _selectedTypeLabel = null;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ...typeLabels.map(
+                                  (label) => Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: FilterChip(
+                                      label: Text(label),
+                                      selected: _selectedTypeLabel == label,
+                                      showCheckmark: false,
+                                      onSelected: (_) {
+                                        setState(() {
+                                          _selectedTypeLabel = label;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                         if (_locationDenied)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12),
@@ -217,13 +309,13 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                           width: double.infinity,
                           height: DesignTokens.primaryButtonHeight,
                           child: ElevatedButton(
-                            onPressed: _centers.isEmpty ? null : _openMaps,
+                            onPressed: visibleCenters.isEmpty ? null : _openMaps,
                             child: Text(loc.t("recycle_centers_open_maps")),
                           ),
                         ),
                         const SizedBox(height: 16),
                         Expanded(
-                          child: _centers.isEmpty
+                          child: visibleCenters.isEmpty
                               ? Center(
                                   child: Text(
                                     loc.t("recycle_centers_empty"),
@@ -233,11 +325,11 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                                   ),
                                 )
                               : ListView.separated(
-                                  itemCount: _centers.length,
+                                  itemCount: visibleCenters.length,
                                   separatorBuilder: (_, __) =>
                                       const SizedBox(height: 12),
                                   itemBuilder: (context, index) {
-                                    final center = _centers[index];
+                                    final center = visibleCenters[index];
                                     final distance = center.distanceKm;
                                     final distanceLabel = distance == null
                                         ? null

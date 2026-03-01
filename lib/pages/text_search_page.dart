@@ -277,11 +277,13 @@ class TextSearchPageState extends State<TextSearchPage> {
               })
               .where((code) => code.trim().isNotEmpty)
               .toList();
-          final explicitCodes = (entry["disposal_codes"] as List<dynamic>? ?? [])
-              .map((e) => e.toString())
-              .where((code) => code.trim().isNotEmpty)
-              .toList();
-          final allCodes = <String>{...disposalCodes, ...explicitCodes}.toList();
+          final explicitCodes =
+              (entry["disposal_codes"] as List<dynamic>? ?? [])
+                  .map((e) => e.toString())
+                  .where((code) => code.trim().isNotEmpty)
+                  .toList();
+          final allCodes =
+              <String>{...disposalCodes, ...explicitCodes}.toList();
           return SimilarItem(
             itemId: entry["id"]?.toString(),
             itemTitle: title,
@@ -290,6 +292,7 @@ class TextSearchPageState extends State<TextSearchPage> {
             hintCategory: "unknown",
             disposalLabels: disposals,
             disposalCodes: allCodes,
+            imageUrl: _pickImageUrl(entry),
           );
         }
         return SimilarItem(
@@ -412,6 +415,7 @@ class TextSearchPageState extends State<TextSearchPage> {
           hintCategory: entry["category"]?.toString() ?? "unknown",
           disposalLabels: disposals,
           disposalCodes: disposalCodes,
+          imageUrl: _pickImageUrl(entry),
         );
       }
       return SimilarItem(
@@ -459,6 +463,24 @@ class TextSearchPageState extends State<TextSearchPage> {
       idLikeFallback ??= text;
     }
     return idLikeFallback ?? "unknown";
+  }
+
+  String? _pickImageUrl(Map<String, dynamic> entry) {
+    final candidates = <dynamic>[
+      entry["image_url"],
+      entry["imageUrl"],
+      entry["thumbnail_url"],
+      entry["thumbnailUrl"],
+      entry["primary_image_url"],
+      entry["primaryImageUrl"],
+    ];
+    for (final candidate in candidates) {
+      final text = _cleanCandidateText(candidate);
+      if (text != null) {
+        return text;
+      }
+    }
+    return null;
   }
 
   String? _pickAliasName(Map<String, dynamic> entry) {
@@ -636,6 +658,7 @@ class TextSearchPageState extends State<TextSearchPage> {
                       hintCategory: "",
                       disposalLabels: _foundResult!.disposalLabels,
                       disposalCodes: _foundResult!.disposalCodes,
+                      imageUrl: _foundResult!.imageUrl,
                     ),
                     findCenterLabel: loc.t("find_recycling_center"),
                     onFindCenterTap: _openRecycleCenters,

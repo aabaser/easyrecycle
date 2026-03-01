@@ -9,6 +9,7 @@ class SimilarItem {
     required this.hintCategory,
     required this.disposalLabels,
     this.disposalCodes = const [],
+    this.imageUrl,
   });
 
   final String? itemId;
@@ -18,4 +19,5 @@ class SimilarItem {
   final String hintCategory;
   final List<String> disposalLabels;
   final List<String> disposalCodes;
+  final String? imageUrl;
 }

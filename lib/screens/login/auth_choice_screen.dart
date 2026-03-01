@@ -86,7 +86,7 @@ class AuthChoiceScreen extends StatelessWidget {
                               child: Chip(
                                 avatar: const Icon(Icons.location_on_outlined, size: 18),
                                 label: Text(
-                                  appState.selectedCity!.name,
+                                  _normalizeCityName(appState.selectedCity!.name),
                                   style: textTheme.labelLarge?.copyWith(
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -219,6 +219,24 @@ class AuthChoiceScreen extends StatelessWidget {
       default:
         return "Continue with Apple";
     }
+  }
+
+  String _normalizeCityName(String raw) {
+    final trimmed = raw.trim();
+    if (trimmed.isEmpty) {
+      return raw;
+    }
+    return trimmed
+        .split(RegExp(r"\s+"))
+        .where((part) => part.isNotEmpty)
+        .map((part) {
+          final lower = part.toLowerCase();
+          if (lower.length == 1) {
+            return lower.toUpperCase();
+          }
+          return "${lower[0].toUpperCase()}${lower.substring(1)}";
+        })
+        .join(" ");
   }
 }
 

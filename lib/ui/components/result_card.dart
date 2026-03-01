@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "../../config/api_config.dart";
 import "../disposal_chip_palette.dart";
 
 class ResultPill extends StatelessWidget {
@@ -48,6 +49,7 @@ class ResultCard extends StatelessWidget {
     this.secondaryCtaLabel,
     this.onSecondaryTap,
     this.leadingIcon = Icons.eco_rounded,
+    this.thumbnailUrl,
   });
 
   final String title;
@@ -60,6 +62,59 @@ class ResultCard extends StatelessWidget {
   final String? secondaryCtaLabel;
   final VoidCallback? onSecondaryTap;
   final IconData leadingIcon;
+  final String? thumbnailUrl;
+
+  String? _resolvedThumbnailUrl() {
+    final raw = thumbnailUrl?.trim();
+    if (raw == null || raw.isEmpty) {
+      return null;
+    }
+    if (raw.startsWith("http://") || raw.startsWith("https://")) {
+      return raw;
+    }
+    return "${ApiConfig.baseUrl}$raw";
+  }
+
+  Widget _leadingVisual(ColorScheme colorScheme) {
+    final resolvedUrl = _resolvedThumbnailUrl();
+    if (resolvedUrl == null) {
+      return Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        alignment: Alignment.center,
+        child: Icon(
+          leadingIcon,
+          size: 22,
+          color: colorScheme.primary,
+        ),
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: Image.network(
+          resolvedUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: colorScheme.primaryContainer,
+            alignment: Alignment.center,
+            child: Icon(
+              leadingIcon,
+              size: 22,
+              color: colorScheme.primary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,20 +142,7 @@ class ResultCard extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        alignment: Alignment.center,
-                        child: Icon(
-                          leadingIcon,
-                          size: 22,
-                          color: colorScheme.primary,
-                        ),
-                      ),
+                      _leadingVisual(colorScheme),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -130,11 +172,9 @@ class ResultCard extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: (
-                  recommendedLabels.isNotEmpty
-                      ? recommendedLabels
-                      : <String>[recommendedLabel!]
-                )
+                children: (recommendedLabels.isNotEmpty
+                        ? recommendedLabels
+                        : <String>[recommendedLabel!])
                     .where((e) => e.trim().isNotEmpty)
                     .map((e) => _InlineResultPill(text: e))
                     .toList(growable: false),
@@ -210,9 +250,9 @@ class _InlineResultPill extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: theme.textTheme.labelMedium?.copyWith(
-              color: palette.foreground,
-              fontWeight: FontWeight.w700,
-            ),
+          color: palette.foreground,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

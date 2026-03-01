@@ -16,6 +16,7 @@ class ERPlantCard extends StatelessWidget {
     this.onCtaTap,
     this.leadingIcon = Icons.eco_rounded,
     this.onTap,
+    this.imageSize = 72,
   });
 
   final String title;
@@ -29,6 +30,7 @@ class ERPlantCard extends StatelessWidget {
   final VoidCallback? onCtaTap;
   final IconData leadingIcon;
   final VoidCallback? onTap;
+  final double imageSize;
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +70,8 @@ class ERPlantCard extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
-                            width: 72,
-                            height: 72,
+                            width: imageSize,
+                            height: imageSize,
                             color: colorScheme.surfaceContainer,
                             alignment: Alignment.center,
                             child: image,

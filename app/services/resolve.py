@@ -15,7 +15,15 @@ def _city_id(db: Session, city_code: str) -> Optional[str]:
   return r[0] if r else None
 
 
-def _suggest_similar(db: Session, query_text: str, lang: str, city_id: str, exclude_item_id: Optional[str], limit: int = 3) -> List[Dict[str, Any]]:
+def _suggest_similar(
+  db: Session,
+  settings: Settings,
+  query_text: str,
+  lang: str,
+  city_id: str,
+  exclude_item_id: Optional[str],
+  limit: int = 3,
+) -> List[Dict[str, Any]]:
   exclude_sql = ""
   if exclude_item_id:
     exclude_sql = "WHERE i.item_id::text <> :exclude_item_id"
@@ -24,6 +32,7 @@ def _suggest_similar(db: Session, query_text: str, lang: str, city_id: str, excl
     WITH candidates AS (
       SELECT i.item_id::text AS item_id,
              COALESCE(tt.text, i.canonical_key) AS label,
+             i.primary_image_id::text AS primary_image_id,
              similarity(COALESCE(tt.text, i.canonical_key), :q) AS sim,
              ts_rank(
                to_tsvector('simple', concat_ws(' ', COALESCE(tt.text, ''), COALESCE(td.text, ''), i.canonical_key)),
@@ -57,11 +66,11 @@ def _suggest_similar(db: Session, query_text: str, lang: str, city_id: str, excl
       FROM best_per_item
       WHERE rn_item = 1
     )
-    SELECT item_id, label, sim
-    FROM best_per_label
-    WHERE rn_label = 1
-    ORDER BY score DESC, sim DESC
-    LIMIT :limit
+      SELECT item_id, label, sim, primary_image_id
+      FROM best_per_label
+      WHERE rn_label = 1
+      ORDER BY score DESC, sim DESC
+      LIMIT :limit
   """
   params = {
     "q": query_text,
@@ -72,7 +81,15 @@ def _suggest_similar(db: Session, query_text: str, lang: str, city_id: str, excl
   if exclude_item_id:
     params["exclude_item_id"] = exclude_item_id
   rows = db.execute(text(base_sql), params).fetchall()
-  return [{"item_id": r[0], "alias": r[1], "similarity": float(r[2])} for r in rows]
+  return [
+    {
+      "item_id": r[0],
+      "alias": r[1],
+      "similarity": float(r[2]),
+      "image_url": _image_url(db, settings, r[3]),
+    }
+    for r in rows
+  ]
 
 
 def _create_prospect(db: Session, item_id: Optional[str], city_id: str, lang: str, reason: str, search_text: Optional[str] = None) -> bool:
@@ -337,7 +354,15 @@ def resolve_item(
     if not found_id:
       suggestions = _enrich_suggestions(
         db,
-        _suggest_similar(db, item_name, lang, city_id, exclude_item_id=None, limit=3),
+        _suggest_similar(
+          db,
+          settings,
+          item_name,
+          lang,
+          city_id,
+          exclude_item_id=None,
+          limit=3,
+        ),
         city_id,
         city_code,
         lang,
@@ -354,7 +379,15 @@ def resolve_item(
   """), {"item_id": item_id}).fetchone()
 
   if not item:
-    suggestions = _suggest_similar(db, item_name or item_id, lang, city_id, exclude_item_id=None, limit=3)
+    suggestions = _suggest_similar(
+      db,
+      settings,
+      item_name or item_id,
+      lang,
+      city_id,
+      exclude_item_id=None,
+      limit=3,
+    )
     return {"not_found": True, "suggestions": suggestions}
 
   title_key = item[2]
@@ -407,7 +440,15 @@ def resolve_item(
     title_text = title or item[1]
     suggestions = _enrich_suggestions(
       db,
-      _suggest_similar(db, title_text, lang, city_id, exclude_item_id=item[0], limit=3),
+      _suggest_similar(
+        db,
+        settings,
+        title_text,
+        lang,
+        city_id,
+        exclude_item_id=item[0],
+        limit=3,
+      ),
       city_id,
       city_code,
       lang,

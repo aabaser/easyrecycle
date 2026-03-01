@@ -1,8 +1,7 @@
 import "dart:convert";
 import "dart:math";
+import "dart:typed_data";
 
-import "package:file_picker/file_picker.dart";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:image_picker/image_picker.dart";
@@ -16,7 +15,6 @@ import "../models/similar_item.dart";
 import "../models/warning.dart";
 import "../services/presigned_upload_service.dart";
 import "../state/app_state.dart";
-import "../ui/components/er_button.dart";
 import "result_page.dart";
 import "city_picker_page.dart";
 
@@ -32,10 +30,25 @@ class CameraTabPageState extends State<CameraTabPage> {
   bool _isLoading = false;
   bool _isPicking = false;
   bool _isScanning = false;
+  bool _isActive = false;
 
   void handleTabSelected() {}
 
-  void setActive(bool active) {}
+  void setActive(bool active) {
+    if (_isActive == active) {
+      return;
+    }
+    _isActive = active;
+    if (!active) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      openCamera(force: true);
+    });
+  }
 
   void resetForCityChange() {
     if (!mounted) {
@@ -68,20 +81,28 @@ class CameraTabPageState extends State<CameraTabPage> {
     await _pickImage();
   }
 
+  Future<void> openGallery() async {
+    if (_isPicking || _isLoading || _isScanning) {
+      return;
+    }
+    await _pickImageInternal(source: ImageSource.gallery);
+  }
+
   Future<void> _pickImage() async {
     await _pickImageInternal(source: ImageSource.camera);
   }
 
-  Future<void> _pickGallery() async {
-    await _pickImageInternal(
-      source: ImageSource.gallery,
-      useFilePicker: kIsWeb,
-    );
+  void _queueReopenCamera() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_isActive) {
+        return;
+      }
+      openCamera(force: true);
+    });
   }
 
   Future<void> _pickImageInternal({
     required ImageSource source,
-    bool useFilePicker = false,
   }) async {
     if (_isPicking) {
       return;
@@ -89,23 +110,6 @@ class CameraTabPageState extends State<CameraTabPage> {
     _isPicking = true;
     _isScanning = true;
     try {
-      if (useFilePicker) {
-        final result = await FilePicker.platform.pickFiles(
-          type: FileType.image,
-          withData: true,
-        );
-        final bytes = result?.files.single.bytes;
-        if (bytes == null) {
-          return;
-        }
-        final cropped = _cropToFocus(bytes);
-        setState(() {
-          _imageBytes = cropped;
-        });
-        await _runAnalyze();
-        return;
-      }
-
       final picker = ImagePicker();
       final file = source == ImageSource.camera
           ? await picker.pickImage(
@@ -267,6 +271,9 @@ class CameraTabPageState extends State<CameraTabPage> {
       if (notFound && !statusOk) {
         throw Exception("Analyze failed");
       }
+      if (!mounted) {
+        return;
+      }
       final loc = AppLocalizations.of(context);
       if (notFound) {
         final similar = _similarityFromApi(body, city.id);
@@ -306,6 +313,7 @@ class CameraTabPageState extends State<CameraTabPage> {
           setState(() {
             _imageBytes = null;
           });
+          _queueReopenCamera();
         }
         return;
       }
@@ -358,6 +366,7 @@ class CameraTabPageState extends State<CameraTabPage> {
         setState(() {
           _imageBytes = null;
         });
+        _queueReopenCamera();
       }
     } catch (_) {
       if (!mounted) {
@@ -530,88 +539,37 @@ class CameraTabPageState extends State<CameraTabPage> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    final busy = _isLoading || _isPicking || _isScanning;
+    return ColoredBox(
+      color: Colors.black,
+      child: Stack(
         children: [
-          const SizedBox(height: 16),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  ColoredBox(color: colorScheme.surfaceContainerHigh),
-                  Opacity(
-                    opacity: 0.92,
-                    child: Image.asset(
-                      "assets/uix/header.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.08),
-                          Colors.black.withValues(alpha: 0.25),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 86,
-                      height: 86,
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerLowest
-                            .withValues(alpha: 0.88),
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.camera_alt_rounded,
-                        size: 42,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16,
-                    right: 16,
-                    bottom: 14,
-                    child: Text(
-                      loc.t("scan_focus_hint"),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
+          Center(
+            child: busy
+                ? const SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: CircularProgressIndicator(strokeWidth: 2.6),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 20,
+            child: SafeArea(
+              top: false,
+              child: OutlinedButton.icon(
+                onPressed: busy ? null : openGallery,
+                icon: const Icon(Icons.photo_library_outlined),
+                label: Text(loc.t("scan_pick_gallery")),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: BorderSide(color: Colors.white.withValues(alpha: 0.55)),
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 24),
-          ERButton(
-            label: loc.t("scan_take_photo"),
-            loading: _isLoading,
-            onPressed: _isLoading || _isScanning ? null : _pickImage,
-          ),
-          const SizedBox(height: 10),
-          ERButton(
-            label: loc.t("scan_pick_gallery"),
-            variant: ERButtonVariant.secondary,
-            onPressed: _isLoading || _isScanning ? null : _pickGallery,
-          ),
-          const SizedBox(height: 24),
         ],
       ),
     );

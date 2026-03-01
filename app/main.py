@@ -429,6 +429,7 @@ def search_items(
         i.item_id::text,
         i.canonical_key,
         t1.text,
+        i.primary_image_id::text,
         COALESCE(
           array_remove(array_agg(DISTINCT dt.text), NULL),
           ARRAY[]::text[]
@@ -445,7 +446,7 @@ def search_items(
         OR t1.text ILIKE :q
         OR i.canonical_key ILIKE :q
       )
-      GROUP BY i.item_id, i.canonical_key, t1.text
+      GROUP BY i.item_id, i.canonical_key, t1.text, i.primary_image_id
       ORDER BY t1.text NULLS LAST, i.canonical_key ASC
       LIMIT :limit
       """
@@ -458,7 +459,8 @@ def search_items(
         "id": r[0],
         "canonical_key": r[1],
         "title": r[2],
-        "disposals": list(r[3] or []),
+        "image_url": _image_url(db, r[3]),
+        "disposals": list(r[4] or []),
       }
       for r in rows
     ]
