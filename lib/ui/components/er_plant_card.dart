@@ -17,6 +17,7 @@ class ERPlantCard extends StatelessWidget {
     this.leadingIcon = Icons.eco_rounded,
     this.onTap,
     this.imageSize = 72,
+    this.lowEmphasisCta = false,
   });
 
   final String title;
@@ -31,6 +32,7 @@ class ERPlantCard extends StatelessWidget {
   final IconData leadingIcon;
   final VoidCallback? onTap;
   final double imageSize;
+  final bool lowEmphasisCta;
 
   @override
   Widget build(BuildContext context) {
@@ -167,25 +169,49 @@ class ERPlantCard extends StatelessWidget {
                       ctaLabel!.trim().isNotEmpty &&
                       onCtaTap != null) ...[
                     const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton.icon(
-                        onPressed: onCtaTap,
-                        icon: const Icon(Icons.location_on_rounded, size: 18),
-                        label: Text(
-                          ctaLabel!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                    if (lowEmphasisCta)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: OutlinedButton.icon(
+                          onPressed: onCtaTap,
+                          icon: const Icon(Icons.location_on_rounded, size: 18),
+                          label: Text(
+                            ctaLabel!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            minimumSize: const Size(0, 36),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            side: BorderSide(color: colorScheme.outlineVariant),
+                            foregroundColor: colorScheme.primary,
+                          ),
                         ),
-                        style: FilledButton.styleFrom(
-                          visualDensity: VisualDensity.compact,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 10,
+                      )
+                    else
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.icon(
+                          onPressed: onCtaTap,
+                          icon: const Icon(Icons.location_on_rounded, size: 18),
+                          label: Text(
+                            ctaLabel!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          style: FilledButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ],
               ),

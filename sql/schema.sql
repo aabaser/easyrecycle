@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS core.recycle_center (
   has_glas    boolean NULL,
   has_kleider boolean NULL,
   has_papier  boolean NULL,
+  disposal_positive text[] NULL,
   is_active   boolean NOT NULL DEFAULT true,
   created_at  timestamptz NOT NULL DEFAULT now(),
   updated_at  timestamptz NOT NULL DEFAULT now()

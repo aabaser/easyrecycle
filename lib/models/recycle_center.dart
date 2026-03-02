@@ -10,6 +10,7 @@ class RecycleCenter {
     this.hasGlas,
     this.hasKleider,
     this.hasPapier,
+    this.disposalPositive = const [],
     this.distanceKm,
   });
 
@@ -23,6 +24,7 @@ class RecycleCenter {
   final bool? hasGlas;
   final bool? hasKleider;
   final bool? hasPapier;
+  final List<String> disposalPositive;
   final double? distanceKm;
 
   factory RecycleCenter.fromJson(Map<String, dynamic> json) {
@@ -37,8 +39,26 @@ class RecycleCenter {
       hasGlas: _toBool(json["has_glas"]),
       hasKleider: _toBool(json["has_kleider"]),
       hasPapier: _toBool(json["has_papier"]),
+      disposalPositive: _toStringList(json["disposal_positive"]),
       distanceKm: _toDouble(json["distance_km"]),
     );
+  }
+
+  static List<String> _toStringList(dynamic value) {
+    if (value == null) {
+      return const [];
+    }
+    if (value is List) {
+      return value
+          .map((entry) => entry.toString().trim())
+          .where((entry) => entry.isNotEmpty)
+          .toList();
+    }
+    final text = value.toString().trim();
+    if (text.isEmpty) {
+      return const [];
+    }
+    return [text];
   }
 
   static int? _toInt(dynamic value) {

@@ -50,155 +50,165 @@ class AuthChoiceScreen extends StatelessWidget {
           SafeArea(
             child: MaxWidthCenter(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () => Navigator.of(context).maybePop(),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 440),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () => Navigator.of(context).maybePop(),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
-                        borderRadius: BorderRadius.circular(22),
-                        border: Border.all(color: colorScheme.outlineVariant),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            loc.t("entry_headline"),
-                            textAlign: TextAlign.center,
-                            style: textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          if (appState.selectedCity != null)
-                            Align(
-                              alignment: Alignment.center,
-                              child: Chip(
-                                avatar: const Icon(Icons.location_on_outlined, size: 18),
-                                label: Text(
-                                  _normalizeCityName(appState.selectedCity!.name),
-                                  style: textTheme.labelLarge?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                backgroundColor: colorScheme.primaryContainer,
-                                side: BorderSide(
-                                  color: colorScheme.primary.withValues(alpha: 0.35),
-                                ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 440),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainerLow.withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(color: colorScheme.outlineVariant),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              loc.t("entry_headline"),
+                              textAlign: TextAlign.center,
+                              style: textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
-                          const SizedBox(height: 14),
-                          _BrandedSocialButton(
-                            label: loc.t("login_google"),
-                            icon: const _GoogleMark(),
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("TODO: Google login")),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          _BrandedSocialButton(
-                            label: _appleLabel(appState.locale.languageCode),
-                            icon: Icon(Icons.apple, color: colorScheme.onSurface),
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("TODO: Apple login")),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 12),
-                          ERButton(
-                            label: loc.t("login_email"),
-                            variant: ERButtonVariant.secondary,
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const EmailLoginScreen(),
+                            const SizedBox(height: 8),
+                            if (appState.selectedCity != null)
+                              Align(
+                                alignment: Alignment.center,
+                                child: Chip(
+                                  avatar: const Icon(Icons.location_on_outlined, size: 18),
+                                  label: Text(
+                                    _normalizeCityName(appState.selectedCity!.name),
+                                    style: textTheme.labelLarge?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  backgroundColor: colorScheme.primaryContainer,
+                                  side: BorderSide(
+                                    color: colorScheme.primary.withValues(alpha: 0.35),
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 8),
-                          ERButton(
-                            label: loc.t("login_guest"),
-                            variant: ERButtonVariant.ghost,
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (_) => const HomeShell(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+                              ),
+                            const SizedBox(height: 14),
+                            _BrandedSocialButton(
+                              label: loc.t("login_google"),
+                              icon: const _GoogleMark(),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("TODO: Google login")),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            _BrandedSocialButton(
+                              label: _appleLabel(appState.locale.languageCode),
+                              icon: Icon(Icons.apple, color: colorScheme.onSurface),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("TODO: Apple login")),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 12),
+                            ERButton(
+                              label: loc.t("login_email"),
+                              variant: ERButtonVariant.secondary,
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => const EmailLoginScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            ERButton(
+                              label: loc.t("login_guest"),
+                              variant: ERButtonVariant.ghost,
+                              onPressed: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_) => const HomeShell(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Text(
-                          loc.t("privacy_text_prefix"),
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurface.withValues(alpha: 0.64),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const PrivacyScreen(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            loc.t("privacy_link_label"),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 440),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        children: [
+                          Text(
+                            loc.t("privacy_text_prefix"),
                             style: textTheme.bodySmall?.copyWith(
-                              color: colorScheme.primary,
-                              fontWeight: FontWeight.w700,
+                              color: colorScheme.onSurface.withValues(alpha: 0.64),
                             ),
                           ),
-                        ),
-                        Text(
-                          loc.t("privacy_text_between"),
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurface.withValues(alpha: 0.64),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const TermsScreen(),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const PrivacyScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              loc.t("privacy_link_label"),
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.w700,
                               ),
-                            );
-                          },
-                          child: Text(
-                            loc.t("terms_link_label"),
-                            style: textTheme.bodySmall?.copyWith(
-                              color: colorScheme.primary,
-                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                        ),
-                        Text(
-                          loc.t("privacy_text_suffix"),
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurface.withValues(alpha: 0.64),
+                          Text(
+                            loc.t("privacy_text_between"),
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurface.withValues(alpha: 0.64),
+                            ),
                           ),
-                        ),
-                      ],
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const TermsScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              loc.t("terms_link_label"),
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            loc.t("privacy_text_suffix"),
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurface.withValues(alpha: 0.64),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

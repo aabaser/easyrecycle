@@ -660,6 +660,7 @@ class TextSearchPageState extends State<TextSearchPage> {
                       disposalCodes: _foundResult!.disposalCodes,
                       imageUrl: _foundResult!.imageUrl,
                     ),
+                    lowEmphasisCta: true,
                     findCenterLabel: loc.t("find_recycling_center"),
                     onFindCenterTap: _openRecycleCenters,
                     onTap: () => _openResult(_foundResult!),
@@ -675,6 +676,7 @@ class TextSearchPageState extends State<TextSearchPage> {
                     padding: const EdgeInsets.only(bottom: 12),
                     child: SimilarItemCard(
                       item: item,
+                      lowEmphasisCta: true,
                       findCenterLabel: loc.t("find_recycling_center"),
                       onFindCenterTap: _openRecycleCenters,
                       onTap: () => _resolveSuggestion(item),
@@ -698,6 +700,7 @@ class TextSearchPageState extends State<TextSearchPage> {
                               padding: const EdgeInsets.only(bottom: 12),
                               child: SimilarItemCard(
                                 item: item,
+                                lowEmphasisCta: true,
                                 findCenterLabel: loc.t("find_recycling_center"),
                                 onFindCenterTap: _openRecycleCenters,
                                 onTap: () => _resolveSuggestion(item),

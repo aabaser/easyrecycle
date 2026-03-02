@@ -4,10 +4,12 @@ Import recycle centers CSV into Postgres.
 Usage:
   python scripts/import_recycle_centers.py --city hannover --csv data/aha_locations.csv
   python scripts/import_recycle_centers.py --city hannover --csv data/aha_locations.csv --replace
+  python scripts/import_recycle_centers.py --city berlin --csv data/berlin_recyclehof.csv --replace
 """
 from __future__ import annotations
 
 import argparse
+import json
 import os
 from typing import Any
 
@@ -50,6 +52,31 @@ def _to_bool(value: Any) -> bool | None:
         if lowered in {"false", "0", "no", "n", ""}:
             return False
     return bool(value)
+
+
+def _to_text_array(value: Any) -> list[str] | None:
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return None
+    if isinstance(value, (list, tuple)):
+        cleaned = [str(v).strip() for v in value if str(v).strip()]
+        return cleaned or None
+
+    raw = str(value).strip()
+    if not raw:
+        return None
+
+    if raw.startswith("[") and raw.endswith("]"):
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            parsed = None
+        if isinstance(parsed, list):
+            cleaned = [str(v).strip() for v in parsed if str(v).strip()]
+            return cleaned or None
+
+    separator = "|" if "|" in raw else ";" if ";" in raw else ","
+    parts = [part.strip() for part in raw.split(separator) if part.strip()]
+    return parts or None
 
 
 def _get_city_id(conn, code: str) -> str:
@@ -97,6 +124,7 @@ def main() -> None:
                 "has_glas": _to_bool(row.get("wertstoffinsel_glas")),
                 "has_kleider": _to_bool(row.get("wertstoffinsel_kleider")),
                 "has_papier": _to_bool(row.get("wertstoffinsel_papier")),
+                "disposal_positive": _to_text_array(row.get("disposal_positive")),
             }
         )
 
@@ -130,7 +158,8 @@ def main() -> None:
                   typ_label,
                   has_glas,
                   has_kleider,
-                  has_papier
+                  has_papier,
+                  disposal_positive
                 )
                 VALUES (
                   :city_id,
@@ -144,7 +173,8 @@ def main() -> None:
                   :typ_label,
                   :has_glas,
                   :has_kleider,
-                  :has_papier
+                  :has_papier,
+                  :disposal_positive
                 )
                 """
             ),

@@ -240,6 +240,7 @@ class RecycleCenterItem(BaseModel):
   has_glas: Optional[bool] = None
   has_kleider: Optional[bool] = None
   has_papier: Optional[bool] = None
+  disposal_positive: Optional[list[str]] = None
   distance_km: Optional[float] = None
 
 
@@ -375,7 +376,8 @@ def list_recycle_centers(
         rc.typ_label,
         rc.has_glas,
         rc.has_kleider,
-        rc.has_papier
+        rc.has_papier,
+        rc.disposal_positive
       FROM core.recycle_center rc
       WHERE rc.city_id = :city_id
         AND rc.is_active = true
@@ -400,6 +402,7 @@ def list_recycle_centers(
         "has_glas": row[7],
         "has_kleider": row[8],
         "has_papier": row[9],
+        "disposal_positive": list(row[10] or []),
       }
     )
 

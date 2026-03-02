@@ -1,6 +1,7 @@
 import "dart:convert";
 import "dart:math";
 import "dart:typed_data";
+import "dart:ui" as ui;
 
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
@@ -536,23 +537,162 @@ class CameraTabPageState extends State<CameraTabPage> {
         .toList();
   }
 
+  Widget _buildBusyBackground(ColorScheme colorScheme, bool showProcessing) {
+    if (!showProcessing || _imageBytes == null) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black,
+              colorScheme.surfaceContainerLowest.withValues(alpha: 0.22),
+            ],
+          ),
+        ),
+      );
+    }
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Transform.scale(
+          scale: 1.06,
+          child: ImageFiltered(
+            imageFilter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Image.memory(
+              _imageBytes!,
+              fit: BoxFit.cover,
+              gaplessPlayback: true,
+            ),
+          ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black.withValues(alpha: 0.18),
+                Colors.black.withValues(alpha: 0.48),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBusyCard(
+    AppLocalizations loc,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+    bool showProcessing,
+  ) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 360),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+        decoration: BoxDecoration(
+          color: colorScheme.surface.withValues(alpha: 0.88),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: colorScheme.outlineVariant),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.24),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                if (showProcessing && _imageBytes != null) ...[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.memory(
+                      _imageBytes!,
+                      width: 52,
+                      height: 52,
+                      fit: BoxFit.cover,
+                      gaplessPlayback: true,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        loc.t("camera_processing_title"),
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        loc.t("camera_processing_subtitle"),
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.6,
+                    color: colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: const LinearProgressIndicator(minHeight: 5),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final busy = _isLoading || _isPicking || _isScanning;
+    final showProcessing = _isLoading && _imageBytes != null;
+
     return ColoredBox(
       color: Colors.black,
       child: Stack(
         children: [
-          Center(
-            child: busy
-                ? const SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: CircularProgressIndicator(strokeWidth: 2.6),
-                  )
-                : const SizedBox.shrink(),
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 280),
+              child: _buildBusyBackground(colorScheme, showProcessing),
+            ),
           ),
+          if (busy)
+            Center(
+              child: _buildBusyCard(
+                loc,
+                colorScheme,
+                textTheme,
+                showProcessing,
+              ),
+            ),
           Positioned(
             left: 16,
             right: 16,

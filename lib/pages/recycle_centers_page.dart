@@ -28,6 +28,7 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
   List<RecycleCenter> _centers = [];
   String _cityCode = "hannover";
   String? _selectedTypeLabel;
+  String? _selectedDisposalPositive;
   AppState? _appState;
   int _openedCityVersion = 0;
   bool _closingForCityChange = false;
@@ -64,14 +65,15 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
       return;
     }
 
-      setState(() {
-        _loading = true;
-        _error = null;
-        _locationDenied = false;
-        _position = null;
-        _centers = [];
-        _selectedTypeLabel = null;
-      });
+    setState(() {
+      _loading = true;
+      _error = null;
+      _locationDenied = false;
+      _position = null;
+      _centers = [];
+      _selectedTypeLabel = null;
+      _selectedDisposalPositive = null;
+    });
     _closingForCityChange = false;
     _load();
   }
@@ -125,6 +127,7 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
         });
       }
       final typeLabels = _typeLabelsFrom(normalized);
+      final disposalOptions = _disposalOptionsFrom(normalized);
       if (!mounted) {
         return;
       }
@@ -135,6 +138,10 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
         if (_selectedTypeLabel != null &&
             !typeLabels.contains(_selectedTypeLabel)) {
           _selectedTypeLabel = null;
+        }
+        if (_selectedDisposalPositive != null &&
+            !disposalOptions.contains(_selectedDisposalPositive)) {
+          _selectedDisposalPositive = null;
         }
         _loading = false;
       });
@@ -178,13 +185,36 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
   }
 
   List<RecycleCenter> _filteredCenters(List<RecycleCenter> centers) {
-    final selected = _selectedTypeLabel;
-    if (selected == null || selected.isEmpty) {
-      return centers;
+    final selectedType = _selectedTypeLabel;
+    final selectedDisposal = _selectedDisposalPositive;
+    return centers.where((center) {
+      if (selectedType != null &&
+          selectedType.isNotEmpty &&
+          (center.typLabel?.trim() ?? "") != selectedType) {
+        return false;
+      }
+      if (selectedDisposal != null &&
+          selectedDisposal.isNotEmpty &&
+          !center.disposalPositive.contains(selectedDisposal)) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
+  List<String> _disposalOptionsFrom(List<RecycleCenter> centers) {
+    final values = <String>{};
+    for (final center in centers) {
+      for (final item in center.disposalPositive) {
+        final cleaned = item.trim();
+        if (cleaned.isEmpty) {
+          continue;
+        }
+        values.add(cleaned);
+      }
     }
-    return centers
-        .where((center) => (center.typLabel?.trim() ?? "") == selected)
-        .toList();
+    final sorted = values.toList()..sort((a, b) => a.compareTo(b));
+    return sorted;
   }
 
   String _allFilterLabel() {
@@ -196,6 +226,30 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
         return "Tumu";
       default:
         return "All";
+    }
+  }
+
+  String _typeFilterLabel() {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (code) {
+      case "de":
+        return "Typ";
+      case "tr":
+        return "Tur";
+      default:
+        return "Type";
+    }
+  }
+
+  String _disposalFilterLabel() {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (code) {
+      case "de":
+        return "Annahme";
+      case "tr":
+        return "Kabul";
+      default:
+        return "Accepted";
     }
   }
 
@@ -225,6 +279,7 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final typeLabels = _typeLabelsFrom(_centers);
+    final disposalOptions = _disposalOptionsFrom(_centers);
     final visibleCenters = _filteredCenters(_centers);
 
     return Scaffold(
@@ -257,41 +312,72 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         if (typeLabels.isNotEmpty) ...[
-                          SizedBox(
-                            height: 38,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: FilterChip(
-                                    label: Text(_allFilterLabel()),
-                                    selected: _selectedTypeLabel == null,
-                                    showCheckmark: false,
-                                    onSelected: (_) {
-                                      setState(() {
-                                        _selectedTypeLabel = null;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                ...typeLabels.map(
-                                  (label) => Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: FilterChip(
-                                      label: Text(label),
-                                      selected: _selectedTypeLabel == label,
-                                      showCheckmark: false,
-                                      onSelected: (_) {
-                                        setState(() {
-                                          _selectedTypeLabel = label;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          DropdownButtonFormField<String?>(
+                            initialValue: _selectedTypeLabel,
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              labelText: _typeFilterLabel(),
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
                             ),
+                            items: [
+                              DropdownMenuItem<String?>(
+                                value: null,
+                                child: Text(_allFilterLabel()),
+                              ),
+                              ...typeLabels.map(
+                                (label) => DropdownMenuItem<String?>(
+                                  value: label,
+                                  child: Text(
+                                    label,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedTypeLabel = value;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                        if (disposalOptions.isNotEmpty) ...[
+                          DropdownButtonFormField<String?>(
+                            initialValue: _selectedDisposalPositive,
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              labelText: _disposalFilterLabel(),
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
+                            ),
+                            items: [
+                              DropdownMenuItem<String?>(
+                                value: null,
+                                child: Text(_allFilterLabel()),
+                              ),
+                              ...disposalOptions.map(
+                                (label) => DropdownMenuItem<String?>(
+                                  value: label,
+                                  child: Text(
+                                    label,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedDisposalPositive = value;
+                              });
+                            },
                           ),
                           const SizedBox(height: 12),
                         ],
@@ -301,7 +387,9 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                             child: Text(
                               loc.t("recycle_centers_location_denied"),
                               style: DesignTokens.caption.copyWith(
-                                color: colorScheme.onSurface.withOpacity(0.7),
+                                color: colorScheme.onSurface.withValues(
+                                  alpha: 0.7,
+                                ),
                               ),
                             ),
                           ),
@@ -309,7 +397,8 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                           width: double.infinity,
                           height: DesignTokens.primaryButtonHeight,
                           child: ElevatedButton(
-                            onPressed: visibleCenters.isEmpty ? null : _openMaps,
+                            onPressed:
+                                visibleCenters.isEmpty ? null : _openMaps,
                             child: Text(loc.t("recycle_centers_open_maps")),
                           ),
                         ),
@@ -379,8 +468,53 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                                                 style: DesignTokens.caption
                                                     .copyWith(
                                                   color: colorScheme.onSurface
-                                                      .withOpacity(0.6),
+                                                      .withValues(alpha: 0.6),
                                                 ),
+                                              ),
+                                            ),
+                                          if (center
+                                              .disposalPositive.isNotEmpty)
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 8),
+                                              child: Wrap(
+                                                spacing: 6,
+                                                runSpacing: 6,
+                                                children: center
+                                                    .disposalPositive
+                                                    .map(
+                                                      (label) => Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4,
+                                                        ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: colorScheme
+                                                              .surfaceContainerHighest,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      999),
+                                                          border: Border.all(
+                                                            color: colorScheme
+                                                                .outlineVariant,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          label,
+                                                          style: DesignTokens
+                                                              .caption
+                                                              .copyWith(
+                                                            color: colorScheme
+                                                                .onSurface,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(growable: false),
                                               ),
                                             ),
                                           if (distanceLabel != null)
@@ -392,7 +526,7 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                                                 style: DesignTokens.caption
                                                     .copyWith(
                                                   color: colorScheme.onSurface
-                                                      .withOpacity(0.6),
+                                                      .withValues(alpha: 0.6),
                                                 ),
                                               ),
                                             ),

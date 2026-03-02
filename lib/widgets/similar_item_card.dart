@@ -12,12 +12,14 @@ class SimilarItemCard extends StatelessWidget {
     required this.onTap,
     this.onFindCenterTap,
     this.findCenterLabel,
+    this.lowEmphasisCta = false,
   });
 
   final SimilarItem item;
   final VoidCallback onTap;
   final VoidCallback? onFindCenterTap;
   final String? findCenterLabel;
+  final bool lowEmphasisCta;
 
   String? _resolvedImageUrl() {
     final raw = item.imageUrl?.trim();
@@ -60,6 +62,7 @@ class SimilarItemCard extends StatelessWidget {
       trailing: const Icon(Icons.chevron_right_rounded),
       ctaLabel: findCenterLabel ?? loc.t("find_recycling_center"),
       onCtaTap: canFindCenter ? onFindCenterTap : null,
+      lowEmphasisCta: lowEmphasisCta,
       onTap: onTap,
     );
   }

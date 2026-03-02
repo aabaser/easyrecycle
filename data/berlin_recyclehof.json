@@ -1,0 +1,1891 @@
+{
+    "objs": [
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Asgardstraße"
+            ],
+            "address_street": [
+                "string",
+                "Asgardstraße 3"
+            ],
+            "address_zip": [
+                "string",
+                "13089"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Pankow)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.580672"
+            ],
+            "geo_long": [
+                "string",
+                "13.4358179"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.580672"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.4358179"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Asgardstraße"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "hof_i_d": [
+                "string",
+                "AS"
+            ],
+            "max_capacity": [
+                "number",
+                60.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206180000"
+            ],
+            "_content_id": "e3c293924f65a002",
+            "_created_at": "20250221113310",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "e3c293924f65a002",
+            "_language": "de",
+            "_last_changed": "20260206093659",
+            "_published_at": "20260206093754",
+            "_site_id": "bsr-de",
+            "_version": "2026020609375400000000000000002aac826973e78ab5",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Behmstraße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Behmstraße"
+            ],
+            "address_street": [
+                "string",
+                "Behmstraße 74"
+            ],
+            "address_zip": [
+                "string",
+                "10439"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Pankow)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.55112"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.55112"
+            ],
+            "geo_long": [
+                "string",
+                "13.402742"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.402742"
+            ],
+            "opening_mo_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_fr_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "14:30"
+            ],
+            "returnable_materials": [
+                "string",
+                "schadstoffe"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Recyclinghöfe mit Schadstoff-Annahme",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "excluded_synonyms": [
+                "referencelist",
+                [
+                    "52277263f999ef5d",
+                    "a63fe6a83e0803ee"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "BE"
+            ],
+            "max_capacity": [
+                "number",
+                35.0
+            ],
+            "closed_from": [
+                "date",
+                "20260204230000"
+            ],
+            "closed_to": [
+                "date",
+                "20260205093000"
+            ],
+            "_content_id": "1d8a733c3c9f373e",
+            "_created_at": "20250221114621",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "1d8a733c3c9f373e",
+            "_language": "de",
+            "_last_changed": "20260205091056",
+            "_published_at": "20260205091133",
+            "_site_id": "bsr-de",
+            "_version": "2026020509113300000000000000008cd1fb17bf05b505",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Berliner Straße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Berliner Straße"
+            ],
+            "address_street": [
+                "string",
+                "Berliner Straße 110"
+            ],
+            "address_zip": [
+                "string",
+                "10713"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Charlottenburg-Wilmersdorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.486285"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.486285"
+            ],
+            "geo_long": [
+                "string",
+                "13.315145"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.315145"
+            ],
+            "opening_mo_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_fr_from": [
+                "string",
+                "09:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "14:30"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "BL"
+            ],
+            "max_capacity": [
+                "number",
+                45.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205230000"
+            ],
+            "closed_to": [
+                "date",
+                "20260206090000"
+            ],
+            "_content_id": "f10d15398814b0b5",
+            "_created_at": "20250221115135",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "f10d15398814b0b5",
+            "_language": "de",
+            "_last_changed": "20260206082043",
+            "_published_at": "20260206082052",
+            "_site_id": "bsr-de",
+            "_version": "2026020608205200000000000000005007bfff2efe6df1",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Brunsbütteler Damm"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Brunsbütteler Damm"
+            ],
+            "address_street": [
+                "string",
+                "Brunsbütteler Damm 47"
+            ],
+            "address_zip": [
+                "string",
+                "13581"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Spandau)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.534001"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.534001"
+            ],
+            "geo_long": [
+                "string",
+                "13.179359"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.179359"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "returnable_materials": [
+                "string",
+                "schadstoffe"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Recyclinghöfe mit Schadstoff-Annahme",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "BR"
+            ],
+            "max_capacity": [
+                "number",
+                60.0
+            ],
+            "closed_from": [
+                "date",
+                "20260206053000"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "f877c86fc2decb82",
+            "_created_at": "20250221115352",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "f877c86fc2decb82",
+            "_language": "de",
+            "_last_changed": "20260206065840",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Fischerstraße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Fischerstraße"
+            ],
+            "address_street": [
+                "string",
+                "Fischerstraße 16"
+            ],
+            "address_zip": [
+                "string",
+                "10317"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Lichtenberg)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.497862"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.497862"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.491858"
+            ],
+            "geo_long": [
+                "string",
+                "13.491858"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "FI"
+            ],
+            "max_capacity": [
+                "number",
+                40.0
+            ],
+            "closed_from": [
+                "date",
+                "20260216231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260217070000"
+            ],
+            "_content_id": "8a5c6e5e43ab435e",
+            "_created_at": "20250221115831",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "8a5c6e5e43ab435e",
+            "_language": "de",
+            "_last_changed": "20260217062541",
+            "_published_at": "20260217062609",
+            "_site_id": "bsr-de",
+            "_version": "202602170626090000000000000000808f4ec0a67d150d",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Hegauer Weg"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Hegauer Weg"
+            ],
+            "geo_lat": [
+                "string",
+                "52.429453"
+            ],
+            "geo_long": [
+                "string",
+                "13.248029"
+            ],
+            "returnable_materials": [
+                "string",
+                "schadstoffe_gebrauchtwaren"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.429453"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.248029"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Steglitz-Zehlendorf)"
+            ],
+            "address_zip": [
+                "string",
+                "14163"
+            ],
+            "address_street": [
+                "string",
+                "Hegauer Weg 17"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "synonyms": [
+                "referencelist",
+                [
+                    "39a0b94c72029631",
+                    "bc63bfee5b0f006e"
+                ]
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Recyclinghöfe mit Schadstoff-Annahme",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "excluded_synonyms": [
+                "referencelist",
+                [
+                    "52277263f999ef5d",
+                    "a63fe6a83e0803ee"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "HE"
+            ],
+            "max_capacity": [
+                "number",
+                80.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "b26372e6cd936b99",
+            "_created_at": "20241105104649",
+            "_editing_asset": false,
+            "_first_published_at": "20241105104723",
+            "_id": "b26372e6cd936b99",
+            "_language": "de",
+            "_last_changed": "20260206065954",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Ilsenburger Straße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Ilsenburger Straße"
+            ],
+            "address_street": [
+                "string",
+                "Ilsenburger Straße 18 - 20"
+            ],
+            "address_zip": [
+                "string",
+                "10589"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Charlottenburg-Wilmersdorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.527016"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.527016"
+            ],
+            "geo_long": [
+                "string",
+                "13.310619"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.310619"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Biogut-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "IL"
+            ],
+            "max_capacity": [
+                "number",
+                40.0
+            ],
+            "closed_from": [
+                "date",
+                "20260206053000"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "64e4011b21beba3f",
+            "_created_at": "20250221121307",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "64e4011b21beba3f",
+            "_language": "de",
+            "_last_changed": "20260206065722",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Lengeder Straße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Lengeder Straße"
+            ],
+            "address_street": [
+                "string",
+                "Lengeder Straße 6 - 18"
+            ],
+            "address_zip": [
+                "string",
+                "13407"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Reinickendorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.581536"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.581536"
+            ],
+            "geo_long": [
+                "string",
+                "13.347314"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.347314"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "returnable_materials": [
+                "string",
+                "gebrauchtwaren"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "LE"
+            ],
+            "max_capacity": [
+                "number",
+                60.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "6dada8d7ee3d2f4b",
+            "_created_at": "20250221121517",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "6dada8d7ee3d2f4b",
+            "_language": "de",
+            "_last_changed": "20260206070102",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Nordring"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Nordring"
+            ],
+            "address_street": [
+                "string",
+                "Nordring 5"
+            ],
+            "address_zip": [
+                "string",
+                "12681"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Marzahn-Hellersdorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.562513"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.562513"
+            ],
+            "geo_long": [
+                "string",
+                "13.548074"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.548074"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "returnable_materials": [
+                "string",
+                "schadstoffe"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Recyclinghöfe mit Schadstoff-Annahme",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "NO"
+            ],
+            "max_capacity": [
+                "number",
+                60.0
+            ],
+            "_content_id": "4279f30afc46d2fe",
+            "_created_at": "20250221121804",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "4279f30afc46d2fe",
+            "_language": "de",
+            "_last_changed": "20260206082422",
+            "_published_at": "20260206082432",
+            "_site_id": "bsr-de",
+            "_version": "202602060824320000000000000000e2e3081137c2ca5e",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Oberspreestraße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Oberspreestraße"
+            ],
+            "address_street": [
+                "string",
+                "Oberspreestraße 109"
+            ],
+            "address_zip": [
+                "string",
+                "12555"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Treptow-Köpenick)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.446156"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.446156"
+            ],
+            "geo_long": [
+                "string",
+                "13.561788"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.561788"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "returnable_materials": [
+                "string",
+                "schadstoffe"
+            ],
+            "excluded_synonyms": [
+                "referencelist",
+                [
+                    "52277263f999ef5d",
+                    "a63fe6a83e0803ee"
+                ]
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Recyclinghöfe mit Schadstoff-Annahme",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "OB"
+            ],
+            "max_capacity": [
+                "number",
+                60.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "2adc98e70489655c",
+            "_created_at": "20250221121937",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "2adc98e70489655c",
+            "_language": "de",
+            "_last_changed": "20260206070031",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Ostpreußendamm"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Ostpreußendamm"
+            ],
+            "address_street": [
+                "string",
+                "Ostpreußendamm 1; Zufahrt über Wiesenweg 5"
+            ],
+            "address_zip": [
+                "string",
+                "12207"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Steglitz-Zehlendorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.440056"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.441486"
+            ],
+            "geo_long": [
+                "string",
+                "13.326848"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.327519"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "returnable_materials": [
+                "string",
+                "gebrauchtwaren"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "OS"
+            ],
+            "max_capacity": [
+                "number",
+                60.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "b6f6aecb0e0e1a7f",
+            "_created_at": "20250221122218",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "b6f6aecb0e0e1a7f",
+            "_language": "de",
+            "_last_changed": "20260206065915",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Plus Gradestraße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Plus Gradestraße"
+            ],
+            "address_street": [
+                "string",
+                "Gradestraße 73"
+            ],
+            "address_zip": [
+                "string",
+                "12347"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Neukölln)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.45206"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.45206"
+            ],
+            "geo_long": [
+                "string",
+                "13.428438"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.428438"
+            ],
+            "returnable_materials": [
+                "string",
+                "schadstoffe_gebrauchtwaren"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "19:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "19:00"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Recyclinghöfe mit Schadstoff-Annahme",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "GR"
+            ],
+            "max_capacity": [
+                "number",
+                80.0
+            ],
+            "virtual_tour": [
+                "link",
+                {
+                    "fragment": null,
+                    "obj_id": null,
+                    "query": null,
+                    "target": "_blank",
+                    "title": "Virtueller Rundgang Gradestraße",
+                    "url": "https://bsr.bsr.de/bsr/rundgang/"
+                }
+            ],
+            "closed_from": [
+                "date",
+                "20260216231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260217063000"
+            ],
+            "_content_id": "88f14a9492500d96",
+            "_created_at": "20250221120119",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "88f14a9492500d96",
+            "_language": "de",
+            "_last_changed": "20260217062144",
+            "_published_at": "20260217062609",
+            "_site_id": "bsr-de",
+            "_version": "202602170626090000000000000000808f4ec0a67d150d",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Rahnsdorfer Straße"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Rahnsdorfer Straße"
+            ],
+            "address_street": [
+                "string",
+                "Rahnsdorfer Straße 76"
+            ],
+            "address_zip": [
+                "string",
+                "12623"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Marzahn-Hellersdorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.497963"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.497963"
+            ],
+            "geo_long": [
+                "string",
+                "13.614384"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.614384"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "hof_i_d": [
+                "string",
+                "RA"
+            ],
+            "max_capacity": [
+                "number",
+                80.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "returnable_materials": [
+                "string",
+                "gebrauchtwaren"
+            ],
+            "_content_id": "b5b1a1a2af405afc",
+            "_created_at": "20250221122524",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "b5b1a1a2af405afc",
+            "_language": "de",
+            "_last_changed": "20260227094155",
+            "_published_at": "20260227140256",
+            "_site_id": "bsr-de",
+            "_version": "2026022714025600000000000000008b651ac52599a9e7",
+            "_widget_pool": {}
+        },
+        {
+            "_obj_class": "Recyclinghof",
+            "title": [
+                "string",
+                "Recyclinghof Ruppiner Chaussee"
+            ],
+            "content_title": [
+                "string",
+                "Recyclinghof Ruppiner Chaussee"
+            ],
+            "address_street": [
+                "string",
+                "Ruppiner Chaussee 341; Zufahrt über Am Dachsbau"
+            ],
+            "address_zip": [
+                "string",
+                "13503"
+            ],
+            "address_district": [
+                "string",
+                "Berlin (Reinickendorf)"
+            ],
+            "geo_lat": [
+                "string",
+                "52.621095"
+            ],
+            "geo_lat_directions": [
+                "string",
+                "52.61964"
+            ],
+            "geo_long": [
+                "string",
+                "13.235472"
+            ],
+            "geo_long_directions": [
+                "string",
+                "13.235082"
+            ],
+            "opening_mo_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_mo_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_tu_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_tu_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_we_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_we_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_th_from": [
+                "string",
+                "09:30"
+            ],
+            "opening_th_to": [
+                "string",
+                "19:30"
+            ],
+            "opening_fr_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_fr_to": [
+                "string",
+                "17:00"
+            ],
+            "opening_sa_from": [
+                "string",
+                "07:00"
+            ],
+            "opening_sa_to": [
+                "string",
+                "15:30"
+            ],
+            "disposal_positive": [
+                "stringlist",
+                [
+                    "Restabfall-Tonne",
+                    "Wertstoff-Tonne",
+                    "Papier-Tonne",
+                    "Glas-Tonne / Glas-Iglu",
+                    "Laub- und Garten-Tonne",
+                    "Recyclinghöfe",
+                    "Sperrmüllabfuhr"
+                ]
+            ],
+            "returnable_materials": [
+                "string",
+                "none"
+            ],
+            "hof_i_d": [
+                "string",
+                "RU"
+            ],
+            "max_capacity": [
+                "number",
+                35.0
+            ],
+            "closed_from": [
+                "date",
+                "20260205231500"
+            ],
+            "closed_to": [
+                "date",
+                "20260206080000"
+            ],
+            "_content_id": "f9de42a57a9ab698",
+            "_created_at": "20250221122700",
+            "_editing_asset": false,
+            "_first_published_at": "20250221123905",
+            "_id": "f9de42a57a9ab698",
+            "_language": "de",
+            "_last_changed": "20260206070047",
+            "_published_at": "20260206070146",
+            "_site_id": "bsr-de",
+            "_version": "2026020607014600000000000000008e6006dfd4b3cb6f",
+            "_widget_pool": {}
+        }
+    ],
+    "results": [
+        {
+            "id": "e3c293924f65a002"
+        },
+        {
+            "id": "1d8a733c3c9f373e"
+        },
+        {
+            "id": "f10d15398814b0b5"
+        },
+        {
+            "id": "f877c86fc2decb82"
+        },
+        {
+            "id": "8a5c6e5e43ab435e"
+        },
+        {
+            "id": "b26372e6cd936b99"
+        },
+        {
+            "id": "64e4011b21beba3f"
+        },
+        {
+            "id": "6dada8d7ee3d2f4b"
+        },
+        {
+            "id": "4279f30afc46d2fe"
+        },
+        {
+            "id": "2adc98e70489655c"
+        },
+        {
+            "id": "b6f6aecb0e0e1a7f"
+        },
+        {
+            "id": "88f14a9492500d96"
+        },
+        {
+            "id": "b5b1a1a2af405afc"
+        },
+        {
+            "id": "f9de42a57a9ab698"
+        }
+    ],
+    "total": 14
+}
