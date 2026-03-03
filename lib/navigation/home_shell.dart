@@ -6,6 +6,7 @@ import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
 import "../widgets/max_width_center.dart";
 import "../pages/camera_tab_page.dart";
+import "../pages/recycle_centers_page.dart";
 import "../pages/text_search_page.dart";
 import "../pages/settings_page.dart";
 import "nav_keys.dart";
@@ -16,7 +17,8 @@ class HomeShell extends StatefulWidget {
 
   static const int tabText = 0;
   static const int tabCamera = 1;
-  static const int tabSettings = 2;
+  static const int tabRecycleCenters = 2;
+  static const int tabSettings = 3;
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -85,6 +87,7 @@ class _HomeShellState extends State<HomeShell> {
     _cameraKey.currentState?.resetForCityChange();
     NavKeys.textTab.currentState?.popUntil((route) => route.isFirst);
     NavKeys.cameraTab.currentState?.popUntil((route) => route.isFirst);
+    NavKeys.recycleCentersTab.currentState?.popUntil((route) => route.isFirst);
   }
 
   void _handleTabActivation() {
@@ -96,6 +99,7 @@ class _HomeShellState extends State<HomeShell> {
     return switch (_index) {
       HomeShell.tabText => NavKeys.textTab,
       HomeShell.tabCamera => NavKeys.cameraTab,
+      HomeShell.tabRecycleCenters => NavKeys.recycleCentersTab,
       HomeShell.tabSettings => NavKeys.settingsTab,
       _ => NavKeys.cameraTab,
     };
@@ -135,6 +139,7 @@ class _HomeShellState extends State<HomeShell> {
     final title = switch (_index) {
       HomeShell.tabText => loc.t("text_search_title"),
       HomeShell.tabCamera => loc.t("scan_title"),
+      HomeShell.tabRecycleCenters => loc.t("find_recycling_center"),
       HomeShell.tabSettings => loc.t("settings_title"),
       _ => loc.t("scan_title"),
     };
@@ -183,6 +188,10 @@ class _HomeShellState extends State<HomeShell> {
                 root: CameraTabPage(key: _cameraKey),
               ),
               TabNavigator(
+                navigatorKey: NavKeys.recycleCentersTab,
+                root: const RecycleCentersPage(showAppBar: false),
+              ),
+              TabNavigator(
                 navigatorKey: NavKeys.settingsTab,
                 root: SettingsPage(),
               ),
@@ -200,6 +209,10 @@ class _HomeShellState extends State<HomeShell> {
             NavigationDestination(
               icon: const Icon(Icons.camera_alt_rounded),
               label: loc.t("nav_camera"),
+            ),
+            NavigationDestination(
+              icon: const Icon(Icons.location_on_rounded),
+              label: loc.t("find_recycling_center"),
             ),
             NavigationDestination(
               icon: const Icon(Icons.settings_rounded),

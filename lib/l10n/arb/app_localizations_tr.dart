@@ -51,6 +51,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scan_pick_gallery => 'Galeriden seç';
 
   @override
+  String get camera_processing_title => 'Fotoğraf analiz ediliyor';
+
+  @override
+  String get camera_processing_subtitle => 'Ürün algılanırken lütfen bekleyin.';
+
+  @override
   String get scan_upload => 'Görsel yükle';
 
   @override

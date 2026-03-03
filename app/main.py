@@ -381,7 +381,6 @@ def list_recycle_centers(
       FROM core.recycle_center rc
       WHERE rc.city_id = :city_id
         AND rc.is_active = true
-        AND (rc.typ_code IS NULL OR rc.typ_code <> 5)
       ORDER BY rc.name ASC
       """
     ),

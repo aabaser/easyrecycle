@@ -14,6 +14,8 @@
   "text_search_title": "Metin arama",
   "scan_take_photo": "Fotoğraf çek",
   "scan_pick_gallery": "Galeriden seç",
+  "camera_processing_title": "Fotoğraf analiz ediliyor",
+  "camera_processing_subtitle": "Ürün algılanırken lütfen bekleyin.",
   "scan_upload": "Görsel yükle",
   "scan_focus_hint": "Objeyi kare içine hizala ve Fotoğraf çek'e bas.",
   "scan_camera_unavailable": "Kamera önizlemesi kullanılamıyor. Yine de çekebilir veya yükleyebilirsin.",

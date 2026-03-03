@@ -43,6 +43,10 @@ class AppBottomNav extends StatelessWidget {
           label: loc.t("nav_camera"),
         ),
         NavigationDestination(
+          icon: const Icon(Icons.location_on_outlined),
+          label: loc.t("find_recycling_center"),
+        ),
+        NavigationDestination(
           icon: const Icon(Icons.settings_outlined),
           label: loc.t("nav_settings"),
         ),

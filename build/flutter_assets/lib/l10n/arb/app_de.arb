@@ -14,6 +14,8 @@
   "text_search_title": "Textsuche",
   "scan_take_photo": "Foto aufnehmen",
   "scan_pick_gallery": "Aus Galerie wählen",
+  "camera_processing_title": "Foto wird analysiert",
+  "camera_processing_subtitle": "Bitte warten, das Objekt wird erkannt.",
   "scan_upload": "Bild hochladen",
   "scan_focus_hint": "Objekt im Quadrat ausrichten und auf Foto aufnehmen tippen.",
   "scan_camera_unavailable": "Kameravorschau nicht verfügbar. Du kannst trotzdem aufnehmen oder hochladen.",

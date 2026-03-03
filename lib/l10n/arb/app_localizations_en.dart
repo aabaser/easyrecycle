@@ -51,6 +51,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scan_pick_gallery => 'Choose from gallery';
 
   @override
+  String get camera_processing_title => 'Analyzing photo';
+
+  @override
+  String get camera_processing_subtitle =>
+      'Please wait while we detect the item.';
+
+  @override
   String get scan_upload => 'Upload image';
 
   @override

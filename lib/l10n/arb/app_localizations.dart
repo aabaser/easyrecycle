@@ -184,6 +184,18 @@ abstract class AppLocalizations {
   /// **'Choose from gallery'**
   String get scan_pick_gallery;
 
+  /// No description provided for @camera_processing_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing photo'**
+  String get camera_processing_title;
+
+  /// No description provided for @camera_processing_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while we detect the item.'**
+  String get camera_processing_subtitle;
+
   /// No description provided for @scan_upload.
   ///
   /// In en, this message translates to:

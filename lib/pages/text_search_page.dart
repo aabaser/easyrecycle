@@ -16,7 +16,6 @@ import "../widgets/similar_item_card.dart";
 import "../ui/components/er_search_bar.dart";
 import "../ui/components/er_section.dart";
 import "city_picker_page.dart";
-import "home_shell.dart";
 import "recycle_centers_page.dart";
 import "result_page.dart";
 
@@ -597,12 +596,6 @@ class TextSearchPageState extends State<TextSearchPage> {
     );
   }
 
-  void _openCameraTab() {
-    final appState = context.read<AppState>();
-    appState.requestTab(HomeShell.tabCamera);
-    appState.requestCameraScan();
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
@@ -631,8 +624,6 @@ class TextSearchPageState extends State<TextSearchPage> {
                   explicit: true,
                 ),
               ),
-              const SizedBox(height: 10),
-              _buildModeChips(loc),
               if (_isLoading) ...[
                 const SizedBox(height: 12),
                 const LinearProgressIndicator(),
@@ -660,7 +651,6 @@ class TextSearchPageState extends State<TextSearchPage> {
                       disposalCodes: _foundResult!.disposalCodes,
                       imageUrl: _foundResult!.imageUrl,
                     ),
-                    lowEmphasisCta: true,
                     findCenterLabel: loc.t("find_recycling_center"),
                     onFindCenterTap: _openRecycleCenters,
                     onTap: () => _openResult(_foundResult!),
@@ -676,7 +666,6 @@ class TextSearchPageState extends State<TextSearchPage> {
                     padding: const EdgeInsets.only(bottom: 12),
                     child: SimilarItemCard(
                       item: item,
-                      lowEmphasisCta: true,
                       findCenterLabel: loc.t("find_recycling_center"),
                       onFindCenterTap: _openRecycleCenters,
                       onTap: () => _resolveSuggestion(item),
@@ -700,7 +689,6 @@ class TextSearchPageState extends State<TextSearchPage> {
                               padding: const EdgeInsets.only(bottom: 12),
                               child: SimilarItemCard(
                                 item: item,
-                                lowEmphasisCta: true,
                                 findCenterLabel: loc.t("find_recycling_center"),
                                 onFindCenterTap: _openRecycleCenters,
                                 onTap: () => _resolveSuggestion(item),
@@ -836,80 +824,4 @@ class TextSearchPageState extends State<TextSearchPage> {
     );
   }
 
-  Widget _buildModeChips(AppLocalizations loc) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    Widget buildChip({
-      required String label,
-      required IconData icon,
-      required bool selected,
-      required VoidCallback onTap,
-    }) {
-      return FilterChip(
-        selected: selected,
-        showCheckmark: false,
-        onSelected: (_) => onTap(),
-        avatar: Icon(
-          icon,
-          size: 16,
-          color: selected ? colorScheme.primary : colorScheme.onSurfaceVariant,
-        ),
-        label: Text(
-          label,
-          style: theme.textTheme.labelLarge?.copyWith(
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
-          ),
-        ),
-        backgroundColor: colorScheme.surfaceContainerHighest,
-        selectedColor: colorScheme.primaryContainer,
-        side: BorderSide(
-          color: selected ? colorScheme.primary : colorScheme.outlineVariant,
-          width: selected ? 1.1 : 1,
-        ),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        visualDensity: VisualDensity.compact,
-      );
-    }
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          buildChip(
-            label: loc.t("nav_text"),
-            icon: Icons.search_rounded,
-            selected: true,
-            onTap: () {},
-          ),
-          const SizedBox(width: 8),
-          buildChip(
-            label: loc.t("scan_title"),
-            icon: Icons.camera_alt_rounded,
-            selected: false,
-            onTap: _openCameraTab,
-          ),
-          const SizedBox(width: 8),
-          buildChip(
-            label: _recyclingListChipLabel(),
-            icon: Icons.location_on_rounded,
-            selected: false,
-            onTap: _openRecycleCenters,
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _recyclingListChipLabel() {
-    final code = context.read<AppState>().locale.languageCode;
-    switch (code) {
-      case "de":
-        return "Liste der Recyclinghoefe";
-      case "tr":
-        return "Geri Donusum Merkezleri";
-      default:
-        return "Recycling Centers List";
-    }
-  }
 }

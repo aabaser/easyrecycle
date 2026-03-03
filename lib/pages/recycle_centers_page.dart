@@ -12,15 +12,22 @@ import "../theme/design_tokens.dart";
 import "../widgets/max_width_center.dart";
 
 class RecycleCentersPage extends StatefulWidget {
-  const RecycleCentersPage({super.key, this.cityCode});
+  const RecycleCentersPage({
+    super.key,
+    this.cityCode,
+    this.showAppBar = true,
+  });
 
   final String? cityCode;
+  final bool showAppBar;
 
   @override
   State<RecycleCentersPage> createState() => _RecycleCentersPageState();
 }
 
 class _RecycleCentersPageState extends State<RecycleCentersPage> {
+  static const String _otherTypeValue = "__other__";
+
   bool _loading = true;
   String? _error;
   bool _locationDenied = false;
@@ -178,9 +185,18 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
       if (label.isEmpty) {
         continue;
       }
-      values.add(label);
+      values.add(_normalizedTypeValue(label));
     }
-    final sorted = values.toList()..sort((a, b) => a.compareTo(b));
+    final sorted = values.toList()
+      ..sort((a, b) {
+        if (a == _otherTypeValue && b != _otherTypeValue) {
+          return 1;
+        }
+        if (b == _otherTypeValue && a != _otherTypeValue) {
+          return -1;
+        }
+        return a.compareTo(b);
+      });
     return sorted;
   }
 
@@ -188,9 +204,10 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
     final selectedType = _selectedTypeLabel;
     final selectedDisposal = _selectedDisposalPositive;
     return centers.where((center) {
+      final normalizedCenterType = _normalizedTypeValue(center.typLabel ?? "");
       if (selectedType != null &&
           selectedType.isNotEmpty &&
-          (center.typLabel?.trim() ?? "") != selectedType) {
+          normalizedCenterType != selectedType) {
         return false;
       }
       if (selectedDisposal != null &&
@@ -200,6 +217,36 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
       }
       return true;
     }).toList();
+  }
+
+  String _normalizedTypeValue(String raw) {
+    final cleaned = raw.trim();
+    if (cleaned.isEmpty) {
+      return cleaned;
+    }
+    if (cleaned.toLowerCase() == "nan") {
+      return _otherTypeValue;
+    }
+    return cleaned;
+  }
+
+  String _typeDisplayLabel(String value) {
+    if (value == _otherTypeValue) {
+      return _otherTypeLabel();
+    }
+    return value;
+  }
+
+  String _otherTypeLabel() {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (code) {
+      case "de":
+        return "Sonstige";
+      case "tr":
+        return "Diger";
+      default:
+        return "Other";
+    }
   }
 
   List<String> _disposalOptionsFrom(List<RecycleCenter> centers) {
@@ -283,12 +330,14 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
     final visibleCenters = _filteredCenters(_centers);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          loc.t("find_recycling_center"),
-          style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
-        ),
-      ),
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: Text(
+                loc.t("find_recycling_center"),
+                style: DesignTokens.titleM.copyWith(color: colorScheme.onSurface),
+              ),
+            )
+          : null,
       body: MaxWidthCenter(
         child: Padding(
           padding: const EdgeInsets.all(DesignTokens.sectionSpacing),
@@ -332,7 +381,7 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                                 (label) => DropdownMenuItem<String?>(
                                   value: label,
                                   child: Text(
-                                    label,
+                                    _typeDisplayLabel(label),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -458,13 +507,18 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                                               ),
                                             ),
                                           ),
-                                          if (center.typLabel != null &&
-                                              center.typLabel!.isNotEmpty)
+                                          if ((center.typLabel ?? "")
+                                              .trim()
+                                              .isNotEmpty)
                                             Padding(
                                               padding:
                                                   const EdgeInsets.only(top: 4),
                                               child: Text(
-                                                center.typLabel!,
+                                                _typeDisplayLabel(
+                                                  _normalizedTypeValue(
+                                                    center.typLabel ?? "",
+                                                  ),
+                                                ),
                                                 style: DesignTokens.caption
                                                     .copyWith(
                                                   color: colorScheme.onSurface

@@ -12,7 +12,7 @@ class SimilarItemCard extends StatelessWidget {
     required this.onTap,
     this.onFindCenterTap,
     this.findCenterLabel,
-    this.lowEmphasisCta = false,
+    this.lowEmphasisCta = true,
   });
 
   final SimilarItem item;

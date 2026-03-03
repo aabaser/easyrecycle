@@ -14,6 +14,8 @@
   "text_search_title": "Text search",
   "scan_take_photo": "Take photo",
   "scan_pick_gallery": "Choose from gallery",
+  "camera_processing_title": "Analyzing photo",
+  "camera_processing_subtitle": "Please wait while we detect the item.",
   "scan_upload": "Upload image",
   "scan_focus_hint": "Align the item inside the square and tap Take photo.",
   "scan_camera_unavailable": "Camera preview unavailable. You can still take or upload a photo.",
