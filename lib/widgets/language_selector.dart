@@ -13,7 +13,7 @@ class LanguageSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    const options = ["de", "en", "tr"];
+    const options = ["de"];
     return Wrap(
       spacing: 8,
       children: options.map((code) {
@@ -32,7 +32,7 @@ class LanguageSelector extends StatelessWidget {
           side: BorderSide(
             color: isSelected
                 ? const Color(0xFF4338CA)
-                : colorScheme.outline.withOpacity(0.6),
+                : colorScheme.outline.withValues(alpha: 0.6),
           ),
           onSelected: (_) => onChanged(code),
         );

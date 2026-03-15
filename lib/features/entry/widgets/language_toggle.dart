@@ -18,7 +18,7 @@ class LanguageToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const options = ["DE", "EN", "TR"];
+    const options = ["DE"];
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -26,18 +26,19 @@ class LanguageToggle extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: outlineColor),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
+        spacing: 4,
+        runSpacing: 4,
         children: options.map((code) {
           final isSelected = code.toLowerCase() == selected;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
+          return Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(14),
             child: InkWell(
               borderRadius: BorderRadius.circular(14),
               onTap: () => onChanged(code.toLowerCase()),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: isSelected ? primaryColor : Colors.transparent,
                   borderRadius: BorderRadius.circular(14),

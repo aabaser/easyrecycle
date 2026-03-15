@@ -32,6 +32,7 @@ class CameraTabPageState extends State<CameraTabPage> {
   bool _isPicking = false;
   bool _isScanning = false;
   bool _isActive = false;
+  int _analyzeToken = 0;
 
   void handleTabSelected() {}
 
@@ -41,6 +42,7 @@ class CameraTabPageState extends State<CameraTabPage> {
     }
     _isActive = active;
     if (!active) {
+      _cancelPendingAnalyze();
       return;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -52,7 +54,12 @@ class CameraTabPageState extends State<CameraTabPage> {
   }
 
   void resetForCityChange() {
+    _analyzeToken++;
     if (!mounted) {
+      _imageBytes = null;
+      _isLoading = false;
+      _isPicking = false;
+      _isScanning = false;
       return;
     }
     setState(() {
@@ -61,6 +68,23 @@ class CameraTabPageState extends State<CameraTabPage> {
       _isPicking = false;
       _isScanning = false;
     });
+  }
+
+  void _cancelPendingAnalyze() {
+    _analyzeToken++;
+    if (!mounted) {
+      _imageBytes = null;
+      _isLoading = false;
+      return;
+    }
+    setState(() {
+      _imageBytes = null;
+      _isLoading = false;
+    });
+  }
+
+  bool _canPresentAnalyzeResult(int token) {
+    return mounted && _isActive && token == _analyzeToken;
   }
 
   void _showConnectionError() {
@@ -108,8 +132,15 @@ class CameraTabPageState extends State<CameraTabPage> {
     if (_isPicking) {
       return;
     }
-    _isPicking = true;
-    _isScanning = true;
+    if (mounted) {
+      setState(() {
+        _isPicking = true;
+        _isScanning = true;
+      });
+    } else {
+      _isPicking = true;
+      _isScanning = true;
+    }
     try {
       final picker = ImagePicker();
       final file = source == ImageSource.camera
@@ -128,8 +159,15 @@ class CameraTabPageState extends State<CameraTabPage> {
       });
       await _runAnalyze();
     } finally {
-      _isPicking = false;
-      _isScanning = false;
+      if (mounted) {
+        setState(() {
+          _isPicking = false;
+          _isScanning = false;
+        });
+      } else {
+        _isPicking = false;
+        _isScanning = false;
+      }
     }
   }
 
@@ -226,6 +264,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       return;
     }
 
+    final analyzeToken = ++_analyzeToken;
     setState(() {
       _isLoading = true;
     });
@@ -272,6 +311,9 @@ class CameraTabPageState extends State<CameraTabPage> {
       if (notFound && !statusOk) {
         throw Exception("Analyze failed");
       }
+      if (!_canPresentAnalyzeResult(analyzeToken)) {
+        return;
+      }
       if (!mounted) {
         return;
       }
@@ -301,12 +343,12 @@ class CameraTabPageState extends State<CameraTabPage> {
           queryText: null,
         );
         appState.setLastResult(result);
-        if (!mounted) {
-          return;
-        }
         setState(() {
           _isLoading = false;
         });
+        if (!mounted) {
+          return;
+        }
         await Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => ResultPage(result: result)),
         );
@@ -354,12 +396,12 @@ class CameraTabPageState extends State<CameraTabPage> {
         queryText: null,
       );
       appState.setLastResult(result);
-      if (!mounted) {
-        return;
-      }
       setState(() {
         _isLoading = false;
       });
+      if (!mounted) {
+        return;
+      }
       await Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => ResultPage(result: result)),
       );
@@ -370,7 +412,7 @@ class CameraTabPageState extends State<CameraTabPage> {
         _queueReopenCamera();
       }
     } catch (_) {
-      if (!mounted) {
+      if (!mounted || analyzeToken != _analyzeToken) {
         return;
       }
       setState(() {
@@ -671,7 +713,8 @@ class CameraTabPageState extends State<CameraTabPage> {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final busy = _isLoading || _isPicking || _isScanning;
+    final controlsLocked = _isLoading || _isPicking || _isScanning;
+    final busy = _isLoading;
     final showProcessing = _isLoading && _imageBytes != null;
 
     return ColoredBox(
@@ -700,7 +743,7 @@ class CameraTabPageState extends State<CameraTabPage> {
             child: SafeArea(
               top: false,
               child: OutlinedButton.icon(
-                onPressed: busy ? null : openGallery,
+                onPressed: controlsLocked ? null : openGallery,
                 icon: const Icon(Icons.photo_library_outlined),
                 label: Text(loc.t("scan_pick_gallery")),
                 style: OutlinedButton.styleFrom(

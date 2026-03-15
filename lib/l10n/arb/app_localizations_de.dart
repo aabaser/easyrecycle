@@ -120,6 +120,70 @@ class AppLocalizationsDe extends AppLocalizations {
   String get login_guest => 'Als Gast fortfahren';
 
   @override
+  String get email_login_title => 'E-Mail-Anmeldung';
+
+  @override
+  String get email_login_subtitle =>
+      'Melde dich mit deiner E-Mail-Adresse und deinem Passwort an.';
+
+  @override
+  String get email_login_hosted_hint =>
+      'Du wirst zur sicheren Cognito-Anmeldeseite weitergeleitet.';
+
+  @override
+  String get email_login_hosted_submit => 'Im Browser anmelden';
+
+  @override
+  String get email_login_email_label => 'E-Mail';
+
+  @override
+  String get email_login_password_label => 'Passwort';
+
+  @override
+  String get email_login_submit => 'Anmelden';
+
+  @override
+  String get email_login_error_missing => 'Bitte E-Mail und Passwort eingeben.';
+
+  @override
+  String get email_login_error_invalid => 'E-Mail oder Passwort ist falsch.';
+
+  @override
+  String get email_login_error_unconfirmed => 'Konto ist noch nicht bestätigt.';
+
+  @override
+  String get email_login_error_reset_required => 'Passwort-Reset erforderlich.';
+
+  @override
+  String get email_login_error_network =>
+      'Netzwerkfehler. Bitte erneut versuchen.';
+
+  @override
+  String get email_login_error_email_only => 'Nur E-Mail-Login ist erlaubt.';
+
+  @override
+  String get email_login_error_redirect =>
+      'Redirect-URL ist ungültig konfiguriert.';
+
+  @override
+  String get email_login_error_state =>
+      'Sicherheitsprüfung fehlgeschlagen. Bitte erneut versuchen.';
+
+  @override
+  String get email_login_error_web_redirect =>
+      'Für Web muss eine HTTPS-Redirect-URL konfiguriert werden.';
+
+  @override
+  String get email_login_error_not_configured =>
+      'Cognito Hosted UI ist nicht korrekt konfiguriert.';
+
+  @override
+  String get email_login_error_cancelled => 'Anmeldung wurde abgebrochen.';
+
+  @override
+  String get email_login_error_generic => 'Anmeldung fehlgeschlagen.';
+
+  @override
   String get privacy_text_prefix => 'Mit dem Fortfahren akzeptierst du ';
 
   @override

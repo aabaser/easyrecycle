@@ -316,6 +316,120 @@ abstract class AppLocalizations {
   /// **'Continue as guest'**
   String get login_guest;
 
+  /// No description provided for @email_login_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Email sign-in'**
+  String get email_login_title;
+
+  /// No description provided for @email_login_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with your email address and password.'**
+  String get email_login_subtitle;
+
+  /// No description provided for @email_login_hosted_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be redirected to the secure Cognito sign-in page.'**
+  String get email_login_hosted_hint;
+
+  /// No description provided for @email_login_hosted_submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with browser'**
+  String get email_login_hosted_submit;
+
+  /// No description provided for @email_login_email_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email_login_email_label;
+
+  /// No description provided for @email_login_password_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get email_login_password_label;
+
+  /// No description provided for @email_login_submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get email_login_submit;
+
+  /// No description provided for @email_login_error_missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter email and password.'**
+  String get email_login_error_missing;
+
+  /// No description provided for @email_login_error_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password.'**
+  String get email_login_error_invalid;
+
+  /// No description provided for @email_login_error_unconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Account is not confirmed yet.'**
+  String get email_login_error_unconfirmed;
+
+  /// No description provided for @email_login_error_reset_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset required.'**
+  String get email_login_error_reset_required;
+
+  /// No description provided for @email_login_error_network.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please try again.'**
+  String get email_login_error_network;
+
+  /// No description provided for @email_login_error_email_only.
+  ///
+  /// In en, this message translates to:
+  /// **'Only email sign-in is allowed.'**
+  String get email_login_error_email_only;
+
+  /// No description provided for @email_login_error_redirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Redirect URL is not configured correctly.'**
+  String get email_login_error_redirect;
+
+  /// No description provided for @email_login_error_state.
+  ///
+  /// In en, this message translates to:
+  /// **'Security validation failed. Please try again.'**
+  String get email_login_error_state;
+
+  /// No description provided for @email_login_error_web_redirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Web requires an HTTPS redirect URL configuration.'**
+  String get email_login_error_web_redirect;
+
+  /// No description provided for @email_login_error_not_configured.
+  ///
+  /// In en, this message translates to:
+  /// **'Cognito Hosted UI is not configured.'**
+  String get email_login_error_not_configured;
+
+  /// No description provided for @email_login_error_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in was cancelled.'**
+  String get email_login_error_cancelled;
+
+  /// No description provided for @email_login_error_generic.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in failed.'**
+  String get email_login_error_generic;
+
   /// No description provided for @privacy_text_prefix.
   ///
   /// In en, this message translates to:

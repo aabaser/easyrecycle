@@ -11,6 +11,7 @@ import "../theme/design_tokens.dart";
 import "../ui/components/er_plant_card.dart";
 import "../widgets/max_width_center.dart";
 import "admin_item_detail_page.dart";
+import "../screens/debug/theme_preview_screen.dart";
 
 class AdminItemsPage extends StatefulWidget {
   const AdminItemsPage({super.key});
@@ -106,6 +107,19 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.t("admin_title"), style: DesignTokens.titleM),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.palette_outlined),
+            tooltip: loc.t("settings_theme_preview"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const ThemePreviewScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: MaxWidthCenter(
         child: Padding(

@@ -20,8 +20,6 @@ class LanguagePickerPage extends StatelessWidget {
 
     final options = <String, String>{
       "de": loc.t("language_de"),
-      "tr": loc.t("language_tr"),
-      "en": loc.t("language_en"),
     };
 
     final canPop = Navigator.of(context).canPop();
@@ -43,20 +41,20 @@ class LanguagePickerPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ...options.entries.map(
-                  (entry) => RadioListTile<String>(
-                    value: entry.key,
-                    groupValue: selected,
-                    activeColor: colorScheme.primary,
+                  (entry) => ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(
+                      selected == entry.key
+                          ? Icons.check_circle_rounded
+                          : Icons.radio_button_unchecked_rounded,
+                      color: colorScheme.primary,
+                    ),
                     title: Text(
                       entry.value,
-                      style: DesignTokens.body
-                          .copyWith(color: colorScheme.onSurface),
+                      style: DesignTokens.body.copyWith(color: colorScheme.onSurface),
                     ),
-                    onChanged: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      appState.setLocale(Locale(value));
+                    onTap: () {
+                      appState.setLocale(Locale(entry.key));
                     },
                   ),
                 ),

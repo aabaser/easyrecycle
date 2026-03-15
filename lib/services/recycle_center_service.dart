@@ -12,7 +12,7 @@ class RecycleCenterService {
     required String cityCode,
     double? lat,
     double? lng,
-    int limit = 200,
+    int limit = 1000,
   }) async {
     final query = <String, String>{"city": cityCode, "limit": "$limit"};
     if (lat != null && lng != null) {

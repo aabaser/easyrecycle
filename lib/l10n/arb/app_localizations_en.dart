@@ -120,6 +120,69 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_guest => 'Continue as guest';
 
   @override
+  String get email_login_title => 'Email sign-in';
+
+  @override
+  String get email_login_subtitle =>
+      'Sign in with your email address and password.';
+
+  @override
+  String get email_login_hosted_hint =>
+      'You will be redirected to the secure Cognito sign-in page.';
+
+  @override
+  String get email_login_hosted_submit => 'Sign in with browser';
+
+  @override
+  String get email_login_email_label => 'Email';
+
+  @override
+  String get email_login_password_label => 'Password';
+
+  @override
+  String get email_login_submit => 'Sign in';
+
+  @override
+  String get email_login_error_missing => 'Please enter email and password.';
+
+  @override
+  String get email_login_error_invalid => 'Incorrect email or password.';
+
+  @override
+  String get email_login_error_unconfirmed => 'Account is not confirmed yet.';
+
+  @override
+  String get email_login_error_reset_required => 'Password reset required.';
+
+  @override
+  String get email_login_error_network => 'Network error. Please try again.';
+
+  @override
+  String get email_login_error_email_only => 'Only email sign-in is allowed.';
+
+  @override
+  String get email_login_error_redirect =>
+      'Redirect URL is not configured correctly.';
+
+  @override
+  String get email_login_error_state =>
+      'Security validation failed. Please try again.';
+
+  @override
+  String get email_login_error_web_redirect =>
+      'Web requires an HTTPS redirect URL configuration.';
+
+  @override
+  String get email_login_error_not_configured =>
+      'Cognito Hosted UI is not configured.';
+
+  @override
+  String get email_login_error_cancelled => 'Sign-in was cancelled.';
+
+  @override
+  String get email_login_error_generic => 'Sign-in failed.';
+
+  @override
   String get privacy_text_prefix => 'By continuing, you accept ';
 
   @override

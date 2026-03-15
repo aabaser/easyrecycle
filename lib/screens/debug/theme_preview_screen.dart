@@ -115,11 +115,10 @@ class ThemePreviewScreen extends StatelessWidget {
                 onChanged: (_) {},
                 title: const Text("Checkbox"),
               ),
-              RadioListTile<int>(
-                value: 1,
-                groupValue: 1,
-                onChanged: (_) {},
+              ListTile(
+                leading: const Icon(Icons.radio_button_checked_rounded),
                 title: const Text("Radio"),
+                onTap: () {},
               ),
             ],
           ),

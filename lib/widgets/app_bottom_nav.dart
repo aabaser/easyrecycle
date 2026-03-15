@@ -29,9 +29,10 @@ class AppBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final clampedIndex = selectedIndex.clamp(0, 2);
 
     return NavigationBar(
-      selectedIndex: selectedIndex,
+      selectedIndex: clampedIndex,
       onDestinationSelected: (value) => _navigateToTab(context, value),
       destinations: [
         NavigationDestination(
@@ -45,10 +46,6 @@ class AppBottomNav extends StatelessWidget {
         NavigationDestination(
           icon: const Icon(Icons.location_on_outlined),
           label: loc.t("find_recycling_center"),
-        ),
-        NavigationDestination(
-          icon: const Icon(Icons.settings_outlined),
-          label: loc.t("nav_settings"),
         ),
       ],
     );

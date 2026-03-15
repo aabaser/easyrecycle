@@ -119,6 +119,68 @@ class AppLocalizationsTr extends AppLocalizations {
   String get login_guest => 'Misafir olarak devam et';
 
   @override
+  String get email_login_title => 'E-posta girişi';
+
+  @override
+  String get email_login_subtitle => 'E-posta adresin ve şifrenle giriş yap.';
+
+  @override
+  String get email_login_hosted_hint =>
+      'Güvenli Cognito giriş sayfasına yönlendirileceksin.';
+
+  @override
+  String get email_login_hosted_submit => 'Tarayıcı ile giriş yap';
+
+  @override
+  String get email_login_email_label => 'E-posta';
+
+  @override
+  String get email_login_password_label => 'Şifre';
+
+  @override
+  String get email_login_submit => 'Giriş yap';
+
+  @override
+  String get email_login_error_missing => 'Lütfen e-posta ve şifre gir.';
+
+  @override
+  String get email_login_error_invalid => 'E-posta veya şifre hatalı.';
+
+  @override
+  String get email_login_error_unconfirmed => 'Hesap henüz doğrulanmamış.';
+
+  @override
+  String get email_login_error_reset_required => 'Şifre sıfırlama gerekli.';
+
+  @override
+  String get email_login_error_network => 'Ağ hatası. Lütfen tekrar dene.';
+
+  @override
+  String get email_login_error_email_only =>
+      'Sadece e-posta girişi destekleniyor.';
+
+  @override
+  String get email_login_error_redirect => 'Yönlendirme URL ayarı hatalı.';
+
+  @override
+  String get email_login_error_state =>
+      'Güvenlik doğrulaması başarısız. Tekrar dene.';
+
+  @override
+  String get email_login_error_web_redirect =>
+      'Web için HTTPS redirect URL ayarı gerekli.';
+
+  @override
+  String get email_login_error_not_configured =>
+      'Cognito Hosted UI doğru ayarlanmamış.';
+
+  @override
+  String get email_login_error_cancelled => 'Giriş iptal edildi.';
+
+  @override
+  String get email_login_error_generic => 'Giriş başarısız.';
+
+  @override
   String get privacy_text_prefix => 'Devam ederek ';
 
   @override

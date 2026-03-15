@@ -6,6 +6,4 @@ class NavKeys {
       GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> recycleCentersTab =
       GlobalKey<NavigatorState>();
-  static final GlobalKey<NavigatorState> settingsTab =
-      GlobalKey<NavigatorState>();
 }

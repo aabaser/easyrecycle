@@ -11,6 +11,23 @@ Recommended starting points:
 ## Codex
 Codex reads `AGENTS.md` first. Keep it updated when rules change.
 
+## Project Rule - Admin Features
+
+Admin features are intentionally kept in the codebase for future reactivation.
+
+- Do not delete admin backend endpoints/services.
+- Do not delete admin Flutter pages/components.
+- If needed, hide admin access from UI/navigation, but keep implementation intact.
+- Theme preview/debug page is kept and can be accessed from Admin UI (not regular Settings).
+
+## Project Rule - Language UI (Temporary)
+
+For now, the app UI is German-only.
+
+- Keep English/Turkish localization files and keys in the codebase.
+- Do not delete EN/TR translations or locale support code.
+- EN/TR may be hidden from UI selectors (Landing, Settings, pickers), but must remain reactivatable.
+
 ## Quick Start
 
 ### Backend (Postgres + FastAPI)
@@ -155,16 +172,6 @@ Verify:
 ```bash
 curl -X POST http://localhost:8000/auth/verify \
   -H "Authorization: Bearer <JWT>"
-```
-
-Enable Cognito (no live test required):
-```bash
-export COGNITO_ENABLED=true
-export COGNITO_REGION=eu-central-1
-export COGNITO_USER_POOL_ID=eu-central-1_XXXXXXXXX
-export COGNITO_APP_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
-# Optional:
-# export COGNITO_ISSUER=https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_XXXXXXXXX
 ```
 
 ## Image Storage (S3)

@@ -18,7 +18,6 @@ class HomeShell extends StatefulWidget {
   static const int tabText = 0;
   static const int tabCamera = 1;
   static const int tabRecycleCenters = 2;
-  static const int tabSettings = 3;
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -34,10 +33,13 @@ class _HomeShellState extends State<HomeShell> {
   void initState() {
     super.initState();
     final appState = context.read<AppState>();
-    _index = appState.currentTabIndex;
+    _index = _sanitizeTabIndex(appState.currentTabIndex);
     _lastCitySelectionVersion = appState.citySelectionVersion;
     appState.addListener(_handleAppState);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (appState.currentTabIndex != _index) {
+        appState.setCurrentTabIndex(_index);
+      }
       _handleTabActivation();
     });
   }
@@ -57,7 +59,9 @@ class _HomeShellState extends State<HomeShell> {
       _lastCitySelectionVersion = appState.citySelectionVersion;
       _resetCityScopedUiState();
     }
-    final requestedTab = appState.consumeRequestedTab();
+    final requestedTabRaw = appState.consumeRequestedTab();
+    final requestedTab =
+        requestedTabRaw == null ? null : _sanitizeTabIndex(requestedTabRaw);
     if (requestedTab != null && requestedTab != _index) {
       setState(() {
         _index = requestedTab;
@@ -95,12 +99,18 @@ class _HomeShellState extends State<HomeShell> {
     _cameraKey.currentState?.setActive(_index == HomeShell.tabCamera);
   }
 
+  int _sanitizeTabIndex(int value) {
+    if (value < HomeShell.tabText || value > HomeShell.tabRecycleCenters) {
+      return HomeShell.tabCamera;
+    }
+    return value;
+  }
+
   GlobalKey<NavigatorState> _currentNavKey() {
     return switch (_index) {
       HomeShell.tabText => NavKeys.textTab,
       HomeShell.tabCamera => NavKeys.cameraTab,
       HomeShell.tabRecycleCenters => NavKeys.recycleCentersTab,
-      HomeShell.tabSettings => NavKeys.settingsTab,
       _ => NavKeys.cameraTab,
     };
   }
@@ -116,6 +126,7 @@ class _HomeShellState extends State<HomeShell> {
   }
 
   void _onTabSelected(int value) async {
+    value = _sanitizeTabIndex(value);
     final appState = context.read<AppState>();
     if (value == _index) {
       if (value == HomeShell.tabCamera) {
@@ -140,13 +151,12 @@ class _HomeShellState extends State<HomeShell> {
       HomeShell.tabText => loc.t("text_search_title"),
       HomeShell.tabCamera => loc.t("scan_title"),
       HomeShell.tabRecycleCenters => loc.t("find_recycling_center"),
-      HomeShell.tabSettings => loc.t("settings_title"),
       _ => loc.t("scan_title"),
     };
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
         }
@@ -160,7 +170,38 @@ class _HomeShellState extends State<HomeShell> {
           automaticallyImplyLeading: false,
           leading: null,
           title: Text(title, style: DesignTokens.titleM),
-          actions: const [],
+          actions: [
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert_rounded),
+              onSelected: (value) {
+                if (value != "settings") {
+                  return;
+                }
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => Scaffold(
+                      appBar: AppBar(
+                        title: Text(loc.t("settings_title")),
+                      ),
+                      body: const SettingsPage(),
+                    ),
+                  ),
+                );
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem<String>(
+                  value: "settings",
+                  child: Row(
+                    children: [
+                      const Icon(Icons.settings_rounded, size: 20),
+                      const SizedBox(width: 10),
+                      Text(loc.t("settings_title")),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
           flexibleSpace: Align(
             alignment: Alignment.topCenter,
             child: IgnorePointer(
@@ -191,10 +232,6 @@ class _HomeShellState extends State<HomeShell> {
                 navigatorKey: NavKeys.recycleCentersTab,
                 root: const RecycleCentersPage(showAppBar: false),
               ),
-              TabNavigator(
-                navigatorKey: NavKeys.settingsTab,
-                root: SettingsPage(),
-              ),
             ],
           ),
         ),
@@ -213,10 +250,6 @@ class _HomeShellState extends State<HomeShell> {
             NavigationDestination(
               icon: const Icon(Icons.location_on_rounded),
               label: loc.t("find_recycling_center"),
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.settings_rounded),
-              label: loc.t("nav_settings"),
             ),
           ],
         ),

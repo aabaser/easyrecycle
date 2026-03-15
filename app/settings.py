@@ -13,12 +13,6 @@ class Settings(BaseSettings):
     ADMIN_REQUIRE_USER: bool = False
     ADMIN_API_KEY: str | None = None
 
-    COGNITO_ENABLED: bool = False
-    COGNITO_REGION: str = "eu-central-1"
-    COGNITO_USER_POOL_ID: str = ""
-    COGNITO_APP_CLIENT_ID: str = ""
-    COGNITO_ISSUER: str | None = None
-
     GUEST_JWT_SECRET: str = "change_me_local_only"
     GUEST_TOKEN_TTL_SECONDS: int = 900
 

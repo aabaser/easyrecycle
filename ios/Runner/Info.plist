@@ -50,7 +50,17 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Galeriden fotograf secerek analiz yapabilmek icin erisim gerekir.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Standort wird verwendet, um Recyclinghöfe in Ihrer Nähe anzuzeigen.</string>
+	<string>Standort wird verwendet, um Recyclinghoefe in Ihrer Naehe anzuzeigen.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>easyrecycle.auth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>easyrecycle</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
-

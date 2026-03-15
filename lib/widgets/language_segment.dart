@@ -13,7 +13,7 @@ class LanguageSegment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    const options = ["de", "en", "tr"];
+    const options = ["de"];
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -35,7 +35,7 @@ class LanguageSegment extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? colorScheme.secondary.withOpacity(0.12)
+                      ? colorScheme.secondary.withValues(alpha: 0.12)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -46,7 +46,7 @@ class LanguageSegment extends StatelessWidget {
                         letterSpacing: 0.2,
                         color: isSelected
                             ? colorScheme.secondary
-                            : colorScheme.onSurface.withOpacity(0.6),
+                            : colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                 ),
               ),

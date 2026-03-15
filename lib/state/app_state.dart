@@ -1,14 +1,14 @@
-import "dart:math";
-import "dart:convert";
 import "dart:async";
+import "dart:convert";
+import "dart:math";
 
 import "package:flutter/material.dart";
-import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
+import "package:shared_preferences/shared_preferences.dart";
 
+import "../config/api_config.dart";
 import "../models/city.dart";
 import "../models/scan_result.dart";
-import "../config/api_config.dart";
 
 class AppState extends ChangeNotifier {
   Locale locale = const Locale("de");
@@ -29,8 +29,13 @@ class AppState extends ChangeNotifier {
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
     final localeCode = prefs.getString("localeCode");
-    if (localeCode != null && localeCode.isNotEmpty) {
-      locale = Locale(localeCode);
+    if (localeCode == "de") {
+      locale = const Locale("de");
+    } else {
+      locale = const Locale("de");
+      if (localeCode != null && localeCode.isNotEmpty) {
+        await prefs.setString("localeCode", "de");
+      }
     }
 
     final cityId = prefs.getString("selectedCityId");
@@ -48,6 +53,9 @@ class AppState extends ChangeNotifier {
 
     authToken = prefs.getString("authToken");
     authTokenExpiresAt = prefs.getInt("authTokenExpiresAt");
+    await prefs.remove("authTokenType");
+    await prefs.remove("userId");
+    await prefs.remove("userEmail");
 
     final storedTheme = prefs.getString("themeMode");
     if (storedTheme == "light") {
@@ -72,7 +80,6 @@ class AppState extends ChangeNotifier {
     final previousCityId = selectedCity?.id;
     selectedCity = city;
     if (previousCityId != city.id) {
-      // City-specific results and pending actions become invalid immediately.
       lastResult = null;
       _requestedTabIndex = null;
       _cameraScanRequested = false;

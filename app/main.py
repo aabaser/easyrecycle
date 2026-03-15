@@ -22,7 +22,6 @@ from app.storage.s3 import (
   validate_settings as validate_s3_settings,
 )
 from app.settings import get_settings
-from app.auth.cognito import verify_cognito_jwt
 from app.auth.guest import issue_guest_token, verify_guest_token
 from app.middleware.rate_limit import FixedWindowRateLimiter
 from pydantic import BaseModel, Field
@@ -142,16 +141,6 @@ def _resolve_principal(request: Request) -> dict:
   if not auth_header.startswith("Bearer "):
     return {"type": "anonymous", "sub": None, "scopes": []}
   token = auth_header.split(" ", 1)[1].strip()
-  if settings.COGNITO_ENABLED:
-    try:
-      data = verify_cognito_jwt(token, settings)
-      return {
-        "type": "user",
-        "sub": data.get("sub"),
-        "scopes": data.get("scopes") or [],
-      }
-    except Exception:
-      pass
   try:
     claims = verify_guest_token(token, settings)
     scope = claims.get("scope") or ""
@@ -353,7 +342,7 @@ def list_recycle_centers(
   city: str = Query(..., description="city code, e.g. hannover, berlin"),
   lat: Optional[float] = Query(None),
   lng: Optional[float] = Query(None),
-  limit: int = Query(200, ge=1, le=500),
+  limit: int = Query(1000, ge=1, le=2000),
   db: Session = Depends(get_db),
 ):
   if (lat is None) != (lng is None):
