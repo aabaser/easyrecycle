@@ -26,6 +26,8 @@ from typing import Any, Dict, List, Optional
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Connection
 
+from app.disposal_methods import find_disposal_method_seed
+
 LANG = "de"
 CITY_CODE = "berlin"
 
@@ -110,22 +112,30 @@ def ensure_category(conn: Connection, label: str) -> str:
   return res.scalar_one()
 
 
-def ensure_disposal(conn: Connection, label: str) -> str:
-  code = slug(label)
+def ensure_disposal(conn: Connection, city_id: str, city_code: str, label: str) -> str:
+  seed = find_disposal_method_seed(city_code, label)
+  code = seed.code if seed else slug(label)
   name_key = f"disposal.{code}.name"
   upsert_translation(conn, name_key, label)
   res = conn.execute(
     text(
       """
-      INSERT INTO core.disposal_method(code, name_key)
-      VALUES (:code, :name_key)
+      INSERT INTO core.disposal_method(code, name_key, city_id, recycle_center_typ_code)
+      VALUES (:code, :name_key, :city_id, :recycle_center_typ_code)
       ON CONFLICT (code)
       DO UPDATE SET name_key = EXCLUDED.name_key,
+                    city_id = EXCLUDED.city_id,
+                    recycle_center_typ_code = EXCLUDED.recycle_center_typ_code,
                     updated_at = now()
       RETURNING disposal_id::text
       """
     ),
-    {"code": code, "name_key": name_key},
+    {
+      "code": code,
+      "name_key": name_key,
+      "city_id": city_id,
+      "recycle_center_typ_code": seed.recycle_center_typ_code if seed else None,
+    },
   )
   return res.scalar_one()
 
@@ -273,7 +283,7 @@ def main() -> None:
       # disposals
       disposals = entry.get("synonymDisposalPositive") or []
       for priority, disp_label in enumerate(disposals, start=1):
-        disp_id = ensure_disposal(conn, disp_label)
+        disp_id = ensure_disposal(conn, city_id, CITY_CODE, disp_label)
         upsert_city_disposal(conn, city_id, item_id, disp_id, priority)
 
       # city desc override

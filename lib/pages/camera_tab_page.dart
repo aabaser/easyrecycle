@@ -11,6 +11,7 @@ import "package:image/image.dart" as img;
 
 import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
+import "../models/recycle_center_link.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
@@ -26,6 +27,14 @@ class CameraTabPage extends StatefulWidget {
   CameraTabPageState createState() => CameraTabPageState();
 }
 
+enum _CameraBusyStage {
+  openingCamera,
+  openingGallery,
+  preparingImage,
+  uploadingImage,
+  analyzingImage,
+}
+
 class CameraTabPageState extends State<CameraTabPage> {
   Uint8List? _imageBytes;
   bool _isLoading = false;
@@ -33,8 +42,20 @@ class CameraTabPageState extends State<CameraTabPage> {
   bool _isScanning = false;
   bool _isActive = false;
   int _analyzeToken = 0;
+  _CameraBusyStage? _busyStage;
 
   void handleTabSelected() {}
+
+  bool handleBackPress() {
+    if (_isLoading) {
+      _cancelPendingAnalyze();
+      return true;
+    }
+    if (_isPicking || _isScanning) {
+      return true;
+    }
+    return false;
+  }
 
   void setActive(bool active) {
     if (_isActive == active) {
@@ -60,6 +81,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       _isLoading = false;
       _isPicking = false;
       _isScanning = false;
+      _busyStage = null;
       return;
     }
     setState(() {
@@ -67,6 +89,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       _isLoading = false;
       _isPicking = false;
       _isScanning = false;
+      _busyStage = null;
     });
   }
 
@@ -75,11 +98,13 @@ class CameraTabPageState extends State<CameraTabPage> {
     if (!mounted) {
       _imageBytes = null;
       _isLoading = false;
+      _busyStage = null;
       return;
     }
     setState(() {
       _imageBytes = null;
       _isLoading = false;
+      _busyStage = null;
     });
   }
 
@@ -136,10 +161,16 @@ class CameraTabPageState extends State<CameraTabPage> {
       setState(() {
         _isPicking = true;
         _isScanning = true;
+        _busyStage = source == ImageSource.camera
+            ? _CameraBusyStage.openingCamera
+            : _CameraBusyStage.openingGallery;
       });
     } else {
       _isPicking = true;
       _isScanning = true;
+      _busyStage = source == ImageSource.camera
+          ? _CameraBusyStage.openingCamera
+          : _CameraBusyStage.openingGallery;
     }
     try {
       final picker = ImagePicker();
@@ -152,6 +183,13 @@ class CameraTabPageState extends State<CameraTabPage> {
       if (file == null) {
         return;
       }
+      if (mounted) {
+        setState(() {
+          _busyStage = _CameraBusyStage.preparingImage;
+        });
+      } else {
+        _busyStage = _CameraBusyStage.preparingImage;
+      }
       final bytes = await file.readAsBytes();
       final cropped = _cropToFocus(bytes);
       setState(() {
@@ -163,10 +201,16 @@ class CameraTabPageState extends State<CameraTabPage> {
         setState(() {
           _isPicking = false;
           _isScanning = false;
+          if (!_isLoading) {
+            _busyStage = null;
+          }
         });
       } else {
         _isPicking = false;
         _isScanning = false;
+        if (!_isLoading) {
+          _busyStage = null;
+        }
       }
     }
   }
@@ -217,6 +261,8 @@ class CameraTabPageState extends State<CameraTabPage> {
             hintCategory: item.hintCategory,
             disposalLabels: item.disposalLabels,
             disposalCodes: item.disposalCodes,
+            recycleCenterLinks: item.recycleCenterLinks,
+            disposalTagLinks: item.disposalTagLinks,
           ),
         )
         .toList();
@@ -267,6 +313,7 @@ class CameraTabPageState extends State<CameraTabPage> {
     final analyzeToken = ++_analyzeToken;
     setState(() {
       _isLoading = true;
+      _busyStage = _CameraBusyStage.uploadingImage;
     });
 
     try {
@@ -282,6 +329,13 @@ class CameraTabPageState extends State<CameraTabPage> {
         presign: presign,
         bytes: _imageBytes!,
       );
+
+      if (!mounted || analyzeToken != _analyzeToken) {
+        return;
+      }
+      setState(() {
+        _busyStage = _CameraBusyStage.analyzingImage;
+      });
 
       final uri = Uri.parse("${ApiConfig.baseUrl}/analyze");
       debugPrint("analyze(image): calling /analyze s3_key=${presign.s3Key}");
@@ -328,9 +382,11 @@ class CameraTabPageState extends State<CameraTabPage> {
           description: null,
           disposalMethod: null,
           disposalSteps: const [],
-          categories: const [],
-          disposalLabels: const [],
-          bestOption: null,
+           categories: const [],
+           disposalLabels: const [],
+           recycleCenterLinks: const [],
+           disposalTagLinks: const [],
+           bestOption: null,
           otherOptions: const [],
           warnings: [
             Warning(
@@ -345,6 +401,7 @@ class CameraTabPageState extends State<CameraTabPage> {
         appState.setLastResult(result);
         setState(() {
           _isLoading = false;
+          _busyStage = null;
         });
         if (!mounted) {
           return;
@@ -386,6 +443,14 @@ class CameraTabPageState extends State<CameraTabPage> {
         categories: _labelsFromList(body["categories"] ?? item["categories"]),
         disposalLabels: _labelsFromList(body["disposals"] ?? disposals),
         disposalCodes: _codesFromList(body["disposals"] ?? disposals),
+        recycleCenterLinks: _recycleCenterLinksFromList(
+          body["disposals"] ?? disposals,
+          cityCode: body["city"]?.toString(),
+        ),
+        disposalTagLinks: _disposalTagLinksFromList(
+          body["disposals"] ?? disposals,
+          cityCode: body["city"]?.toString(),
+        ),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -398,6 +463,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       appState.setLastResult(result);
       setState(() {
         _isLoading = false;
+        _busyStage = null;
       });
       if (!mounted) {
         return;
@@ -417,6 +483,7 @@ class CameraTabPageState extends State<CameraTabPage> {
       }
       setState(() {
         _isLoading = false;
+        _busyStage = null;
       });
       _showConnectionError();
     }
@@ -444,6 +511,14 @@ class CameraTabPageState extends State<CameraTabPage> {
           hintCategory: entry["category"]?.toString() ?? "unknown",
           disposalLabels: disposals,
           disposalCodes: disposalCodes,
+          recycleCenterLinks: _recycleCenterLinksFromList(
+            entry["disposals"] ?? entry["disposal_codes"],
+            cityCode: body["city"]?.toString(),
+          ),
+          disposalTagLinks: _disposalTagLinksFromList(
+            entry["disposals"] ?? entry["disposal_codes"],
+            cityCode: body["city"]?.toString(),
+          ),
         );
       }
       return SimilarItem(
@@ -579,6 +654,64 @@ class CameraTabPageState extends State<CameraTabPage> {
         .toList();
   }
 
+  List<RecycleCenterLink> _recycleCenterLinksFromList(
+    dynamic rawList, {
+    String? cityCode,
+  }) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    final effectiveCityCode =
+        cityCode ?? context.read<AppState>().selectedCity?.id ?? "hannover";
+    final seen = <String>{};
+    final links = <RecycleCenterLink>[];
+    for (final entry in list) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+      final link = RecycleCenterLink.fromJson(
+        entry,
+        cityCode: effectiveCityCode,
+      );
+      if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      final key = effectiveCityCode == "berlin"
+          ? "disposal:${link.disposalPositive ?? link.label}"
+          : "type:${link.typCode ?? 0}";
+      if (seen.add(key)) {
+        links.add(link);
+      }
+    }
+    return links;
+  }
+
+  List<RecycleCenterLink> _disposalTagLinksFromList(
+    dynamic rawList, {
+    String? cityCode,
+  }) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    final effectiveCityCode =
+        cityCode ?? context.read<AppState>().selectedCity?.id ?? "hannover";
+    final seen = <String>{};
+    final links = <RecycleCenterLink>[];
+    for (final entry in list) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+      final link = RecycleCenterLink.fromJson(
+        entry,
+        cityCode: effectiveCityCode,
+      );
+      if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      final key = link.label;
+      if (seen.add(key)) {
+        links.add(link);
+      }
+    }
+    return links;
+  }
+
   Widget _buildBusyBackground(ColorScheme colorScheme, bool showProcessing) {
     if (!showProcessing || _imageBytes == null) {
       return DecoratedBox(
@@ -671,14 +804,14 @@ class CameraTabPageState extends State<CameraTabPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        loc.t("camera_processing_title"),
+                        _cameraBusyTitle(loc),
                         style: textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        loc.t("camera_processing_subtitle"),
+                        _cameraBusySubtitle(loc),
                         style: textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -708,14 +841,217 @@ class CameraTabPageState extends State<CameraTabPage> {
     );
   }
 
+  String _cameraBusyTitle(AppLocalizations loc) {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (_busyStage) {
+      case _CameraBusyStage.openingCamera:
+        switch (code) {
+          case "de":
+            return "Kamera wird geoeffnet";
+          case "tr":
+            return "Kamera aciliyor";
+          default:
+            return "Opening camera";
+        }
+      case _CameraBusyStage.openingGallery:
+        switch (code) {
+          case "de":
+            return "Galerie wird geoeffnet";
+          case "tr":
+            return "Galeri aciliyor";
+          default:
+            return "Opening gallery";
+        }
+      case _CameraBusyStage.preparingImage:
+        switch (code) {
+          case "de":
+            return "Foto wird vorbereitet";
+          case "tr":
+            return "Fotograf hazirlaniyor";
+          default:
+            return "Preparing photo";
+        }
+      case _CameraBusyStage.uploadingImage:
+        switch (code) {
+          case "de":
+            return "Foto wird hochgeladen";
+          case "tr":
+            return "Fotograf yukleniyor";
+          default:
+            return "Uploading photo";
+        }
+      case _CameraBusyStage.analyzingImage:
+        switch (code) {
+          case "de":
+            return "Foto wird analysiert";
+          case "tr":
+            return "Fotograf analiz ediliyor";
+          default:
+            return "Analyzing photo";
+        }
+      case null:
+        return loc.t("camera_processing_title");
+    }
+  }
+
+  String _cameraBusySubtitle(AppLocalizations loc) {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (_busyStage) {
+      case _CameraBusyStage.openingCamera:
+      case _CameraBusyStage.openingGallery:
+        switch (code) {
+          case "de":
+            return "Bitte kurz warten. Der Vorgang wurde gestartet.";
+          case "tr":
+            return "Lutfen kisa bir an bekleyin. Islem baslatildi.";
+          default:
+            return "Please wait a moment. The action has started.";
+        }
+      case _CameraBusyStage.preparingImage:
+        switch (code) {
+          case "de":
+            return "Das Bild wird fuer die Analyse vorbereitet.";
+          case "tr":
+            return "Gorsel analiz icin hazirlaniyor.";
+          default:
+            return "The image is being prepared for analysis.";
+        }
+      case _CameraBusyStage.uploadingImage:
+        switch (code) {
+          case "de":
+            return "Das Bild wird sicher an den Server uebertragen.";
+          case "tr":
+            return "Gorsel guvenli sekilde sunucuya gonderiliyor.";
+          default:
+            return "The image is being securely uploaded.";
+        }
+      case _CameraBusyStage.analyzingImage:
+        switch (code) {
+          case "de":
+            return "Das Ergebnis ist gleich bereit.";
+          case "tr":
+            return "Sonuc birazdan hazir olacak.";
+          default:
+            return "The result will be ready shortly.";
+        }
+      case null:
+        return loc.t("camera_processing_subtitle");
+    }
+  }
+
+  String _cameraEmptyTitle() {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (code) {
+      case "de":
+        return "Kamera bereit";
+      case "tr":
+        return "Kamera hazir";
+      default:
+        return "Camera ready";
+    }
+  }
+
+  String _cameraEmptySubtitle() {
+    final code = Localizations.localeOf(context).languageCode;
+    switch (code) {
+      case "de":
+        return "Foto aufnehmen oder ein Bild aus der Galerie waehlen.";
+      case "tr":
+        return "Fotograf cekin veya galeriden bir gorsel secin.";
+      default:
+        return "Take a photo or choose one from the gallery.";
+    }
+  }
+
+  Widget _buildIdleState(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+    AppLocalizations loc,
+    bool controlsLocked,
+  ) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 360),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
+          decoration: BoxDecoration(
+            color: colorScheme.surface.withValues(alpha: 0.9),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: colorScheme.outlineVariant),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.18),
+                blurRadius: 26,
+                offset: const Offset(0, 12),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.camera_alt_rounded,
+                  size: 34,
+                  color: colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _cameraEmptyTitle(),
+                textAlign: TextAlign.center,
+                style:
+                    textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _cameraEmptySubtitle(),
+                textAlign: TextAlign.center,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 18),
+              SizedBox(
+                width: double.infinity,
+               child: FilledButton.icon(
+                  onPressed: controlsLocked ? null : openCamera,
+                  icon: const Icon(Icons.camera_alt_rounded),
+                  label: Text(loc.t("scan_title")),
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: controlsLocked ? null : openGallery,
+                  icon: const Icon(Icons.photo_library_outlined),
+                  label: Text(loc.t("scan_pick_gallery")),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final controlsLocked = _isLoading || _isPicking || _isScanning;
-    final busy = _isLoading;
-    final showProcessing = _isLoading && _imageBytes != null;
+    final busy = _isLoading || _busyStage == _CameraBusyStage.preparingImage;
+    final showProcessing = busy && _imageBytes != null;
+    final showIdleState = !busy && _imageBytes == null;
 
     return ColoredBox(
       color: Colors.black,
@@ -736,23 +1072,27 @@ class CameraTabPageState extends State<CameraTabPage> {
                 showProcessing,
               ),
             ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 20,
-            child: SafeArea(
-              top: false,
-              child: OutlinedButton.icon(
-                onPressed: controlsLocked ? null : openGallery,
-                icon: const Icon(Icons.photo_library_outlined),
-                label: Text(loc.t("scan_pick_gallery")),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  side: BorderSide(color: Colors.white.withValues(alpha: 0.55)),
+          if (showIdleState)
+            _buildIdleState(colorScheme, textTheme, loc, controlsLocked),
+          if (!showIdleState)
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: 20,
+              child: SafeArea(
+                top: false,
+                child: OutlinedButton.icon(
+                  onPressed: controlsLocked ? null : openGallery,
+                  icon: const Icon(Icons.photo_library_outlined),
+                  label: Text(loc.t("scan_pick_gallery")),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    side:
+                        BorderSide(color: Colors.white.withValues(alpha: 0.55)),
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

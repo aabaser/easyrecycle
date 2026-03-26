@@ -9,21 +9,52 @@ import "../models/city.dart";
 import "../models/admin_image.dart";
 import "../state/app_state.dart";
 
+class AdminUnauthorizedException implements Exception {}
+
 class AdminService {
   AdminService({required AppState appState}) : _appState = appState;
 
   final AppState _appState;
 
-  Future<Map<String, String>> _headers({Map<String, String>? extra}) {
-    final adminHeader = ApiConfig.adminApiKey.trim().isEmpty
-        ? const <String, String>{}
-        : {"X-Admin-Token": ApiConfig.adminApiKey};
-    return _appState.authHeaders(
-      extra: {
-        ...adminHeader,
-        if (extra != null) ...extra,
-      },
+  Future<Map<String, String>> _headers({Map<String, String>? extra}) async {
+    try {
+      return await _appState.adminHeaders(extra: extra);
+    } on StateError {
+      throw AdminUnauthorizedException();
+    }
+  }
+
+  Future<void> _ensureSuccess(
+      http.Response response, String fallbackError) async {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return;
+    }
+    if (response.statusCode == 401 || response.statusCode == 403) {
+      await _appState.clearAdminSession();
+      throw AdminUnauthorizedException();
+    }
+    throw Exception(fallbackError);
+  }
+
+  Future<void> loginWithApiKey(String apiKey) async {
+    final uri = Uri.parse("${ApiConfig.baseUrl}/admin/auth/login");
+    final response = await http.post(
+      uri,
+      headers: const {"Content-Type": "application/json"},
+      body: json.encode({"api_key": apiKey}),
     );
+    await _ensureSuccess(response, "admin_login_failed");
+    final body = json.decode(response.body) as Map<String, dynamic>;
+    final token = body["access_token"]?.toString() ?? "";
+    final expiresIn = body["expires_in"] as int? ?? 3600;
+    if (token.isEmpty) {
+      throw Exception("admin_login_failed");
+    }
+    await _appState.setAdminSession(token: token, expiresInSeconds: expiresIn);
+  }
+
+  Future<void> logout() async {
+    await _appState.clearAdminSession();
   }
 
   Future<List<AdminItemSummary>> listItems({
@@ -34,9 +65,7 @@ class AdminService {
       "${ApiConfig.baseUrl}/admin/items?lang=$lang${query != null && query.isNotEmpty ? "&q=${Uri.encodeComponent(query)}" : ""}",
     );
     final response = await http.get(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_items_failed");
-    }
+    await _ensureSuccess(response, "admin_items_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     final items = (body["items"] as List<dynamic>? ?? []);
     return items.map((entry) {
@@ -62,9 +91,7 @@ class AdminService {
       "${ApiConfig.baseUrl}/admin/items/$itemId?city=$cityId&lang=$lang",
     );
     final response = await http.get(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_item_failed");
-    }
+    await _ensureSuccess(response, "admin_item_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     return _parseDetail(body);
   }
@@ -77,9 +104,7 @@ class AdminService {
     final uri =
         Uri.parse("${ApiConfig.baseUrl}/admin/options?lang=$lang$cityParam");
     final response = await http.get(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_options_failed");
-    }
+    await _ensureSuccess(response, "admin_options_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     return AdminOptions(
       categories: _parseCodeLabelList(body["categories"]),
@@ -118,9 +143,7 @@ class AdminService {
         "is_active": isActive,
       }),
     );
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_update_failed");
-    }
+    await _ensureSuccess(response, "admin_update_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     return _parseDetail(body);
   }
@@ -128,9 +151,7 @@ class AdminService {
   Future<List<AdminImageAsset>> listImages({int limit = 50}) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/images?limit=$limit");
     final response = await http.get(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_images_failed");
-    }
+    await _ensureSuccess(response, "admin_images_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     final images = (body["images"] as List<dynamic>? ?? []);
     return images.map((entry) {
@@ -150,9 +171,7 @@ class AdminService {
   Future<List<City>> listCities({required String lang}) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/cities?lang=$lang");
     final response = await http.get(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_cities_failed");
-    }
+    await _ensureSuccess(response, "admin_cities_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     final cities = (body["cities"] as List<dynamic>? ?? []);
     return cities.map((entry) {
@@ -167,9 +186,7 @@ class AdminService {
   Future<List<AdminImageAsset>> listItemImages(String itemId) async {
     final uri = Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images");
     final response = await http.get(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_item_images_failed");
-    }
+    await _ensureSuccess(response, "admin_item_images_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     final images = (body["images"] as List<dynamic>? ?? []);
     return images.map((entry) {
@@ -203,9 +220,7 @@ class AdminService {
         "source": "admin",
       }),
     );
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_item_image_upload_failed");
-    }
+    await _ensureSuccess(response, "admin_item_image_upload_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     return AdminImageAsset(
       imageId: body["image_id"]?.toString() ?? "",
@@ -225,9 +240,7 @@ class AdminService {
     final uri =
         Uri.parse("${ApiConfig.baseUrl}/admin/items/$itemId/images/$imageId");
     final response = await http.delete(uri, headers: await _headers());
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_item_image_delete_failed");
-    }
+    await _ensureSuccess(response, "admin_item_image_delete_failed");
   }
 
   Future<AdminImageAsset> uploadImage(Uint8List bytes) async {
@@ -242,9 +255,7 @@ class AdminService {
         "source": "admin",
       }),
     );
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception("admin_upload_failed");
-    }
+    await _ensureSuccess(response, "admin_upload_failed");
     final body = json.decode(response.body) as Map<String, dynamic>;
     return AdminImageAsset(
       imageId: body["image_id"]?.toString() ?? "",

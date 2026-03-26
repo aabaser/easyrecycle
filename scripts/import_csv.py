@@ -22,6 +22,8 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Connection
 
+from app.disposal_methods import find_disposal_method_seed
+
 DEFAULT_LANGS: Tuple[str, ...] = ("de", "en", "tr")
 ACTIVE_LANGS: Tuple[str, ...] = DEFAULT_LANGS
 
@@ -119,23 +121,31 @@ def ensure_category(conn: Connection, label: str) -> str:
   return res.scalar_one()
 
 
-def ensure_disposal(conn: Connection, label: str) -> str:
-  code = slug(label)
+def ensure_disposal(conn: Connection, city_id: str, city_code: str, label: str) -> str:
+  seed = find_disposal_method_seed(city_code, label)
+  code = seed.code if seed else slug(label)
   name_key = f"disposal.{code}.name"
   for lang in ACTIVE_LANGS:
     upsert_translation(conn, name_key, lang, label)
   res = conn.execute(
     text(
       """
-      INSERT INTO core.disposal_method(code, name_key)
-      VALUES (:code, :name_key)
+      INSERT INTO core.disposal_method(code, name_key, city_id, recycle_center_typ_code)
+      VALUES (:code, :name_key, :city_id, :recycle_center_typ_code)
       ON CONFLICT (code)
       DO UPDATE SET name_key = EXCLUDED.name_key,
+                    city_id = EXCLUDED.city_id,
+                    recycle_center_typ_code = EXCLUDED.recycle_center_typ_code,
                     updated_at = now()
       RETURNING disposal_id::text
       """
     ),
-    {"code": code, "name_key": name_key},
+    {
+      "code": code,
+      "name_key": name_key,
+      "city_id": city_id,
+      "recycle_center_typ_code": seed.recycle_center_typ_code if seed else None,
+    },
   )
   return res.scalar_one()
 
@@ -348,8 +358,6 @@ def reset_core_tables(conn: Connection) -> None:
         core.scan_event,
         core.vision_cache,
         core.prospect,
-        core.city_category_label,
-        core.city_disposal_label,
         core.item_city_warning,
         core.item_city_disposal,
         core.item_city_action,
@@ -485,7 +493,7 @@ def main() -> None:
       # Disposals
       disposal_pairs = []
       for priority, disp in enumerate(hannover_data.disposals, start=1):
-        disp_id = ensure_disposal(conn, disp)
+        disp_id = ensure_disposal(conn, hannover_id, "hannover", disp)
         disposal_pairs.append((disp_id, priority))
         stats["disposals"] += 1
       upsert_item_city_list(conn, "core.item_city_disposal", hannover_id, item_id, disposal_pairs)
@@ -493,7 +501,7 @@ def main() -> None:
       if berlin_data.disposals and berlin_data.disposals != hannover_data.disposals:
         berlin_pairs = []
         for priority, disp in enumerate(berlin_data.disposals, start=1):
-          disp_id = ensure_disposal(conn, disp)
+          disp_id = ensure_disposal(conn, berlin_id, "berlin", disp)
           berlin_pairs.append((disp_id, priority))
         upsert_item_city_list(conn, "core.item_city_disposal", berlin_id, item_id, berlin_pairs)
 

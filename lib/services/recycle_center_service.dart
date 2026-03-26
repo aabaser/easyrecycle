@@ -12,12 +12,20 @@ class RecycleCenterService {
     required String cityCode,
     double? lat,
     double? lng,
+    int? typCode,
+    String? disposalPositive,
     int limit = 1000,
   }) async {
     final query = <String, String>{"city": cityCode, "limit": "$limit"};
     if (lat != null && lng != null) {
       query["lat"] = lat.toString();
       query["lng"] = lng.toString();
+    }
+    if (typCode != null) {
+      query["typ_code"] = "$typCode";
+    }
+    if (disposalPositive != null && disposalPositive.trim().isNotEmpty) {
+      query["disposal_positive"] = disposalPositive.trim();
     }
     final uri = Uri.parse("${ApiConfig.baseUrl}/recycle-centers")
         .replace(queryParameters: query);

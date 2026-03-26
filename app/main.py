@@ -23,6 +23,7 @@ from app.storage.s3 import (
 )
 from app.settings import get_settings
 from app.auth.guest import issue_guest_token, verify_guest_token
+from app.auth.admin import issue_admin_token, verify_admin_token
 from app.middleware.rate_limit import FixedWindowRateLimiter
 from pydantic import BaseModel, Field
 from sqlalchemy import text
@@ -65,6 +66,7 @@ _AUTH_EXEMPT_PATHS = {
   "/auth/guest",
   "/auth/me",
   "/auth/verify",
+  "/admin/auth/login",
 }
 if docs_enabled:
   _AUTH_EXEMPT_PATHS.update({"/docs", "/openapi.json", "/redoc"})
@@ -75,6 +77,8 @@ async def auth_guard(request: Request, call_next):
   if request.method == "OPTIONS":
     return await call_next(request)
   path = request.url.path
+  if path.startswith("/admin/"):
+    return await call_next(request)
   if path in _AUTH_EXEMPT_PATHS:
     return await call_next(request)
   try:
@@ -153,17 +157,21 @@ def _resolve_principal(request: Request) -> dict:
 def _require_admin(request: Request) -> dict:
   if not settings.ADMIN_ENABLED:
     raise HTTPException(status_code=404, detail="not_found")
-  principal = getattr(request.state, "principal", None)
-  if not principal or principal.get("type") == "anonymous":
+  auth_header = request.headers.get("Authorization") or ""
+  if not auth_header.startswith("Bearer "):
     raise HTTPException(status_code=401, detail="Unauthorized")
-  if settings.ADMIN_REQUIRE_USER and principal.get("type") != "user":
-    raise HTTPException(status_code=403, detail="Forbidden")
-  token = request.headers.get("X-Admin-Token")
-  if not settings.ADMIN_API_KEY:
-    raise HTTPException(status_code=403, detail="Admin API key not configured")
-  if not token or token != settings.ADMIN_API_KEY:
-    raise HTTPException(status_code=403, detail="Forbidden")
-  return principal
+  token = auth_header.split(" ", 1)[1].strip()
+  if not token:
+    raise HTTPException(status_code=401, detail="Unauthorized")
+  try:
+    claims = verify_admin_token(token, settings)
+  except Exception:
+    raise HTTPException(status_code=401, detail="Unauthorized")
+  return {
+    "type": "admin",
+    "sub": claims.get("sub"),
+    "scopes": ["admin"],
+  }
 
 
 @app.middleware("http")
@@ -201,6 +209,22 @@ class GuestResponse(BaseModel):
 
 
 class PrincipalResponse(BaseModel):
+  type: str
+  sub: Optional[str] = None
+  scopes: list[str]
+
+
+class AdminLoginRequest(BaseModel):
+  api_key: str = Field(..., min_length=12, max_length=256)
+
+
+class AdminLoginResponse(BaseModel):
+  access_token: str
+  token_type: str
+  expires_in: int
+
+
+class AdminPrincipalResponse(BaseModel):
   type: str
   sub: Optional[str] = None
   scopes: list[str]
@@ -287,6 +311,36 @@ def auth_verify(request: Request):
   }
 
 
+@app.post("/admin/auth/login", response_model=AdminLoginResponse)
+def admin_auth_login(payload: AdminLoginRequest, request: Request):
+  if not settings.ADMIN_ENABLED:
+    raise HTTPException(status_code=404, detail="not_found")
+  if not settings.ADMIN_API_KEY:
+    raise HTTPException(status_code=503, detail="admin_api_key_not_configured")
+  _rate_limit_or_429(f"admin_login:{_client_ip(request)}", limit=8, window_seconds=60)
+  try:
+    issued = issue_admin_token(payload.api_key, settings)
+  except ValueError:
+    raise HTTPException(status_code=401, detail="invalid_admin_api_key")
+  return {
+    "access_token": issued["token"],
+    "token_type": "bearer",
+    "expires_in": settings.ADMIN_SESSION_TTL_SECONDS,
+  }
+
+
+@app.get("/admin/auth/me", response_model=AdminPrincipalResponse)
+def admin_auth_me(request: Request):
+  principal = _require_admin(request)
+  key = principal.get("sub") or _client_ip(request)
+  _rate_limit_or_429(f"admin_me:{key}", limit=120, window_seconds=60)
+  return {
+    "type": principal.get("type"),
+    "sub": principal.get("sub"),
+    "scopes": sorted(principal.get("scopes") or []),
+  }
+
+
 @app.post("/uploads/presign", response_model=PresignResponse)
 def uploads_presign(payload: PresignRequest, request: Request):
   principal = getattr(request.state, "principal", None)
@@ -342,6 +396,8 @@ def list_recycle_centers(
   city: str = Query(..., description="city code, e.g. hannover, berlin"),
   lat: Optional[float] = Query(None),
   lng: Optional[float] = Query(None),
+  typ_code: Optional[int] = Query(None),
+  disposal_positive: Optional[str] = Query(None),
   limit: int = Query(1000, ge=1, le=2000),
   db: Session = Depends(get_db),
 ):
@@ -370,10 +426,22 @@ def list_recycle_centers(
       FROM core.recycle_center rc
       WHERE rc.city_id = :city_id
         AND rc.is_active = true
+        AND (
+          CAST(:typ_code AS integer) IS NULL
+          OR rc.typ_code = CAST(:typ_code AS integer)
+        )
+        AND (
+          CAST(:disposal_positive AS text) IS NULL
+          OR CAST(:disposal_positive AS text) = ANY(COALESCE(rc.disposal_positive, ARRAY[]::text[]))
+        )
       ORDER BY rc.name ASC
       """
     ),
-    {"city_id": city_id},
+    {
+      "city_id": city_id,
+      "typ_code": typ_code,
+      "disposal_positive": disposal_positive,
+    },
   ).fetchall()
 
   centers: list[dict] = []
@@ -422,9 +490,15 @@ def search_items(
         t1.text,
         i.primary_image_id::text,
         COALESCE(
-          array_remove(array_agg(DISTINCT dt.text), NULL),
-          ARRAY[]::text[]
-        ) AS disposal_labels
+          jsonb_agg(
+            DISTINCT jsonb_build_object(
+              'code', d.code,
+              'label', dt.text,
+              'recycle_center_typ_code', d.recycle_center_typ_code
+            )
+          ) FILTER (WHERE d.disposal_id IS NOT NULL),
+          '[]'::jsonb
+        ) AS disposals
       FROM core.item i
       JOIN core.city c ON c.code = :city AND c.is_active = true
       JOIN core.item_city_category icc ON icc.item_id = i.item_id AND icc.city_id = c.city_id
@@ -445,6 +519,7 @@ def search_items(
     {"lang": lang, "q": query, "limit": limit, "city": city},
   ).fetchall()
   return {
+    "city": city,
     "items": [
       {
         "id": r[0],

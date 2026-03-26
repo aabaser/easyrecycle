@@ -1,11 +1,11 @@
 {
-    "name": "easy_recycle_flutter",
-    "short_name": "easy_recycle_flutter",
+    "name": "Easy Recycle",
+    "short_name": "EasyRecycle",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Easy Recycle web app.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

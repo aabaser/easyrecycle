@@ -78,147 +78,193 @@ class _LandingScreenState extends State<LandingScreen> {
             ),
           ),
           SafeArea(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                MaxWidthCenter(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return MaxWidthCenter(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 8),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 440),
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(18),
-                            decoration: BoxDecoration(
-                              color: colorScheme.surfaceContainerLow.withValues(
-                                alpha: 0.9,
-                              ),
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(color: colorScheme.outlineVariant),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  loc.t("entry_headline"),
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.headlineSmall?.copyWith(
-                                    fontWeight: FontWeight.w800,
+                    padding: const EdgeInsets.fromLTRB(24, 18, 24, 24),
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraints.maxHeight - 42),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 440),
+                              child: Container(
+                                width: double.infinity,
+                                padding:
+                                    const EdgeInsets.fromLTRB(18, 16, 18, 14),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.32),
+                                  borderRadius: BorderRadius.circular(22),
+                                  border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.18),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  loc.t("entry_subtitle"),
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
-                                  ),
-                                ),
-                                const SizedBox(height: 14),
-                                Text(
-                                  loc.t("landing_city_label"),
-                                  style: textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  loc.t("city_helper"),
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                CityPills(
-                                  cities: cities,
-                                  selectedCityId: appState.selectedCity?.id,
-                                  onSelected: appState.setSelectedCity,
-                                ),
-                                const SizedBox(height: 16),
-                                ERButton(
-                                  label: loc.t("entry_cta"),
-                                  onPressed: appState.selectedCity == null
-                                      ? null
-                                      : () {
-                                          Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                              builder: (_) => const HomeShell(),
-                                            ),
-                                          );
-                                        },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 440),
-                          child: Wrap(
-                            alignment: WrapAlignment.center,
-                            children: [
-                              Text(
-                                loc.t("privacy_text_prefix"),
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(alpha: 0.64),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => const PrivacyScreen(),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      loc.t("app_title"),
+                                      textAlign: TextAlign.center,
+                                      style: textTheme.headlineMedium?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 0.5,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  loc.t("privacy_link_label"),
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                loc.t("privacy_text_between"),
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(alpha: 0.64),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => const TermsScreen(),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      loc.t("entry_headline"),
+                                      textAlign: TextAlign.center,
+                                      style: textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  loc.t("terms_link_label"),
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.w700,
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      loc.t("entry_subtitle"),
+                                      textAlign: TextAlign.center,
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.88),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 18),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 400),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(18),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.surfaceContainerLow
+                                      .withValues(
+                                    alpha: 0.9,
                                   ),
+                                  borderRadius: BorderRadius.circular(22),
+                                  border: Border.all(
+                                      color: colorScheme.outlineVariant),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      loc.t("landing_city_label"),
+                                      textAlign: TextAlign.center,
+                                      style: textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      loc.t("city_helper"),
+                                      textAlign: TextAlign.center,
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        color: colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    CityPills(
+                                      cities: cities,
+                                      selectedCityId: appState.selectedCity?.id,
+                                      onSelected: appState.setSelectedCity,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                loc.t("privacy_text_suffix"),
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(alpha: 0.64),
-                                ),
+                            ),
+                            const SizedBox(height: 18),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 400),
+                              child: ERButton(
+                                label: loc.t("entry_cta"),
+                                onPressed: appState.selectedCity == null
+                                    ? null
+                                    : () {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (_) => const HomeShell(),
+                                          ),
+                                        );
+                                      },
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 16),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 400),
+                              child: Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  Text(
+                                    loc.t("privacy_text_prefix"),
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.onSurface
+                                          .withValues(alpha: 0.64),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => const PrivacyScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      loc.t("privacy_link_label"),
+                                      style: textTheme.bodySmall?.copyWith(
+                                        color: colorScheme.primary,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    loc.t("privacy_text_between"),
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.onSurface
+                                          .withValues(alpha: 0.64),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => const TermsScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      loc.t("terms_link_label"),
+                                      style: textTheme.bodySmall?.copyWith(
+                                        color: colorScheme.primary,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    loc.t("privacy_text_suffix"),
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.onSurface
+                                          .withValues(alpha: 0.64),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],

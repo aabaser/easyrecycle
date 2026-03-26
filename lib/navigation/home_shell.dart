@@ -1,14 +1,17 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:provider/provider.dart";
 
 import "../l10n/app_localizations.dart";
+import "../models/city.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
+import "../widgets/city_pills.dart";
 import "../widgets/max_width_center.dart";
 import "../pages/camera_tab_page.dart";
 import "../pages/recycle_centers_page.dart";
 import "../pages/text_search_page.dart";
-import "../pages/settings_page.dart";
 import "nav_keys.dart";
 import "tab_navigator.dart";
 
@@ -116,6 +119,10 @@ class _HomeShellState extends State<HomeShell> {
   }
 
   Future<bool> _onWillPop() async {
+    if (_index == HomeShell.tabCamera &&
+        (_cameraKey.currentState?.handleBackPress() ?? false)) {
+      return false;
+    }
     final navKey = _currentNavKey();
     final navigator = navKey.currentState;
     if (navigator != null && navigator.canPop()) {
@@ -123,6 +130,71 @@ class _HomeShellState extends State<HomeShell> {
       return false;
     }
     return true;
+  }
+
+  Future<void> _exitApp() async {
+    if (kIsWeb) {
+      return;
+    }
+    await SystemNavigator.pop();
+  }
+
+  Future<void> _openQuickSettings(
+    BuildContext context,
+    AppLocalizations loc,
+    AppState appState,
+    List<City> cityOptions,
+  ) async {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      backgroundColor: colorScheme.surfaceContainerLowest,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  loc.t("settings_city"),
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                CityPills(
+                  cities: cityOptions,
+                  selectedCityId: appState.selectedCity?.id,
+                  onSelected: (city) {
+                    appState.setSelectedCity(city);
+                    Navigator.of(sheetContext).pop();
+                  },
+                ),
+                const SizedBox(height: 16),
+                SwitchListTile.adaptive(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text("Dark Mode"),
+                  value: appState.themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    appState.setThemeMode(
+                      value ? ThemeMode.dark : ThemeMode.light,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _onTabSelected(int value) async {
@@ -147,6 +219,17 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final appState = context.watch<AppState>();
+    final recycleTabLabel =
+        switch (Localizations.localeOf(context).languageCode) {
+      "de" => "Recyclinghof",
+      "tr" => "Merkez",
+      _ => "Center",
+    };
+    final cityOptions = City.defaults(
+      berlinName: loc.t("city_berlin"),
+      hannoverName: loc.t("city_hannover"),
+    );
     final title = switch (_index) {
       HomeShell.tabText => loc.t("text_search_title"),
       HomeShell.tabCamera => loc.t("scan_title"),
@@ -162,7 +245,7 @@ class _HomeShellState extends State<HomeShell> {
         }
         final shouldExit = await _onWillPop();
         if (shouldExit && context.mounted) {
-          Navigator.of(context).pop();
+          await _exitApp();
         }
       },
       child: Scaffold(
@@ -171,35 +254,11 @@ class _HomeShellState extends State<HomeShell> {
           leading: null,
           title: Text(title, style: DesignTokens.titleM),
           actions: [
-            PopupMenuButton<String>(
+            IconButton(
               icon: const Icon(Icons.more_vert_rounded),
-              onSelected: (value) {
-                if (value != "settings") {
-                  return;
-                }
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => Scaffold(
-                      appBar: AppBar(
-                        title: Text(loc.t("settings_title")),
-                      ),
-                      body: const SettingsPage(),
-                    ),
-                  ),
-                );
+              onPressed: () {
+                _openQuickSettings(context, loc, appState, cityOptions);
               },
-              itemBuilder: (_) => [
-                PopupMenuItem<String>(
-                  value: "settings",
-                  child: Row(
-                    children: [
-                      const Icon(Icons.settings_rounded, size: 20),
-                      const SizedBox(width: 10),
-                      Text(loc.t("settings_title")),
-                    ],
-                  ),
-                ),
-              ],
             ),
           ],
           flexibleSpace: Align(
@@ -249,7 +308,7 @@ class _HomeShellState extends State<HomeShell> {
             ),
             NavigationDestination(
               icon: const Icon(Icons.location_on_rounded),
-              label: loc.t("find_recycling_center"),
+              label: recycleTabLabel,
             ),
           ],
         ),

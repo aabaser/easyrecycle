@@ -70,9 +70,15 @@ CREATE TABLE IF NOT EXISTS core.disposal_method (
   code            text NOT NULL UNIQUE,
   name_key        text NOT NULL,
   description_key text NULL,
+  city_id         uuid NULL REFERENCES core.city(city_id) ON DELETE RESTRICT,
+  recycle_center_typ_code integer NULL,
   created_at      timestamptz NOT NULL DEFAULT now(),
   updated_at      timestamptz NOT NULL DEFAULT now()
 );
+CREATE INDEX IF NOT EXISTS ix_disposal_method_city
+  ON core.disposal_method(city_id);
+CREATE INDEX IF NOT EXISTS ix_disposal_method_city_type
+  ON core.disposal_method(city_id, recycle_center_typ_code);
 
 CREATE TABLE IF NOT EXISTS core.warning (
   warning_id   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -183,20 +189,6 @@ CREATE TABLE IF NOT EXISTS core.item_city_warning (
 );
 CREATE INDEX IF NOT EXISTS ix_item_city_warning_item_city
   ON core.item_city_warning(item_id, city_id);
-
-CREATE TABLE IF NOT EXISTS core.city_category_label (
-  city_id       uuid NOT NULL REFERENCES core.city(city_id) ON DELETE CASCADE,
-  category_id   uuid NOT NULL REFERENCES core.category(category_id) ON DELETE CASCADE,
-  label_key     text NOT NULL,
-  PRIMARY KEY (city_id, category_id)
-);
-
-CREATE TABLE IF NOT EXISTS core.city_disposal_label (
-  city_id       uuid NOT NULL REFERENCES core.city(city_id) ON DELETE CASCADE,
-  disposal_id   uuid NOT NULL REFERENCES core.disposal_method(disposal_id) ON DELETE CASCADE,
-  label_key     text NOT NULL,
-  PRIMARY KEY (city_id, disposal_id)
-);
 
 CREATE TABLE IF NOT EXISTS core.prospect (
   prospect_id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),

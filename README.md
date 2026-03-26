@@ -51,6 +51,8 @@ export CORS_ALLOW_ORIGINS="https://your-frontend.example"
 # Admin endpoints (protected)
 export ADMIN_ENABLED=true
 export ADMIN_API_KEY="change_me"
+export ADMIN_SESSION_JWT_SECRET="change_me_admin_session_secret"
+export ADMIN_SESSION_TTL_SECONDS=28800
 # Optional: only allow authenticated users
 # export ADMIN_REQUIRE_USER=true
 ```
@@ -71,8 +73,8 @@ flutter pub get
 flutter gen-l10n
 flutter run -d chrome --dart-define=API_BASE_URL=http://<PC_IP>:8000
 flutter run -d chrome --dart-define=API_BASE_URL=http://192.168.2.177:8000
-# If using admin pages:
-flutter run -d chrome --dart-define=API_BASE_URL=http://192.168.2.177:8000 --dart-define=ADMIN_API_KEY=xk5kwWY5KaBfz2O31HcnHHE_YXo_Km_O1i6D01yMhYej2lkuzLfQ5Rr44UTDEwa3
+# Admin app (separate entrypoint):
+flutter run -d chrome -t lib/main_admin.dart --dart-define=API_BASE_URL=http://192.168.2.177:8000
 ```
 
 ### Flutter (Android APK)
@@ -83,8 +85,8 @@ Prereqs:
 Build:
 ```bash
 flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000
-# If using admin pages:
-flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000 --dart-define=ADMIN_API_KEY=xk5kwWY5KaBfz2O31HcnHHE_YXo_Km_O1i6D01yMhYej2lkuzLfQ5Rr44UTDEwa3
+# Admin app APK (separate entrypoint):
+flutter build apk -t lib/main_admin.dart --dart-define=API_BASE_URL=http://192.168.2.177:8000
 ```
 
 Install APK:
@@ -172,6 +174,24 @@ Verify:
 ```bash
 curl -X POST http://localhost:8000/auth/verify \
   -H "Authorization: Bearer <JWT>"
+```
+
+Admin login (API key -> short-lived admin token):
+```bash
+curl -X POST http://localhost:8000/admin/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"api_key":"<ADMIN_API_KEY>"}'
+```
+
+Admin me:
+```bash
+curl http://localhost:8000/admin/auth/me \
+  -H "Authorization: Bearer <ADMIN_SESSION_JWT>"
+```
+
+All `/admin/*` endpoints require:
+```text
+Authorization: Bearer <ADMIN_SESSION_JWT>
 ```
 
 ## Image Storage (S3)

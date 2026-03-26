@@ -102,8 +102,13 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colorScheme.surfaceContainerLowest,
         indicatorColor: colorScheme.primaryContainer,
+        height: 72,
         labelTextStyle: WidgetStatePropertyAll(
-          textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
+          textTheme.labelSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 11,
+            height: 1.0,
+          ),
         ),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {

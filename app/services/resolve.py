@@ -245,13 +245,20 @@ def _load_city_categories(db: Session, city_id: str, item_id: str, lang: str) ->
 
 def _load_city_disposals(db: Session, city_id: str, item_id: str, lang: str) -> List[Dict[str, Any]]:
   rows = db.execute(text("""
-    SELECT d.code, d.name_key
+    SELECT d.code, d.name_key, d.recycle_center_typ_code
     FROM core.item_city_disposal icd
     JOIN core.disposal_method d ON d.disposal_id = icd.disposal_id
     WHERE icd.city_id = :city_id AND icd.item_id::uuid = :item_id
     ORDER BY icd.priority ASC
   """), {"city_id": city_id, "item_id": item_id}).fetchall()
-  return [{"code": r[0], "label": _t(db, r[1], lang)} for r in rows]
+  return [
+    {
+      "code": r[0],
+      "label": _t(db, r[1], lang),
+      "recycle_center_typ_code": r[2],
+    }
+    for r in rows
+  ]
 
 
 def _enrich_suggestions(db: Session, suggestions: List[Dict[str, Any]], city_id: str, city_code: str, lang: str) -> List[Dict[str, Any]]:
@@ -412,13 +419,20 @@ def resolve_item(
 
   # disposal(s): city only, no base fallback
   rows = db.execute(text("""
-    SELECT d.code, d.name_key
+    SELECT d.code, d.name_key, d.recycle_center_typ_code
     FROM core.item_city_disposal icd
     JOIN core.disposal_method d ON d.disposal_id = icd.disposal_id
     WHERE icd.city_id = :city_id AND icd.item_id::uuid = :item_id
     ORDER BY icd.priority ASC
   """), {"city_id": city_id, "item_id": item_id}).fetchall()
-  disposals = [{"code": r[0], "label": _t(db, r[1], lang)} for r in rows]
+  disposals = [
+    {
+      "code": r[0],
+      "label": _t(db, r[1], lang),
+      "recycle_center_typ_code": r[2],
+    }
+    for r in rows
+  ]
 
   # categories: city only
   rows = db.execute(text("""

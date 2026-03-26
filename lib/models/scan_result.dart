@@ -1,6 +1,7 @@
 import "dart:typed_data";
 
 import "action_option.dart";
+import "recycle_center_link.dart";
 import "warning.dart";
 import "similar_item.dart";
 
@@ -22,6 +23,8 @@ class ScanResult {
     required this.categories,
     required this.disposalLabels,
     this.disposalCodes = const [],
+    this.recycleCenterLinks = const [],
+    this.disposalTagLinks = const [],
     required this.bestOption,
     required this.otherOptions,
     required this.warnings,
@@ -42,6 +45,8 @@ class ScanResult {
   final List<String> categories;
   final List<String> disposalLabels;
   final List<String> disposalCodes;
+  final List<RecycleCenterLink> recycleCenterLinks;
+  final List<RecycleCenterLink> disposalTagLinks;
   final ActionOption? bestOption;
   final List<ActionOption> otherOptions;
   final List<Warning> warnings;

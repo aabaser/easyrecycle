@@ -69,6 +69,10 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
     }
   }
 
+  Future<void> _logout() async {
+    await _service.logout();
+  }
+
   Widget _buildItemTile(AdminItemSummary item) {
     final imageUrl = item.imageUrl;
     final resolvedUrl = (imageUrl != null &&
@@ -108,6 +112,11 @@ class _AdminItemsPageState extends State<AdminItemsPage> {
       appBar: AppBar(
         title: Text(loc.t("admin_title"), style: DesignTokens.titleM),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_rounded),
+            tooltip: "Logout",
+            onPressed: _logout,
+          ),
           IconButton(
             icon: const Icon(Icons.palette_outlined),
             tooltip: loc.t("settings_theme_preview"),

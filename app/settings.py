@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     ADMIN_ENABLED: bool = True
     ADMIN_REQUIRE_USER: bool = False
     ADMIN_API_KEY: str | None = None
+    ADMIN_SESSION_JWT_SECRET: str | None = None
+    ADMIN_SESSION_TTL_SECONDS: int = 8 * 60 * 60
 
     GUEST_JWT_SECRET: str = "change_me_local_only"
     GUEST_TOKEN_TTL_SECONDS: int = 900

@@ -18,6 +18,8 @@ class ERPlantCard extends StatelessWidget {
     this.onTap,
     this.imageSize = 72,
     this.lowEmphasisCta = false,
+    this.footer,
+    this.tagItems,
   });
 
   final String title;
@@ -33,6 +35,8 @@ class ERPlantCard extends StatelessWidget {
   final VoidCallback? onTap;
   final double imageSize;
   final bool lowEmphasisCta;
+  final Widget? footer;
+  final List<ERTagChipData>? tagItems;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +48,14 @@ class ERPlantCard extends StatelessWidget {
         : title;
     final showSecondaryTitle = topLabel != title;
     final eyebrow = eyebrowLabel?.trim();
-    final tagSource = tags.where((tag) => tag.trim().isNotEmpty).toList();
-    final visibleTags = tagSource;
+    final visibleTagItems = (tagItems == null || tagItems!.isEmpty)
+        ? tags
+            .where((tag) => tag.trim().isNotEmpty)
+            .map((tag) => ERTagChipData(label: tag))
+            .toList()
+        : tagItems!
+            .where((tag) => tag.label.trim().isNotEmpty)
+            .toList(growable: false);
     final hasImage = image != null;
 
     return Material(
@@ -141,12 +151,12 @@ class ERPlantCard extends StatelessWidget {
                       ],
                     ],
                   ),
-                  if (visibleTags.isNotEmpty) ...[
+                  if (visibleTagItems.isNotEmpty) ...[
                     const SizedBox(height: 10),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: visibleTags
+                      children: visibleTagItems
                           .map(
                             (tag) => _buildDisposalRow(
                               tag: tag,
@@ -213,6 +223,10 @@ class ERPlantCard extends StatelessWidget {
                         ),
                       ),
                   ],
+                  if (footer != null) ...[
+                    const SizedBox(height: 12),
+                    footer!,
+                  ],
                 ],
               ),
             ),
@@ -223,26 +237,68 @@ class ERPlantCard extends StatelessWidget {
   }
 }
 
+class ERTagChipData {
+  const ERTagChipData({
+    required this.label,
+    this.icon,
+    this.onTap,
+    this.highlighted = false,
+    this.paletteKey,
+  });
+
+  final String label;
+  final IconData? icon;
+  final VoidCallback? onTap;
+  final bool highlighted;
+  final String? paletteKey;
+}
+
 Widget _buildDisposalRow({
-  required String tag,
+  required ERTagChipData tag,
   required ThemeData theme,
 }) {
-  final palette = disposalChipPaletteFor(tag, theme.brightness);
-  return Container(
+  final palette = disposalChipPaletteFor(
+    tag.paletteKey ?? tag.label,
+    theme.brightness,
+  );
+  final background =
+      tag.highlighted ? palette.background.withValues(alpha: 0.9) : palette.background;
+  final border =
+      tag.highlighted ? palette.foreground.withValues(alpha: 0.35) : palette.border;
+  final child = Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     decoration: BoxDecoration(
-      color: palette.background,
+      color: background,
       borderRadius: BorderRadius.circular(999),
-      border: Border.all(color: palette.border, width: 1.0),
+      border: Border.all(color: border, width: tag.highlighted ? 1.2 : 1.0),
     ),
-    child: Text(
-      tag,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.labelMedium?.copyWith(
-        color: palette.foreground,
-        fontWeight: FontWeight.w700,
-      ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (tag.icon != null) ...[
+          Icon(tag.icon, size: 14, color: palette.foreground),
+          const SizedBox(width: 6),
+        ],
+        Flexible(
+          child: Text(
+            tag.label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: palette.foreground,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ],
     ),
+  );
+  if (tag.onTap == null) {
+    return child;
+  }
+  return InkWell(
+    onTap: tag.onTap,
+    borderRadius: BorderRadius.circular(999),
+    child: child,
   );
 }

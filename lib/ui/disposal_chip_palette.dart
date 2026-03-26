@@ -27,6 +27,12 @@ String _normalizeDisposalCode(String raw) {
 
 String _toneForDisposal(String raw) {
   final code = _normalizeDisposalCode(raw);
+  const recycleTypeTones = {
+    "recycle_type_1": "emerald",
+    "recycle_type_2": "slate",
+    "recycle_type_3": "olive",
+    "recycle_type_5": "sky",
+  };
   const brown = {
     "laub_und_garten_tonne",
     "biotonne",
@@ -49,6 +55,10 @@ String _toneForDisposal(String raw) {
   bool matches(Set<String> values) =>
       values.any((v) => code == v || code.contains(v));
 
+  final recycleTone = recycleTypeTones[code];
+  if (recycleTone != null) {
+    return recycleTone;
+  }
   if (matches(brown)) {
     return "brown";
   }
@@ -116,6 +126,54 @@ DisposalChipPalette disposalChipPaletteFor(String raw, Brightness brightness) {
               background: Color(0xFFD4DBE0),
               foreground: Color(0xFF27343C),
               border: Color(0xFF667680),
+            );
+    case "emerald":
+      return dark
+          ? const DisposalChipPalette(
+              background: Color(0xFF14372A),
+              foreground: Color(0xFFD1F4E4),
+              border: Color(0xFF57C28B),
+            )
+          : const DisposalChipPalette(
+              background: Color(0xFFE0F5EA),
+              foreground: Color(0xFF176744),
+              border: Color(0xFF3FA56E),
+            );
+    case "slate":
+      return dark
+          ? const DisposalChipPalette(
+              background: Color(0xFF252C38),
+              foreground: Color(0xFFE0E7F1),
+              border: Color(0xFF8A98AF),
+            )
+          : const DisposalChipPalette(
+              background: Color(0xFFE7ECF3),
+              foreground: Color(0xFF304156),
+              border: Color(0xFF73839A),
+            );
+    case "olive":
+      return dark
+          ? const DisposalChipPalette(
+              background: Color(0xFF35391D),
+              foreground: Color(0xFFF0F3C9),
+              border: Color(0xFFB5C15A),
+            )
+          : const DisposalChipPalette(
+              background: Color(0xFFF0F3DA),
+              foreground: Color(0xFF5D6720),
+              border: Color(0xFF9CAA45),
+            );
+    case "sky":
+      return dark
+          ? const DisposalChipPalette(
+              background: Color(0xFF1A3446),
+              foreground: Color(0xFFD8F0FF),
+              border: Color(0xFF69B5E6),
+            )
+          : const DisposalChipPalette(
+              background: Color(0xFFE0F3FB),
+              foreground: Color(0xFF145677),
+              border: Color(0xFF4F9CC8),
             );
     default:
       return dark

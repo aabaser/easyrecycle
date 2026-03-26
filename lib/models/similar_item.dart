@@ -1,4 +1,5 @@
-﻿import "scan_result.dart";
+import "recycle_center_link.dart";
+import "scan_result.dart";
 
 class SimilarItem {
   SimilarItem({
@@ -9,6 +10,8 @@ class SimilarItem {
     required this.hintCategory,
     required this.disposalLabels,
     this.disposalCodes = const [],
+    this.recycleCenterLinks = const [],
+    this.disposalTagLinks = const [],
     this.imageUrl,
   });
 
@@ -19,5 +22,7 @@ class SimilarItem {
   final String hintCategory;
   final List<String> disposalLabels;
   final List<String> disposalCodes;
+  final List<RecycleCenterLink> recycleCenterLinks;
+  final List<RecycleCenterLink> disposalTagLinks;
   final String? imageUrl;
 }

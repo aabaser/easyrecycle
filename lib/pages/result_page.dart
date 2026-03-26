@@ -10,20 +10,20 @@ import "package:url_launcher/url_launcher.dart";
 
 import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
+import "../models/recycle_center_link.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
+import "../navigation/home_shell.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
-import "../utils/recycling_center_rules.dart";
+import "../utils/recycle_center_navigation.dart";
 import "../ui/components/er_plant_card.dart";
 import "../widgets/action_card.dart";
 import "../widgets/info_banner.dart";
 import "../widgets/max_width_center.dart";
 import "../widgets/section_title.dart";
 import "../widgets/similar_item_card.dart";
-import "home_shell.dart";
-import "recycle_centers_page.dart";
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key, required this.result});
@@ -200,6 +200,14 @@ class _ResultPageState extends State<ResultPage> {
         categories: _labelsFromList(body["categories"]),
         disposalLabels: _labelsFromList(body["disposals"]),
         disposalCodes: _codesFromList(body["disposals"] ?? disposals),
+        recycleCenterLinks: _recycleCenterLinksFromList(
+          body["disposals"] ?? disposals,
+          cityCode: body["city"]?.toString(),
+        ),
+        disposalTagLinks: _disposalTagLinksFromList(
+          body["disposals"] ?? disposals,
+          cityCode: body["city"]?.toString(),
+        ),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -249,6 +257,64 @@ class _ResultPageState extends State<ResultPage> {
         })
         .where((value) => value.trim().isNotEmpty)
         .toList();
+  }
+
+  List<RecycleCenterLink> _recycleCenterLinksFromList(
+    dynamic rawList, {
+    String? cityCode,
+  }) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    final effectiveCityCode =
+        cityCode ?? context.read<AppState>().selectedCity?.id ?? "hannover";
+    final seen = <String>{};
+    final links = <RecycleCenterLink>[];
+    for (final entry in list) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+      final link = RecycleCenterLink.fromJson(
+        entry,
+        cityCode: effectiveCityCode,
+      );
+      if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      final key = effectiveCityCode == "berlin"
+          ? "disposal:${link.disposalPositive ?? link.label}"
+          : "type:${link.typCode ?? 0}";
+      if (seen.add(key)) {
+        links.add(link);
+      }
+    }
+    return links;
+  }
+
+  List<RecycleCenterLink> _disposalTagLinksFromList(
+    dynamic rawList, {
+    String? cityCode,
+  }) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    final effectiveCityCode =
+        cityCode ?? context.read<AppState>().selectedCity?.id ?? "hannover";
+    final seen = <String>{};
+    final links = <RecycleCenterLink>[];
+    for (final entry in list) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+      final link = RecycleCenterLink.fromJson(
+        entry,
+        cityCode: effectiveCityCode,
+      );
+      if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      final key = link.label;
+      if (seen.add(key)) {
+        links.add(link);
+      }
+    }
+    return links;
   }
 
   @override
@@ -454,6 +520,14 @@ class _ResultPageState extends State<ResultPage> {
         categories: _labelsFromList(body["categories"]),
         disposalLabels: _labelsFromList(body["disposals"]),
         disposalCodes: _codesFromList(body["disposals"] ?? disposals),
+        recycleCenterLinks: _recycleCenterLinksFromList(
+          body["disposals"] ?? disposals,
+          cityCode: body["city"]?.toString(),
+        ),
+        disposalTagLinks: _disposalTagLinksFromList(
+          body["disposals"] ?? disposals,
+          cityCode: body["city"]?.toString(),
+        ),
         bestOption: null,
         otherOptions: const [],
         warnings: warnings,
@@ -645,17 +719,33 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget _buildDisposalCard(AppLocalizations loc) {
-    final appState = context.read<AppState>();
-    final canFindCenter = hasEligibleRecyclingCenterDisposal([
-      ..._result.disposalCodes,
-      ..._result.disposalLabels,
-    ]);
+    final tagLinkMap = {
+      for (final link in _result.disposalTagLinks)
+        if (link.label.trim().isNotEmpty) link.label.trim(): link,
+    };
     final methodText = (_result.disposalMethod ?? "").trim();
     final title = loc.t("disposal_title_prefix");
     final disposalTags = <String>[
       ..._result.disposalLabels.where((e) => e.trim().isNotEmpty),
       if (_result.disposalLabels.isEmpty && methodText.isNotEmpty) methodText,
     ];
+    final tagItems = disposalTags
+        .map(
+          (label) => ERTagChipData(
+            label: label,
+            icon: tagLinkMap.containsKey(label)
+                ? Icons.location_on_rounded
+                : null,
+            highlighted: tagLinkMap.containsKey(label),
+            paletteKey: tagLinkMap.containsKey(label)
+                ? _paletteKeyFor(tagLinkMap[label]!)
+                : null,
+            onTap: tagLinkMap.containsKey(label)
+                ? () => _openRecycleCenterLink(tagLinkMap[label]!)
+                : null,
+          ),
+        )
+        .toList(growable: false);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -663,19 +753,8 @@ class _ResultPageState extends State<ResultPage> {
         ERPlantCard(
           title: title,
           image: null,
-          tags: disposalTags,
+          tagItems: tagItems,
           leadingIcon: Icons.delete_outline_rounded,
-          ctaLabel: canFindCenter ? loc.t("find_recycling_center") : null,
-          onCtaTap: canFindCenter
-              ? () {
-                  final cityCode = appState.selectedCity?.id ?? "hannover";
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => RecycleCentersPage(cityCode: cityCode),
-                    ),
-                  );
-                }
-              : null,
         ),
         const SizedBox(height: 8),
         _buildFeedbackRow(loc),
@@ -704,6 +783,45 @@ class _ResultPageState extends State<ResultPage> {
         ],
       ],
     );
+  }
+
+  void _openGenericRecycleCenters() {
+    final cityCode = context.read<AppState>().selectedCity?.id ?? "hannover";
+    pushRecycleCentersPage(context, cityCode: cityCode);
+  }
+
+  void _openRecycleCenterLink(RecycleCenterLink link) {
+    final cityCode = context.read<AppState>().selectedCity?.id ?? "hannover";
+    pushRecycleCentersPage(
+      context,
+      cityCode: cityCode,
+      typCode: link.typCode,
+      disposalPositive: link.disposalPositive,
+    );
+  }
+
+  String _paletteKeyFor(RecycleCenterLink link) {
+    if (link.typCode != null && link.typCode! > 0) {
+      return "recycle_type_${link.typCode}";
+    }
+    final disposalPositive = link.disposalPositive?.trim();
+    if (disposalPositive != null && disposalPositive.isNotEmpty) {
+      return "recycle_disposal_${_normalizePaletteKey(disposalPositive)}";
+    }
+    return "recycle_link_${_normalizePaletteKey(link.label)}";
+  }
+
+  String _normalizePaletteKey(String value) {
+    return value
+        .trim()
+        .toLowerCase()
+        .replaceAll("\u00e4", "ae")
+        .replaceAll("\u00f6", "oe")
+        .replaceAll("\u00fc", "ue")
+        .replaceAll("\u00df", "ss")
+        .replaceAll(RegExp(r"[^a-z0-9]+"), "_")
+        .replaceAll(RegExp(r"_+"), "_")
+        .replaceAll(RegExp(r"^_|_$"), "");
   }
 
   Widget _buildFoundMetaRow() {
@@ -891,15 +1009,8 @@ class _ResultPageState extends State<ResultPage> {
               child: SimilarItemCard(
                 item: item,
                 findCenterLabel: loc.t("find_recycling_center"),
-                onFindCenterTap: () {
-                  final cityCode =
-                      context.read<AppState>().selectedCity?.id ?? "hannover";
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => RecycleCentersPage(cityCode: cityCode),
-                    ),
-                  );
-                },
+                onFindCenterTap: _openGenericRecycleCenters,
+                onRecycleCenterLinkTap: _openRecycleCenterLink,
                 onTap: () => _resolveSimilarItem(item),
               ),
             ),

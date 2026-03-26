@@ -23,7 +23,6 @@ import "../widgets/city_pill.dart";
 import "../widgets/max_width_center.dart";
 import "../widgets/primary_button.dart";
 import "../widgets/secondary_button.dart";
-import "admin_items_page.dart";
 import "result_page.dart";
 import "city_picker_page.dart";
 import "language_picker_page.dart";
@@ -781,15 +780,6 @@ class _ScanPageState extends State<ScanPage> {
         leading: null,
         title: Text(loc.t("scan_title"), style: DesignTokens.titleM),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.admin_panel_settings_outlined),
-            tooltip: loc.t("admin_title"),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const AdminItemsPage()),
-              );
-            },
-          ),
           Padding(
             padding: const EdgeInsets.only(right: DesignTokens.baseSpacing),
             child: CityPill(

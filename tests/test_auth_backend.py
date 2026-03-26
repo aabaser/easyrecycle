@@ -118,3 +118,40 @@ def test_auth_me_guest(monkeypatch):
         "sub": "guest:device-me",
         "scopes": ["guest", "scan"],
     }
+
+
+def test_admin_login_and_me_success(monkeypatch):
+    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", False, raising=False)
+    monkeypatch.setattr(main.settings, "ADMIN_ENABLED", True, raising=False)
+    monkeypatch.setattr(main.settings, "ADMIN_API_KEY", "super-secret-admin-key", raising=False)
+    monkeypatch.setattr(main.settings, "ADMIN_SESSION_JWT_SECRET", "admin-jwt-secret", raising=False)
+    monkeypatch.setattr(main.settings, "ADMIN_SESSION_TTL_SECONDS", 3600, raising=False)
+
+    client = TestClient(main.app)
+    login = client.post(
+        "/admin/auth/login",
+        json={"api_key": "super-secret-admin-key"},
+    )
+    assert login.status_code == 200
+    token = login.json()["access_token"]
+    assert token
+
+    me = client.get("/admin/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert me.status_code == 200
+    body = me.json()
+    assert body["type"] == "admin"
+    assert body["scopes"] == ["admin"]
+
+
+def test_admin_login_invalid_key(monkeypatch):
+    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", False, raising=False)
+    monkeypatch.setattr(main.settings, "ADMIN_ENABLED", True, raising=False)
+    monkeypatch.setattr(main.settings, "ADMIN_API_KEY", "super-secret-admin-key", raising=False)
+
+    client = TestClient(main.app)
+    login = client.post(
+        "/admin/auth/login",
+        json={"api_key": "wrong-key-value"},
+    )
+    assert login.status_code == 401
+    assert login.json()["detail"] == "invalid_admin_api_key"

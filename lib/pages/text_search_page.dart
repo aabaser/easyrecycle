@@ -7,16 +7,17 @@ import "package:provider/provider.dart";
 
 import "../config/api_config.dart";
 import "../l10n/app_localizations.dart";
+import "../models/recycle_center_link.dart";
 import "../models/scan_result.dart";
 import "../models/similar_item.dart";
 import "../models/warning.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
+import "../utils/recycle_center_navigation.dart";
 import "../widgets/similar_item_card.dart";
 import "../ui/components/er_search_bar.dart";
 import "../ui/components/er_section.dart";
 import "city_picker_page.dart";
-import "recycle_centers_page.dart";
 import "result_page.dart";
 
 class TextSearchPage extends StatefulWidget {
@@ -291,6 +292,14 @@ class TextSearchPageState extends State<TextSearchPage> {
             hintCategory: "unknown",
             disposalLabels: disposals,
             disposalCodes: allCodes,
+            recycleCenterLinks: _recycleCenterLinksFromList(
+              entry["disposals"],
+              cityCode: cityId,
+            ),
+            disposalTagLinks: _disposalTagLinksFromList(
+              entry["disposals"],
+              cityCode: cityId,
+            ),
             imageUrl: _pickImageUrl(entry),
           );
         }
@@ -349,6 +358,14 @@ class TextSearchPageState extends State<TextSearchPage> {
       categories: _labelsFromList(body["categories"]),
       disposalLabels: _labelsFromList(body["disposals"] ?? disposals),
       disposalCodes: _codesFromList(body["disposals"] ?? disposals),
+      recycleCenterLinks: _recycleCenterLinksFromList(
+        body["disposals"] ?? disposals,
+        cityCode: body["city"]?.toString(),
+      ),
+      disposalTagLinks: _disposalTagLinksFromList(
+        body["disposals"] ?? disposals,
+        cityCode: body["city"]?.toString(),
+      ),
       bestOption: null,
       otherOptions: const [],
       warnings: warnings,
@@ -389,6 +406,64 @@ class TextSearchPageState extends State<TextSearchPage> {
         .toList();
   }
 
+  List<RecycleCenterLink> _recycleCenterLinksFromList(
+    dynamic rawList, {
+    String? cityCode,
+  }) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    final effectiveCityCode =
+        cityCode ?? context.read<AppState>().selectedCity?.id ?? "hannover";
+    final seen = <String>{};
+    final links = <RecycleCenterLink>[];
+    for (final entry in list) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+      final link = RecycleCenterLink.fromJson(
+        entry,
+        cityCode: effectiveCityCode,
+      );
+      if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      final key = effectiveCityCode == "berlin"
+          ? "disposal:${link.disposalPositive ?? link.label}"
+          : "type:${link.typCode ?? 0}";
+      if (seen.add(key)) {
+        links.add(link);
+      }
+    }
+    return links;
+  }
+
+  List<RecycleCenterLink> _disposalTagLinksFromList(
+    dynamic rawList, {
+    String? cityCode,
+  }) {
+    final list = (rawList as List<dynamic>?) ?? [];
+    final effectiveCityCode =
+        cityCode ?? context.read<AppState>().selectedCity?.id ?? "hannover";
+    final seen = <String>{};
+    final links = <RecycleCenterLink>[];
+    for (final entry in list) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+      final link = RecycleCenterLink.fromJson(
+        entry,
+        cityCode: effectiveCityCode,
+      );
+      if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      final key = link.label;
+      if (seen.add(key)) {
+        links.add(link);
+      }
+    }
+    return links;
+  }
+
   List<SimilarItem> _similarityFromApi(
     Map<String, dynamic> body,
   ) {
@@ -414,6 +489,14 @@ class TextSearchPageState extends State<TextSearchPage> {
           hintCategory: entry["category"]?.toString() ?? "unknown",
           disposalLabels: disposals,
           disposalCodes: disposalCodes,
+          recycleCenterLinks: _recycleCenterLinksFromList(
+            entry["disposals"] ?? entry["disposal_codes"],
+            cityCode: body["city"]?.toString(),
+          ),
+          disposalTagLinks: _disposalTagLinksFromList(
+            entry["disposals"] ?? entry["disposal_codes"],
+            cityCode: body["city"]?.toString(),
+          ),
           imageUrl: _pickImageUrl(entry),
         );
       }
@@ -589,54 +672,82 @@ class TextSearchPageState extends State<TextSearchPage> {
 
   void _openRecycleCenters() {
     final cityCode = context.read<AppState>().selectedCity?.id ?? "hannover";
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => RecycleCentersPage(cityCode: cityCode),
-      ),
-    );
+    pushRecycleCentersPage(context, cityCode: cityCode);
   }
 
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     final hasQuery = _query.trim().isNotEmpty;
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ERSearchBar(
-                controller: _controller,
-                hintText: loc.t("scan_text_placeholder"),
-                dense: true,
-                onChanged: _onQueryChanged,
-                onSubmitted: (value) => _runSearch(
-                  value,
-                  force: true,
-                  explicit: true,
-                ),
-                onSearchTap: () => _runSearch(
-                  _controller.text,
-                  force: true,
-                  explicit: true,
-                ),
+        Container(
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            border: Border(
+              bottom: BorderSide(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.7),
               ),
-              if (_isLoading) ...[
-                const SizedBox(height: 12),
-                const LinearProgressIndicator(),
-              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 18,
+                offset: const Offset(0, 6),
+              ),
             ],
+          ),
+          child: SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    loc.t("scan_text_placeholder"),
+                    style: DesignTokens.caption.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ERSearchBar(
+                    controller: _controller,
+                    hintText: loc.t("scan_text_placeholder"),
+                    dense: true,
+                    onChanged: _onQueryChanged,
+                    onSubmitted: (value) => _runSearch(
+                      value,
+                      force: true,
+                      explicit: true,
+                    ),
+                    onSearchTap: () => _runSearch(
+                      _controller.text,
+                      force: true,
+                      explicit: true,
+                    ),
+                  ),
+                  if (_isLoading) ...[
+                    const SizedBox(height: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(999),
+                      child: const LinearProgressIndicator(minHeight: 4),
+                    ),
+                  ],
+                ],
+              ),
+            ),
           ),
         ),
         Expanded(
           child: ListView(
             key: const PageStorageKey<String>("tab_text_list"),
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 24),
             children: [
-              const SizedBox(height: 10),
               if (_foundResult != null) ...[
                 ERSection(
                   title: loc.t("result_recognized"),
@@ -649,10 +760,23 @@ class TextSearchPageState extends State<TextSearchPage> {
                       hintCategory: "",
                       disposalLabels: _foundResult!.disposalLabels,
                       disposalCodes: _foundResult!.disposalCodes,
+                      recycleCenterLinks: _foundResult!.recycleCenterLinks,
+                      disposalTagLinks: _foundResult!.disposalTagLinks,
                       imageUrl: _foundResult!.imageUrl,
                     ),
                     findCenterLabel: loc.t("find_recycling_center"),
                     onFindCenterTap: _openRecycleCenters,
+                    onRecycleCenterLinkTap: (link) {
+                      final cityCode =
+                          context.read<AppState>().selectedCity?.id ??
+                              "hannover";
+                      pushRecycleCentersPage(
+                        context,
+                        cityCode: cityCode,
+                        typCode: link.typCode,
+                        disposalPositive: link.disposalPositive,
+                      );
+                    },
                     onTap: () => _openResult(_foundResult!),
                   ),
                 ),
@@ -668,6 +792,17 @@ class TextSearchPageState extends State<TextSearchPage> {
                       item: item,
                       findCenterLabel: loc.t("find_recycling_center"),
                       onFindCenterTap: _openRecycleCenters,
+                      onRecycleCenterLinkTap: (link) {
+                        final cityCode =
+                            context.read<AppState>().selectedCity?.id ??
+                                "hannover";
+                        pushRecycleCentersPage(
+                          context,
+                          cityCode: cityCode,
+                          typCode: link.typCode,
+                          disposalPositive: link.disposalPositive,
+                        );
+                      },
                       onTap: () => _resolveSuggestion(item),
                     ),
                   ),
@@ -691,6 +826,17 @@ class TextSearchPageState extends State<TextSearchPage> {
                                 item: item,
                                 findCenterLabel: loc.t("find_recycling_center"),
                                 onFindCenterTap: _openRecycleCenters,
+                                onRecycleCenterLinkTap: (link) {
+                                  final cityCode =
+                                      context.read<AppState>().selectedCity?.id ??
+                                          "hannover";
+                                  pushRecycleCentersPage(
+                                    context,
+                                    cityCode: cityCode,
+                                    typCode: link.typCode,
+                                    disposalPositive: link.disposalPositive,
+                                  );
+                                },
                                 onTap: () => _resolveSuggestion(item),
                               ),
                             ),

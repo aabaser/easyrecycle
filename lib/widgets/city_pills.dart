@@ -21,6 +21,7 @@ class CityPills extends StatelessWidget {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
+      alignment: WrapAlignment.center,
       children: cities.map((city) {
         final isSelected = city.id == selectedCityId;
         return ChoiceChip(
