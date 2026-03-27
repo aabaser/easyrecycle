@@ -4,7 +4,9 @@ import "../l10n/app_localizations.dart";
 import "../models/recycle_center_link.dart";
 import "../models/similar_item.dart";
 import "../ui/components/er_plant_card.dart";
+import "../utils/disposal_chip_cta.dart";
 import "../utils/recycling_center_rules.dart";
+import "../ui/disposal_tone_help_sheet.dart";
 
 class SimilarItemCard extends StatelessWidget {
   const SimilarItemCard({
@@ -51,19 +53,32 @@ class SimilarItemCard extends StatelessWidget {
       for (final link in item.disposalTagLinks)
         if (link.label.trim().isNotEmpty) link.label.trim(): link,
     };
-    final hasActionableTagLinks = tagLinkMap.isNotEmpty;
-    final tagItems = item.disposalLabels
-        .where((label) => label.trim().isNotEmpty)
+    final orderedLabels = orderDisposalChipLabels(item.disposalLabels, tagLinkMap);
+    final hasActionableTagLinks = orderedLabels.any(
+      (label) => disposalChipCtaState(label, tagLinkMap[label.trim()]).hasActiveLink,
+    );
+    final tagItems = orderedLabels
         .map((label) {
           final tagLink = tagLinkMap[label.trim()];
+          final ctaState = disposalChipCtaState(label, tagLink);
+          final icon = _disposalTagIcon(ctaState);
+          final paletteSource = (tagLink?.disposalCode ?? label).trim();
           return ERTagChipData(
             label: label,
-            icon: tagLink == null ? null : Icons.location_on_rounded,
-            highlighted: tagLink != null,
-            paletteKey: tagLink == null ? null : _paletteKeyFor(tagLink),
-            onTap: tagLink == null || onRecycleCenterLinkTap == null
-                ? null
-                : () => onRecycleCenterLinkTap!(tagLink),
+            icon: icon,
+            highlighted: ctaState.hasActiveLink,
+            paletteKey: ctaState.hasActiveLink ? _paletteKeyFor(tagLink!) : null,
+            onTap: ctaState.hasActiveLink
+                ? (onRecycleCenterLinkTap == null
+                    ? null
+                    : () => onRecycleCenterLinkTap!(tagLink!))
+                : ctaState.hasToneHelp
+                    ? () => showDisposalToneHelpSheet(
+                          context,
+                          raw: paletteSource,
+                          label: label,
+                        )
+                    : null,
           );
         })
         .toList(growable: false);
@@ -98,9 +113,16 @@ class SimilarItemCard extends StatelessWidget {
     }
     final disposalPositive = link.disposalPositive?.trim();
     if (disposalPositive != null && disposalPositive.isNotEmpty) {
-      return "recycle_disposal_${_normalizePaletteKey(disposalPositive)}";
+      return (link.disposalCode ?? disposalPositive).trim();
     }
     return "recycle_link_${_normalizePaletteKey(link.label)}";
+  }
+
+  IconData? _disposalTagIcon(DisposalChipCtaState ctaState) {
+    if (ctaState.hasActiveLink) {
+      return Icons.location_on_rounded;
+    }
+    return ctaState.hasExplicitTone ? Icons.delete_rounded : null;
   }
 
   String _normalizePaletteKey(String value) {

@@ -284,6 +284,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get info_ok => 'OK';
 
   @override
+  String get disposal_help_action => 'Got it';
+
+  @override
+  String get disposal_help_brown_title => 'Bio and garden waste';
+
+  @override
+  String get disposal_help_brown_body =>
+      'For kitchen scraps, fruit peels, and smaller garden waste. Exact rules can vary slightly by city.';
+
+  @override
+  String get disposal_help_blue_title => 'Paper and cardboard';
+
+  @override
+  String get disposal_help_blue_body =>
+      'For paper, cardboard, and cartons as long as the material is clean and dry. Heavily soiled packaging usually does not belong here.';
+
+  @override
+  String get disposal_help_yellow_title => 'Light packaging';
+
+  @override
+  String get disposal_help_yellow_body =>
+      'For packaging made of plastic, metal, or composite materials. What is accepted exactly depends on your city\'s rules.';
+
+  @override
+  String get disposal_help_gray_title => 'Residual waste';
+
+  @override
+  String get disposal_help_gray_body =>
+      'For waste that can neither be recycled nor composted. This bin is usually the last option.';
+
+  @override
   String get best_option_title => 'Best option:';
 
   @override

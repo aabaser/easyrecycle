@@ -562,6 +562,15 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
     }
   }
 
+  String _mapsButtonLabel() {
+    switch (Localizations.localeOf(context).languageCode) {
+      case "de":
+      case "tr":
+      default:
+        return "Google Maps";
+    }
+  }
+
   void _clearFilters() {
     setState(() {
       _selectedTypeCode = null;
@@ -636,66 +645,67 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
         return StatefulBuilder(
           builder: (context, setModalState) {
             return SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _typeFilterLabel(),
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: [
-                        ChoiceChip(
-                          selected: tempType == null,
-                          label: Text(_allFilterLabel()),
-                          onSelected: (_) {
-                            setModalState(() {
-                              tempType = null;
-                            });
-                          },
-                        ),
-                        ...typeLabels.map(
-                          (label) => ChoiceChip(
-                            selected: tempType == label,
-                            label: Text(_typeDisplayLabel(label)),
-                            onSelected: (_) {
-                              setModalState(() {
-                                tempType = label;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      _disposalFilterLabel(),
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      "${disposalOptions.length} Optionen",
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(sheetContext).size.height * 0.45,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Wrap(
+              child: SizedBox(
+                height: MediaQuery.of(sheetContext).size.height * 0.82,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _typeFilterLabel(),
+                                style: textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: [
+                                  ChoiceChip(
+                                    selected: tempType == null,
+                                    label: Text(_allFilterLabel()),
+                                    onSelected: (_) {
+                                      setModalState(() {
+                                        tempType = null;
+                                      });
+                                    },
+                                  ),
+                                  ...typeLabels.map(
+                                    (label) => ChoiceChip(
+                                      selected: tempType == label,
+                                      label: Text(_typeDisplayLabel(label)),
+                                      onSelected: (_) {
+                                        setModalState(() {
+                                          tempType = label;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                _disposalFilterLabel(),
+                                style: textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                "${disposalOptions.length} Optionen",
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Wrap(
                           spacing: 10,
                           runSpacing: 10,
                           children: disposalOptions.map((label) {
@@ -714,41 +724,44 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                               },
                             );
                           }).toList(growable: false),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {
-                              setModalState(() {
-                                tempType = null;
-                                tempSelection.clear();
-                              });
-                            },
-                            child: Text(_clearFilterLabel()),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {
+                                setModalState(() {
+                                  tempType = null;
+                                  tempSelection.clear();
+                                });
+                              },
+                              child: Text(_clearFilterLabel()),
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: FilledButton(
-                            onPressed: () {
-                              setState(() {
-                                _selectedTypeCode = null;
-                                _selectedTypeLabel = tempType;
-                                _selectedDisposalPositives =
-                                    Set<String>.from(tempSelection);
-                              });
-                              Navigator.of(sheetContext).pop();
-                            },
-                            child: Text(_applyFilterLabel()),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: FilledButton(
+                              onPressed: () {
+                                setState(() {
+                                  _selectedTypeCode = null;
+                                  _selectedTypeLabel = tempType;
+                                  _selectedDisposalPositives =
+                                      Set<String>.from(tempSelection);
+                                });
+                                Navigator.of(sheetContext).pop();
+                              },
+                              child: Text(_applyFilterLabel()),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -997,53 +1010,71 @@ class _RecycleCentersPageState extends State<RecycleCentersPage> {
                         const SizedBox(height: 16),
                         SafeArea(
                           top: false,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: FilledButton.icon(
-                                  onPressed:
-                                      (typeLabels.isEmpty &&
-                                              disposalOptions.isEmpty)
-                                          ? null
-                                          : () => _showFilterSheet(
-                                                typeLabels,
-                                                disposalOptions,
-                                              ),
-                                  icon: const Icon(
-                                    Icons.tune_rounded,
-                                    size: 18,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final compact = constraints.maxWidth < 420;
+                              final filterButton = OutlinedButton.icon(
+                                onPressed:
+                                    (typeLabels.isEmpty &&
+                                            disposalOptions.isEmpty)
+                                        ? null
+                                        : () => _showFilterSheet(
+                                              typeLabels,
+                                              disposalOptions,
+                                            ),
+                                icon: const Icon(Icons.tune_rounded, size: 18),
+                                label: Text(
+                                  _filterButtonLabel(
+                                    active: _selectedDisposalPositives
+                                            .isNotEmpty ||
+                                        (_selectedTypeLabel != null &&
+                                            _selectedTypeLabel!.isNotEmpty),
                                   ),
-                                  label: Text(
-                                    _filterButtonLabel(
-                                      active: _selectedDisposalPositives
-                                              .isNotEmpty ||
-                                          (_selectedTypeLabel != null &&
-                                              _selectedTypeLabel!.isNotEmpty),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(0, 44),
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                              );
+                              final mapsButton = OutlinedButton.icon(
+                                onPressed:
+                                    visibleCenters.isEmpty ? null : _openMaps,
+                                icon: const Icon(Icons.map_outlined, size: 18),
+                                label: Text(
+                                  _mapsButtonLabel(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(0, 44),
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                              );
+                              if (compact) {
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: filterButton,
                                     ),
-                                  ),
-                                  style: FilledButton.styleFrom(
-                                    minimumSize: const Size(0, 48),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: FilledButton.icon(
-                                  onPressed:
-                                      visibleCenters.isEmpty ? null : _openMaps,
-                                  icon: const Icon(
-                                    Icons.map_outlined,
-                                    size: 18,
-                                  ),
-                                  label: Text(
-                                    loc.t("recycle_centers_open_maps"),
-                                  ),
-                                  style: FilledButton.styleFrom(
-                                    minimumSize: const Size(0, 48),
-                                  ),
-                                ),
-                              ),
-                            ],
+                                    const SizedBox(height: 10),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: mapsButton,
+                                    ),
+                                  ],
+                                );
+                              }
+                              return Row(
+                                children: [
+                                  Expanded(child: filterButton),
+                                  const SizedBox(width: 12),
+                                  Expanded(child: mapsButton),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       ],

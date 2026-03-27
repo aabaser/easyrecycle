@@ -17,6 +17,7 @@ import "../models/similar_item.dart";
 import "../models/warning.dart";
 import "../services/presigned_upload_service.dart";
 import "../state/app_state.dart";
+import "../ui/disposal_chip_palette.dart";
 import "result_page.dart";
 import "city_picker_page.dart";
 
@@ -702,6 +703,10 @@ class CameraTabPageState extends State<CameraTabPage> {
         cityCode: effectiveCityCode,
       );
       if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      if (link.isRecycleTypeLink &&
+          !disposalChipUsesDefaultTone(link.disposalCode ?? link.label)) {
         continue;
       }
       final key = link.label;

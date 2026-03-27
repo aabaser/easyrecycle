@@ -11,9 +11,13 @@ class RecycleCenterLink {
   final String? disposalCode;
   final String? disposalPositive;
 
+  bool get isRecycleTypeLink => typCode != null && typCode! > 0;
+
+  bool get isDisposalMatchLink =>
+      disposalPositive != null && disposalPositive!.trim().isNotEmpty;
+
   bool get isActionable =>
-      (typCode != null && typCode! > 0) ||
-      (disposalPositive != null && disposalPositive!.trim().isNotEmpty);
+      isRecycleTypeLink || isDisposalMatchLink;
 
   factory RecycleCenterLink.fromJson(
     Map<String, dynamic> json, {

@@ -628,6 +628,60 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get info_ok;
 
+  /// No description provided for @disposal_help_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get disposal_help_action;
+
+  /// No description provided for @disposal_help_brown_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio and garden waste'**
+  String get disposal_help_brown_title;
+
+  /// No description provided for @disposal_help_brown_body.
+  ///
+  /// In en, this message translates to:
+  /// **'For kitchen scraps, fruit peels, and smaller garden waste. Exact rules can vary slightly by city.'**
+  String get disposal_help_brown_body;
+
+  /// No description provided for @disposal_help_blue_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Paper and cardboard'**
+  String get disposal_help_blue_title;
+
+  /// No description provided for @disposal_help_blue_body.
+  ///
+  /// In en, this message translates to:
+  /// **'For paper, cardboard, and cartons as long as the material is clean and dry. Heavily soiled packaging usually does not belong here.'**
+  String get disposal_help_blue_body;
+
+  /// No description provided for @disposal_help_yellow_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Light packaging'**
+  String get disposal_help_yellow_title;
+
+  /// No description provided for @disposal_help_yellow_body.
+  ///
+  /// In en, this message translates to:
+  /// **'For packaging made of plastic, metal, or composite materials. What is accepted exactly depends on your city\'s rules.'**
+  String get disposal_help_yellow_body;
+
+  /// No description provided for @disposal_help_gray_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Residual waste'**
+  String get disposal_help_gray_title;
+
+  /// No description provided for @disposal_help_gray_body.
+  ///
+  /// In en, this message translates to:
+  /// **'For waste that can neither be recycled nor composted. This bin is usually the last option.'**
+  String get disposal_help_gray_body;
+
   /// No description provided for @best_option_title.
   ///
   /// In en, this message translates to:

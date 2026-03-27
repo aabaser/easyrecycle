@@ -31,7 +31,7 @@ class ERPlantCard extends StatelessWidget {
   final Widget? trailing;
   final String? ctaLabel;
   final VoidCallback? onCtaTap;
-  final IconData leadingIcon;
+  final IconData? leadingIcon;
   final VoidCallback? onTap;
   final double imageSize;
   final bool lowEmphasisCta;
@@ -57,6 +57,7 @@ class ERPlantCard extends StatelessWidget {
             .where((tag) => tag.label.trim().isNotEmpty)
             .toList(growable: false);
     final hasImage = image != null;
+    final hasLeadingIcon = !hasImage && leadingIcon != null;
 
     return Material(
       color: colorScheme.surface,
@@ -78,8 +79,8 @@ class ERPlantCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (hasImage)
-                        ClipRRect(
+                       if (hasImage)
+                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
                             width: imageSize,
@@ -89,8 +90,8 @@ class ERPlantCard extends StatelessWidget {
                             child: image,
                           ),
                         )
-                      else
-                        Container(
+                       else if (hasLeadingIcon)
+                         Container(
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
@@ -98,13 +99,13 @@ class ERPlantCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(14),
                           ),
                           alignment: Alignment.center,
-                          child: Icon(
-                            leadingIcon,
-                            size: 24,
-                            color: colorScheme.primary,
-                          ),
-                        ),
-                      const SizedBox(width: 10),
+                             child: Icon(
+                               leadingIcon,
+                               size: 24,
+                               color: colorScheme.primary,
+                             ),
+                           ),
+                       if (hasImage || hasLeadingIcon) const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,7 +277,11 @@ Widget _buildDisposalRow({
       mainAxisSize: MainAxisSize.min,
       children: [
         if (tag.icon != null) ...[
-          Icon(tag.icon, size: 14, color: palette.foreground),
+          Icon(
+            tag.icon,
+            size: tag.icon == Icons.delete_rounded ? 16 : 15,
+            color: palette.foreground,
+          ),
           const SizedBox(width: 6),
         ],
         Flexible(

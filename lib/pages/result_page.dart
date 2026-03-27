@@ -17,7 +17,10 @@ import "../models/warning.dart";
 import "../navigation/home_shell.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
+import "../ui/disposal_chip_palette.dart";
+import "../ui/disposal_tone_help_sheet.dart";
 import "../utils/recycle_center_navigation.dart";
+import "../utils/disposal_chip_cta.dart";
 import "../ui/components/er_plant_card.dart";
 import "../widgets/action_card.dart";
 import "../widgets/info_banner.dart";
@@ -307,6 +310,10 @@ class _ResultPageState extends State<ResultPage> {
         cityCode: effectiveCityCode,
       );
       if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      if (link.isRecycleTypeLink &&
+          !disposalChipUsesDefaultTone(link.disposalCode ?? link.label)) {
         continue;
       }
       final key = link.label;
@@ -729,21 +736,29 @@ class _ResultPageState extends State<ResultPage> {
       ..._result.disposalLabels.where((e) => e.trim().isNotEmpty),
       if (_result.disposalLabels.isEmpty && methodText.isNotEmpty) methodText,
     ];
-    final tagItems = disposalTags
+    final orderedLabels = orderDisposalChipLabels(disposalTags, tagLinkMap);
+    final tagItems = orderedLabels
         .map(
-          (label) => ERTagChipData(
-            label: label,
-            icon: tagLinkMap.containsKey(label)
-                ? Icons.location_on_rounded
-                : null,
-            highlighted: tagLinkMap.containsKey(label),
-            paletteKey: tagLinkMap.containsKey(label)
-                ? _paletteKeyFor(tagLinkMap[label]!)
-                : null,
-            onTap: tagLinkMap.containsKey(label)
-                ? () => _openRecycleCenterLink(tagLinkMap[label]!)
-                : null,
-          ),
+          (label) {
+            final link = tagLinkMap[label];
+            final ctaState = disposalChipCtaState(label, link);
+            final paletteSource = (link?.disposalCode ?? label).trim();
+            return ERTagChipData(
+              label: label,
+              icon: _disposalTagIcon(ctaState),
+              highlighted: ctaState.hasActiveLink,
+              paletteKey: ctaState.hasActiveLink ? _paletteKeyFor(link!) : null,
+              onTap: ctaState.hasActiveLink
+                  ? () => _openRecycleCenterLink(link!)
+                  : ctaState.hasToneHelp
+                      ? () => showDisposalToneHelpSheet(
+                            context,
+                            raw: paletteSource,
+                            label: label,
+                          )
+                      : null,
+            );
+          },
         )
         .toList(growable: false);
 
@@ -754,7 +769,7 @@ class _ResultPageState extends State<ResultPage> {
           title: title,
           image: null,
           tagItems: tagItems,
-          leadingIcon: Icons.delete_outline_rounded,
+          leadingIcon: null,
         ),
         const SizedBox(height: 8),
         _buildFeedbackRow(loc),
@@ -806,9 +821,16 @@ class _ResultPageState extends State<ResultPage> {
     }
     final disposalPositive = link.disposalPositive?.trim();
     if (disposalPositive != null && disposalPositive.isNotEmpty) {
-      return "recycle_disposal_${_normalizePaletteKey(disposalPositive)}";
+      return (link.disposalCode ?? disposalPositive).trim();
     }
     return "recycle_link_${_normalizePaletteKey(link.label)}";
+  }
+
+  IconData? _disposalTagIcon(DisposalChipCtaState ctaState) {
+    if (ctaState.hasActiveLink) {
+      return Icons.location_on_rounded;
+    }
+    return ctaState.hasExplicitTone ? Icons.delete_rounded : null;
   }
 
   String _normalizePaletteKey(String value) {

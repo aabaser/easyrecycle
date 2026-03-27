@@ -27,6 +27,17 @@ String _normalizeDisposalCode(String raw) {
 
 String _toneForDisposal(String raw) {
   final code = _normalizeDisposalCode(raw);
+  const directTones = {
+    "brown",
+    "blue",
+    "yellow",
+    "gray",
+    "emerald",
+    "slate",
+    "olive",
+    "sky",
+    "default",
+  };
   const recycleTypeTones = {
     "recycle_type_1": "emerald",
     "recycle_type_2": "slate",
@@ -55,6 +66,9 @@ String _toneForDisposal(String raw) {
   bool matches(Set<String> values) =>
       values.any((v) => code == v || code.contains(v));
 
+  if (directTones.contains(code)) {
+    return code;
+  }
   final recycleTone = recycleTypeTones[code];
   if (recycleTone != null) {
     return recycleTone;
@@ -73,6 +87,14 @@ String _toneForDisposal(String raw) {
   }
   return "default";
 }
+
+String disposalChipToneFor(String raw) => _toneForDisposal(raw);
+
+bool disposalChipUsesDefaultTone(String raw) =>
+    disposalChipToneFor(raw) == "default";
+
+bool disposalChipHasExplicitTone(String raw) =>
+    disposalChipToneFor(raw) != "default";
 
 DisposalChipPalette disposalChipPaletteFor(String raw, Brightness brightness) {
   final tone = _toneForDisposal(raw);

@@ -286,6 +286,37 @@ class AppLocalizationsDe extends AppLocalizations {
   String get info_ok => 'OK';
 
   @override
+  String get disposal_help_action => 'Verstanden';
+
+  @override
+  String get disposal_help_brown_title => 'Bio- und Grüngut';
+
+  @override
+  String get disposal_help_brown_body =>
+      'Für Küchenreste, Obstschalen und kleinere Gartenabfälle. Die genauen Regeln können je nach Stadt leicht abweichen.';
+
+  @override
+  String get disposal_help_blue_title => 'Papier und Karton';
+
+  @override
+  String get disposal_help_blue_body =>
+      'Für Papier, Pappe und Karton, solange das Material sauber und trocken ist. Stark verschmutzte Verpackungen gehören meist nicht hier hinein.';
+
+  @override
+  String get disposal_help_yellow_title => 'Leichtverpackungen';
+
+  @override
+  String get disposal_help_yellow_body =>
+      'Für Verpackungen aus Kunststoff, Metall oder Verbundmaterial. Welche Stoffe genau angenommen werden, hängt von den Regeln deiner Stadt ab.';
+
+  @override
+  String get disposal_help_gray_title => 'Restabfall';
+
+  @override
+  String get disposal_help_gray_body =>
+      'Für Abfälle, die weder recycelt noch kompostiert werden können. Diese Tonne ist meist die letzte Option.';
+
+  @override
   String get best_option_title => 'Beste Option:';
 
   @override

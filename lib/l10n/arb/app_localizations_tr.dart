@@ -283,6 +283,37 @@ class AppLocalizationsTr extends AppLocalizations {
   String get info_ok => 'Tamam';
 
   @override
+  String get disposal_help_action => 'Anladım';
+
+  @override
+  String get disposal_help_brown_title => 'Bio ve bahçe atığı';
+
+  @override
+  String get disposal_help_brown_body =>
+      'Mutfak artıkları, meyve kabukları ve küçük bahçe atıkları için kullanılır. Kesin kurallar şehre göre biraz değişebilir.';
+
+  @override
+  String get disposal_help_blue_title => 'Kağıt ve karton';
+
+  @override
+  String get disposal_help_blue_body =>
+      'Temiz ve kuru olduğu sürece kağıt, karton ve mukavva için kullanılır. Çok kirli ambalajlar genelde buraya atılmaz.';
+
+  @override
+  String get disposal_help_yellow_title => 'Hafif ambalajlar';
+
+  @override
+  String get disposal_help_yellow_body =>
+      'Plastik, metal veya kompozit malzemeden yapılmış ambalajlar içindir. Tam olarak nelerin kabul edildiği şehrin kurallarına bağlıdır.';
+
+  @override
+  String get disposal_help_gray_title => 'Evsel kalan atık';
+
+  @override
+  String get disposal_help_gray_body =>
+      'Ne geri dönüştürülebilen ne de kompost yapılabilen atıklar içindir. Bu kutu genelde son seçenektir.';
+
+  @override
   String get best_option_title => 'En iyi seçenek:';
 
   @override

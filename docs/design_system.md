@@ -1,4 +1,4 @@
-﻿# Easy Recycle Design System (Flutter MVP)
+# Easy Recycle Design System (Flutter MVP)
 
 ## Colors
 - Primary: #2E6B4F (deep green)
@@ -10,12 +10,13 @@
 - Warning text: #6B4E00
 - Danger bg: #FFE3E3
 - Danger text: #7A1C1C
+- Disposal/List chip palette rules: see `docs/design_system/colors.md`
 
 ## Typography
 - Font family: system default (Roboto); fallback Roboto/Arial/sans-serif
 - Title L: 22, weight 600
 - Title M: 18, weight 600
-- Body: 14–16, weight 400
+- Body: 14-16, weight 400
 - Caption: 12, weight 400
 - Buttons: 16, weight 600
 

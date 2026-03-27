@@ -13,6 +13,7 @@ import "../models/similar_item.dart";
 import "../models/warning.dart";
 import "../state/app_state.dart";
 import "../theme/design_tokens.dart";
+import "../ui/disposal_chip_palette.dart";
 import "../utils/recycle_center_navigation.dart";
 import "../widgets/similar_item_card.dart";
 import "../ui/components/er_search_bar.dart";
@@ -454,6 +455,10 @@ class TextSearchPageState extends State<TextSearchPage> {
         cityCode: effectiveCityCode,
       );
       if (!link.isActionable || link.label.isEmpty) {
+        continue;
+      }
+      if (link.isRecycleTypeLink &&
+          !disposalChipUsesDefaultTone(link.disposalCode ?? link.label)) {
         continue;
       }
       final key = link.label;
