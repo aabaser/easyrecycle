@@ -60,11 +60,11 @@ String disposalBinAssetForTone(
   String tone, {
   required DisposalBinStyle style,
 }) {
-  final suffix = switch (style) {
-    DisposalBinStyle.outline => "outline",
-    DisposalBinStyle.solid => "solid",
+  final variant = switch (style) {
+    DisposalBinStyle.outline => "dark",
+    DisposalBinStyle.solid => "light",
   };
-  return "assets/easy_recycle_images/recycle-bin-$tone-$suffix.png";
+  return "assets/er_images/${tone}_$variant.png";
 }
 
 String? disposalBinAssetFor(String value, Brightness brightness) {

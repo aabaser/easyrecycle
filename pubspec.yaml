@@ -38,6 +38,7 @@ flutter:
     - assets/uix/
     - assets/fonts/
     - assets/easy_recycle_images/
+    - assets/er_images/
   fonts:
     - family: Jost
       fonts:
