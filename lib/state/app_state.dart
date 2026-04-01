@@ -17,10 +17,7 @@ class AppState extends ChangeNotifier {
   String sessionId = "";
   String? authToken;
   int? authTokenExpiresAt;
-  String? adminSessionToken;
-  int? adminSessionExpiresAt;
   ThemeMode themeMode = ThemeMode.system;
-  bool adminEnabled = false;
   int currentTabIndex = 1;
   int? _requestedTabIndex;
   bool _cameraScanRequested = false;
@@ -58,11 +55,12 @@ class AppState extends ChangeNotifier {
 
     authToken = prefs.getString("authToken");
     authTokenExpiresAt = prefs.getInt("authTokenExpiresAt");
-    adminSessionToken = prefs.getString("adminSessionToken");
-    adminSessionExpiresAt = prefs.getInt("adminSessionExpiresAt");
     await prefs.remove("authTokenType");
     await prefs.remove("userId");
     await prefs.remove("userEmail");
+    await prefs.remove("adminSessionToken");
+    await prefs.remove("adminSessionExpiresAt");
+    await prefs.remove("adminEnabled");
 
     final storedTheme = prefs.getString("themeMode");
     if (storedTheme == "light") {
@@ -71,7 +69,6 @@ class AppState extends ChangeNotifier {
       themeMode = ThemeMode.dark;
     }
 
-    adminEnabled = prefs.getBool("adminEnabled") ?? false;
     currentTabIndex = prefs.getInt("currentTabIndex") ?? 1;
     unawaited(ensureGuestToken());
   }
@@ -160,51 +157,6 @@ class AppState extends ChangeNotifier {
     return headers;
   }
 
-  bool get hasValidAdminSession {
-    final token = adminSessionToken;
-    final expiresAt = adminSessionExpiresAt;
-    if (token == null || token.isEmpty || expiresAt == null) {
-      return false;
-    }
-    return expiresAt - DateTime.now().millisecondsSinceEpoch > 60000;
-  }
-
-  Future<void> setAdminSession({
-    required String token,
-    required int expiresInSeconds,
-  }) async {
-    final nowMs = DateTime.now().millisecondsSinceEpoch;
-    adminSessionToken = token;
-    adminSessionExpiresAt = nowMs + (expiresInSeconds * 1000);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("adminSessionToken", token);
-    await prefs.setInt("adminSessionExpiresAt", adminSessionExpiresAt!);
-    notifyListeners();
-  }
-
-  Future<void> clearAdminSession() async {
-    adminSessionToken = null;
-    adminSessionExpiresAt = null;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove("adminSessionToken");
-    await prefs.remove("adminSessionExpiresAt");
-    notifyListeners();
-  }
-
-  Future<Map<String, String>> adminHeaders({
-    Map<String, String>? extra,
-  }) async {
-    if (!hasValidAdminSession) {
-      throw StateError("admin_session_missing");
-    }
-    final headers = <String, String>{};
-    if (extra != null) {
-      headers.addAll(extra);
-    }
-    headers["Authorization"] = "Bearer $adminSessionToken";
-    return headers;
-  }
-
   Future<void> setThemeMode(ThemeMode mode) async {
     themeMode = mode;
     final prefs = await SharedPreferences.getInstance();
@@ -215,13 +167,6 @@ class AppState extends ChangeNotifier {
     } else {
       await prefs.remove("themeMode");
     }
-    notifyListeners();
-  }
-
-  Future<void> setAdminEnabled(bool value) async {
-    adminEnabled = value;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("adminEnabled", value);
     notifyListeners();
   }
 

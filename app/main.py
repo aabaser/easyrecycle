@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.db import get_db
 from app.services.resolve import resolve_item, find_item_id_by_aliases
-from app.integrations.openai_vision import recognize_item_from_bytes, store_image_from_base64
+from app.integrations.openai_vision import recognize_item_from_bytes
 from app.storage.s3 import (
   build_object_key,
   create_presigned_get,
@@ -23,7 +23,6 @@ from app.storage.s3 import (
 )
 from app.settings import get_settings
 from app.auth.guest import issue_guest_token, verify_guest_token
-from app.auth.admin import issue_admin_token, verify_admin_token
 from app.middleware.rate_limit import FixedWindowRateLimiter
 from pydantic import BaseModel, Field
 from sqlalchemy import text
@@ -66,7 +65,6 @@ _AUTH_EXEMPT_PATHS = {
   "/auth/guest",
   "/auth/me",
   "/auth/verify",
-  "/admin/auth/login",
 }
 if docs_enabled:
   _AUTH_EXEMPT_PATHS.update({"/docs", "/openapi.json", "/redoc"})
@@ -77,8 +75,6 @@ async def auth_guard(request: Request, call_next):
   if request.method == "OPTIONS":
     return await call_next(request)
   path = request.url.path
-  if path.startswith("/admin/"):
-    return await call_next(request)
   if path in _AUTH_EXEMPT_PATHS:
     return await call_next(request)
   try:
@@ -101,8 +97,35 @@ def _client_ip(request: Request) -> str:
 def _rate_limit_or_429(key: str, limit: int, window_seconds: int = 60) -> None:
   if not settings.RATE_LIMIT_ENABLED:
     return
-  if not rate_limiter.hit(key, limit=limit, window_seconds=window_seconds):
-    raise HTTPException(status_code=429, detail="Rate limit exceeded")
+  allowed, retry_after = rate_limiter.hit_with_retry(
+    key,
+    limit=limit,
+    window_seconds=window_seconds,
+  )
+  if not allowed:
+    raise HTTPException(
+      status_code=429,
+      detail="Rate limit exceeded",
+      headers={"Retry-After": str(retry_after)},
+    )
+
+
+def _rate_limit_ip(scope: str, request: Request, limit: int, window_seconds: int) -> None:
+  _rate_limit_or_429(
+    f"{scope}:ip:{_client_ip(request)}",
+    limit=limit,
+    window_seconds=window_seconds,
+  )
+
+
+def _rate_limit_principal(scope: str, principal: Optional[dict], limit: int, window_seconds: int) -> None:
+  if not principal or principal.get("type") == "anonymous":
+    return
+  _rate_limit_or_429(
+    f"{scope}:principal:{_principal_prefix(principal)}",
+    limit=limit,
+    window_seconds=window_seconds,
+  )
 
 
 def _principal_prefix(principal: dict) -> str:
@@ -154,24 +177,10 @@ def _resolve_principal(request: Request) -> dict:
     raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 
-def _require_admin(request: Request) -> dict:
-  if not settings.ADMIN_ENABLED:
-    raise HTTPException(status_code=404, detail="not_found")
-  auth_header = request.headers.get("Authorization") or ""
-  if not auth_header.startswith("Bearer "):
-    raise HTTPException(status_code=401, detail="Unauthorized")
-  token = auth_header.split(" ", 1)[1].strip()
-  if not token:
-    raise HTTPException(status_code=401, detail="Unauthorized")
-  try:
-    claims = verify_admin_token(token, settings)
-  except Exception:
-    raise HTTPException(status_code=401, detail="Unauthorized")
-  return {
-    "type": "admin",
-    "sub": claims.get("sub"),
-    "scopes": ["admin"],
-  }
+def _analyze_debug_payload(city: str, vision: dict) -> Optional[dict]:
+  if settings.APP_ENV.lower() == "production":
+    return None
+  return {"city_chain": [city], "vision": vision}
 
 
 @app.middleware("http")
@@ -214,22 +223,6 @@ class PrincipalResponse(BaseModel):
   scopes: list[str]
 
 
-class AdminLoginRequest(BaseModel):
-  api_key: str = Field(..., min_length=12, max_length=256)
-
-
-class AdminLoginResponse(BaseModel):
-  access_token: str
-  token_type: str
-  expires_in: int
-
-
-class AdminPrincipalResponse(BaseModel):
-  type: str
-  sub: Optional[str] = None
-  scopes: list[str]
-
-
 class PresignRequest(BaseModel):
   content_type: str
   file_ext: Optional[str] = None
@@ -264,7 +257,8 @@ class RecycleCenterResponse(BaseModel):
 
 @app.post("/auth/guest", response_model=GuestResponse)
 def auth_guest(payload: GuestRequest, request: Request):
-  _rate_limit_or_429(_client_ip(request), limit=10, window_seconds=60)
+  _rate_limit_ip("auth_guest_minute", request, limit=2, window_seconds=60)
+  _rate_limit_ip("auth_guest_hour", request, limit=15, window_seconds=3600)
   # TODO: verify attestation when available.
   try:
     issued = issue_guest_token(payload.device_id, settings)
@@ -281,7 +275,7 @@ def auth_guest(payload: GuestRequest, request: Request):
 def auth_me(request: Request):
   principal = _resolve_principal(request)
   key = principal.get("sub") or _client_ip(request)
-  _rate_limit_or_429(key, limit=120, window_seconds=60)
+  _rate_limit_or_429(key, limit=60, window_seconds=60)
   return {
     "type": principal.get("type"),
     "sub": principal.get("sub"),
@@ -293,47 +287,17 @@ def auth_me(request: Request):
 def auth_verify(request: Request):
   auth_header = request.headers.get("Authorization") or ""
   if not auth_header.startswith("Bearer "):
-    _rate_limit_or_429(_client_ip(request), limit=120, window_seconds=60)
+    _rate_limit_or_429(_client_ip(request), limit=60, window_seconds=60)
     raise HTTPException(status_code=401, detail="Invalid or expired token")
   try:
     principal = _resolve_principal(request)
   except HTTPException:
-    _rate_limit_or_429(_client_ip(request), limit=120, window_seconds=60)
+    _rate_limit_or_429(_client_ip(request), limit=60, window_seconds=60)
     raise HTTPException(status_code=401, detail="Invalid or expired token")
   key = principal.get("sub") or _client_ip(request)
-  _rate_limit_or_429(key, limit=120, window_seconds=60)
+  _rate_limit_or_429(key, limit=60, window_seconds=60)
   if principal.get("type") == "anonymous":
     raise HTTPException(status_code=401, detail="Invalid or expired token")
-  return {
-    "type": principal.get("type"),
-    "sub": principal.get("sub"),
-    "scopes": sorted(principal.get("scopes") or []),
-  }
-
-
-@app.post("/admin/auth/login", response_model=AdminLoginResponse)
-def admin_auth_login(payload: AdminLoginRequest, request: Request):
-  if not settings.ADMIN_ENABLED:
-    raise HTTPException(status_code=404, detail="not_found")
-  if not settings.ADMIN_API_KEY:
-    raise HTTPException(status_code=503, detail="admin_api_key_not_configured")
-  _rate_limit_or_429(f"admin_login:{_client_ip(request)}", limit=8, window_seconds=60)
-  try:
-    issued = issue_admin_token(payload.api_key, settings)
-  except ValueError:
-    raise HTTPException(status_code=401, detail="invalid_admin_api_key")
-  return {
-    "access_token": issued["token"],
-    "token_type": "bearer",
-    "expires_in": settings.ADMIN_SESSION_TTL_SECONDS,
-  }
-
-
-@app.get("/admin/auth/me", response_model=AdminPrincipalResponse)
-def admin_auth_me(request: Request):
-  principal = _require_admin(request)
-  key = principal.get("sub") or _client_ip(request)
-  _rate_limit_or_429(f"admin_me:{key}", limit=120, window_seconds=60)
   return {
     "type": principal.get("type"),
     "sub": principal.get("sub"),
@@ -346,6 +310,9 @@ def uploads_presign(payload: PresignRequest, request: Request):
   principal = getattr(request.state, "principal", None)
   if not principal or principal.get("type") == "anonymous":
     raise HTTPException(status_code=401, detail="Unauthorized")
+  _rate_limit_principal("uploads_presign_10m", principal, limit=5, window_seconds=600)
+  _rate_limit_ip("uploads_presign_10m", request, limit=15, window_seconds=600)
+  _rate_limit_principal("uploads_presign_day", principal, limit=25, window_seconds=86400)
   ensure_allowed_content_type(payload.content_type)
   filename = f"upload.{payload.file_ext}" if payload.file_ext else None
   s3_key = build_object_key(principal, payload.content_type, filename)
@@ -366,12 +333,16 @@ def uploads_presign(payload: PresignRequest, request: Request):
 
 @app.get("/resolve")
 def resolve(
+  request: Request,
   city: str = Query(..., description="city code, e.g. hannover, berlin"),
   item_id: Optional[str] = Query(None, description="UUID of item (required if item_name is empty)"),
   lang: str = Query("de", description="de/en/tr"),
   item_name: Optional[str] = Query(None, description="Free-text item name (required if item_id is empty)"),
   db: Session = Depends(get_db),
 ):
+  principal = getattr(request.state, "principal", None)
+  _rate_limit_principal("resolve_minute", principal, limit=30, window_seconds=60)
+  _rate_limit_ip("resolve_minute", request, limit=60, window_seconds=60)
   logger.info(
     "resolve: start city=%s lang=%s item_id=%s item_name=%s",
     city,
@@ -393,6 +364,7 @@ def resolve(
 
 @app.get("/recycle-centers", response_model=RecycleCenterResponse)
 def list_recycle_centers(
+  request: Request,
   city: str = Query(..., description="city code, e.g. hannover, berlin"),
   lat: Optional[float] = Query(None),
   lng: Optional[float] = Query(None),
@@ -401,6 +373,9 @@ def list_recycle_centers(
   limit: int = Query(1000, ge=1, le=2000),
   db: Session = Depends(get_db),
 ):
+  principal = getattr(request.state, "principal", None)
+  _rate_limit_principal("recycle_centers_minute", principal, limit=30, window_seconds=60)
+  _rate_limit_ip("recycle_centers_minute", request, limit=60, window_seconds=60)
   if (lat is None) != (lng is None):
     raise HTTPException(status_code=400, detail="lat_lng_required")
 
@@ -474,12 +449,16 @@ def list_recycle_centers(
 
 @app.get("/items/search")
 def search_items(
+  request: Request,
   city: str = Query(..., description="city code, e.g. hannover, berlin"),
   lang: str = Query("de", description="de/en/tr"),
   q: Optional[str] = Query(None),
   limit: int = Query(10, ge=1, le=50),
   db: Session = Depends(get_db),
 ):
+  principal = getattr(request.state, "principal", None)
+  _rate_limit_principal("items_search_minute", principal, limit=30, window_seconds=60)
+  _rate_limit_ip("items_search_minute", request, limit=60, window_seconds=60)
   query = f"%{q}%" if q else ""
   rows = db.execute(
     text(
@@ -548,7 +527,7 @@ class AnalyzeResponse(BaseModel):
   repair: dict
   donate: dict
   warnings: list
-  debug: dict
+  debug: Optional[dict] = None
   suggestions: Optional[list] = None
   prospect: Optional[dict] = None
   error: Optional[str] = None
@@ -565,29 +544,6 @@ class FeedbackRequest(BaseModel):
 
 class FeedbackResponse(BaseModel):
   ok: bool
-
-
-class AdminImageUploadRequest(BaseModel):
-  image_base64: str
-  source: Optional[str] = "admin"
-
-
-class AdminItemUpdateRequest(BaseModel):
-  city: str
-  lang: str
-  title: Optional[str] = None
-  description: Optional[str] = None
-  category_codes: Optional[list[str]] = None
-  disposal_codes: Optional[list[str]] = None
-  warning_codes: Optional[list[str]] = None
-  primary_image_id: Optional[str] = None
-  is_active: Optional[bool] = None
-
-
-class AdminItemImageUploadRequest(BaseModel):
-  city: str
-  image_base64: str
-  source: Optional[str] = "admin"
 
 
 def _find_item_id(db: Session, canonical_key: str) -> Optional[str]:
@@ -806,103 +762,14 @@ def _update_item_city_list(
       )
 
 
-def _admin_item_detail(db: Session, item_id: str, city_id: str, lang: str) -> dict:
-  row = db.execute(
-    text(
-      """
-      SELECT item_id::text, canonical_key, title_key, desc_key, is_active, primary_image_id::text
-      FROM core.item
-      WHERE item_id::uuid = :item_id
-      """
-    ),
-    {"item_id": item_id},
-  ).fetchone()
-  if not row:
-    raise HTTPException(status_code=404, detail="item_not_found")
-  city_code_row = db.execute(
-    text("SELECT code FROM core.city WHERE city_id::text = :city_id"),
-    {"city_id": city_id},
-  ).fetchone()
-  city_code = city_code_row[0] if city_code_row else None
-  title = _t(db, row[2], lang)
-  desc = None
-  image_id = row[5]
-
-  override = db.execute(
-    text(
-      """
-      SELECT o.desc_key
-      FROM core.item_city_text_override o
-      WHERE o.city_id = :city_id AND o.item_id::uuid = :item_id
-      """
-    ),
-    {"city_id": city_id, "item_id": item_id},
-  ).fetchone()
-  if override and override[0]:
-    desc = _t(db, override[0], lang)
-  elif city_code and row[3] and row[3].endswith(f".desc.{city_code}"):
-    desc = _t(db, row[3], lang)
-
-  categories = db.execute(
-    text(
-      """
-      SELECT c.code, c.name_key
-      FROM core.item_city_category icc
-      JOIN core.category c ON c.category_id = icc.category_id
-      WHERE icc.city_id = :city_id AND icc.item_id::uuid = :item_id
-      ORDER BY icc.priority ASC
-      """
-    ),
-    {"city_id": city_id, "item_id": item_id},
-  ).fetchall()
-  disposals = db.execute(
-    text(
-      """
-      SELECT d.code, d.name_key
-      FROM core.item_city_disposal icd
-      JOIN core.disposal_method d ON d.disposal_id = icd.disposal_id
-      WHERE icd.city_id = :city_id AND icd.item_id::uuid = :item_id
-      ORDER BY icd.priority ASC
-      """
-    ),
-    {"city_id": city_id, "item_id": item_id},
-  ).fetchall()
-  warnings = db.execute(
-    text(
-      """
-      SELECT w.code, w.title_key, w.severity
-      FROM core.item_city_warning icw
-      JOIN core.warning w ON w.warning_id = icw.warning_id
-      WHERE icw.city_id = :city_id AND icw.item_id::uuid = :item_id
-      ORDER BY w.code ASC
-      """
-    ),
-    {"city_id": city_id, "item_id": item_id},
-  ).fetchall()
-
-  return {
-    "item": {
-      "id": row[0],
-      "canonical_key": row[1],
-      "title": title,
-      "description": desc,
-      "is_active": row[4],
-      "primary_image_id": image_id,
-      "image_url": _image_url(db, image_id),
-    },
-    "categories": [{"code": r[0], "label": _t(db, r[1], lang)} for r in categories],
-    "disposals": [{"code": r[0], "label": _t(db, r[1], lang)} for r in disposals],
-    "warnings": [
-      {"code": r[0], "label": _t(db, r[1], lang), "severity": int(r[2])}
-      for r in warnings
-    ],
-  }
-
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(request: Request, db: Session = Depends(get_db)):
   principal = getattr(request.state, "principal", None)
   if not principal or principal.get("type") == "anonymous":
     raise HTTPException(status_code=401, detail="Unauthorized")
+  _rate_limit_principal("analyze_10m", principal, limit=3, window_seconds=600)
+  _rate_limit_ip("analyze_10m", request, limit=10, window_seconds=600)
+  _rate_limit_principal("analyze_day", principal, limit=15, window_seconds=86400)
 
   image_bytes: Optional[bytes] = None
   s3_key: Optional[str] = None
@@ -951,10 +818,10 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
     raise HTTPException(status_code=400, detail="city_and_lang_required")
 
   logger.info(
-    "analyze: start city=%s lang=%s s3_key=%s has_search_text=%s image_len=%s",
+    "analyze: start city=%s lang=%s has_s3_key=%s has_search_text=%s image_len=%s",
     city,
     lang,
-    s3_key,
+    bool(s3_key),
     bool(search_text),
     len(image_bytes or b""),
   )
@@ -1003,7 +870,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
       suggestions=None,
       prospect=None,
       error="vision_unavailable",
-      debug={"city_chain": [city], "vision": vision},
+      debug=_analyze_debug_payload(city, vision),
     )
 
   if not item_id:
@@ -1032,7 +899,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
         suggestions=None,
         prospect=None,
         error="item_not_found",
-        debug={"city_chain": [city], "vision": vision},
+        debug=_analyze_debug_payload(city, vision),
       )
     resolved = resolve_item(db, city, None, lang, settings, item_name=search_text)
     resolved_item = resolved.get("item") or {}
@@ -1074,7 +941,7 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
       suggestions=resolved.get("suggestions"),
       prospect=resolved.get("prospect"),
       error=resolved.get("error") or ("item_not_found" if resolved.get("not_found") else None),
-      debug={"city_chain": [city], "vision": vision},
+      debug=_analyze_debug_payload(city, vision),
     )
 
   resolved = resolve_item(db, city, item_id, lang, settings, item_name=search_text)
@@ -1117,11 +984,14 @@ async def analyze(request: Request, db: Session = Depends(get_db)):
     suggestions=resolved.get("suggestions"),
     prospect=resolved.get("prospect"),
     error=resolved.get("error"),
-    debug={"city_chain": [city], "vision": vision},
+    debug=_analyze_debug_payload(city, vision),
   )
 
 @app.post("/feedback", response_model=FeedbackResponse)
-def feedback(payload: FeedbackRequest = Body(...), db: Session = Depends(get_db)):
+def feedback(request: Request, payload: FeedbackRequest = Body(...), db: Session = Depends(get_db)):
+  principal = getattr(request.state, "principal", None)
+  _rate_limit_principal("feedback_minute", principal, limit=10, window_seconds=60)
+  _rate_limit_ip("feedback_minute", request, limit=30, window_seconds=60)
   if payload.feedback not in (-1, 1):
     raise HTTPException(status_code=400, detail="invalid_feedback")
   city_row = db.execute(
@@ -1163,460 +1033,3 @@ def feedback(payload: FeedbackRequest = Body(...), db: Session = Depends(get_db)
   return FeedbackResponse(ok=True)
 
 
-@app.get("/admin/images")
-def admin_list_images(
-  request: Request,
-  limit: int = Query(50, ge=1, le=200),
-  offset: int = Query(0, ge=0),
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  rows = db.execute(
-    text(
-      """
-      SELECT image_id::text, width, height, source, created_at
-      FROM core.image_asset
-      ORDER BY created_at DESC
-      LIMIT :limit OFFSET :offset
-      """
-    ),
-    {"limit": limit, "offset": offset},
-  ).fetchall()
-  return {
-    "images": [
-      {
-        "image_id": r[0],
-        "image_url": _image_url(db, r[0]),
-        "width": r[1],
-        "height": r[2],
-        "source": r[3],
-        "created_at": r[4].isoformat() if r[4] else None,
-      }
-      for r in rows
-    ]
-  }
-
-
-@app.get("/admin/cities")
-def admin_list_cities(
-  request: Request,
-  lang: str = Query("de"),
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  rows = db.execute(
-    text(
-      """
-      SELECT code, name_key, is_active
-      FROM core.city
-      ORDER BY code ASC
-      """
-    )
-  ).fetchall()
-  return {
-    "cities": [
-      {"code": r[0], "label": _t(db, r[1], lang), "is_active": bool(r[2])}
-      for r in rows
-    ]
-  }
-
-
-@app.get("/admin/options")
-def admin_options(
-  request: Request,
-  lang: str = Query("de"),
-  city: Optional[str] = Query(None),
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  city_id = None
-  if city:
-    city_id = _city_id_from_code(db, city)
-    if not city_id:
-      raise HTTPException(status_code=400, detail="invalid_city")
-  if city_id:
-    categories = db.execute(
-      text(
-        """
-        SELECT DISTINCT c.code, c.name_key
-        FROM core.item_city_category icc
-        JOIN core.category c ON c.category_id = icc.category_id
-        WHERE icc.city_id = :city_id
-        ORDER BY c.code ASC
-        """
-      ),
-      {"city_id": city_id},
-    ).fetchall()
-    disposals = db.execute(
-      text(
-        """
-        SELECT DISTINCT d.code, d.name_key
-        FROM core.item_city_disposal icd
-        JOIN core.disposal_method d ON d.disposal_id = icd.disposal_id
-        WHERE icd.city_id = :city_id
-        ORDER BY d.code ASC
-        """
-      ),
-      {"city_id": city_id},
-    ).fetchall()
-    warnings = db.execute(
-      text(
-        """
-        SELECT DISTINCT w.code, w.title_key
-        FROM core.item_city_warning icw
-        JOIN core.warning w ON w.warning_id = icw.warning_id
-        WHERE icw.city_id = :city_id
-        ORDER BY w.code ASC
-        """
-      ),
-      {"city_id": city_id},
-    ).fetchall()
-  else:
-    categories = db.execute(
-      text(
-        """
-        SELECT code, name_key
-        FROM core.category
-        ORDER BY code ASC
-        """
-      )
-    ).fetchall()
-    disposals = db.execute(
-      text(
-        """
-        SELECT code, name_key
-        FROM core.disposal_method
-        ORDER BY code ASC
-        """
-      )
-    ).fetchall()
-    warnings = db.execute(
-      text(
-        """
-        SELECT code, title_key
-        FROM core.warning
-        ORDER BY code ASC
-        """
-      )
-    ).fetchall()
-  return {
-    "categories": [{"code": r[0], "label": _t(db, r[1], lang)} for r in categories],
-    "disposals": [{"code": r[0], "label": _t(db, r[1], lang)} for r in disposals],
-    "warnings": [{"code": r[0], "label": _t(db, r[1], lang)} for r in warnings],
-  }
-
-
-@app.post("/admin/images")
-def admin_upload_image(
-  request: Request,
-  payload: AdminImageUploadRequest = Body(...),
-  db: Session = Depends(get_db),
-):
-  principal = _require_admin(request)
-  raw = _decode_base64_payload(payload.image_base64)
-  if len(raw) > settings.MAX_IMAGE_BYTES:
-    raise HTTPException(status_code=413, detail="image_too_large")
-  content_type = _detect_content_type(raw)
-  ensure_allowed_content_type(content_type)
-  s3_key = build_object_key(principal, content_type, None)
-  upload_fileobj(settings, BytesIO(raw), settings.S3_BUCKET_NAME, s3_key, content_type)
-  stored = store_image_from_base64(payload.image_base64, storage_key=s3_key, source=payload.source or "admin")
-  image_id = stored["image_id"]
-  return {"image_id": image_id, "image_url": _image_url(db, image_id), "s3_key": s3_key}
-
-
-@app.get("/admin/items")
-def admin_list_items(
-  request: Request,
-  lang: str = Query("de"),
-  q: Optional[str] = Query(None),
-  limit: int = Query(50, ge=1, le=200),
-  offset: int = Query(0, ge=0),
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  query = f"%{q.strip()}%" if q and q.strip() else None
-  base_sql = """
-      SELECT i.item_id::text, i.canonical_key, t1.text, i.primary_image_id::text, i.is_active
-      FROM core.item i
-      LEFT JOIN core.i18n_translation t1 ON t1.key = i.title_key AND t1.lang = :lang
-  """
-  where_sql = ""
-  params: dict[str, object] = {"lang": lang, "limit": limit, "offset": offset}
-  if query:
-    where_sql = "WHERE (t1.text ILIKE :q OR i.canonical_key ILIKE :q)"
-    params["q"] = query
-  rows = db.execute(
-    text(
-      f"""
-      {base_sql}
-      {where_sql}
-      ORDER BY t1.text NULLS LAST, i.canonical_key ASC
-      LIMIT :limit OFFSET :offset
-      """
-    ),
-    params,
-  ).fetchall()
-  return {
-    "items": [
-      {
-        "id": r[0],
-        "canonical_key": r[1],
-        "title": r[2],
-        "description": None,
-        "primary_image_id": r[3],
-        "image_url": _image_url(db, r[3]),
-        "is_active": bool(r[4]),
-      }
-      for r in rows
-    ]
-  }
-
-
-@app.get("/admin/items/{item_id}")
-def admin_get_item(
-  request: Request,
-  item_id: str,
-  city: str = Query(...),
-  lang: str = Query("de"),
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  city_id = _city_id_from_code(db, city)
-  if not city_id:
-    raise HTTPException(status_code=400, detail="invalid_city")
-  return _admin_item_detail(db, item_id, city_id, lang)
-
-
-@app.get("/admin/items/{item_id}/images")
-def admin_item_images(
-  request: Request,
-  item_id: str,
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  primary_row = db.execute(
-    text("SELECT primary_image_id::text FROM core.item WHERE item_id::uuid = :item_id"),
-    {"item_id": item_id},
-  ).fetchone()
-  primary_image_id = primary_row[0] if primary_row else None
-  rows = db.execute(
-    text(
-      """
-      SELECT ia.image_id::text, ia.width, ia.height, ia.source, ia.created_at
-      FROM core.image_asset ia
-      JOIN (
-        SELECT DISTINCT image_id
-        FROM core.scan_event
-        WHERE item_id::uuid = :item_id
-        UNION
-        SELECT primary_image_id AS image_id
-        FROM core.item
-        WHERE item_id::uuid = :item_id AND primary_image_id IS NOT NULL
-      ) s ON s.image_id = ia.image_id
-      ORDER BY ia.created_at DESC
-      """
-    ),
-    {"item_id": item_id},
-  ).fetchall()
-  return {
-    "images": [
-      {
-        "image_id": r[0],
-        "image_url": _image_url(db, r[0]),
-        "width": r[1],
-        "height": r[2],
-        "source": r[3],
-        "created_at": r[4].isoformat() if r[4] else None,
-        "is_primary": r[0] == primary_image_id,
-      }
-      for r in rows
-    ]
-  }
-
-
-@app.post("/admin/items/{item_id}/images")
-def admin_upload_item_image(
-  request: Request,
-  item_id: str,
-  payload: AdminItemImageUploadRequest = Body(...),
-  db: Session = Depends(get_db),
-):
-  principal = _require_admin(request)
-  city_id = _city_id_from_code(db, payload.city)
-  if not city_id:
-    raise HTTPException(status_code=400, detail="invalid_city")
-  raw = _decode_base64_payload(payload.image_base64)
-  if len(raw) > settings.MAX_IMAGE_BYTES:
-    raise HTTPException(status_code=413, detail="image_too_large")
-  content_type = _detect_content_type(raw)
-  ensure_allowed_content_type(content_type)
-  s3_key = build_object_key(principal, content_type, None)
-  upload_fileobj(settings, BytesIO(raw), settings.S3_BUCKET_NAME, s3_key, content_type)
-  stored = store_image_from_base64(payload.image_base64, storage_key=s3_key, source=payload.source or "admin")
-  image_id = stored["image_id"]
-  db.execute(
-    text(
-      """
-      INSERT INTO core.scan_event (image_id, city_id, item_id, source, created_at)
-      VALUES (:image_id, :city_id, :item_id, :source, now())
-      """
-    ),
-    {
-      "image_id": image_id,
-      "city_id": city_id,
-      "item_id": item_id,
-      "source": payload.source or "admin",
-    },
-  )
-  db.commit()
-  return {"image_id": image_id, "image_url": _image_url(db, image_id)}
-
-
-@app.delete("/admin/items/{item_id}/images/{image_id}")
-def admin_delete_item_image(
-  request: Request,
-  item_id: str,
-  image_id: str,
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  db.execute(
-    text(
-      """
-      DELETE FROM core.scan_event
-      WHERE item_id::uuid = :item_id AND image_id::uuid = :image_id
-      """
-    ),
-    {"item_id": item_id, "image_id": image_id},
-  )
-  db.execute(
-    text(
-      """
-      UPDATE core.item
-      SET primary_image_id = NULL, updated_at = now()
-      WHERE item_id::uuid = :item_id AND primary_image_id::uuid = :image_id
-      """
-    ),
-    {"item_id": item_id, "image_id": image_id},
-  )
-  has_scan = db.execute(
-    text("SELECT 1 FROM core.scan_event WHERE image_id::uuid = :image_id LIMIT 1"),
-    {"image_id": image_id},
-  ).fetchone()
-  has_primary = db.execute(
-    text("SELECT 1 FROM core.item WHERE primary_image_id::uuid = :image_id LIMIT 1"),
-    {"image_id": image_id},
-  ).fetchone()
-  if not has_scan and not has_primary:
-    db.execute(
-      text("UPDATE core.vision_cache SET image_id = NULL WHERE image_id::uuid = :image_id"),
-      {"image_id": image_id},
-    )
-    db.execute(
-      text("DELETE FROM core.image_asset WHERE image_id::uuid = :image_id"),
-      {"image_id": image_id},
-    )
-  db.commit()
-  return {"ok": True}
-
-
-@app.put("/admin/items/{item_id}")
-def admin_update_item(
-  request: Request,
-  item_id: str,
-  payload: AdminItemUpdateRequest = Body(...),
-  db: Session = Depends(get_db),
-):
-  _require_admin(request)
-  city_id = _city_id_from_code(db, payload.city)
-  if not city_id:
-    raise HTTPException(status_code=400, detail="invalid_city")
-  row = db.execute(
-    text(
-      """
-      SELECT canonical_key, title_key
-      FROM core.item
-      WHERE item_id::uuid = :item_id
-      """
-    ),
-    {"item_id": item_id},
-  ).fetchone()
-  if not row:
-    raise HTTPException(status_code=404, detail="item_not_found")
-  canonical_key, title_key = row
-  if payload.title is not None and title_key:
-    _upsert_translation(db, title_key, payload.lang, payload.title)
-  if payload.description is not None:
-    override_row = db.execute(
-      text(
-        """
-        SELECT desc_key
-        FROM core.item_city_text_override
-        WHERE city_id = :city_id AND item_id::uuid = :item_id
-        """
-      ),
-      {"city_id": city_id, "item_id": item_id},
-    ).fetchone()
-    base = canonical_key if canonical_key.startswith("item.") else f"item.{canonical_key}"
-    desc_key = override_row[0] if override_row and override_row[0] else f"{base}.desc.{payload.city}"
-    _upsert_translation(db, desc_key, payload.lang, payload.description)
-    db.execute(
-      text(
-        """
-        INSERT INTO core.item_city_text_override (city_id, item_id, desc_key)
-        VALUES (:city_id, :item_id, :desc_key)
-        ON CONFLICT (city_id, item_id) DO UPDATE
-        SET desc_key = EXCLUDED.desc_key
-        """
-      ),
-      {"city_id": city_id, "item_id": item_id, "desc_key": desc_key},
-    )
-
-  if payload.is_active is not None:
-    db.execute(
-      text("UPDATE core.item SET is_active = :active, updated_at = now() WHERE item_id::uuid = :item_id"),
-      {"active": payload.is_active, "item_id": item_id},
-    )
-
-  if payload.primary_image_id is not None:
-    db.execute(
-      text("UPDATE core.item SET primary_image_id = :pid, updated_at = now() WHERE item_id::uuid = :item_id"),
-      {"pid": payload.primary_image_id or None, "item_id": item_id},
-    )
-
-  _update_item_city_list(
-    db,
-    table="core.item_city_category",
-    city_id=city_id,
-    item_id=item_id,
-    ref_table="core.category",
-    ref_code_col="code",
-    ref_id_col="category_id",
-    codes=payload.category_codes,
-    has_priority=True,
-  )
-  _update_item_city_list(
-    db,
-    table="core.item_city_disposal",
-    city_id=city_id,
-    item_id=item_id,
-    ref_table="core.disposal_method",
-    ref_code_col="code",
-    ref_id_col="disposal_id",
-    codes=payload.disposal_codes,
-    has_priority=True,
-  )
-  _update_item_city_list(
-    db,
-    table="core.item_city_warning",
-    city_id=city_id,
-    item_id=item_id,
-    ref_table="core.warning",
-    ref_code_col="code",
-    ref_id_col="warning_id",
-    codes=payload.warning_codes,
-    has_priority=False,
-  )
-  db.commit()
-  return _admin_item_detail(db, item_id, city_id, payload.lang)

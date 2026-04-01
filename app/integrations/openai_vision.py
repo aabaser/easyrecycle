@@ -12,6 +12,7 @@ from sqlalchemy import create_engine, text
 from PIL import Image, UnidentifiedImageError
 import httpx
 import logging
+from app.db import normalize_database_url
 
 logger = logging.getLogger("openai_vision")
 _logged_no_db = False
@@ -26,6 +27,10 @@ DEFAULT_MODEL = os.getenv("OPENAI_VISION_MODEL", "gpt-4o-mini")
 MAX_SIDE = int(os.getenv("OPENAI_VISION_MAX_IMAGE_SIDE", "768"))
 JPEG_QUALITY = int(os.getenv("OPENAI_VISION_JPEG_QUALITY", "75"))
 CACHE_TTL_DAYS = int(os.getenv("VISION_CACHE_TTL_DAYS", "30"))
+
+
+def _is_production() -> bool:
+  return os.getenv("APP_ENV", "local").lower() == "production"
 
 
 def _clean_base64(image_base64: str) -> str:
@@ -83,7 +88,7 @@ def _get_engine():
       print("vision: cache disabled (DATABASE_URL missing)")
       _logged_no_db = True
     return None
-  return create_engine(db_url, pool_pre_ping=True)
+  return create_engine(normalize_database_url(db_url), pool_pre_ping=True)
 
 
 def _cache_get(cache_key: str) -> Optional[Dict[str, Any]]:
@@ -145,8 +150,11 @@ def _cache_set(cache_key: str, payload: Dict[str, Any]) -> None:
           "exp": expires_at,
         },
       )
-    logger.info("vision: cache_set key=%s", cache_key)
-    print(f"vision: cache_set key={cache_key}")
+    if _is_production():
+      logger.info("vision: cache_set")
+    else:
+      logger.info("vision: cache_set key=%s", cache_key)
+      print(f"vision: cache_set key={cache_key}")
   except Exception as exc:
     logger.warning("vision: cache_set failed: %s", exc)
     print(f"vision: cache_set failed: {exc}")
@@ -247,8 +255,9 @@ def _call_openai(image_base64: str, lang: str) -> Dict[str, Any]:
         text_content = data.get("choices", [])[0].get("message", {}).get("content", "") or ""
       except Exception:
         text_content = ""
-      logger.info("vision raw completion=%s", text_content)
-      print(f"vision: completion={text_content[:400]}")
+      if not _is_production():
+        logger.info("vision raw completion=%s", text_content)
+        print(f"vision: completion={text_content[:400]}")
       result = _extract_json(text_content)
       return result
     except Exception as exc:
@@ -320,13 +329,19 @@ def recognize_item_from_bytes(image_bytes: bytes, lang: str, storage_key: Option
     byte_size=len(normalized_bytes),
     source="scan",
   )
-  logger.info("vision: cache_lookup key=%s", cache_key)
-  print(f"vision: cache_lookup key={cache_key}")
+  if _is_production():
+    logger.info("vision: cache_lookup")
+  else:
+    logger.info("vision: cache_lookup key=%s", cache_key)
+    print(f"vision: cache_lookup key={cache_key}")
 
   cached = _cache_get(cache_key)
   if cached:
-    logger.info("vision: cache_hit key=%s", cache_key)
-    print(f"vision: cache_hit key={cache_key}")
+    if _is_production():
+      logger.info("vision: cache_hit")
+    else:
+      logger.info("vision: cache_hit key=%s", cache_key)
+      print(f"vision: cache_hit key={cache_key}")
     if not isinstance(cached.get("labels"), list):
       try:
         cached["labels"] = json.loads(cached.get("labels"))
@@ -337,8 +352,11 @@ def recognize_item_from_bytes(image_bytes: bytes, lang: str, storage_key: Option
       cached["image_id"] = image_id
     return cached
 
-  logger.info("vision: cache_miss key=%s", cache_key)
-  print(f"vision: cache_miss key={cache_key}")
+  if _is_production():
+    logger.info("vision: cache_miss")
+  else:
+    logger.info("vision: cache_miss key=%s", cache_key)
+    print(f"vision: cache_miss key={cache_key}")
   result = _call_openai(normalized_b64, lang)
   labels = _normalize_labels(result.get("labels", []))
   canonical_key = result.get("canonical_key")

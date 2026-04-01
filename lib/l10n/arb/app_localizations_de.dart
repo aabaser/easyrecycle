@@ -93,10 +93,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_theme_preview => 'Farben';
 
   @override
-  String get settings_admin_toggle => 'Admin-Modus';
 
   @override
-  String get settings_admin_link => 'Admin-Bereich';
 
   @override
   String get entry_headline => 'Reduzieren. Trennen. Weitergeben.';
@@ -439,76 +437,52 @@ class AppLocalizationsDe extends AppLocalizations {
   String get debug_json_title => 'Analyse (Debug)';
 
   @override
-  String get admin_title => 'Admin';
 
   @override
-  String get admin_search_hint => 'Suche nach Titel oder Schlüssel';
 
   @override
-  String get admin_item_details => 'Item bearbeiten';
 
   @override
-  String get admin_title_label => 'Titel';
 
   @override
-  String get admin_description_label => 'Beschreibung';
 
   @override
-  String get admin_category_label => 'Kategorien';
 
   @override
-  String get admin_category_hint => 'Codes, getrennt mit Komma';
 
   @override
-  String get admin_disposal_label => 'Entsorgungen';
 
   @override
-  String get admin_disposal_hint => 'Codes, getrennt mit Komma';
 
   @override
-  String get admin_warning_label => 'Warnungen';
 
   @override
-  String get admin_warning_hint => 'Codes, getrennt mit Komma';
 
   @override
-  String get admin_active_label => 'Aktiv';
 
   @override
-  String get admin_images_title => 'Bilder';
 
   @override
-  String get admin_upload_image => 'Bild hochladen';
 
   @override
-  String get admin_remove_image => 'Bild entfernen';
 
   @override
-  String get admin_save => 'Speichern';
 
   @override
-  String get admin_saving => 'Speichert...';
 
   @override
-  String get admin_item_not_found => 'Eintrag nicht gefunden.';
 
   @override
-  String get admin_city_required => 'Wähle eine Stadt, um zu starten.';
 
   @override
-  String get admin_city_settings => 'Städteinstellungen';
 
   @override
-  String get admin_no_cities => 'Keine Städte gefunden.';
 
   @override
-  String get admin_city_label => 'Stadt';
 
   @override
-  String get admin_actions => 'Aktionen';
 
   @override
-  String get admin_edit => 'Bearbeiten';
 
   @override
   String get settings_auth_test => 'Auth-Test';

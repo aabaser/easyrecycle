@@ -11,14 +11,13 @@ Recommended starting points:
 ## Codex
 Codex reads `AGENTS.md` first. Keep it updated when rules change.
 
-## Project Rule - Admin Features
+## Project Rule - Admin Archive
 
-Admin features are intentionally kept in the codebase for future reactivation.
+Admin features are not part of the active app or API anymore.
 
-- Do not delete admin backend endpoints/services.
-- Do not delete admin Flutter pages/components.
-- If needed, hide admin access from UI/navigation, but keep implementation intact.
-- Theme preview/debug page is kept and can be accessed from Admin UI (not regular Settings).
+- Keep admin code only in the local `admin_next_project/` archive.
+- `admin_next_project/` is gitignored and must not be deployed.
+- If admin returns, move it into a separate project/repo.
 
 ## Project Rule - Language UI (Temporary)
 
@@ -48,18 +47,6 @@ Production hardening (recommended):
 export APP_ENV=production
 export API_DOCS_ENABLED=false
 export CORS_ALLOW_ORIGINS="https://your-frontend.example"
-# Admin endpoints (protected)
-export ADMIN_ENABLED=true
-export ADMIN_API_KEY="change_me"
-export ADMIN_SESSION_JWT_SECRET="change_me_admin_session_secret"
-export ADMIN_SESSION_TTL_SECONDS=28800
-# Optional: only allow authenticated users
-# export ADMIN_REQUIRE_USER=true
-```
-
-Generate a strong admin key:
-```bash
-python -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
 
 Health check:
@@ -73,8 +60,6 @@ flutter pub get
 flutter gen-l10n
 flutter run -d chrome --dart-define=API_BASE_URL=http://<PC_IP>:8000
 flutter run -d chrome --dart-define=API_BASE_URL=http://192.168.2.177:8000
-# Admin app (separate entrypoint):
-flutter run -d chrome -t lib/main_admin.dart --dart-define=API_BASE_URL=http://192.168.2.177:8000
 ```
 
 ### Flutter (Android APK)
@@ -85,8 +70,6 @@ Prereqs:
 Build:
 ```bash
 flutter build apk --dart-define=API_BASE_URL=http://192.168.2.177:8000
-# Admin app APK (separate entrypoint):
-flutter build apk -t lib/main_admin.dart --dart-define=API_BASE_URL=http://192.168.2.177:8000
 ```
 
 Install APK:
@@ -176,24 +159,6 @@ curl -X POST http://localhost:8000/auth/verify \
   -H "Authorization: Bearer <JWT>"
 ```
 
-Admin login (API key -> short-lived admin token):
-```bash
-curl -X POST http://localhost:8000/admin/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"api_key":"<ADMIN_API_KEY>"}'
-```
-
-Admin me:
-```bash
-curl http://localhost:8000/admin/auth/me \
-  -H "Authorization: Bearer <ADMIN_SESSION_JWT>"
-```
-
-All `/admin/*` endpoints require:
-```text
-Authorization: Bearer <ADMIN_SESSION_JWT>
-```
-
 ## Image Storage (S3)
 
 Set env vars (local dev):
@@ -259,6 +224,29 @@ Run locally (from repo root):
 ```bash
 python -m http.server 8080 --directory site
 ```
+
+## Render (Backend API)
+
+The repo includes a starter Blueprint file at `render.yaml` for the FastAPI backend and a managed
+Render Postgres database.
+
+High-level flow:
+1. Push the repo with `render.yaml`.
+2. In Render, create a new Blueprint and select the repo.
+3. Confirm the `easy-recycle-db` database and `easy-recycle-api` web service.
+4. Fill the prompted secret env vars:
+   - `CORS_ALLOW_ORIGINS`
+   - `AWS_REGION`
+   - `S3_BUCKET_NAME`
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `OPENAI_API_KEY` (optional if you want live vision calls)
+5. Deploy and wait for `/health` to return `{"ok": true}`.
+
+Notes:
+- `startCommand` runs `alembic upgrade head` before starting Uvicorn.
+- `DATABASE_URL` from Render Postgres is normalized in code to work with SQLAlchemy + psycopg.
+- Without the AWS/S3 vars, startup validation currently fails by design.
 
 Open:
 ```text

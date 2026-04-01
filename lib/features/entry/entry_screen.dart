@@ -43,6 +43,11 @@ class EntryScreen extends StatelessWidget {
     final slogan = copy[selectedLocale]?["slogan"] ?? copy["tr"]!["slogan"]!;
     final subtitle =
         copy[selectedLocale]?["subtitle"] ?? copy["tr"]!["subtitle"]!;
+    final selectCityMessage = selectedLocale == "de"
+        ? "Bitte zuerst Stadt wählen."
+        : selectedLocale == "en"
+        ? "Please select a city first."
+        : "Lütfen önce şehir seçin.";
 
     Widget heroHeader() {
       return Column(
@@ -137,7 +142,7 @@ class EntryScreen extends StatelessWidget {
               if (!hasCitySelected) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(loc.t("admin_city_required")),
+                    content: Text(selectCityMessage),
                   ),
                 );
                 return;
@@ -189,7 +194,7 @@ class EntryScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       if (!hasCitySelected) ...[
                         Text(
-                          loc.t("admin_city_required"),
+                          selectCityMessage,
                           textAlign: TextAlign.center,
                           style: DesignTokens.caption.copyWith(
                             color: colorScheme.onSurfaceVariant,

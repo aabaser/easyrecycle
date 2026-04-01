@@ -43,6 +43,17 @@ def _request_with_auth(value: str) -> Request:
     )
 
 
+def _request_with_ip(ip: str) -> Request:
+    return Request(
+        {
+            "type": "http",
+            "method": "GET",
+            "path": "/health",
+            "headers": [(b"x-forwarded-for", ip.encode("utf-8"))],
+        }
+    )
+
+
 def test_resolve_principal_guest_success(monkeypatch):
     monkeypatch.setattr(
         main,
@@ -120,38 +131,53 @@ def test_auth_me_guest(monkeypatch):
     }
 
 
-def test_admin_login_and_me_success(monkeypatch):
-    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", False, raising=False)
-    monkeypatch.setattr(main.settings, "ADMIN_ENABLED", True, raising=False)
-    monkeypatch.setattr(main.settings, "ADMIN_API_KEY", "super-secret-admin-key", raising=False)
-    monkeypatch.setattr(main.settings, "ADMIN_SESSION_JWT_SECRET", "admin-jwt-secret", raising=False)
-    monkeypatch.setattr(main.settings, "ADMIN_SESSION_TTL_SECONDS", 3600, raising=False)
-
+def test_auth_guest_rate_limit_per_ip(monkeypatch):
+    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", True, raising=False)
+    main.rate_limiter._buckets.clear()
     client = TestClient(main.app)
-    login = client.post(
-        "/admin/auth/login",
-        json={"api_key": "super-secret-admin-key"},
-    )
-    assert login.status_code == 200
-    token = login.json()["access_token"]
-    assert token
+    headers = {"x-forwarded-for": "203.0.113.10"}
 
-    me = client.get("/admin/auth/me", headers={"Authorization": f"Bearer {token}"})
-    assert me.status_code == 200
-    body = me.json()
-    assert body["type"] == "admin"
-    assert body["scopes"] == ["admin"]
+    first = client.post("/auth/guest", json={"device_id": "device_12345678"}, headers=headers)
+    second = client.post("/auth/guest", json={"device_id": "device_12345678"}, headers=headers)
+    third = client.post("/auth/guest", json={"device_id": "device_12345678"}, headers=headers)
+
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert third.status_code == 429
+    assert third.json()["detail"] == "Rate limit exceeded"
+    assert "retry-after" in third.headers
+    assert int(third.headers["retry-after"]) >= 1
 
 
-def test_admin_login_invalid_key(monkeypatch):
-    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", False, raising=False)
-    monkeypatch.setattr(main.settings, "ADMIN_ENABLED", True, raising=False)
-    monkeypatch.setattr(main.settings, "ADMIN_API_KEY", "super-secret-admin-key", raising=False)
+def test_rate_limit_principal_blocks_after_limit(monkeypatch):
+    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", True, raising=False)
+    main.rate_limiter._buckets.clear()
+    principal = {"type": "guest", "sub": "guest:device-rate", "scopes": ["guest"]}
 
-    client = TestClient(main.app)
-    login = client.post(
-        "/admin/auth/login",
-        json={"api_key": "wrong-key-value"},
-    )
-    assert login.status_code == 401
-    assert login.json()["detail"] == "invalid_admin_api_key"
+    main._rate_limit_principal("test_scope", principal, limit=2, window_seconds=60)
+    main._rate_limit_principal("test_scope", principal, limit=2, window_seconds=60)
+    try:
+        main._rate_limit_principal("test_scope", principal, limit=2, window_seconds=60)
+        assert False, "expected HTTPException"
+    except HTTPException as exc:
+        assert exc.status_code == 429
+        assert exc.detail == "Rate limit exceeded"
+        assert exc.headers is not None
+        assert int(exc.headers["Retry-After"]) >= 1
+
+
+def test_rate_limit_ip_blocks_after_limit(monkeypatch):
+    monkeypatch.setattr(main.settings, "RATE_LIMIT_ENABLED", True, raising=False)
+    main.rate_limiter._buckets.clear()
+    request = _request_with_ip("198.51.100.21")
+
+    main._rate_limit_ip("test_scope", request, limit=2, window_seconds=60)
+    main._rate_limit_ip("test_scope", request, limit=2, window_seconds=60)
+    try:
+        main._rate_limit_ip("test_scope", request, limit=2, window_seconds=60)
+        assert False, "expected HTTPException"
+    except HTTPException as exc:
+        assert exc.status_code == 429
+        assert exc.detail == "Rate limit exceeded"
+        assert exc.headers is not None
+        assert int(exc.headers["Retry-After"]) >= 1

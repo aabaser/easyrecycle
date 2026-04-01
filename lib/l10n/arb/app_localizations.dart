@@ -262,17 +262,13 @@ abstract class AppLocalizations {
   /// **'Theme preview'**
   String get settings_theme_preview;
 
-  /// No description provided for @settings_admin_toggle.
   ///
   /// In en, this message translates to:
   /// **'Admin mode'**
-  String get settings_admin_toggle;
 
-  /// No description provided for @settings_admin_link.
   ///
   /// In en, this message translates to:
   /// **'Admin panel'**
-  String get settings_admin_link;
 
   /// No description provided for @entry_headline.
   ///
@@ -910,149 +906,101 @@ abstract class AppLocalizations {
   /// **'Analyze (Debug)'**
   String get debug_json_title;
 
-  /// No description provided for @admin_title.
   ///
   /// In en, this message translates to:
   /// **'Admin'**
-  String get admin_title;
 
-  /// No description provided for @admin_search_hint.
   ///
   /// In en, this message translates to:
   /// **'Search by title or key'**
-  String get admin_search_hint;
 
-  /// No description provided for @admin_item_details.
   ///
   /// In en, this message translates to:
   /// **'Edit item'**
-  String get admin_item_details;
 
-  /// No description provided for @admin_title_label.
   ///
   /// In en, this message translates to:
   /// **'Title'**
-  String get admin_title_label;
 
-  /// No description provided for @admin_description_label.
   ///
   /// In en, this message translates to:
   /// **'Description'**
-  String get admin_description_label;
 
-  /// No description provided for @admin_category_label.
   ///
   /// In en, this message translates to:
   /// **'Categories'**
-  String get admin_category_label;
 
-  /// No description provided for @admin_category_hint.
   ///
   /// In en, this message translates to:
   /// **'Codes, comma separated'**
-  String get admin_category_hint;
 
-  /// No description provided for @admin_disposal_label.
   ///
   /// In en, this message translates to:
   /// **'Disposals'**
-  String get admin_disposal_label;
 
-  /// No description provided for @admin_disposal_hint.
   ///
   /// In en, this message translates to:
   /// **'Codes, comma separated'**
-  String get admin_disposal_hint;
 
-  /// No description provided for @admin_warning_label.
   ///
   /// In en, this message translates to:
   /// **'Warnings'**
-  String get admin_warning_label;
 
-  /// No description provided for @admin_warning_hint.
   ///
   /// In en, this message translates to:
   /// **'Codes, comma separated'**
-  String get admin_warning_hint;
 
-  /// No description provided for @admin_active_label.
   ///
   /// In en, this message translates to:
   /// **'Active'**
-  String get admin_active_label;
 
-  /// No description provided for @admin_images_title.
   ///
   /// In en, this message translates to:
   /// **'Images'**
-  String get admin_images_title;
 
-  /// No description provided for @admin_upload_image.
   ///
   /// In en, this message translates to:
   /// **'Upload image'**
-  String get admin_upload_image;
 
-  /// No description provided for @admin_remove_image.
   ///
   /// In en, this message translates to:
   /// **'Remove image'**
-  String get admin_remove_image;
 
-  /// No description provided for @admin_save.
   ///
   /// In en, this message translates to:
   /// **'Save'**
-  String get admin_save;
 
-  /// No description provided for @admin_saving.
   ///
   /// In en, this message translates to:
   /// **'Saving...'**
-  String get admin_saving;
 
-  /// No description provided for @admin_item_not_found.
   ///
   /// In en, this message translates to:
   /// **'Item not found.'**
-  String get admin_item_not_found;
 
-  /// No description provided for @admin_city_required.
   ///
   /// In en, this message translates to:
   /// **'Please select a city first.'**
-  String get admin_city_required;
 
-  /// No description provided for @admin_city_settings.
   ///
   /// In en, this message translates to:
   /// **'City settings'**
-  String get admin_city_settings;
 
-  /// No description provided for @admin_no_cities.
   ///
   /// In en, this message translates to:
   /// **'No cities found.'**
-  String get admin_no_cities;
 
-  /// No description provided for @admin_city_label.
   ///
   /// In en, this message translates to:
   /// **'City'**
-  String get admin_city_label;
 
-  /// No description provided for @admin_actions.
   ///
   /// In en, this message translates to:
   /// **'Actions'**
-  String get admin_actions;
 
-  /// No description provided for @admin_edit.
   ///
   /// In en, this message translates to:
   /// **'Edit'**
-  String get admin_edit;
 
   /// No description provided for @settings_auth_test.
   ///

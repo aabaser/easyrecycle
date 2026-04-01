@@ -93,10 +93,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_theme_preview => 'Theme preview';
 
   @override
-  String get settings_admin_toggle => 'Admin mode';
 
   @override
-  String get settings_admin_link => 'Admin panel';
 
   @override
   String get entry_headline => 'Reduce. Sort. Keep going.';
@@ -435,76 +433,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get debug_json_title => 'Analyze (Debug)';
 
   @override
-  String get admin_title => 'Admin';
 
   @override
-  String get admin_search_hint => 'Search by title or key';
 
   @override
-  String get admin_item_details => 'Edit item';
 
   @override
-  String get admin_title_label => 'Title';
 
   @override
-  String get admin_description_label => 'Description';
 
   @override
-  String get admin_category_label => 'Categories';
 
   @override
-  String get admin_category_hint => 'Codes, comma separated';
 
   @override
-  String get admin_disposal_label => 'Disposals';
 
   @override
-  String get admin_disposal_hint => 'Codes, comma separated';
 
   @override
-  String get admin_warning_label => 'Warnings';
 
   @override
-  String get admin_warning_hint => 'Codes, comma separated';
 
   @override
-  String get admin_active_label => 'Active';
 
   @override
-  String get admin_images_title => 'Images';
 
   @override
-  String get admin_upload_image => 'Upload image';
 
   @override
-  String get admin_remove_image => 'Remove image';
 
   @override
-  String get admin_save => 'Save';
 
   @override
-  String get admin_saving => 'Saving...';
 
   @override
-  String get admin_item_not_found => 'Item not found.';
 
   @override
-  String get admin_city_required => 'Please select a city first.';
 
   @override
-  String get admin_city_settings => 'City settings';
 
   @override
-  String get admin_no_cities => 'No cities found.';
 
   @override
-  String get admin_city_label => 'City';
 
   @override
-  String get admin_actions => 'Actions';
 
   @override
-  String get admin_edit => 'Edit';
 
   @override
   String get settings_auth_test => 'Auth test';

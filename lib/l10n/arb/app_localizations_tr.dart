@@ -92,10 +92,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settings_theme_preview => 'Renk paleti';
 
   @override
-  String get settings_admin_toggle => 'Admin modu';
 
   @override
-  String get settings_admin_link => 'Admin ekranı';
 
   @override
   String get entry_headline => 'Azalt. Ayır. Devam et.';
@@ -432,76 +430,52 @@ class AppLocalizationsTr extends AppLocalizations {
   String get debug_json_title => 'Analiz (Debug)';
 
   @override
-  String get admin_title => 'Admin';
 
   @override
-  String get admin_search_hint => 'Başlık veya anahtar ile ara';
 
   @override
-  String get admin_item_details => 'Ürün düzenle';
 
   @override
-  String get admin_title_label => 'Başlık';
 
   @override
-  String get admin_description_label => 'Açıklama';
 
   @override
-  String get admin_category_label => 'Kategoriler';
 
   @override
-  String get admin_category_hint => 'Kodları virgülle ayır';
 
   @override
-  String get admin_disposal_label => 'Bertaraf';
 
   @override
-  String get admin_disposal_hint => 'Kodları virgülle ayır';
 
   @override
-  String get admin_warning_label => 'Uyarılar';
 
   @override
-  String get admin_warning_hint => 'Kodları virgülle ayır';
 
   @override
-  String get admin_active_label => 'Aktif';
 
   @override
-  String get admin_images_title => 'Resimler';
 
   @override
-  String get admin_upload_image => 'Resim yükle';
 
   @override
-  String get admin_remove_image => 'Resmi kaldır';
 
   @override
-  String get admin_save => 'Kaydet';
 
   @override
-  String get admin_saving => 'Kaydediliyor...';
 
   @override
-  String get admin_item_not_found => 'Kayıt bulunamadı.';
 
   @override
-  String get admin_city_required => 'Lütfen önce şehir seçin.';
 
   @override
-  String get admin_city_settings => 'Şehir ayarları';
 
   @override
-  String get admin_no_cities => 'Şehir bulunamadı.';
 
   @override
-  String get admin_city_label => 'Şehir';
 
   @override
-  String get admin_actions => 'İşlemler';
 
   @override
-  String get admin_edit => 'Düzenle';
 
   @override
   String get settings_auth_test => 'Auth test';
